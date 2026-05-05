@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>In the News — Thomas C. Terwilliger</title>
+  <meta name="description" content="News articles and media coverage of Thomas C. Terwilliger's research in structural biology, crystallography, and cryo-EM.">
+  <link rel="canonical" href="https://www.thomasterwilliger.org/news.html">
+  <style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #1a2744;
+  --slate: #3d4f6b;
+  --accent: #2e6da4;
+  --accent-light: #e8f0f8;
+  --warm-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text: #2c2c2c;
+  --text-light: #5a6270;
+  --border: #ddd;
+  --rule: #c4cdd6;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  background: var(--warm-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 0 0;
+}
+
+.header-content {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  background: var(--slate);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: rgba(255,255,255,0.35);
+}
+
+.header-text h1 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 8px;
+  letter-spacing: 0.03em;
+}
+
+.affiliation {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.affiliation a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.affiliation a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+/* ===== NAV ===== */
+.site-nav {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  margin-top: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav .container {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.site-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.site-nav a.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
+.content-section {
+  padding: 40px 0;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0 0 32px;
+}
+
+/* ===== SECTIONS ON HOME ===== */
+.intro p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  max-width: 72ch;
+}
+
+.intro p:first-child {
+  font-size: 1.12rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.card-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== PUBLICATIONS ===== */
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pub-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pub-meta a:hover {
+  text-decoration: underline;
+}
+
+.pub-year-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub-year-heading:first-of-type {
+  margin-top: 0;
+}
+
+.pub-entry {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.pub-entry:hover {
+  border-left-color: var(--accent);
+}
+
+.pub-entry a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pub-entry a:hover {
+  text-decoration: underline;
+}
+
+.pub-entry i {
+  font-style: italic;
+}
+
+.patents-section {
+  margin-top: 40px;
+}
+
+/* ===== BIO PAGE ===== */
+.bio-section {
+  margin-bottom: 36px;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timeline {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 12px 24px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+
+.timeline li strong {
+  color: var(--navy);
+}
+
+.honors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.honors-list li {
+  padding: 6px 0;
+  font-size: 0.93rem;
+  border-bottom: 1px solid #eee;
+}
+
+.honors-list li:last-child {
+  border-bottom: none;
+}
+
+.honors-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.honors-list a:hover {
+  text-decoration: underline;
+}
+
+.service-text {
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.service-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.service-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SOFTWARE PAGE ===== */
+.software-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.software-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+.software-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.software-card .sw-link {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.software-card .sw-link:hover {
+  background: var(--navy);
+}
+
+/* ===== LINKS PAGE ===== */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.links-list li:last-child {
+  border-bottom: none;
+}
+
+.links-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links-list a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  padding: 24px 0;
+  margin-top: 48px;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.site-footer a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 1.45rem;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .content-section {
+    padding: 28px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-entry {
+    padding-left: 10px;
+  }
+}
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <img src="images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <div class="header-text">
+          <h1>Thomas C. Terwilliger</h1>
+          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
+          <p class="affiliation">
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a><br>
+            Los Alamos National Laboratory Fellow (Retired)
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="index.html">Home</a>
+        <a href="publications.html">Publications</a>
+        <a href="software.html">Software</a>
+        <a href="bio.html">Biography</a>
+        <a href="news.html" class="active">News</a>
+        <a href="links.html">Links</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+    <div class="content-section">
+      <div class="container">
+
+        <h2 class="page-title">In the News</h2>
+        <p class="page-subtitle">Selected news articles and media coverage.</p>
+
+    <h3 class="pub-year-heading">2025</h3>
+    <div class="pub-entry"><a href="https://www.nasonline.org/news/2025-nas-election/">National Academy of Sciences election announcement</a>. National Academy of Sciences (April 2025).</div>
+    <div class="pub-entry"><a href="https://newmexicoconsortium.org/dr-tom-terwilliger-elected-to-the-national-academy-of-sciences/">Dr. Tom Terwilliger Elected to the National Academy of Sciences</a>. New Mexico Consortium (April 2025).</div>
+    <div class="pub-entry"><a href="https://losalamosreporter.com/2025/04/30/nmc-dr-tom-terwilliger-elected-to-the-national-academy-of-sciences/">NMC: Dr. Tom Terwilliger Elected to the National Academy of Sciences</a>. Los Alamos Reporter (April 2025).</div>
+    <div class="pub-entry"><a href="https://ladailypost.com/dr-tom-terwilliger-elected-to-national-academy-of-sciences/">Dr. Tom Terwilliger Elected to National Academy of Sciences</a>. Los Alamos Daily Post (May 2025).</div>
+    <h3 class="pub-year-heading">2024</h3>
+    <div class="pub-entry"><a href="https://www.cell.com/cell/fulltext/S0092-8674(24)00005-9">Structure is beauty, but not always truth</a>. Cell (February 2024). Editorial discussing implications of AlphaFold accuracy findings.</div>
+    <div class="pub-entry"><a href="https://biosciences.lbl.gov/2024/01/23/researchers-assess-alphafold-model-accuracy/">Researchers Assess AlphaFold Model Accuracy</a>. Berkeley Lab Biosciences (January 2024).</div>
+    <div class="pub-entry"><a href="https://newmexicoconsortium.org/researchers-assess-alphafold-model-accuracy/">Researchers Assess AlphaFold Model Accuracy</a>. New Mexico Consortium (January 2024).</div>
+    <div class="pub-entry"><a href="https://practicalcheminformatics.blogspot.com/2024/01/ai-in-drug-discovery-2023-highly.html">AI in Drug Discovery 2023 — A Highly Opinionated Literature Review</a>. Practical Cheminformatics (January 2024). Features discussion of AlphaFold prediction accuracy work.</div>
+    <h3 class="pub-year-heading">2023</h3>
+    <div class="pub-entry"><a href="https://newmexicoconsortium.org/tom-terwilliger-publishes-work-on-alphafold-predictions/">Tom Terwilliger Publishes Work on AlphaFold Predictions</a>. New Mexico Consortium (November 2023).</div>
+    <h3 class="pub-year-heading">2022</h3>
+    <div class="pub-entry"><a href="https://newmexicoconsortium.org/terwilliger-publish-on-machine-learning-prediction-algorithms/">Tom Terwilliger and Colleagues Show How to Include Implicit Experimental Information in AlphaFold Predictions</a>. New Mexico Consortium (November 2022).</div>
+    <h3 class="pub-year-heading">2020</h3>
+    <div class="pub-entry"><a href="https://newscenter.lbl.gov/2020/10/08/new-algorithm-sharpens-focus/">New Algorithm Sharpens Focus of World's Most Powerful Microscopes</a>. Berkeley Lab News Center (October 2020).</div>
+    <div class="pub-entry"><a href="https://newmexicoconsortium.org/terwilliger-and-team-improve-resolution-cryo-electron-microscopy/">Tom Terwilliger and Team Develop Technique to Improve Resolution of Cryo-electron Microscopy</a>. New Mexico Consortium (October 2020).</div>
+    <div class="pub-entry"><a href="https://phys.org/news/2020-10-algorithm-sharpens-focus-world-powerful.html">New algorithm sharpens focus of world's most powerful microscopes</a>. Phys.org (October 2020).</div>
+    <div class="pub-entry"><a href="https://www.eurekalert.org/news-releases/835377">New algorithm sharpens focus of world's most powerful microscopes</a>. EurekAlert / AAAS (October 2020).</div>
+    <div class="pub-entry"><a href="https://healthcare-in-europe.com/en/news/new-algorithm-sharpens-focus-of-cryo-electron-microscopes.html">New algorithm sharpens focus of cryo-electron microscopes</a>. Healthcare in Europe (October 2020).</div>
+    <h3 class="pub-year-heading">2014</h3>
+    <div class="pub-entry"><a href="https://www.eurekalert.org/news-releases/889031">Collaboration drives achievement in protein structure research</a>. EurekAlert / LANL (2014). Coverage of the CRISPR surveillance complex crystal structure published in Science.</div>
+    <h3 class="pub-year-heading">2013</h3>
+    <div class="pub-entry"><a href="https://history.amercrystalassn.org/assets/docs/Thomas%20Terwilliger%20named%20as%20the%20recipient%20of%20the%202013%20ACA%20Ken%20Trueblood%20Award%202012.pdf">Thomas Terwilliger named as the recipient of the 2013 ACA Ken Trueblood Award</a>. American Crystallographic Association (2012).</div>
+    <div class="pub-entry"><a href="https://history.amercrystalassn.org/assets/docs/Kenneth%20Trueblood%20Award%202013.pdf">Kenneth Trueblood Award 2013</a>. American Crystallographic Association (2013).</div>
+    <div class="pub-entry"><a href="https://www.iucr.org/news/newsletter/volume-21/number-4/aca-2013">ACA 2013 Meeting Report</a>. International Union of Crystallography Newsletter (2013).</div>
+    <h3 class="pub-year-heading">2005</h3>
+    <div class="pub-entry"><a href="https://www.sciencedaily.com/releases/2005/01/050111122854.htm">Scientists Develop Split Green Fluorescent Protein for Tagging Protein</a>. ScienceDaily (January 2005).</div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      Contact: <a href="mailto:tterwilliger@newmexicoconsortium.org">tterwilliger@newmexicoconsortium.org</a><br>
+      This site preserves scientific materials originally hosted at solve.lanl.gov.<br>
+      Last updated 2026
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
