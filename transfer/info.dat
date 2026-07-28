@@ -1,9 +1,0 @@
-
-env -u GTK_IM_MODULE -u QT_IM_MODULE \
-    GDK_BACKEND=x11 \
-    GSK_RENDERER=gl \
-    GTK_USE_PORTAL=0 \
-    NO_AT_BRIDGE=1 \
-    LIBGL_ALWAYS_SOFTWARE=1 \
-    phenix.start_coot --no-state-script --no-guano
-
