@@ -1,0 +1,19 @@
+Guide — Continue an earlier session
+
+WHAT IT DOES
+Reads your handoff and available files, briefly summarizes where the work stands, and identifies the next useful step. Requests anything essential that is missing, then continues under your current instructions.
+
+PROMPT
+Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
+
+Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+
+When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+
+Read the handoff and available files below. Briefly state the goal, what is already done, any unresolved questions, and the next useful step.
+
+Request only information or files essential to continuing. Use my current instructions, and flag any material conflict with the earlier handoff. Do not require confirmation from the previous chat.
+
+Continue the work that is already agreed. If another handoff becomes necessary, keep it short: goal, completed work, current files, unresolved questions, and next step.
+
+My current instructions, handoff and files:

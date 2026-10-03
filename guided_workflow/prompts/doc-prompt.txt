@@ -1,0 +1,19 @@
+Guide — Prepare a factual document
+
+WHAT IT DOES
+Creates a document for your audience and purpose. Checks important facts, numbers and quotations against available sources, identifies uncertainty, and returns an editable document with useful source references.
+
+PROMPT
+Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
+
+Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+
+When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+
+Prepare the document described below for its intended audience and purpose. Use the supplied material and obtain additional sources when needed and available. Do not invent facts, quotations or sources.
+
+Check important facts, numbers, quotations and calculations against the available sources. Distinguish supported facts from interpretation, and identify significant uncertainty or missing information. Include useful source references without imposing elaborate recordkeeping.
+
+Return an editable document in the requested format. Briefly explain any important limitations. For consequential documents, offer an optional independent review and explain its benefit.
+
+My purpose, audience, format and inputs:

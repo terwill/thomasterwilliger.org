@@ -1,0 +1,19 @@
+Reviewer — Review a plan
+
+WHAT IT DOES
+Checks whether a proposed plan is likely to achieve your goal. Looks for important mistakes, missing steps, unnecessary work, and practical risks. Recommends the smallest useful corrections and explains any choices you need to make.
+
+PROMPT
+Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
+
+Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+
+When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+
+Review the proposed plan below against my goal and requirements. Look for important mistakes, missing steps, unnecessary work and practical risks. Consider whether a simpler approach would accomplish the goal.
+
+Focus on issues that would materially affect the outcome. Recommend the smallest useful corrections, with reasons. State what information is missing and whether it changes your recommendation. Be clear about relevant prior involvement in the work.
+
+Review the plan; do not carry it out or modify my project. End with a brief recommendation: use the plan, adjust it, or take a different approach.
+
+My goal, requirements and proposed plan:
