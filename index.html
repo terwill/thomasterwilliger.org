@@ -1,6 +1,15 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Workflow</title><style>/* ===== BASE ===== */
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thomas C. Terwilliger — Structural Biology &amp; Computational Methods</title>
+  <meta name="description" content="Thomas C. Terwilliger: structural biology, macromolecular crystallography, cryo-EM, Phenix software, SOLVE/RESOLVE, AlphaFold integration. Formerly at solve.lanl.gov.">
+  <link rel="canonical" href="https://www.thomasterwilliger.org/">
+  <meta name="keywords" content="Tom Terwilliger, Thomas C. Terwilliger, macromolecular crystallography, structural genomics, protein structure, Phenix, cryo-EM, AlphaFold">
+  <style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
 :root {
   --navy: #1a2744;
@@ -503,26 +512,16 @@ main {
     padding-left: 10px;
   }
 }
-/* Guided Workflow controls; shared site styles above are preserved. */
-.gw-main{padding-top:38px;padding-bottom:28px;width:100%}.gw-main h1,.gw-main h2,.gw-main h3{font-family:var(--serif);color:var(--navy);line-height:1.3}.gw-main h1{font-size:2rem}.gw-main h2{font-size:1.5rem;margin-top:2rem}.gw-main h3{font-size:1.15rem}.gw-note,.flag{border-left:4px solid var(--accent);background:var(--accent-light);padding:14px 18px;margin:20px 0}.gw-helper{border:2px solid var(--accent);padding:18px 22px;margin:22px 0;border-radius:6px}.gw-helper h2{margin-top:0}.gw-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;list-style:none;padding:0}.gw-choices a{display:block;border:1px solid var(--border);border-radius:6px;padding:14px 18px;color:var(--navy);text-decoration:none}.gw-choices a:hover{background:var(--accent-light)}.gw-choices span{display:block;color:var(--text-light);font-size:.93rem}.gw-prompt{border:1px solid var(--border);border-radius:6px;margin:16px 0}.gw-prompt summary{padding:16px 18px;cursor:pointer;font-weight:600;color:var(--navy)}.gw-prompt .prompt-content{padding:0 18px 18px}.gw-prompt textarea{display:block;width:100%;resize:vertical;min-height:240px;font:14px/1.6 var(--sans);border:1px solid var(--rule);padding:14px;margin-top:10px;background:#fff;color:var(--text)}.gw-main button{font:600 15px/1.4 var(--sans);background:var(--accent);color:#fff;border:0;border-radius:4px;padding:10px 16px;cursor:pointer}.gw-main a:focus-visible,.gw-main button:focus-visible,.gw-main summary:focus-visible,.gw-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #e4b547;outline-offset:3px}.gw-status{min-height:1.6em;font-size:.9rem;margin:8px 0}.gw-main table{border-collapse:collapse;display:block;overflow:auto;max-width:100%}.gw-main td,.gw-main th{border:1px solid var(--border);padding:9px 12px;vertical-align:top}.gw-main th{text-align:left;background:var(--accent-light)}.gw-main pre{white-space:pre;overflow:auto;padding:16px;background:#f3f5f7;border:1px solid var(--border);font:13px/1.6 monospace}.gw-main code{overflow-wrap:anywhere}.gw-main img{max-width:100%;height:auto}.gw-main blockquote{border-left:3px solid var(--rule);margin-left:0;padding-left:18px}.gw-small{font-size:.9rem;color:var(--text-light)}.gw-source-block{margin:12px 0;border-top:1px solid var(--border);padding-top:8px}.gw-source-block pre{white-space:pre-wrap}.gw-source-index{display:flex;flex-wrap:wrap;gap:8px}.gw-source-index a{padding:4px 8px;background:var(--accent-light)}@media(max-width:600px){.gw-choices{grid-template-columns:1fr}.gw-main h1{font-size:1.6rem}.gw-prompt .prompt-content{padding-left:12px;padding-right:12px}.gw-prompt textarea{font-size:16px}.gw-helper{padding:14px}}
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
 
-/* Owner-requested r243 reading layout. */
-.gw-lead{font-size:1.2rem;line-height:1.6;max-width:54rem;margin:1rem 0 1.4rem}
-.gw-task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
-.gw-task-grid .gw-prompt{margin:0;min-width:0;background:var(--card-bg)}
-.gw-task-grid summary{min-height:64px;line-height:1.5;overflow-wrap:anywhere}
-.gw-task-grid .gw-prompt[open]{grid-column:1 / -1;background:#fff}
-.gw-technical{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);font-size:.9rem;color:var(--text-light)}
-.gw-download{display:inline-block;padding:12px 20px;background:var(--accent);color:white;border-radius:5px;text-decoration:none;font-weight:600}
-@media(max-width:650px){.gw-task-grid{grid-template-columns:1fr}.gw-lead{font-size:1.1rem}}
-
-.gw-main a{color:var(--accent);text-underline-offset:3px}.gw-main{padding-top:32px;padding-bottom:28px}.gw-main>h1{margin:0 0 12px;border-bottom:2px solid var(--rule);padding-bottom:10px}.intro-note{color:var(--text-light);font-size:.95rem}.local-nav{display:flex;flex-wrap:wrap;gap:20px;margin:20px 0 26px;font-size:.95rem}#panel-explain summary{white-space:nowrap}.gw-prompt summary .role-label{display:inline-block;color:var(--accent);background:var(--accent-light);border:1px solid var(--rule);border-radius:4px;padding:2px 7px;margin-right:8px;font-size:.8rem;letter-spacing:.02em}.gw-prompt summary{list-style-position:inside}.gw-prompt h3{font:600 .9rem/1.4 var(--sans);margin:12px 0 8px;text-transform:uppercase;letter-spacing:.04em}.description{margin:0 0 18px}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:16px}.hint{font-size:.85rem;color:var(--text-light);margin:12px 0 6px}.gw-prompt textarea{border-radius:4px}.status{min-height:1.5em;margin:8px 0 0;font-size:.85rem;color:var(--accent)}.review-label{display:block;font-weight:600;font-size:.9rem;margin:14px 0 5px}select{max-width:100%;padding:9px;border:1px solid var(--rule);border-radius:4px;font:inherit;color:var(--navy);background:#fff;margin-bottom:10px}.role-card{border:1px solid var(--border);border-radius:6px;padding:20px 22px;margin:14px 0}.role-card h2{margin:0 0 10px;font-size:1.35rem}.role-card p{margin:7px 0}.role-card .when{font-size:.9rem;color:var(--text-light)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}select:focus-visible{outline:3px solid #e4b547;outline-offset:3px}
-
-.gw-intro-tips{margin:1rem 0 1.25rem;padding-left:1.5rem}.gw-intro-tips li+li{margin-top:.65rem}
-</style></head><body><div class="page-wrapper"><header class="site-header">
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
     <div class="container">
       <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo" width="130" height="165">
+        <img src="images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
         <div class="header-text">
           <h1>Thomas C. Terwilliger</h1>
           <p class="tagline">Structural Biology · Crystallography · Cryo-EM · Computational Methods</p>
@@ -535,263 +534,103 @@ main {
     </div>
     <nav class="site-nav">
       <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="publications.html">Publications</a>
+        <a href="software.html">Software</a>
+        <a href="bio.html">Biography</a>
+        <a href="group.html">Group</a>
+        <a href="news.html">News</a>
+        <a href="presentations.html">Presentations</a>
+        <a href="links.html">Links</a>
       </div>
     </nav>
-  </header><main class="container gw-main">
-<h1>Guided Workflow: a structured way to work with LLMs</h1>
-<p class="gw-lead"><strong>You are in charge. Choose the help you need for working with a large language model (LLM).</strong></p>
-<p>To get the most out of LLMs, try these tips:</p>
-<ol class="gw-intro-tips">
-  <li><strong>Start with a GUIDE.</strong> Choose the Guide prompt that fits your question or project, and add your goal or files.</li>
-  <li><strong>Ask a HELPER when you need an explanation.</strong> If you do not understand the Guide’s response, or a choice it is asking you to make, give the relevant text to a Helper and ask it to explain in plain English.</li>
-  <li><strong>Get feedback from an outside REVIEWER when useful.</strong> Use a Reviewer prompt in a separate chat with your goal and the plan or finished work. Give its feedback to the Guide, and decide what to change.</li>
-</ol>
-<p>Read what a prompt does before copying it into your chat.</p>
-<p class="intro-note">Every prompt asks for plain English, practical recommendations, and enough information to help you make choices.</p>
-<nav class="local-nav" aria-label="Guided Workflow pages"><span aria-current="page">Prompts</span><a href="roles.html">Official roles</a><a href="all-prompts.zip" download>Download all prompts</a></nav><h2>What do you want to do?</h2><div class="gw-task-grid"><details class="panel gw-prompt" id="panel-explain"><summary><span class="role-label">Helper</span><span>Help me understand</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-explain">
-<h3>What it does</h3><p class="description">Helps you understand the work, the evidence, or a decision. Explains things in everyday language, works through examples when useful, and helps you compare options. Gives a recommendation with reasons while leaving the choice to you.</p>
-<div class="actions"><button type="button" data-copy="explain">Copy complete prompt</button><a href="prompts/explain-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-explain" class="sr-only">Help me understand complete prompt</label>
-<textarea id="prompt-explain" readonly rows="12" spellcheck="false">Helper — Help me understand
+  </header>
 
-WHAT IT DOES
-Helps you understand the work, the evidence, or a decision. Explains things in everyday language, works through examples when useful, and helps you compare options. Gives a recommendation with reasons while leaving the choice to you.
+  <!-- ===== MAIN ===== -->
+  <main>
+    <div class="content-section">
+      <div class="container">
 
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
+        <div class="intro">
+          <p>
+            Tom Terwilliger is a structural biologist who develops methods and
+            has worked in the areas of
+            macromolecular crystallography, cryo-electron microscopy and
+            AI-driven structure determination. He is a
+            <a href="https://www.nasonline.org/directory-entry/thomas-c-terwilliger-uqo7md/">member of the National Academy of Sciences</a>,
+            a member of the
+            <a href="https://www.phenix-online.org/">Phenix</a> software team, and a
+            Senior Scientist at the
+            <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a>.
+          </p>
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+          <p>
+            Terwilliger studied physics at Harvard and molecular biology at UCLA
+            with David Eisenberg and at Berkeley with Daniel E. Koshland, Jr.
+            He was a Presidential Young Investigator at the University of Chicago
+            and a Laboratory Fellow at Los Alamos National Laboratory.
+          </p>
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+          <p>
+            His SOLVE software was the first fully automated method for
+            macromolecular structure analysis using experimental phasing, and
+            his RESOLVE software was the first likelihood-based method for
+            improving crystallographic density maps. More recently, he has
+            developed structure determination tools for analysis of cryo-EM
+            maps and for integrating AlphaFold predictions into experimental
+            structure determination.
+          </p>
 
-Help me understand the material, question or decision below. Start with the main point, then explain the parts that matter. Use an example when it would help.
+          <p>
+            In addition to methods development, he helped establish the field
+            of Structural Genomics, led the International Structural Genomics
+            Organization from its inception, and directed two large-scale
+            structural genomics projects.
+          </p>
 
-Distinguish facts, interpretations and uncertainty. Help me compare relevant options and give a recommendation with reasons. If something important is missing, explain what would help settle it. Focus on understanding rather than taking over the project.
+          <p>
+            This site serves as a permanent home for his publication list,
+            software history, and professional materials formerly hosted at
+            Los Alamos National Laboratory.
+          </p>
+        </div>
 
-My material or question:
-</textarea>
-<p class="status" id="status-explain" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-small"><summary><span class="role-label">Guide</span><span>Ask a small question</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-small">
-<h3>What it does</h3><p class="description">Answers your question directly in plain English. Includes enough explanation, evidence, or calculation to make the answer useful, and identifies important uncertainty. If the question needs more work, suggests a manageable next step.</p>
-<div class="actions"><button type="button" data-copy="small">Copy complete prompt</button><a href="prompts/small-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-small" class="sr-only">Ask a small question complete prompt</label>
-<textarea id="prompt-small" readonly rows="12" spellcheck="false">Guide — Ask a small question
+        <!-- ===== QUICK LINKS ===== -->
+        <div class="card-grid">
 
-WHAT IT DOES
-Answers your question directly in plain English. Includes enough explanation, evidence, or calculation to make the answer useful, and identifies important uncertainty. If the question needs more work, suggests a manageable next step.
+          <div class="card">
+            <h3>Publications</h3>
+            <p>Peer-reviewed papers from four decades of structural biology and methods development.</p>
+            <a href="publications.html" class="card-link">View full list &rarr;</a>
+          </div>
 
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
+          <div class="card">
+            <h3>Phenix Software</h3>
+            <p>Comprehensive tools for macromolecular structure determination using X-rays, neutrons, and cryo-EM.</p>
+            <a href="https://www.phenix-online.org/" class="card-link">phenix-online.org &rarr;</a>
+          </div>
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+          <div class="card">
+            <h3>SOLVE &amp; RESOLVE</h3>
+            <p>Automated tools for experimental phasing and density modification, now part of Phenix.</p>
+            <a href="software.html#solve-resolve" class="card-link">Software &amp; documentation &rarr;</a>
+          </div>
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+        </div>
 
-Answer the question below directly. Include the explanation, evidence or calculation needed to check the important parts of the answer. Be clear about uncertainty and avoid inventing facts or sources. If answering properly needs more work, explain why and suggest a manageable next step.
+      </div>
+    </div>
+  </main>
 
-My question:
-</textarea>
-<p class="status" id="status-small" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-work"><summary><span class="role-label">Guide</span><span>Plan and direct substantial work</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-work">
-<h3>What it does</h3><p class="description">Understands your goal, proposes a small practical plan, carries out the work, checks the result, and explains what changed. Keeps a short handoff when needed. Offers outside review for consequential work.</p>
-<div class="actions"><button type="button" data-copy="work">Copy complete prompt</button><a href="prompts/work-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-work" class="sr-only">Plan and direct substantial work complete prompt</label>
-<textarea id="prompt-work" readonly rows="12" spellcheck="false">Guide — Plan and direct substantial work
-
-WHAT IT DOES
-Understands your goal, proposes a small practical plan, carries out the work, checks the result, and explains what changed. Keeps a short handoff when needed. Offers outside review for consequential work.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Help me accomplish the goal below. Make a short plan when useful, then proceed with routine, reversible work. Ask when a meaningful choice needs my judgment.
-
-Check the important results. Be clear about what you verified and what remains uncertain. Keep documentation proportionate to the task.
-
-For consequential work, suggest an optional independent review and explain what it would check. Leave that choice to me.
-
-Finish with a short account of what changed, how you checked it, and anything unresolved. If another session will continue the work, provide a compact handoff.
-
-My goal and inputs:
-</textarea>
-<p class="status" id="status-work" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-doc"><summary><span class="role-label">Guide</span><span>Prepare a factual document</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-doc">
-<h3>What it does</h3><p class="description">Creates a document for your audience and purpose. Checks important facts, numbers and quotations against available sources, identifies uncertainty, and returns an editable document with useful source references.</p>
-<div class="actions"><button type="button" data-copy="doc">Copy complete prompt</button><a href="prompts/doc-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-doc" class="sr-only">Prepare a factual document complete prompt</label>
-<textarea id="prompt-doc" readonly rows="12" spellcheck="false">Guide — Prepare a factual document
-
-WHAT IT DOES
-Creates a document for your audience and purpose. Checks important facts, numbers and quotations against available sources, identifies uncertainty, and returns an editable document with useful source references.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Prepare the document described below for its intended audience and purpose. Use the supplied material and obtain additional sources when needed and available. Do not invent facts, quotations or sources.
-
-Check important facts, numbers, quotations and calculations against the available sources. Distinguish supported facts from interpretation, and identify significant uncertainty or missing information. Include useful source references without imposing elaborate recordkeeping.
-
-Return an editable document in the requested format. Briefly explain any important limitations. For consequential documents, offer an optional independent review and explain its benefit.
-
-My purpose, audience, format and inputs:
-</textarea>
-<p class="status" id="status-doc" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-continue"><summary><span class="role-label">Guide</span><span>Continue an earlier session</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-continue">
-<h3>What it does</h3><p class="description">Reads your handoff and available files, briefly summarizes where the work stands, and identifies the next useful step. Requests anything essential that is missing, then continues under your current instructions.</p>
-<div class="actions"><button type="button" data-copy="continue">Copy complete prompt</button><a href="prompts/continue-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-continue" class="sr-only">Continue an earlier session complete prompt</label>
-<textarea id="prompt-continue" readonly rows="12" spellcheck="false">Guide — Continue an earlier session
-
-WHAT IT DOES
-Reads your handoff and available files, briefly summarizes where the work stands, and identifies the next useful step. Requests anything essential that is missing, then continues under your current instructions.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Read the handoff and available files below. Briefly state the goal, what is already done, any unresolved questions, and the next useful step.
-
-Request only information or files essential to continuing. Use my current instructions, and flag any material conflict with the earlier handoff. Do not require confirmation from the previous chat.
-
-Continue the work that is already agreed. If another handoff becomes necessary, keep it short: goal, completed work, current files, unresolved questions, and next step.
-
-My current instructions, handoff and files:
-</textarea>
-<p class="status" id="status-continue" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-worker"><summary><span class="role-label">Worker</span><span>Carry out a bounded job</span></summary><div class="panel-body prompt-content"><div class="prompt-view" id="view-worker">
-<h3>What it does</h3><p class="description">Carries out the specific task you assign. Asks for essential missing information, checks the important results, and briefly reports what changed and anything unfinished. Asks before substantially expanding the task.</p>
-<div class="actions"><button type="button" data-copy="worker">Copy complete prompt</button><a href="prompts/worker-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-worker" class="sr-only">Carry out a bounded job complete prompt</label>
-<textarea id="prompt-worker" readonly rows="12" spellcheck="false">Worker — Carry out a bounded job
-
-WHAT IT DOES
-Carries out the specific task you assign. Asks for essential missing information, checks the important results, and briefly reports what changed and anything unfinished. Asks before substantially expanding the task.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Carry out the specific task below. Use the task description, relevant files and desired result to guide your work. Ask for essential missing information, then proceed with routine, reversible steps within the task.
-
-Ask before substantially expanding the task or making a meaningful choice that needs my judgment. Check the important results and briefly report what changed, how you checked it, and anything unfinished.
-
-My task, desired result and inputs:
-</textarea>
-<p class="status" id="status-worker" role="status" aria-live="polite"></p>
-</div></div></details><details class="panel gw-prompt" id="panel-before"><summary><span class="role-label">Reviewer</span><span>Review a plan or finished work</span></summary><div class="panel-body prompt-content"><label class="review-label" for="review-mode">What would you like reviewed?</label>
-<select id="review-mode"><option value="before">Review a plan</option><option value="after">Review a result</option></select><div class="prompt-view" id="view-before">
-<h3>What it does</h3><p class="description">Checks whether a proposed plan is likely to achieve your goal. Looks for important mistakes, missing steps, unnecessary work, and practical risks. Recommends the smallest useful corrections and explains any choices you need to make.</p>
-<div class="actions"><button type="button" data-copy="before">Copy complete prompt</button><a href="prompts/before-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-before" class="sr-only">Review a plan complete prompt</label>
-<textarea id="prompt-before" readonly rows="12" spellcheck="false">Reviewer — Review a plan
-
-WHAT IT DOES
-Checks whether a proposed plan is likely to achieve your goal. Looks for important mistakes, missing steps, unnecessary work, and practical risks. Recommends the smallest useful corrections and explains any choices you need to make.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Review the proposed plan below against my goal and requirements. Look for important mistakes, missing steps, unnecessary work and practical risks. Consider whether a simpler approach would accomplish the goal.
-
-Focus on issues that would materially affect the outcome. Recommend the smallest useful corrections, with reasons. State what information is missing and whether it changes your recommendation. Be clear about relevant prior involvement in the work.
-
-Review the plan; do not carry it out or modify my project. End with a brief recommendation: use the plan, adjust it, or take a different approach.
-
-My goal, requirements and proposed plan:
-</textarea>
-<p class="status" id="status-before" role="status" aria-live="polite"></p>
-</div><div class="prompt-view" id="view-after" hidden>
-<h3>What it does</h3><p class="description">Checks the finished work against your goal and requirements. Examines the important parts and runs useful checks when possible. Explains what works, what needs correction, and what could not be verified. Recommends whether to use it as-is or make changes first.</p>
-<div class="actions"><button type="button" data-copy="after">Copy complete prompt</button><a href="prompts/after-prompt.txt" download>Download text</a></div>
-<p class="hint">Paste the prompt into your LLM chat, then add your question, goal, or files.</p>
-<label for="prompt-after" class="sr-only">Review a result complete prompt</label>
-<textarea id="prompt-after" readonly rows="12" spellcheck="false">Reviewer — Review a result
-
-WHAT IT DOES
-Checks the finished work against your goal and requirements. Examines the important parts and runs useful checks when possible. Explains what works, what needs correction, and what could not be verified. Recommends whether to use it as-is or make changes first.
-
-PROMPT
-Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
-
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
-
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
-
-Review the finished work below against my goal and requirements. Inspect the actual work, rather than relying only on its description. Run focused, useful checks when possible and appropriate; use a disposable copy when a check could alter the work.
-
-Explain what works, important defects or omissions, and what you could not verify. Distinguish checks you performed from results reported by others. Be clear about relevant prior involvement in the work.
-
-Recommend whether to use the result as-is or make changes first. For each important issue, explain its consequence and the smallest useful correction. Do not modify the work under review unless I ask.
-
-My goal, requirements and finished work:
-</textarea>
-<p class="status" id="status-after" role="status" aria-live="polite"></p>
-</div></div></details>
-</div></main><footer class="site-footer">
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
     <div class="container">
       Contact: <a href="mailto:tterwilliger@newmexicoconsortium.org">tterwilliger@newmexicoconsortium.org</a><br>
       This site preserves scientific materials originally hosted at solve.lanl.gov.<br>
-      Last updated 2026<br>
-      Guided Workflow · <a href="roles.html">Official roles</a> · <a href="all-prompts.zip" download>Download prompts</a>
+      Last updated 2026
     </div>
-  </footer></div><script>
-document.getElementById('review-mode').addEventListener('change', function () {
-  for (const id of ['before', 'after']) {
-    document.getElementById('view-' + id).hidden = this.value !== id;
-  }
-});
-for (const button of document.querySelectorAll('[data-copy]')) {
-  button.addEventListener('click', async function () {
-    const id = this.dataset.copy;
-    const textarea = document.getElementById('prompt-' + id);
-    const status = document.getElementById('status-' + id);
-    try {
-      if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('clipboard unavailable');
-      await navigator.clipboard.writeText(textarea.value);
-      status.textContent = 'Copied. Paste into your chat and add your inputs.';
-    } catch (_) {
-      textarea.focus(); textarea.select();
-      try {
-        if (!document.execCommand('copy')) throw new Error('copy refused');
-        status.textContent = 'Copied. Paste into your chat and add your inputs.';
-        button.focus();
-      } catch (_) {
-        status.textContent = 'The prompt is selected. Press Command+C on Mac or Ctrl+C on Windows to copy it.';
-      }
-    }
-  });
-}
-</script></body></html>
+  </footer>
+
+</div>
+</body>
+</html>
