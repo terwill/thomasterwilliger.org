@@ -1,0 +1,325 @@
+{
+  "archive": {
+    "bytes": 150475,
+    "file": "guided_coding.zip",
+    "sha256": "f353abb19809603750ac27acfcea4b40ce429de0524354174a46dec5bea3a6a0"
+  },
+  "checks": {
+    "app_engine_path": "CLAUDE_CODE_EXECPATH",
+    "app_marker": "CLAUDE_CODE_ENTRYPOINT=claude-desktop",
+    "client_selection": "passed (fake clients; no native app session)",
+    "source_guard": "passed",
+    "standalone_registration": "passed (private configuration)",
+    "tool_commands": "passed"
+  },
+  "documentation": {
+    "index": {
+      "page": "documentation.html",
+      "page_sha256": "4adad2bab4c93af84c515fe8e9f2fe1daafaa9e5126e1bdb18292f573f4830d0"
+    },
+    "pages": [
+      {
+        "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
+        "page": "user-guide.html",
+        "page_sha256": "2372085141ef623679c3ca9097a4c0cecfef484c9be94aea634d821253b61dc0",
+        "source": "docs/GUIDED_CODING_USER_GUIDE.md",
+        "source_sha256": "fb742cb7b05bdb8e649838f95e67191abaeb17f81a55d3756eb403b1ae070439"
+      },
+      {
+        "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
+        "page": "overview.html",
+        "page_sha256": "a01a3ca1c81e7c774bd90ce8f0132dd2a9dee80d4ae9e6eaec9e30e6e0259122",
+        "source": "docs/GUIDED_CODING_README.md",
+        "source_sha256": "a272ac8b47babaa72190c03917ea660ee0df5b9f028dfbfcea319de0f60bae5f"
+      },
+      {
+        "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
+        "page": "architecture.html",
+        "page_sha256": "5ccf5528e99eef7bf35c7e1af8755c81de6f440e4df8ec24d8f65c1da0b0753a",
+        "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
+        "source_sha256": "ce637320ff46011b4bf4cbe722a838b139408ada1deb0fc8d6fb409f2134d9af"
+      },
+      {
+        "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
+        "page": "verification.html",
+        "page_sha256": "9f78c8e766fb1532c59c8b8e5ff444667c835ef7029781a3d1e8dbb792e6f649",
+        "source": "docs/GUIDED_CODING_VERIFICATION.md",
+        "source_sha256": "c0fe63f8fbd302da63e89c847de5fac9c1bb456c0044ea86b96c12ca678608c4"
+      }
+    ],
+    "references": {
+      "files": [
+        {
+          "anchor": "file-skill-md",
+          "source": "SKILL.md",
+          "source_sha256": "1a59f605eaedceb97d89aa90048e9b728eeb52ed2874b9b5a34ecfc6114aae43"
+        },
+        {
+          "anchor": "file-source-manifest-sha256",
+          "source": "SOURCE_MANIFEST.sha256",
+          "source_sha256": "acad8065b54fe6cc9081527a2bb67f5b07b9ddc1efc7211672fba42737dbbf35"
+        },
+        {
+          "anchor": "file-payload-developer-guide-contract-md",
+          "source": "payload/DEVELOPER_GUIDE_CONTRACT.md",
+          "source_sha256": "ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b"
+        },
+        {
+          "anchor": "file-payload-guide-md",
+          "source": "payload/GUIDE.md",
+          "source_sha256": "9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0"
+        },
+        {
+          "anchor": "file-payload-helper-md",
+          "source": "payload/HELPER.md",
+          "source_sha256": "dd57340b690f2adb2a739546852fd907e6600e8ca357e4083a763bfb25c16e67"
+        },
+        {
+          "anchor": "file-payload-outside-reviewer-brief-md",
+          "source": "payload/OUTSIDE_REVIEWER_BRIEF.md",
+          "source_sha256": "6f7488f1f47daad6862ecbd135f60f100597816e483dc4c844786424773ba3f3"
+        },
+        {
+          "anchor": "file-payload-release",
+          "source": "payload/RELEASE",
+          "source_sha256": "f5fdacaaa390c7811fb05009c0b0d2b6eae7d338d8e643710ebd15a77dda3183"
+        },
+        {
+          "anchor": "file-payload-review-transport-md",
+          "source": "payload/REVIEW_TRANSPORT.md",
+          "source_sha256": "c2b7b178231f452211b506e5e3c63b55d8a44f9559e960d52000ac0bc8bea17c"
+        },
+        {
+          "anchor": "file-payload-roles-md",
+          "source": "payload/ROLES.md",
+          "source_sha256": "f43699f157b1ca6e8d886ec3510cdd43aae033909697ea8866fdf6d61decd90d"
+        },
+        {
+          "anchor": "file-payload-setup-md",
+          "source": "payload/SETUP.md",
+          "source_sha256": "106db300575b82d72c6bc45443ed9e7bcc53b8026b75e3d8883ef6defec305a2"
+        },
+        {
+          "anchor": "file-payload-setup-defaults-md",
+          "source": "payload/SETUP_DEFAULTS.md",
+          "source_sha256": "ca27ebc7ee171b53fa314d7a7b9907e3af78d3fe76a5d42837f9774a1c3facdd"
+        },
+        {
+          "anchor": "file-payload-worker-md",
+          "source": "payload/WORKER.md",
+          "source_sha256": "9c34b1782fb9f50178a33f06b3905942b75ce8bcd4e3380b0aebc01f2bd3f460"
+        },
+        {
+          "anchor": "file-payload-screens-plan-md",
+          "source": "payload/screens/PLAN.md",
+          "source_sha256": "f12a32aaa310202941291e4392c32e807165205d1b3f05680a42ce023a944563"
+        },
+        {
+          "anchor": "file-payload-screens-publication-md",
+          "source": "payload/screens/PUBLICATION.md",
+          "source_sha256": "995cbe59fcf91406ec4b584e7831af2b36d541cdcd6ac155a05693b7eda204c3"
+        },
+        {
+          "anchor": "file-payload-screens-result-md",
+          "source": "payload/screens/RESULT.md",
+          "source_sha256": "710b0d4ccc63b3e0175f6be1ca986d595b3f9ced78a16470ebd241a1cbd3b43b"
+        },
+        {
+          "anchor": "file-payload-screens-stop-md",
+          "source": "payload/screens/STOP.md",
+          "source_sha256": "d1a96d3a828e710e41cfd0f2619b3f817cd20f3a3bf3e88ea67f7094d199daa5"
+        },
+        {
+          "anchor": "file-payload-templates-approval-report-md",
+          "source": "payload/templates/APPROVAL_REPORT.md",
+          "source_sha256": "cac00770d7502fed3fb1dd55d454d692405efc10c330e015a8ea5168a4ae1346"
+        },
+        {
+          "anchor": "file-payload-templates-helper-handoff-md",
+          "source": "payload/templates/HELPER_HANDOFF.md",
+          "source_sha256": "0738d9a420a90c8ec26e6d8ecac72a3d5dec96aca0eb059a2afbdf77c02534e9"
+        },
+        {
+          "anchor": "file-payload-templates-project-method-md",
+          "source": "payload/templates/PROJECT_METHOD.md",
+          "source_sha256": "6d8a931ecaa16c506d800592421e12228b200852cfb43e5a927aa867db4324eb"
+        },
+        {
+          "anchor": "file-payload-tools-publication-precheck-py",
+          "source": "payload/tools/publication_precheck.py",
+          "source_sha256": "458430a81c9c28e1b8b7d00f4dba96f3409746c13109b79f75b5cdaf45aa15c8"
+        },
+        {
+          "anchor": "file-payload-tools-records-history-py",
+          "source": "payload/tools/records_history.py",
+          "source_sha256": "0b6a93f8864e7966681df4aadd227d1393f3a252a0456a347024190ae53aa23d"
+        },
+        {
+          "anchor": "file-payload-tools-review-bundle-py",
+          "source": "payload/tools/review_bundle.py",
+          "source_sha256": "879690e6ebd51616758fc06a04d491c5aedd47560d822ad2a5d05df6bbb3b466"
+        },
+        {
+          "anchor": "file-payload-tools-screen-check-py",
+          "source": "payload/tools/screen_check.py",
+          "source_sha256": "08e6f18263b2abe9e2166981db0f1c8ef79938a15887a260a7f021fcd76a2f5f"
+        },
+        {
+          "anchor": "file-tests-tst-publication-precheck-v20-py",
+          "source": "tests/tst_publication_precheck_v20.py",
+          "source_sha256": "7c96bb07f0a27d2a966bdb7e8cd5a0e3241cb41805dd559a1c5df25bac0a0215"
+        },
+        {
+          "anchor": "file-tests-tst-records-history-v20-py",
+          "source": "tests/tst_records_history_v20.py",
+          "source_sha256": "053536b87ca52754f16abd71e4b391bf9423c6af786e221d48210fba1c2889b9"
+        },
+        {
+          "anchor": "file-tests-tst-review-bundle-v20-py",
+          "source": "tests/tst_review_bundle_v20.py",
+          "source_sha256": "69dc3f07a4afcac2aa6bac568a7815fceff3e5e544c559639aff9e0a562e31ee"
+        },
+        {
+          "anchor": "file-tests-tst-screen-check-v20-py",
+          "source": "tests/tst_screen_check_v20.py",
+          "source_sha256": "42422d77e3ce38e4a322368461509bf7ce2607d723c6192bddd4b4f2386952c5"
+        }
+      ],
+      "page": "reference-files.html",
+      "page_sha256": "5f3868012912cf1d4990410c3ba968092ceec4abd2a57e0937c6e241e87eb873"
+    }
+  },
+  "general_card_sha256": "0bea3dfd6f43458f36da9b456d9196853235bf4df439587df9b0e3df3cf39f38",
+  "general_edition": {
+    "adapted_files": [
+      {
+        "file": "SKILL.md",
+        "original_sha256": "49572d00944f89d5ec723290d46492e49c86cb24e91c4ecc9d6a308f6ec2011d",
+        "packaged_sha256": "1a59f605eaedceb97d89aa90048e9b728eeb52ed2874b9b5a34ecfc6114aae43"
+      },
+      {
+        "file": "docs/GUIDED_CODING_ARCHITECTURE.md",
+        "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
+        "packaged_sha256": "ce637320ff46011b4bf4cbe722a838b139408ada1deb0fc8d6fb409f2134d9af"
+      },
+      {
+        "file": "docs/GUIDED_CODING_README.md",
+        "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
+        "packaged_sha256": "a272ac8b47babaa72190c03917ea660ee0df5b9f028dfbfcea319de0f60bae5f"
+      },
+      {
+        "file": "docs/GUIDED_CODING_USER_GUIDE.md",
+        "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
+        "packaged_sha256": "fb742cb7b05bdb8e649838f95e67191abaeb17f81a55d3756eb403b1ae070439"
+      },
+      {
+        "file": "docs/GUIDED_CODING_VERIFICATION.md",
+        "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
+        "packaged_sha256": "c0fe63f8fbd302da63e89c847de5fac9c1bb456c0044ea86b96c12ca678608c4"
+      },
+      {
+        "file": "payload/GUIDE.md",
+        "original_sha256": "9cd1f3ae7df4932d7d6a56aefd613162ab344216afd14bdd0c673c513a311627",
+        "packaged_sha256": "9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0"
+      },
+      {
+        "file": "payload/WORKER.md",
+        "original_sha256": "1634672aae34afa948a4d6196138c6b4bb3f9f2658731e79552907e7552dab1f",
+        "packaged_sha256": "9c34b1782fb9f50178a33f06b3905942b75ce8bcd4e3380b0aebc01f2bd3f460"
+      },
+      {
+        "file": "tests/tst_publication_precheck_v20.py",
+        "original_sha256": "ac7747334b7df5ef9b2d776c4bec5564a351e7115dcba0f0e840ec07311bff5e",
+        "packaged_sha256": "7c96bb07f0a27d2a966bdb7e8cd5a0e3241cb41805dd559a1c5df25bac0a0215"
+      },
+      {
+        "file": "tests/tst_screen_check_v20.py",
+        "original_sha256": "8bb18b3d1c66c6e6c2b928dc062be60a46086390cbcbc032fc6cb0a3822e9988",
+        "packaged_sha256": "42422d77e3ce38e4a322368461509bf7ce2607d723c6192bddd4b4f2386952c5"
+      }
+    ],
+    "edition": "general-downloads-v1",
+    "installation_root": "~/Downloads/GuidedCoding/guided_coding",
+    "source_files": 31,
+    "source_manifest_sha256": "acad8065b54fe6cc9081527a2bb67f5b07b9ddc1efc7211672fba42737dbbf35"
+  },
+  "generator": {
+    "docs_template_sha256": "41282d79908c0e24621c2ba3c60cbbfb67063528d2985d388146eaf8bbf209fa",
+    "script_sha256": "547dbfde33ea3598e82b8be98af62fd74d6a0d0daa3db53faf803499dfd9e388",
+    "template_sha256": "52d1f9441ae8620120898716336892976d398ce33ae95430984fbacb7a5cc7d3"
+  },
+  "historical_source_checks": {
+    "app_engine_path": "CLAUDE_CODE_EXECPATH",
+    "app_marker": "CLAUDE_CODE_ENTRYPOINT=claude-desktop",
+    "client_selection": "passed (fake clients; no native app session)",
+    "source_guard": "passed",
+    "standalone_registration": "passed (private configuration)",
+    "tool_commands": "passed"
+  },
+  "historical_source_tests": [
+    {
+      "file": "tests/tst_publication_precheck_v20.py",
+      "output_sha256": "a7a8170602972ff38456d4afc51377d205882e36299f59d07bf405f1e24cd0e9",
+      "skipped": 0,
+      "tests": 27
+    },
+    {
+      "file": "tests/tst_records_history_v20.py",
+      "output_sha256": "323de75cada1a6cf322dbab996308a67a4a813175af5a749846cb73cbb4b6da0",
+      "skipped": 0,
+      "tests": 15
+    },
+    {
+      "file": "tests/tst_review_bundle_v20.py",
+      "output_sha256": "6552460ee91636c6a13075666d69cdedc91ef4bd55f8640650152b1c2f3d8106",
+      "skipped": 1,
+      "tests": 13
+    },
+    {
+      "file": "tests/tst_screen_check_v20.py",
+      "output_sha256": "771adeb7e5c64439110b3c5a6ab994bd92d6574b168a8f2860c2e049519773e1",
+      "skipped": 0,
+      "tests": 63
+    }
+  ],
+  "minimum_claude_version": "2.1.281",
+  "package_format": 2,
+  "package_tests": [
+    {
+      "file": "tests/tst_publication_precheck_v20.py",
+      "output_sha256": "49bc769f6391bb55a6c3328a721c7c55f5a306e7b0cabc21ebc45abc6158d39a",
+      "skipped": 0,
+      "tests": 27
+    },
+    {
+      "file": "tests/tst_records_history_v20.py",
+      "output_sha256": "ed08808e00f70d7a1ebcda2dc318aa5760e408fa928dfca27690210fc7abd28c",
+      "skipped": 0,
+      "tests": 15
+    },
+    {
+      "file": "tests/tst_review_bundle_v20.py",
+      "output_sha256": "1b95f13235ea9c84cb546dc7dff2d143e0586e476251621e964ac0daa1658201",
+      "skipped": 1,
+      "tests": 13
+    },
+    {
+      "file": "tests/tst_screen_check_v20.py",
+      "output_sha256": "ec9a22e6413bce37aa69a0f20f7d96bc19d899a214031280885b31eb64dc93de",
+      "skipped": 0,
+      "tests": 63
+    }
+  ],
+  "release": "guided_coding 2.0 pilot r10 rev17 candidate (followups-20261004; publication conventions without tags, explicit waivers, one dual-scope outside reading bound by OUTGOING.txt, named-installation rollout, job summaries and the read-only history listing, session titles, search roots; checker rules added to screen_check.py; new tools publication_precheck.py and records_history.py; app-aware Claude Code version check (2026-10-06); contract, adoption and setup recipe unchanged; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
+  "upstream": {
+    "commit": "fc1682a9029dab083f20ded47724831812d406e1",
+    "commit_date": "2026-10-06T20:03:57Z",
+    "license_sha256": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
+    "repository": "cctbx/cctbx_project",
+    "requested_ref": "fc1682a9029dab083f20ded47724831812d406e1",
+    "source_files": 31,
+    "source_manifest_sha256": "afe4d3c56abfd8299880fcf6a3dde6d639c7f5dc956b20bbef17820988a595d8",
+    "source_path": "libtbx/guided_coding",
+    "source_tree": "cfcf1b85408f0fc460587292a7442260cf19fc5b"
+  }
+}

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Software — Thomas C. Terwilliger</title>
-  <meta name="description" content="Software developed by Thomas C. Terwilliger: Phenix, SOLVE, RESOLVE, and related tools for macromolecular structure determination.">
-  <link rel="canonical" href="https://www.thomasterwilliger.org/software.html">
-  <style>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding documentation — Thomas C. Terwilliger</title><meta name="description" content="User guide, overview, architecture, verification and procedure reference files."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/documentation.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -511,16 +504,36 @@ main {
     padding-left: 10px;
   }
 }
-  </style>
-</head>
-<body>
-<div class="page-wrapper">
 
-  <!-- ===== HEADER ===== -->
-  <header class="site-header">
+.gc-main{padding-top:34px;padding-bottom:34px;width:100%;max-width:920px}
+.gc-main h1,.gc-main h2{font-family:var(--serif);color:var(--navy);line-height:1.3}
+.gc-main h1{font-size:2rem;margin:0 0 8px}.gc-main h2{font-size:1.4rem;margin-top:30px}
+.gc-lead{font-size:1.15rem;color:var(--slate);margin-top:0}.gc-main p{max-width:80ch}
+.gc-download{border-left:4px solid var(--accent);background:var(--accent-light);padding:20px 24px;margin:24px 0}
+.gc-download p{margin:10px 0 0}.gc-button,.gc-main button{display:inline-block;background:var(--accent);color:white;border:0;border-radius:4px;padding:10px 16px;font:600 15px/1.45 var(--sans);text-decoration:none;cursor:pointer}
+.gc-button:hover,.gc-main button:hover{background:#21567f;color:white}
+.gc-local-nav{display:flex;flex-wrap:wrap;gap:10px 20px;border-bottom:1px solid var(--rule);padding:0 0 15px}
+.gc-main a{color:var(--accent)}.gc-main .gc-button{color:#fff}.gc-main section{scroll-margin-top:18px}
+.gc-panel{border:1px solid var(--border);border-radius:6px;margin:14px 0}.gc-panel summary{padding:13px 18px;cursor:pointer;color:var(--navy);font-weight:600}.gc-panel>div{padding:0 18px 16px}
+.gc-main label{display:block;font-weight:600;margin:12px 0 5px}.gc-main textarea{display:block;width:100%;font:15px/1.6 var(--sans);background:#fff;border:1px solid var(--rule);border-radius:3px;color:var(--text);padding:14px;resize:vertical;margin:0 0 10px}
+.gc-main pre{padding:14px 16px;background:#f3f5f7;border:1px solid var(--border);border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}
+.gc-main code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em;overflow-wrap:anywhere}.gc-main pre code{font:inherit}
+.gc-main li+li{margin-top:9px}.gc-main li{padding-left:4px}.gc-process{padding-left:22px}
+.gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
+.gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
+@media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
+
+.gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
+.gc-document h2,.gc-document h3{scroll-margin-top:20px}
+.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
+.gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
+.gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
+</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
     <div class="container">
       <div class="header-content">
-        <img src="images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
         <div class="header-text">
           <h1>Thomas C. Terwilliger</h1>
           <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
@@ -533,106 +546,27 @@ main {
     </div>
     <nav class="site-nav">
       <div class="container">
-        <a href="index.html">Home</a>
-        <a href="publications.html">Publications</a>
-        <a href="software.html" class="active">Software</a>
-        <a href="bio.html">Biography</a>
-        <a href="group.html">Group</a>
-        <a href="news.html">News</a>
-        <a href="presentations.html">Presentations</a>
-        <a href="links.html">Links</a>
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../software.html" class="active">Software</a>
+        <a href="../bio.html">Biography</a>
+        <a href="../group.html">Group</a>
+        <a href="../news.html">News</a>
+        <a href="../presentations.html">Presentations</a>
+        <a href="../links.html">Links</a>
       </div>
     </nav>
-  </header>
+  </header><main class="container gc-main gc-doc-pages">
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Install and use</a><a href="user-guide.html">User guide</a><a href="documentation.html" aria-current="page">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <h1 class="gc-document-title">Guided Coding documentation</h1>
+  <p class="gc-lead">User guide, overview, architecture, verification and procedure reference files.</p>
+  <p class="gc-small">General edition · These pages describe the files included in the download.</p>
+  <aside class="gc-download gc-doc-note" aria-label="Using the general installer">
+    <p><strong>For your own project.</strong> Follow the <a href="index.html#install">ZIP installation instructions</a> and use the <a href="GENERAL_DEVELOPER_CARD.md" download>general developer card</a>. Keep the procedure at <code>~/Downloads/GuidedCoding/guided_coding</code>, or the stable location you chose. Documentation and examples are adapted automatically when the package is built.</p>
+    <p>If you already have a working shared registration, keep it. Open a session in each target project and run <code>/guided_coding setup</code> with that project’s card. Each project keeps its own settings while using the shared procedure. Earlier project trials are historical evidence, not defaults for your project.</p>
+  </aside>
 
-  <!-- ===== MAIN ===== -->
-  <main>
-    <div class="content-section">
-      <div class="container">
-
-        <div class="software-card">
-          <h2>Guided Workflow</h2>
-          <p>Simple prompts to ask questions, plan work, understand decisions, and review plans or results.</p>
-          <a href="guided_workflow/index.html" class="sw-link">Open Guided Workflow</a>
-        </div>
-
-        <div class="software-card">
-          <h2>Guided Coding</h2>
-          <p>A structured way to plan, test and review code changes with Claude Code. Install the general kit in your own Git project.</p>
-          <a href="guided_coding/index.html" class="sw-link">Install and use Guided Coding</a>
-        </div>
-
-        <h2 class="page-title">Software</h2>
-
-        <div class="software-card">
-          <h2>Phenix</h2>
-          <p>
-            Phenix (Python-based Hierarchical ENvironment for Integrated Xtallography)
-            is a comprehensive system for macromolecular structure determination
-            using X-ray crystallography, cryo-electron microscopy, and neutron diffraction.
-            Phenix includes automated tools for experimental phasing, molecular replacement,
-            model building, refinement, validation, and ligand fitting.
-          </p>
-          <p>
-            Recent Phenix developments include integration of AlphaFold predictions
-            into experimental structure determination, density modification of cryo-EM maps,
-            automated model building from cryo-EM maps, and map improvement tools.
-          </p>
-          <a href="https://www.phenix-online.org/" class="sw-link">Visit phenix-online.org</a>
-        </div>
-
-        <div class="software-card">
-          <h2 id="solve-resolve">SOLVE &amp; RESOLVE</h2>
-          <p>
-            SOLVE and RESOLVE were developed by Tom Terwilliger at Los Alamos
-            National Laboratory beginning in the mid-1990s. Together they formed
-            a complete pipeline for macromolecular crystal structure determination
-            — from experimental phasing through density modification and automated
-            model building.
-          </p>
-          <p>
-            <b>SOLVE</b> was the first fully automated software for macromolecular
-            structure analysis using experimental phasing. It introduced probabilistic
-            approaches to heavy-atom parameter estimation, correlated phasing of
-            multiple isomorphous replacement and anomalous diffraction datasets, and
-            automated decision-making in structure solution. SOLVE supported MAD,
-            SAD, MIR, and SIR methods, making experimental phasing accessible to
-            non-specialist users.
-          </p>
-          <p>
-            <b>RESOLVE</b> was the first likelihood-based system for
-            density modification and one of the early automated model building
-            tools. It introduced maximum-likelihood density modification, automated
-            model building by template matching and iterative fragment extension,
-            and prime-and-switch phasing to reduce model bias. RESOLVE could
-            automatically build and refine protein models starting from experimental
-            electron density maps.
-          </p>
-          <p>
-            The methods in SOLVE and RESOLVE have been incorporated into
-            the <a href="https://www.phenix-online.org/">Phenix</a> software suite,
-            where they continue to be developed and extended. The Phenix AutoSol
-            wizard is essentially the next generation of the SOLVE and RESOLVE
-            algorithms for automated experimental phasing, density modification,
-            and model building. SOLVE and RESOLVE can still be run as standalone
-            programs for users who prefer the original interfaces.
-          </p>
-          <a href="images/solve_documentation.pdf" class="sw-link">SOLVE/RESOLVE Archival Documentation (PDF)</a>
-        </div>
-
-      </div>
-    </div>
-  </main>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      Contact: <a href="mailto:tterwilliger@newmexicoconsortium.org">tterwilliger@newmexicoconsortium.org</a><br>
-      This site preserves scientific materials originally hosted at solve.lanl.gov.<br>
-      Last updated 2026
-    </div>
-  </footer>
-
-</div>
-</body>
-</html>
+<p>Start with the user guide for everyday use. The other pages explain the procedure, its implementation and the evidence behind it.</p><div class="card-grid"><div class="card"><h2>User guide</h2><p>Register Guided Coding, set up each project, use the commands, update and uninstall.</p><a class="card-link" href="user-guide.html">Read user guide</a></div><div class="card"><h2>Overview</h2><p>What Guided Coding does, its pilot status and where to find the details.</p><a class="card-link" href="overview.html">Read overview</a></div><div class="card"><h2>Architecture</h2><p>How the shared procedure, project settings, roles and checking tools fit together.</p><a class="card-link" href="architecture.html">Read architecture</a></div><div class="card"><h2>Verification and limits</h2><p>What the tools check, what earlier trials observed and what still needs checking.</p><a class="card-link" href="verification.html">Read verification and limits</a></div></div><h2 id="procedure-files">Procedure and reference files</h2><p>These links open the reference files here on the website. The same general-edition files are included in the ZIP.</p><ul><li><a href="reference-files.html#file-payload-developer-guide-contract-md">Developer–Guide Contract</a></li><li><a href="reference-files.html#file-payload-roles-md">Roles and responsibilities</a></li><li><a href="reference-files.html#file-payload-setup-md">Project setup procedure</a></li><li><a href="reference-files.html#file-payload-setup-defaults-md">General setup defaults</a></li><li><a href="reference-files.html#file-payload-templates-project-method-md">Project method template</a></li><li><a href="reference-files.html#file-payload-guide-md">Guide instructions</a></li><li><a href="reference-files.html#file-payload-worker-md">Worker instructions</a></li><li><a href="reference-files.html#file-payload-outside-reviewer-brief-md">Outside reviewer brief</a></li><li><a href="reference-files.html#file-payload-review-transport-md">Review package instructions</a></li></ul><h2 id="historical-origin">Historical origin</h2><p>Guided Coding began in the cctbx project. This standalone edition adapts its documentation and examples for general projects. The <a href="https://github.com/cctbx/cctbx_project/tree/fc1682a9029dab083f20ded47724831812d406e1/libtbx/guided_coding">historical source revision fc1682a9029d</a>, original license and file changes are recorded with the download. This edition has its own source manifest; it is not a byte-for-byte copy of that historical revision.</p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+</main>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>

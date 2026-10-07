@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding user guide — Thomas C. Terwilliger</title><meta name="description" content="Register Guided Coding, set up each project, use the commands, update and uninstall."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/user-guide.html"><style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #1a2744;
+  --slate: #3d4f6b;
+  --accent: #2e6da4;
+  --accent-light: #e8f0f8;
+  --warm-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text: #2c2c2c;
+  --text-light: #5a6270;
+  --border: #ddd;
+  --rule: #c4cdd6;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  background: var(--warm-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 0 0;
+}
+
+.header-content {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  background: var(--slate);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: rgba(255,255,255,0.35);
+}
+
+.header-text h1 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 8px;
+  letter-spacing: 0.03em;
+}
+
+.affiliation {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.affiliation a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.affiliation a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+/* ===== NAV ===== */
+.site-nav {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  margin-top: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.site-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.site-nav a.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
+.content-section {
+  padding: 40px 0;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0 0 32px;
+}
+
+/* ===== SECTIONS ON HOME ===== */
+.intro p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  max-width: 72ch;
+}
+
+.intro p:first-child {
+  font-size: 1.12rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.card-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== PUBLICATIONS ===== */
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pub-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pub-meta a:hover {
+  text-decoration: underline;
+}
+
+.pub-year-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub-year-heading:first-of-type {
+  margin-top: 0;
+}
+
+.pub-entry {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.pub-entry:hover {
+  border-left-color: var(--accent);
+}
+
+.pub-entry a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pub-entry a:hover {
+  text-decoration: underline;
+}
+
+.pub-entry i {
+  font-style: italic;
+}
+
+.patents-section {
+  margin-top: 40px;
+}
+
+/* ===== BIO PAGE ===== */
+.bio-section {
+  margin-bottom: 36px;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timeline {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 12px 24px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+
+.timeline li strong {
+  color: var(--navy);
+}
+
+.honors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.honors-list li {
+  padding: 6px 0;
+  font-size: 0.93rem;
+  border-bottom: 1px solid #eee;
+}
+
+.honors-list li:last-child {
+  border-bottom: none;
+}
+
+.honors-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.honors-list a:hover {
+  text-decoration: underline;
+}
+
+.service-text {
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.service-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.service-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SOFTWARE PAGE ===== */
+.software-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.software-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+.software-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.software-card .sw-link {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.software-card .sw-link:hover {
+  background: var(--navy);
+}
+
+/* ===== LINKS PAGE ===== */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.links-list li:last-child {
+  border-bottom: none;
+}
+
+.links-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links-list a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  padding: 24px 0;
+  margin-top: 48px;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.site-footer a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 1.45rem;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .content-section {
+    padding: 28px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-entry {
+    padding-left: 10px;
+  }
+}
+
+.gc-main{padding-top:34px;padding-bottom:34px;width:100%;max-width:920px}
+.gc-main h1,.gc-main h2{font-family:var(--serif);color:var(--navy);line-height:1.3}
+.gc-main h1{font-size:2rem;margin:0 0 8px}.gc-main h2{font-size:1.4rem;margin-top:30px}
+.gc-lead{font-size:1.15rem;color:var(--slate);margin-top:0}.gc-main p{max-width:80ch}
+.gc-download{border-left:4px solid var(--accent);background:var(--accent-light);padding:20px 24px;margin:24px 0}
+.gc-download p{margin:10px 0 0}.gc-button,.gc-main button{display:inline-block;background:var(--accent);color:white;border:0;border-radius:4px;padding:10px 16px;font:600 15px/1.45 var(--sans);text-decoration:none;cursor:pointer}
+.gc-button:hover,.gc-main button:hover{background:#21567f;color:white}
+.gc-local-nav{display:flex;flex-wrap:wrap;gap:10px 20px;border-bottom:1px solid var(--rule);padding:0 0 15px}
+.gc-main a{color:var(--accent)}.gc-main .gc-button{color:#fff}.gc-main section{scroll-margin-top:18px}
+.gc-panel{border:1px solid var(--border);border-radius:6px;margin:14px 0}.gc-panel summary{padding:13px 18px;cursor:pointer;color:var(--navy);font-weight:600}.gc-panel>div{padding:0 18px 16px}
+.gc-main label{display:block;font-weight:600;margin:12px 0 5px}.gc-main textarea{display:block;width:100%;font:15px/1.6 var(--sans);background:#fff;border:1px solid var(--rule);border-radius:3px;color:var(--text);padding:14px;resize:vertical;margin:0 0 10px}
+.gc-main pre{padding:14px 16px;background:#f3f5f7;border:1px solid var(--border);border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}
+.gc-main code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em;overflow-wrap:anywhere}.gc-main pre code{font:inherit}
+.gc-main li+li{margin-top:9px}.gc-main li{padding-left:4px}.gc-process{padding-left:22px}
+.gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
+.gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
+@media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
+
+.gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
+.gc-document h2,.gc-document h3{scroll-margin-top:20px}
+.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
+.gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
+.gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
+</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <div class="header-text">
+          <h1>Thomas C. Terwilliger</h1>
+          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
+          <p class="affiliation">
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a><br>
+            Los Alamos National Laboratory Fellow (Retired)
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../software.html" class="active">Software</a>
+        <a href="../bio.html">Biography</a>
+        <a href="../group.html">Group</a>
+        <a href="../news.html">News</a>
+        <a href="../presentations.html">Presentations</a>
+        <a href="../links.html">Links</a>
+      </div>
+    </nav>
+  </header><main class="container gc-main gc-doc-pages">
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Install and use</a><a href="user-guide.html" aria-current="page">User guide</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <h1 class="gc-document-title">Guided Coding user guide</h1>
+  <p class="gc-lead">Register Guided Coding, set up each project, use the commands, update and uninstall.</p>
+  <p class="gc-small">General edition · These pages describe the files included in the download.</p>
+  <aside class="gc-download gc-doc-note" aria-label="Using the general installer">
+    <p><strong>For your own project.</strong> Follow the <a href="index.html#install">ZIP installation instructions</a> and use the <a href="GENERAL_DEVELOPER_CARD.md" download>general developer card</a>. Keep the procedure at <code>~/Downloads/GuidedCoding/guided_coding</code>, or the stable location you chose. Documentation and examples are adapted automatically when the package is built.</p>
+    <p>If you already have a working shared registration, keep it. Open a session in each target project and run <code>/guided_coding setup</code> with that project’s card. Each project keeps its own settings while using the shared procedure. Earlier project trials are historical evidence, not defaults for your project.</p>
+  </aside>
+<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#register-once-then-choose-a-project">Register once, then choose a project</a></li><li><a href="#verify-a-source-archive-before-using-it">Verify a source archive before using it</a></li><li><a href="#one-time-registration">One-time registration</a></li><li><a href="#set-up-the-target-project">Set up the target project</a></li><li><a href="#commands-and-decisions">Commands and decisions</a></li><li><a href="#ordinary-conversations-and-session-titles">Ordinary conversations and session titles</a></li><li><a href="#update-publish-or-uninstall">Update, publish or uninstall</a></li></ul></div></details>
+<article class="gc-document"><p>Use <strong><code>/guided_coding</code></strong> to start a guided conversation. <code>/gc</code> remains a short alias. This guide describes the r10 rev17 candidate revision of the opt-in pilot; its <a href="verification.html">verification record</a> separates implemented checks from recorded client observations and remaining limitations.</p>
+<h2 id="register-once-then-choose-a-project">Register once, then choose a project</h2>
+<p>Keep the procedure in one reviewed, stable directory, normally <code>~/Downloads/GuidedCoding/guided_coding</code>. Register that source once per local Claude Code configuration. You do not install another procedure copy in every repository.</p>
+<p>In ordinary Claude Code, you can request registration with this message, using the Downloads location below, or the stable location you chose:</p>
+<pre><code>Please set up GuidedCoding from ~/Downloads/GuidedCoding/guided_coding for this Claude Code configuration. Read docs/GUIDED_CODING_USER_GUIDE.md there. Verify the source and release, check the Claude Code version for this session, and inspect the existing personal skill. If a working shared Guided Coding registration already exists, keep it and show its resolved source. Otherwise register the central link only if the destination is unoccupied. Show what changed. Do not connect to servers, change permission settings, or start a coding task.
+</code></pre>
+<p>This is a request to the agent, not a built-in installer. The source path is needed because a session in another project cannot infer it. If the skill directory was created after session startup, open a fresh session. Confirm the command with <code>/guided_coding help</code>; the <code>/skills</code> listing alone was not a reliable indicator in the recorded Mac trial.</p>
+<p>The personal link is <code>~/.claude/skills/guided_coding</code>. The directory name provides <code>/guided_coding</code>; the skill&#x27;s <code>name: gc</code> supplies the short name. A same-named skill can affect selection, so inspect the resolved source if the response identifies an unexpected revision. See the current <a href="https://code.claude.com/docs/en/skills#how-a-skill-gets-its-command-name">Claude Code skill documentation</a>. The local personal skill is not automatically available to a cloud session that cannot read it.</p>
+<h2 id="verify-a-source-archive-before-using-it">Verify a source archive before using it</h2>
+<p>Compare the archive&#x27;s SHA-256 with the independently supplied review or publication record using a trusted checksum tool. The archive and its own manifest cannot establish their origin by themselves. Inspect its member names before extraction; the expected source archive contains <code>GuidedCoding/guided_coding/</code> inside <code>guided_coding.zip</code>.</p>
+<p>Use an empty staging directory in Downloads. Run this <strong>whole Bash block</strong>, not separate commands; it refuses an existing review directory:</p>
+<pre><code>mkdir ~/Downloads/guided_coding_review &amp;&amp;
+unzip ~/Downloads/guided_coding.zip -d ~/Downloads/guided_coding_review &amp;&amp;
+cd ~/Downloads/guided_coding_review/GuidedCoding/guided_coding &amp;&amp;
+shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+cat payload/RELEASE &amp;&amp;
+grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE
+</code></pre>
+<p>Any failed command skips the rest of the block. In particular, a failed listed checksum must stop <strong>before executing the package&#x27;s checker</strong>. Stop dependent work on failure; a successful command appended later would not repair the failed check. Require all listed hashes, <code>VERIFIED complete source</code>, and the expected release identity from your handoff. The final <code>grep</code> is only a family-label check, not an exact revision check.</p>
+<p>The complete-source check rejects missing, changed and extra source files, links and multiply linked files. Its narrow exception permits certain installer-generated <code>__pycache__</code> files beside listed Python modules. It reports the ignored count and checks their names and header type, not their contents. The two tools do not load that package bytecode when invoked as documented. Ordinary Python imports, including direct unit-test imports, can load caches; run those tests on a trusted clean copy.</p>
+<p>The commands shown here require Bash and <code>shasum</code>, plus a suitable Python 3. They are not csh syntax. Use the appropriate shell explicitly rather than pasting Bash environment assignments into csh. Project build/test commands may have a different, recorded shell requirement.</p>
+<h2 id="one-time-registration">One-time registration</h2>
+<p>After the reviewed source is in its authorized central location, inspect any existing personal skill path. Then run the complete guarded block with your canonical source path:</p>
+<pre><code>cd ~/Downloads/GuidedCoding/guided_coding &amp;&amp;
+shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+cat payload/RELEASE &amp;&amp;
+grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py check-claude-version &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py register-skill .
+</code></pre>
+<p><code>register-skill</code> rechecks the source and the Claude Code version itself, then creates exactly one symlink. It refuses an occupied destination, including an existing correct link, a real directory or a dangling link. A second invocation is a refusal, not an upgrade. It also refuses a symlinked configuration or skills directory. Leave unrelated files and links alone; changing an existing installation needs its own inspected, authorized edit.</p>
+<p>If an absolute <code>CLAUDE_CONFIG_DIR</code> is set, the destination is <code>CLAUDE_CONFIG_DIR/skills/guided_coding</code>. The helper rejects <code>..</code> components before creating directories. Use a resolved, ordinary source path: the complete-source checker refuses symlinks in that path, including a <code>/var</code> alias when <code>/private/var</code> is the actual path on a Mac.</p>
+<p>The version check requires Claude Code <strong>2.1.281 or newer</strong>. What it checks depends on the session. In a Terminal session it runs <code>claude --version</code> from this shell&#x27;s PATH and fails when no <code>claude</code> is found. In a Claude app session, recognized by the environment variable <code>CLAUDE_CODE_ENTRYPOINT=claude-desktop</code> (the marker observed in app sessions on 2026-10-06; any other or missing value is treated as Terminal), it runs the app&#x27;s own Claude Code engine, named by <code>CLAUDE_CODE_EXECPATH</code>; a separately installed <code>claude</code> command is not consulted. If the app engine&#x27;s version cannot be read, the check prints one <code>NOT CHECKED</code> line giving the reason and continues; a version that is read and is below the minimum still fails. The check does not update the client or authenticate either executable. Inspect the reported path; if an update is needed, use your approved client-update method (in the Claude app, update the app) and retry. Help, status and uninstall remain available when the version check fails.</p>
+<p>Registration performs no project adoption, setup save, remote connection, shared-installation reservation or test run. A server containing GC source files but no Claude Code client has the source, not a usable native command.</p>
+<h2 id="set-up-the-target-project">Set up the target project</h2>
+<p>Open a new conversation in the project you want to change and enter:</p>
+<pre><code>/guided_coding setup
+</code></pre>
+<p>The primary working directory selects the target unless you explicitly name another project. Loading the procedure from <code>~/Downloads/GuidedCoding/guided_coding</code> does not make that directory the target.</p>
+<p>The <a href="reference-files.html#file-payload-setup-md">setup workflow</a> first reads the current method and its referenced settings, records and migration backups. It proposes recovered values as defaults with their sources, then asks only for gaps that matter to the intended work. It does not make you remember a command that is already saved.</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Area</th><th scope="col">What setup establishes</th></tr></thead><tbody><tr><td>Project and instructions</td><td>Target, related repositories, loaded authority, canonical method, personal or shared adoption</td></tr><tr><td>Locations</td><td>Source, worktree/scratch locations, durable records and outputs; remote locations only when relevant</td></tr><tr><td>Environment</td><td>Shell, PATH or activation, actual executable/import target, build and test commands with working directories</td></tr><tr><td>Optional remote work</td><td>Host, account, access method, installation, logs, load limits and sharing/reservation rule</td></tr><tr><td>Decisions</td><td>Existing authorization, restrictions, verification still needed, and actions requiring your choice</td></tr></tbody></table></div>
+<p>A value can be recorded, verified, stale, conflicting, unknown, deferred or not applicable. A known path needing re-verification should not be erased and replaced with “unknown.” A tool missing from Bash&#x27;s PATH might already be configured under csh. Setup inspects the intended environment; it does not bypass hooks or rewrite global startup files to make a lookup succeed.</p>
+<p>The <a href="reference-files.html#file-payload-setup-defaults-md">general defaults</a> and optional <a href="reference-files.html#file-payload-templates-project-method-md">method template</a> are proposals. They contain no universal server, project-specific command or account. Optional remote work may be deferred while independent authorized local work proceeds. No build, test suite or remote connection is part of default setup. Additional actions use existing applicable authorization or a specific Developer decision.</p>
+<h3 id="defaults-cards">Defaults cards</h3>
+<p>Supply <code>GENERAL_DEVELOPER_CARD.md</code> from the kit, or a card for your project. Its account names, paths and commands are candidate settings to reconcile with your current method. Another developer&#x27;s grants do not transfer. A personal card and a shareable project card are different artifacts; do not publish personal settings as general defaults.</p>
+<p>For example, a saved shorthand such as <code>run_checks</code> needs its actual definition, working directory, shell and applicable load rule. Its name alone is not a test command. Each developer has their own installation path. A saved hardware count, test-process cap and build-process count are distinct facts. The generic GC package supplies none of these project-specific values. Relevant adopted values and their provenance go into the project&#x27;s method, so a later session does not need the original card attachment.</p>
+<h3 id="contract-adoption-and-loaded-instructions">Contract adoption and loaded instructions</h3>
+<p>Before guided work, the target&#x27;s current authority must explicitly adopt Developer–Guide Contract version <strong>2026-09-17</strong>, SHA-256 <code>ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b</code>, and identify its own project method. The contract is unchanged from the published pilot. An existing adoption of that exact identity can suffice; a skill link, release name or command invocation cannot adopt it for you.</p>
+<p>If adoption is missing, setup proposes a small declaration for your approval. For example, using the project&#x27;s actual method path:</p>
+<pre><code>GuidedCoding applies here only after explicit /guided_coding or /gc invocation.
+Adopt Developer–Guide Contract version 2026-09-17,
+SHA-256 ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b.
+Project method: follow .claude/PROJECT_METHOD.md for this project&#x27;s
+build, test, coordination and publication rules.
+</code></pre>
+<p>That is an example to review, not an instruction to create a new authority file unconditionally. Preserve the project&#x27;s actual instruction sources. In particular, adding <code>CLAUDE.local.md</code> can change whether <code>AGENTS.md</code> loads under Claude Code&#x27;s default selection. Inspect the active setting rather than assuming both files load; see the <a href="https://code.claude.com/docs/en/memory#when-claude-code-reads-agentsmd">client instruction-loading documentation</a>.</p>
+<h3 id="checked-saving-and-recovery">Checked saving and recovery</h3>
+<p>The governing details and shell example are in <a href="reference-files.html#file-payload-setup-md">SETUP §5</a>. The intended order is:</p>
+<ol><li>Show complete proposed files, authority edits and setup-record text. Identify any allowed mechanical placeholders before authorization.</li><li>Write lossless approved texts and prior affected files, or explicit absence markers, into project recovery records.</li><li>Verify those records against the complete approved proposal and prior state before protected method/authority edits. A failed comparison or failed file enumeration must fail the verification step itself.</li><li>Only after successful verification, apply the authorized edits with prior-state guards and read back each saved file.</li></ol>
+<p>The records are writes too: the promise concerns verification <strong>before protected edits</strong>, not before any write whatsoever. A failure during apply or readback can occur after some files changed. Stop, report <strong>PARTIAL</strong>, preserve the records and propose the next authorized recovery action. The recipe does not make multiple file writes atomic or restore them automatically. The Guide must follow the ordering; the client does not mechanically enforce it.</p>
+<p>Keep the entire setup record literal except for disclosed placeholders. A meaningful relocation or other unlisted change to the proposal needs to be accounted for; it should not be described as an exact save merely because the method and authority files match.</p>
+<h3 id="existing-projects-and-migrations">Existing projects and migrations</h3>
+<p>Routine startup checks only the settings needed for the requested activity; it should not repeat a completed interview. A new host, account, checkout or shell may need selective re-verification.</p>
+<p>Before relying on opt-in behavior, inspect always-loaded instructions that say to read an old <code>.claude/WORKER.md</code> for every task. Migrate only the relevant startup rule under authorization. Preserve or explicitly account for every setting, restriction, grant and pending item before retiring an old profile. Do not delete historical records as part of registration. An unfinished old change must reach its required boundary before a migration that would alter its governing procedure.</p>
+<h2 id="commands-and-decisions">Commands and decisions</h2>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Command</th><th scope="col">Intended effect</th></tr></thead><tbody><tr><td><code>/guided_coding</code></td><td>Introduce the procedure and wait for a task</td></tr><tr><td><code>/guided_coding help</code></td><td>Explain commands and opt-in behavior</td></tr><tr><td><code>/guided_coding status</code></td><td>Read source/link/adoption/method status and relevant setup gaps</td></tr><tr><td><code>/guided_coding history</code></td><td>List this project&#x27;s task records read-only: date, job, state, outcome, record and ticket</td></tr><tr><td><code>/guided_coding setup</code></td><td>Recover settings and prepare authorized method/adoption changes</td></tr><tr><td><code>/guided_coding &lt;task&gt;</code></td><td>Start bounded guided work after source, adoption and readiness checks</td></tr><tr><td><code>/guided_coding uninstall</code></td><td>Remove only the personal symlink resolving to this verified source</td></tr></tbody></table></div>
+<p>The same arguments work with <code>/gc</code>. These requests load instructions for Claude; they are not all Python subcommands. Invoke the skill at the start of each guided conversation, not before every message.</p>
+<p>A task presents <strong>APPROVE / REVISE / STOP</strong> for its plan and <strong>INTEGRATE / REVISE / DISCARD</strong> for the tested result. Publication has its own <strong>PUBLISH / HOLD</strong> decision. The approval report includes the complete tested diff and exact new test code, or an explicit “none added” with the check used. An Outside Reviewer recommends; the Developer decides. A tool-permission dialog does not replace those decisions.</p>
+<p>For a batch that will be published, the frozen packet also records the exact outgoing commits (<code>OUTGOING.txt</code>) and the suite result or the Developer&#x27;s quoted waiver for that batch, so that one outside reading can answer the integration and the publication question for that packet. If the proposal changes afterwards, it gets a new identity and a reassessment; the earlier verdict is not inherited. A publication plan names each installation to update separately; publication alone updates none. The accepted push is one explicit <code>&lt;commit&gt;:refs/heads/&lt;branch&gt;</code> with tag following disabled, after <code>publication_precheck.py</code> has compared the live repository with the record; no development or recovery tag is created.</p>
+<p>Use the project&#x27;s adopted testing and publication rules. Preparing a test, running it, integration and a push are different actions. The pilot&#x27;s one-time server-suite waiver is not permission to skip a later required suite. There is no parallel-job coordination in rev17; follow the current project restrictions and sharing rules.</p>
+<h2 id="ordinary-conversations-and-session-titles">Ordinary conversations and session titles</h2>
+<p>Start a fresh conversation without invoking the skill for ordinary work. Persistent project instructions and auto-memory can still load there; <code>/clear</code> is not a cleanup of those files. Client bookkeeping may also be written outside the target. See <a href="https://code.claude.com/docs/en/memory">Claude Code memory</a>.</p>
+<p>A session&#x27;s automatic title is not evidence of which skill loaded. Once the source check passes, the skill names the session <code>GuidedCoding: &lt;task&gt;</code> through the client&#x27;s rename tool where one exists (Claude Code Desktop); a title you set yourself is left alone, and declining the rename is final for that session. On the CLI, which has no such tool, the skill prints the <code>/rename GuidedCoding: &lt;task&gt;</code> instruction once; in Desktop you can also click the session title. A failed rename never stops the work. These are client features, not GC commands; see <a href="https://code.claude.com/docs/en/sessions#name-your-sessions">sessions</a> and <a href="https://code.claude.com/docs/en/desktop">Desktop</a>. The <a href="verification.html">verification record</a> lists the recorded title observations and their reach.</p>
+<h2 id="update-publish-or-uninstall">Update, publish or uninstall</h2>
+<p>Because the personal link points at a source directory, changing the source there changes what future invocations read. Reconcile active work, preserve a recoverable baseline and use the project&#x27;s normal review/integration rules. A worker that detects changed central source must stop dependent work; registration does not pin an immutable copy for it.</p>
+<p>Follow your project&#x27;s publication and release conventions. Do not create a development or recovery tag. Record the accepted source revision and manifest with the work; any release tag needs the project&#x27;s own authorization. Nothing in registration or a successful checker authorizes a push.</p>
+<p>To uninstall, use the control request above or ask ordinary Claude Code to inspect the personal link from this guide&#x27;s absolute path. Remove only a confirmed symlink to this exact verified package. Do not remove a real directory, an unknown link, the central source, project methods or records. Use a fresh conversation afterward. There is no per-project installer, automatic profile deletion, automatic lock guard or <code>/wrap</code> command.</p></article>
+  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+</main>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>

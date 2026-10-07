@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding verification and limits — Thomas C. Terwilliger</title><meta name="description" content="What the tools check, what earlier trials observed and what still needs checking."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/verification.html"><style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #1a2744;
+  --slate: #3d4f6b;
+  --accent: #2e6da4;
+  --accent-light: #e8f0f8;
+  --warm-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text: #2c2c2c;
+  --text-light: #5a6270;
+  --border: #ddd;
+  --rule: #c4cdd6;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  background: var(--warm-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 0 0;
+}
+
+.header-content {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  background: var(--slate);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: rgba(255,255,255,0.35);
+}
+
+.header-text h1 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 8px;
+  letter-spacing: 0.03em;
+}
+
+.affiliation {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.affiliation a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.affiliation a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+/* ===== NAV ===== */
+.site-nav {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  margin-top: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.site-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.site-nav a.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
+.content-section {
+  padding: 40px 0;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0 0 32px;
+}
+
+/* ===== SECTIONS ON HOME ===== */
+.intro p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  max-width: 72ch;
+}
+
+.intro p:first-child {
+  font-size: 1.12rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.card-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== PUBLICATIONS ===== */
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pub-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pub-meta a:hover {
+  text-decoration: underline;
+}
+
+.pub-year-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub-year-heading:first-of-type {
+  margin-top: 0;
+}
+
+.pub-entry {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.pub-entry:hover {
+  border-left-color: var(--accent);
+}
+
+.pub-entry a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pub-entry a:hover {
+  text-decoration: underline;
+}
+
+.pub-entry i {
+  font-style: italic;
+}
+
+.patents-section {
+  margin-top: 40px;
+}
+
+/* ===== BIO PAGE ===== */
+.bio-section {
+  margin-bottom: 36px;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timeline {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 12px 24px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+
+.timeline li strong {
+  color: var(--navy);
+}
+
+.honors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.honors-list li {
+  padding: 6px 0;
+  font-size: 0.93rem;
+  border-bottom: 1px solid #eee;
+}
+
+.honors-list li:last-child {
+  border-bottom: none;
+}
+
+.honors-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.honors-list a:hover {
+  text-decoration: underline;
+}
+
+.service-text {
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.service-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.service-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SOFTWARE PAGE ===== */
+.software-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.software-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+.software-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.software-card .sw-link {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.software-card .sw-link:hover {
+  background: var(--navy);
+}
+
+/* ===== LINKS PAGE ===== */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.links-list li:last-child {
+  border-bottom: none;
+}
+
+.links-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links-list a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  padding: 24px 0;
+  margin-top: 48px;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.site-footer a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 1.45rem;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .content-section {
+    padding: 28px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-entry {
+    padding-left: 10px;
+  }
+}
+
+.gc-main{padding-top:34px;padding-bottom:34px;width:100%;max-width:920px}
+.gc-main h1,.gc-main h2{font-family:var(--serif);color:var(--navy);line-height:1.3}
+.gc-main h1{font-size:2rem;margin:0 0 8px}.gc-main h2{font-size:1.4rem;margin-top:30px}
+.gc-lead{font-size:1.15rem;color:var(--slate);margin-top:0}.gc-main p{max-width:80ch}
+.gc-download{border-left:4px solid var(--accent);background:var(--accent-light);padding:20px 24px;margin:24px 0}
+.gc-download p{margin:10px 0 0}.gc-button,.gc-main button{display:inline-block;background:var(--accent);color:white;border:0;border-radius:4px;padding:10px 16px;font:600 15px/1.45 var(--sans);text-decoration:none;cursor:pointer}
+.gc-button:hover,.gc-main button:hover{background:#21567f;color:white}
+.gc-local-nav{display:flex;flex-wrap:wrap;gap:10px 20px;border-bottom:1px solid var(--rule);padding:0 0 15px}
+.gc-main a{color:var(--accent)}.gc-main .gc-button{color:#fff}.gc-main section{scroll-margin-top:18px}
+.gc-panel{border:1px solid var(--border);border-radius:6px;margin:14px 0}.gc-panel summary{padding:13px 18px;cursor:pointer;color:var(--navy);font-weight:600}.gc-panel>div{padding:0 18px 16px}
+.gc-main label{display:block;font-weight:600;margin:12px 0 5px}.gc-main textarea{display:block;width:100%;font:15px/1.6 var(--sans);background:#fff;border:1px solid var(--rule);border-radius:3px;color:var(--text);padding:14px;resize:vertical;margin:0 0 10px}
+.gc-main pre{padding:14px 16px;background:#f3f5f7;border:1px solid var(--border);border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}
+.gc-main code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em;overflow-wrap:anywhere}.gc-main pre code{font:inherit}
+.gc-main li+li{margin-top:9px}.gc-main li{padding-left:4px}.gc-process{padding-left:22px}
+.gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
+.gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
+@media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
+
+.gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
+.gc-document h2,.gc-document h3{scroll-margin-top:20px}
+.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
+.gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
+.gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
+</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <div class="header-text">
+          <h1>Thomas C. Terwilliger</h1>
+          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
+          <p class="affiliation">
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a><br>
+            Los Alamos National Laboratory Fellow (Retired)
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../software.html" class="active">Software</a>
+        <a href="../bio.html">Biography</a>
+        <a href="../group.html">Group</a>
+        <a href="../news.html">News</a>
+        <a href="../presentations.html">Presentations</a>
+        <a href="../links.html">Links</a>
+      </div>
+    </nav>
+  </header><main class="container gc-main gc-doc-pages">
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Install and use</a><a href="user-guide.html">User guide</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html" aria-current="page">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <h1 class="gc-document-title">Guided Coding verification and limits</h1>
+  <p class="gc-lead">What the tools check, what earlier trials observed and what still needs checking.</p>
+  <p class="gc-small">General edition · These pages describe the files included in the download.</p>
+  <aside class="gc-download gc-doc-note" aria-label="Using the general installer">
+    <p><strong>For your own project.</strong> Follow the <a href="index.html#install">ZIP installation instructions</a> and use the <a href="GENERAL_DEVELOPER_CARD.md" download>general developer card</a>. Keep the procedure at <code>~/Downloads/GuidedCoding/guided_coding</code>, or the stable location you chose. Documentation and examples are adapted automatically when the package is built.</p>
+    <p>If you already have a working shared registration, keep it. Open a session in each target project and run <code>/guided_coding setup</code> with that project’s card. Each project keeps its own settings while using the shared procedure. Earlier project trials are historical evidence, not defaults for your project.</p>
+  </aside>
+<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#status-and-identities">Status and identities</a></li><li><a href="#release-and-source-checks">Release and source checks</a></li><li><a href="#trace-a-claim-to-the-source">Trace a claim to the source</a></li><li><a href="#recorded-checks-of-the-published-implementation">Recorded checks of the published implementation</a></li><li><a href="#remaining-qualifications">Remaining qualifications</a></li><li><a href="#how-to-check-a-later-documentation-or-source-revision">How to check a later documentation or source revision</a></li><li><a href="#relevant-history">Relevant history</a></li></ul></div></details>
+<article class="gc-document"><p>This file separates three kinds of evidence: what the supplied source implements, what earlier execution records report, and what remains unestablished. A successful checksum, test suite or client-loading check is not approval to integrate or publish.</p>
+<h2 id="status-and-identities">Status and identities</h2>
+<p>The published implementation baseline is r10 rev16 <code>enumcheck-20261002T194333Z</code>, published on 2026-10-02 as the limited opt-in pilot. Its recorded identities are:</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Item</th><th scope="col">Identity</th></tr></thead><tbody><tr><td>Published commit</td><td><code>c36887c7f489018af4f91773246ecde32d1b4e24</code></td></tr><tr><td>Source archive SHA-256</td><td><code>fce3627e46982f3b5fad1baaad7ada538984e9087a84b2147548b4564e844968</code></td></tr><tr><td>Source manifest SHA-256</td><td><code>b86d0490df59f854c214e6771ad8bb44f03069a38612be198edff4ebb11238e0</code></td></tr><tr><td>Contract version / SHA-256</td><td><code>2026-09-17</code> / <code>ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b</code></td></tr><tr><td>Publication review bundle SHA-256</td><td><code>0e4c112d3726026bd397a4e50ac2a3cff79b146883f8ceab269e3a069bc2c6ca</code></td></tr><tr><td>Publication packet identity</td><td><code>9834e7a5bfdf6b8dd8401972265715f527432ba277b63c4ee5c50f130508f44b</code></td></tr></tbody></table></div>
+<p>The <code>docs-20261003</code> revision (published 2026-10-03 as commit <code>b0747a4a55f29db3abe04358480d5867e94cb792</code>, source manifest SHA-256 <code>5edbec14fe45d3538da533fd995a5d59ddaa47df7629daf27321ab2a1134f1be</code>) changed documentation only and kept the literal label <code>r10 rev16 candidate</code>.</p>
+<p>This revision, r10 rev17 candidate <code>followups-20261004</code>, changes <code>screen_check.py</code> (the reading&#x27;s <code>Scope:</code> line, <code>OUTGOING.txt</code> bindings and the <code>NOT RUN</code> waiver form), adds <code>publication_precheck.py</code> and <code>records_history.py</code> with their tests, and revises the skill entry, Worker, Guide, Setup, defaults, method template, screens, reviewer brief, transport, Helper and Roles texts. The contract, the adoption rule and the SETUP §5 recipe are unchanged. Its commit, archive, manifest, bundle and packet identities are recorded in its task and publication records (<code>phenix/.claude/records/2026-10-04-gc-followups-A/</code>), not in this file, which cannot carry its own hash. Earlier reviews and test runs apply to their recorded source; they do not approve this diff. The literal release-family check now expects <code>r10 rev17 candidate</code>; it does not establish an exact revision or approval.</p>
+<p>A later bounded change (2026-10-06, record <code>phenix/.claude/records/2026-10-06-gc-app-version-check/</code>) made the version check app-aware (<code>claude_version</code>, <code>check_claude_version</code>, <code>check_app_engine_version</code> and <code>APP_ENTRYPOINT</code> in <code>screen_check.py</code>), rewrote <code>ClaudeVersionChecks</code>, and revised the matching sentences in the skill entry, user guide, architecture table and this file. The label, contract, adoption rule and setup recipe are unchanged.</p>
+<p>The October 2–3 publication, client and installation facts below come from the supplied controller and outside-review records. The documentation pass checked the uploaded baseline against its complete manifest and read the implementation and tests; it did not rerun those sessions, inspect live remote refs or act as an Outside Reviewer. Raw historical evidence is kept in the associated task/review records, not duplicated in the generic package.</p>
+<h2 id="release-and-source-checks">Release and source checks</h2>
+<p>First compare an archive with the independently supplied SHA-256 in its review/publication handoff. From a trusted extraction, replace the path below with the canonical source root and run this complete Bash block:</p>
+<pre><code>cd ~/Downloads/GuidedCoding/guided_coding &amp;&amp;
+shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+cat payload/RELEASE &amp;&amp;
+grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE
+</code></pre>
+<p>Every dependency uses <code>&amp;&amp;</code>. A failed directory change or listed checksum must stop before executing the checker; a failed inventory check must stop the later commands. Do not append unguarded preparation or registration. After a successful block, separately compare the manifest&#x27;s SHA-256 and full release label with the expected handoff identity. Repeat the guarded source check before central tools and consequential work as the skill requires.</p>
+<p><code>verify-source</code> rejects missing/changed listed bytes, extra files, symlinks and multiply linked files. The accepted installer-bytecode pattern is an exception, not authentication of bytecode contents. <code>-I</code> isolates imports from the current directory and <code>PYTHONPATH</code>; <code>-B</code> suppresses writing caches. The tool invocation uses source rather than package caches. These controls establish consistency, not supplier identity or model compliance.</p>
+<h2 id="trace-a-claim-to-the-source">Trace a claim to the source</h2>
+<p>For example: <strong>registration refuses an existing destination instead of creating a nested link.</strong></p>
+<ol><li>Open <a href="reference-files.html#file-payload-tools-screen-check-py"><code>register_skill</code> in <code>screen_check.py</code></a>. It computes the single <code>skills/guided_coding</code> destination, checks <code>exists()</code> or <code>is_symlink()</code>, and calls <code>fail</code> if occupied. The creation is a direct <code>os.symlink</code>, not a recursive <code>ln -s</code> command.</li><li>Read <code>SkillRegistrationChecks</code> in <a href="reference-files.html#file-tests-tst-screen-check-v20-py"><code>tst_screen_check_v20.py</code></a>. The fresh/ second-run case and the other-link/directory/dangling-link case assert refusal and absence of a nested link. Other cases cover version and parent-path refusals.</li><li>To establish that those tests ran for a particular revision, inspect its captured command, source identity, stdout/stderr and exit status. Reading the test source alone establishes its intended assertion, not an observed pass.</li></ol>
+<p>Other important mappings:</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Claim</th><th scope="col">Implementation / test source</th><th scope="col">What it does not establish</th></tr></thead><tbody><tr><td>Complete-source consistency</td><td><code>verify_source</code>, <code>regular_files</code>; <code>SourceInventoryChecks</code></td><td>Origin, semantic correctness or authenticated cache contents</td></tr><tr><td>Claude Code minimum 2.1.281: the PATH <code>claude</code> in a Terminal session; the app engine named by <code>CLAUDE_CODE_EXECPATH</code> when <code>CLAUDE_CODE_ENTRYPOINT=claude-desktop</code>, NOT CHECKED when that version cannot be read</td><td><code>MIN_CLAUDE_VERSION</code>, <code>APP_ENTRYPOINT</code>, <code>claude_version</code>, <code>check_claude_version</code>, <code>check_app_engine_version</code>; <code>ClaudeVersionChecks</code></td><td>That the app marker stays stable, actual instruction loading, or trustworthy executables</td></tr><tr><td>Screen form and result identity</td><td><code>blocks</code>, <code>developer_view</code>, <code>code_identity</code>, <code>check</code>; <code>ScreenChecks</code></td><td>Correct criterion, true logs, complete tests or Developer authorization</td></tr><tr><td>Matching outside reading</td><td><code>reading_matches</code>; conditional/waiver/pending controls</td><td>Independence or authenticity of the reviewer, satisfaction of a semantic condition</td></tr><tr><td>Two-domain review transport</td><td><code>make_bundle</code> in <code>review_bundle.py</code>; <code>ReviewBundleChecks</code></td><td>Privacy, evidence completeness or permission to publish</td></tr><tr><td>Reading scope (exactly one <code>Scope:</code> line, counted before its value is checked), outgoing bindings (no repeated key within a block), waiver form</td><td><code>reading_matches</code>, <code>parse_outgoing</code>, <code>suite_waiver</code> in <code>screen_check.py</code>; the scope, outgoing and waiver cases in <code>ScreenChecks</code></td><td>Git state, the reviewer&#x27;s independence, or that the quoted words authorize anything</td></tr><tr><td>Pre-push destinations, settings, bindings, dry run (every Git query&#x27;s exit checked before its output; a failed configuration or identity query refuses, while Git&#x27;s no-match answer to the configuration query is accepted), command shape (whitelist of the documented form)</td><td><code>publication_precheck.py</code>; <code>tst_publication_precheck_v20.py</code> on temporary repositories and with a fake Git on PATH</td><td>A decision to push, the remote&#x27;s later state, settings outside the repository&#x27;s Git config scopes, any Git command not submitted to the validator, or false acceptances other than the demonstrated ones</td></tr><tr><td>Read-only task history</td><td><code>records_history.py</code>; <code>tst_records_history_v20.py</code></td><td>Truth of a record&#x27;s contents, or any grant, reservation or scheduling</td></tr><tr><td>Checked setup ordering</td><td><code>SKILL.md</code>, <code>SETUP.md</code> §5 and its embedded recipe</td><td>Mechanical enforcement by Claude Code or reliable obedience by every Guide</td></tr><tr><td>Standalone test runners</td><td><a href="reference-files.html#file-tests-tst-screen-check-v20-py"><code>tests/tst_screen_check_v20.py</code></a> and the other shipped runners</td><td>Complete source verification of arbitrary unlisted files in the installation</td></tr></tbody></table></div>
+<p>There are <strong>118 test methods</strong> in the four shipped package test files (63 for the checker, 13 for the review bundle, 27 for the pre-push checks, 15 for the history listing). Subtests exercise additional cases; a count of 118 is not 118 independent behavioral claims. The checker, pre-push and history tests of the rev17 release were written by two separate test-writer sessions from the interface specification, without reading the implementation; the baseline control (<code>observations/baseline_control.txt</code> in the release&#x27;s evidence packet: the final checker test file run against the previous published checker) shows which of them fail there; the pre-push and history tools have no earlier version to compare with. The version-check tests of the 2026-10-06 change (<code>ClaudeVersionChecks</code>, the app registration case and <code>VersionGateScopeChecks</code>) were written by a Worker subagent from the Developer&#x27;s case list in the same session as the implementation, which it was allowed to read for exact strings; the control run of that test file against the previous checker is in that change&#x27;s record (<code>evidence-work/base_control.txt</code>). The setup shell recipe and native LLM scenarios are not covered by unit methods; their controls are in the task and review records.</p>
+<h2 id="recorded-checks-of-the-published-implementation">Recorded checks of the published implementation</h2>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Evidence</th><th scope="col">Recorded result and reach</th></tr></thead><tbody><tr><td>Enumeration correction and follow-up reading</td><td>The two <code>find</code> producers&#x27; failures, including partial listings, stop verification. A/B/B2 did not print VERIFY_OK; the tested driver held apply; protected files were unchanged. Seven earlier recipe controls retained their results. R-F1 was closed.</td></tr><tr><td>Package and repository checks</td><td>Controller reported 45 package tests passing on the Mac. The publication reviewer ran the repository harness on Linux: unit success with one case-insensitive-filesystem skip and a libtbx precompile skip. Skips are not passes of those branches.</td></tr><tr><td>C1, disposable CLI configuration</td><td>Exact enumcheck candidate, CLI 2.1.284: help and status, source guard and command-to-expansion comparison. Reach is CLI loading/help/status, not setup/recovery.</td></tr><tr><td>4b, live CLI</td><td>Help loaded the expected source and ran the guard. The successful attempt followed an expired-auth failure and user sign-in.</td></tr><tr><td>D1, Desktop Code tab</td><td>Help loaded the personal central link and ran the source guard; transcript reported runtime 2.1.286. Reach is <strong>loading/help only</strong>, not Desktop status or full setup/recovery.</td></tr><tr><td>Publication r2</td><td>Outside reading: PROCEED for the limited pilot; P-F1/P-F2/P-F3/P-N1 closed, R-F1 retained closed. A clerical description of three test assertions was corrected externally. Genuine publication screen passed; Developer PUBLISH and verified remote pushes were recorded.</td></tr><tr><td>Mac and shared Linux installation synchronization</td><td>Controller reported clean checkouts at the publication commit on the Mac and on one shared Linux installation, source equality between them and repository harness success on both. Synchronized GC files on that installation are not native Claude Code client validation: no Claude client was installed or run there. This was not a PHENIX full-suite run.</td></tr><tr><td>Tag removal, October 3</td><td>Controller reported the pilot tag absent remotely, its local copy removed after preservation, and the published commit still in upstream history. Repository tags are reserved for releases; use the commit/manifest, not the removed tag.</td></tr><tr><td>CI for the two published commits (read 2026-10-04)</td><td>GitHub Actions <code>quick</code> and <code>clutter_and_syntax</code> completed with conclusion success for c36887c7 (2026-10-02) and b0747a4a (2026-10-03); the mirror workflow succeeded after each. Read through the public API without authentication; a read, not a rerun, and not a PHENIX suite.</td></tr><tr><td>Native checks of this candidate, Mac CLI 2.1.284, <code>claude -p … --permission-mode auto</code>, candidate loaded through a project-level skill link in a scratch project (2026-10-04)</td><td>Four sessions, each printing the guard result (VERIFIED complete source, <code>r10 rev17 candidate</code>) for the worktree path: <code>status</code> recovered adoption, method and records from files alone; <code>history</code> listed the one record read-only and created no file; a setup save with a truncated approved record stopped at verify (FAIL: approved record does not match) and held apply; a setup save with no prior record or ABSENT marker stopped at verify and held apply; the protected files&#x27; hashes were unchanged in every session. The CLI title instruction (<code>/rename GuidedCoding: &lt;task&gt;</code>) was printed in three of the four sessions and omitted in one. Reach: one client, one mode, scratch targets; the sessions used the Developer&#x27;s live login and wrote their own client bookkeeping outside the targets.</td></tr><tr><td>Desktop session rename, Guide&#x27;s own session (2026-10-04)</td><td>In the Guide&#x27;s own Desktop session (which had loaded the published rev16 skill, not this candidate), the client&#x27;s rename tool replaced an app-generated title without a prompt: the tool&#x27;s availability, not this candidate&#x27;s behaviour.</td></tr><tr><td>Desktop session titles, pinned snapshot (2026-10-04)</td><td>Two Desktop sessions in a scratch project whose project-level skill directory was a byte-identical, read-only copy of an earlier revision of this package (candidate 3 of this release). The skill entry <code>SKILL.md</code>, whose session-title instructions these observations exercised, is byte-identical between that revision and the published one; the tools, tests and some texts changed in later revisions, so the observations are of the title behaviour only, not of the package as a whole. Each transcript shows the skill expansion and a passing guard on that snapshot. (a) An app-generated title was replaced by <code>GuidedCoding: help</code> through the client&#x27;s rename tool without a prompt. (b) A title the Developer had set by hand (<code>KEEP MY TITLE</code>) was left unchanged: the skill read the session&#x27;s title, judged it user-set and did not call the rename tool, so the app&#x27;s approval dialog was not exercised. (d) The Developer reported both titles unchanged after closing the windows. Four earlier Desktop sessions are preserved in the task record and not counted: two met a failed guard because the Guide was editing the worktree, one renamed itself on the previous candidate, one met a failed guard and left a hand-set title untouched. The app&#x27;s &quot;isn&#x27;t a command here&quot; notice for a project-level skill appeared each time; it is not evidence either way. Reach: one Desktop client, one snapshot, two sessions.</td></tr><tr><td>PHENIX test discovery (A7, 2026-10-04)</td><td><code>phenix.find_program search_type=tests search_text=&lt;function&gt; tests.search_tests_by=function_called</code> traced <code>run_autobuild</code> to its calling tests; the default mode matched test names; a function newer than the static index (dated 2026-05-06) produced no entry and no message; <code>git_affected_tests=True</code> saw only uncommitted modifications in the three module directories. Project guidance, not a package feature.</td></tr><tr><td>App-session version check (2026-10-06, record <code>phenix/.claude/records/2026-10-06-gc-app-version-check/</code>)</td><td>In the Guide&#x27;s own Claude app (Code tab) session, with the separately installed CLI removed from PATH for each command only: the candidate checker printed <code>VERIFIED Claude app&#x27;s Claude Code engine 2.1.288 …</code> for the engine named by <code>CLAUDE_CODE_EXECPATH</code>; with that variable unset it printed one <code>NOT CHECKED</code> line and exited 0; with <code>CLAUDE_CODE_ENTRYPOINT</code> unset and no <code>claude</code> on PATH it failed as a Terminal session; with the marker unset and the CLI on PATH it verified the PATH <code>claude</code> (2.1.284). One real Terminal observation: the PATH CLI 2.1.284, run once non-interactively (<code>claude -p</code>, scrubbed environment, a one-off session-start hook passed with <code>--settings</code>), reported <code>CLAUDE_CODE_ENTRYPOINT=sdk-cli</code>, not <code>claude-desktop</code>, so it takes the Terminal path; an interactive terminal session was not observed. Reach: one Mac, one app session, one non-interactive CLI run; nothing uninstalled, no settings changed.</td></tr></tbody></table></div>
+<p>The full PHENIX server suite and a baseline/candidate roster were <strong>NOT RUN / NOT PRODUCED for the GC-only pilot publication</strong>, under the Developer&#x27;s specific waiver. The publication record states this publicly. Local tests do not replace that suite, and the waiver does not apply automatically to a later change.</p>
+<h2 id="remaining-qualifications">Remaining qualifications</h2>
+<ul><li><strong>Native damaged-record branch:</strong> two non-interactive CLI sessions of this candidate held apply on a damaged and on a missing recovery record (table above). That is one client and one mode on scratch targets; the driver/Guide still determines what gets invoked next in any other session.</li><li><strong>Exact proposal and recovery history:</strong> earlier cases omitted complete proposals or approved recovery text. Assisted and later native cases showed improvement; they do not erase those failures. A relocated setup record was disclosed but not wholly literal to its displayed proposal.</li><li><strong>Fresh-session context:</strong> disposable auto-memory was written outside the target during earlier trials. Later sessions using that configuration cannot be called memory-free or dependent only on target records without checking those inputs. No broad fresh-recovery guarantee follows.</li><li><strong>A1 provenance:</strong> an untouched pre-redaction debug log was not located by the reported bounded search. Other transcripts and partial excerpts remain; the reviewer found no material behavioral claim unsupported solely by that loss. The complete original and “only alteration” claim remain unverified. This is a provenance limit, not proof of another behavioral failure.</li><li><strong>Client/platform scope:</strong> a passing Terminal version check says nothing about the app engine, and the app branch rests on the <code>CLAUDE_CODE_ENTRYPOINT=claude-desktop</code> marker and <code>CLAUDE_CODE_EXECPATH</code> as observed on 2026-10-06, whose future stability is not established. Earlier TUI observations had continuation/permission-mode qualifications. Native Windows, real csh and all-client setup/recovery behavior are not established by the final-candidate observations above. The repository wrapper explicitly limits the tools to macOS and Linux; its Windows skip is not evidence of Windows support.</li><li><strong>Isolation:</strong> observed file equality and absence of recorded tool calls have bounded reach. They do not establish whole-machine immutability, all syscalls or unchanged live authentication state.</li><li><strong>General effectiveness:</strong> this package does not establish a failure rate, superiority to unstructured LLM use, or reliability for every future Guide. Separate test authorship is recorded, not proof of independence.</li></ul>
+<h2 id="how-to-check-a-later-documentation-or-source-revision">How to check a later documentation or source revision</h2>
+<p>Keep the previous evidence unchanged and bind the new source separately. For a docs-only revision, check the diff against the implementation, command syntax and preserved authority boundaries. Record unchanged executable/contract bytes explicitly. If instructions or claims change, assess those changes; a unit suite cannot establish their behavioral effect.</p>
+<p>After the source guard succeeds, package tests can be run from a trusted clean, manifest-listed copy with a resolved, symlink-free temporary path:</p>
+<pre><code>cd ~/Downloads/GuidedCoding/guided_coding &amp;&amp;
+python3 -I -B -m unittest discover -s tests -p &#x27;tst_*.py&#x27; -v
+</code></pre>
+<p>This standalone kit includes all four test runners. Use the command above from the verified source directory; it is a separate authorized check, not a command to continue after a failed source guard. Report every skip. The repository-wrapper and precompiler observations in the historical trials describe the earlier development environment, not additional requirements or tools shipped with this installer.</p>
+<p>For native validation, identify the exact source, client/runtime, selected skill path, loaded project instructions and persistent context. Inspect recorded command-to-expansion linkage, actual operations and resulting files. A version string, registration link, model-reported path or procedural simulation alone is insufficient. Matching decoded transcript text is not proof of file-byte loading. Select observations for the changed behavior and intended support scope; do not label an earlier candidate&#x27;s session as a fresh run of the new one.</p>
+<p>The Outside Reviewer evaluates the new source and bound evidence; the Developer&#x27;s acceptance, integration, activation and publication decisions remain distinct. A genuine final screen must cite a qualifying reading of its own frozen packet. Use the existing contract/project rules for any waiver; do not infer one from this document.</p>
+<h2 id="relevant-history">Relevant history</h2>
+<p>Rev10–11 corrected exclusive registration and configuration-path handling. Rev12 corrected user guidance from the Mac trial. Rev13 added the narrow installer-bytecode exception and source-only tool loading. Rev14 introduced recoverable, relevant setup. Failed rev15 parallel-job work was excluded from the rev16 lineage.</p>
+<p>Rev16 stabilized rev14, then corrected fail-fast checksum instructions, approved-text preservation, explicit comparison failure propagation and checked file enumeration. A failed <code>check &amp;&amp; echo OK</code> inside a script was not a sufficient stopping rule; unchecked producer exits were also not sufficient. The final published implementation is enumcheck, not an earlier F1/checked-save/failprop candidate. Earlier reviews belong to those earlier identities; frozen packets and errata retain that history.</p>
+<p>Rev17 (<code>followups-20261004</code>) followed three corrections recorded in the PHENIX project during October 2026: a development tag pushed to a repository that reserves tags for releases (removed by its maintainer on 2026-10-03), a publication that proceeded on an inferred suite waiver (corrected by the Developer on 2026-10-04), and installation updates that were planned after the push rather than with it. It adds no parallel-job coordination; that remains a separate planned release.</p>
+<p>Current client reference material: <a href="https://code.claude.com/docs/en/skills">skills</a> and <a href="https://code.claude.com/docs/en/memory">instruction loading</a>. Vendor documentation describes the client; it is not a GC native test run.</p></article>
+  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+</main>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>
