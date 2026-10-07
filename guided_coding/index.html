@@ -571,7 +571,8 @@ main {
   <div class="gc-download" id="download">
     <a class="gc-button" href="guided_coding.zip" download>Download Guided Coding</a>
     <p class="gc-small">Complete general-edition kit, setup card and installation notes.</p>
-    <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">fc1682a9029d</a> · 2026-10-06 · ZIP: 147 KB</p>
+    <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">fc1682a9029d</a> · 2026-10-06 · ZIP: 148 KB</p>
+    <p class="gc-small" id="package-source"><strong>Source and adaptations.</strong> The material comes from <a href="https://github.com/cctbx/cctbx_project/tree/fc1682a9029dab083f20ded47724831812d406e1/libtbx/guided_coding"><code>cctbx_project/libtbx/guided_coding</code></a>. The packager edits the documentation and local path examples to use <code>~/Downloads/GuidedCoding/guided_coding</code>, generalizes project-specific wording and examples, and supplies a <a href="GENERAL_DEVELOPER_CARD.md" download>general defaults card</a> for your own projects. Checking tools and the Developer–Guide Contract are unchanged; the license, and which files were adapted with their checksums before and after, are recorded with the download.</p>
   </div>
 
   <section id="install">
@@ -603,7 +604,7 @@ export PATH="$HOME/.local/bin:$PATH"</code></pre>
       <li>Download <strong>guided_coding.zip</strong> into your Downloads folder.</li>
       <li>Before unzipping, check that it matches this page. In Terminal, run the command below. It should end with <strong>guided_coding.zip: OK</strong>; stop if it does not.</li>
     </ol>
-    <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' 'f353abb19809603750ac27acfcea4b40ce429de0524354174a46dec5bea3a6a0' | shasum -a 256 -c -</code></pre>
+    <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '661f0e0e40e70ec34b3013f5dc45c31d950b4622741724d99c70e0e444feaa51' | shasum -a 256 -c -</code></pre>
     <button type="button" data-copy="check-download">Copy checksum command</button>
     <p>Double-click the ZIP to unzip it in Downloads. Keep the resulting <strong>GuidedCoding</strong> folder there: Claude will use <code>~/Downloads/GuidedCoding/guided_coding</code> as the central procedure for your projects. If you choose another stable location, change the path in the next message.</p>
 
@@ -623,7 +624,7 @@ export PATH="$HOME/.local/bin:$PATH"</code></pre>
       <li><a href="GENERAL_DEVELOPER_CARD.md" download>Download the general developer card</a>, attach it in that session and send <code>/guided_coding setup</code>.</li>
       <li>Check the proposed project settings and instruction changes. Approve them when they are right, then let Claude finish saving and checking them.</li>
     </ol>
-    <p>The card asks Claude to discover your project’s environment, build and test commands from its documentation and saved settings. It supplies no Phenix commands, server names or private paths. Remote work can be deferred when it is not needed.</p>
+    <p>The card asks Claude to discover your project’s environment, build and test commands from its documentation and saved settings. It supplies no project-specific commands, server names or private paths. Remote work can be deferred when it is not needed.</p>
     <p>Setup is for the repository you selected. Other repositories or checkouts may need their own setup. Keep any existing project instructions and work.</p>
   </section>
 

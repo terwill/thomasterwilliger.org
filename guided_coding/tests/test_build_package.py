@@ -1,6 +1,7 @@
 """Downstream packaging controls. No network, credentials or user configuration."""
 
 import hashlib
+import html
 from html.parser import HTMLParser
 import importlib.util
 import io
@@ -18,10 +19,46 @@ SPEC = importlib.util.spec_from_file_location("gc_site_packager", SCRIPT)
 builder = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(builder)
 
+DOC_CLARIFICATIONS = {
+    "docs/GUIDED_CODING_README.md": (
+        "`enumcheck-20261002T194333Z` was published to `cctbx_project` on\n"
+        "2026-10-02 (commit `c36887c7f489018af4f91773246ecde32d1b4e24`), and its\n"
+        "documentation revision `docs-20261003` on 2026-10-03 (commit\n"
+        "`b0747a4a55f29db3abe04358480d5867e94cb792`).",
+        "`enumcheck-20261002T194333Z` was published in the original upstream source repository on\n"
+        "2026-10-02 (upstream commit `c36887c7f489018af4f91773246ecde32d1b4e24`), and its\n"
+        "documentation revision `docs-20261003` on 2026-10-03 (upstream commit\n"
+        "`b0747a4a55f29db3abe04358480d5867e94cb792`)."),
+    "docs/GUIDED_CODING_VERIFICATION.md": (
+        "The skill entry `SKILL.md`, whose session-title instructions these observations exercised, "
+        "is byte-identical between that revision and the published one;",
+        "The skill entry `SKILL.md`, whose session-title instructions these observations exercised, "
+        "is byte-identical between that revision and the published upstream revision; "
+        "this edition's copy differs from its pinned upstream source only in its example source path and temporary-directory handling, "
+        "not in the session-title instructions;"),
+    "docs/GUIDED_CODING_ARCHITECTURE.md": (
+        "The personal link exposes the current central checkout, not a pinned\n"
+        "release. Updating that checkout therefore needs coordination with active\n"
+        "work and the repository's integration rules.",
+        "The personal link exposes the current central source directory, not a pinned\n"
+        "release. Replacing that directory therefore needs coordination with active\n"
+        "work; follow the update steps in INSTALL.md."),
+}
+
 
 def manifest(files):
     return "".join(f"{hashlib.sha256(data).hexdigest()}  ./{name}\n"
                    for name, data in sorted(files.items())).encode()
+
+
+def temp_fixture(name):
+    """Minimal source prose containing every guarded upstream instruction."""
+    text = builder.TEMP_HEADERS[name] + '\n\n'
+    for command, count in builder.TEMP_COMMANDS.get(name, ()):
+        for _ in range(count):
+            text += (command + '\n\n' if command.startswith('`') else
+                     '```bash\n' + command + '```\n\n')
+    return text.encode()
 
 
 class PackagingControls(unittest.TestCase):
@@ -160,8 +197,11 @@ class PackagingControls(unittest.TestCase):
             (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob("*") if p.is_file() and p.name != "SOURCE_MANIFEST.sha256"}
-        files.update({"docs/" + name: b"# Fixture guide\n\n## Read this\n\nExample paragraph.\n"
-                      for name, _, _, _ in builder.DOCUMENTS})
+        files.update({name: temp_fixture(name) for name in builder.TEMP_HEADERS})
+        files['payload/tools/check.py'] = b'# immutable tool sentinel\n'
+        files['tests/tst_example.py'] = b'# immutable test sentinel\n'
+        for name, (before, _) in DOC_CLARIFICATIONS.items():
+            files[name] += ("\n" + before + "\n").encode()
         self.write_source(files)
         info = {"commit": "a" * 40, "commit_date": "2026-10-06T20:03:57Z",
                 "source_manifest_sha256": builder.digest(
@@ -247,7 +287,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         self.assertEqual(builder.general_text('docs/GUIDED_CODING_USER_GUIDE.md', adapted), adapted)
 
     def test_general_edition_has_separate_manifest_and_preserves_original_and_modes(self):
-        self.write_source({'SKILL.md': b'cd /absolute/path/to/libtbx/guided_coding &&\n',
+        self.write_source({'SKILL.md': temp_fixture('SKILL.md') + b'cd /absolute/path/to/libtbx/guided_coding &&\n',
                            'payload/RELEASE': b'test release\n',
                            'payload/tools/check.py': b'print("unchanged tool")\n',
                            'tests/tst_example.py': b'repository = "cctbx"\n'})
@@ -268,9 +308,95 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
 
     def test_unrecognized_source_specific_reference_refuses_instead_of_shipping_it(self):
         for text in ('# Title\nUse cctbx.something here.\n', '# Title\ncd /absolute/path/to/new_layout\n',
-                     '# Title\ncd /unknown/prefix/cctbx_project/libtbx/guided_coding\n'):
+                     '# Title\ncd /unknown/prefix/cctbx_project/libtbx/guided_coding\n',
+                     '# Title\nUse PhEnIx.something here.\n'):
             with self.subTest(text=text), self.assertRaisesRegex(builder.PackageError, 'unadapted'):
                 builder.general_text('docs/new.md', text)
+
+    def test_three_required_documentation_clarifications_apply_exactly(self):
+        for name, (before, after) in DOC_CLARIFICATIONS.items():
+            with self.subTest(name=name):
+                text = 'Unchanged text before.\n\n' + before + '\n\nUnchanged text after.\n'
+                adapted = builder.general_text(name, text)
+                self.assertEqual(adapted, text.replace(before, after, 1))
+                self.assertIsNone(builder.GENERAL_REFERENCE.search(adapted))
+
+    def test_changed_missing_or_duplicated_required_passage_stops_build_and_preserves_inputs_and_outputs(self):
+        site, old, info = self.build_fixture()
+        originals = {p.relative_to(self.source).as_posix(): p.read_bytes()
+                     for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
+        for name, (before, _) in DOC_CLARIFICATIONS.items():
+            changed = before.replace('published', 'released', 1)
+            if changed == before:
+                changed = before.replace('current central checkout', 'current central directory', 1)
+            self.assertNotEqual(changed, before)
+            for replacement in (changed, '', before + '\n\n' + before):
+                with self.subTest(name=name, replacement=replacement), \
+                     tempfile.TemporaryDirectory(dir=self.root) as scratch:
+                    files = dict(originals)
+                    files[name] = files[name].decode().replace(before, replacement, 1).encode()
+                    self.write_source(files)
+                    info['source_manifest_sha256'] = builder.digest((self.source / 'SOURCE_MANIFEST.sha256').read_bytes())
+                    frozen = builder.source_snapshot(self.source)
+                    with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+                         patch.object(builder, 'run_contract_checks', return_value={}), \
+                         patch.object(builder, 'run_package_tests', return_value=[]), \
+                         patch.object(builder, 'make_zip', wraps=builder.make_zip) as make_zip, \
+                         patch.object(builder, 'publish_local') as publish:
+                        with self.assertRaisesRegex(builder.PackageError,
+                                'required general-edition passage missing or duplicated; inspect ' + re.escape(name)):
+                            builder.build_artifacts(self.source, info, b'license', site, Path(scratch))
+                        make_zip.assert_not_called()
+                        publish.assert_not_called()
+                    builder.require_unchanged_source(self.source, frozen)
+                    self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def test_project_specific_passages_are_adapted_without_rewriting_history(self):
+        overview = builder.general_text('docs/GUIDED_CODING_README.md',
+            "The full PHENIX server suite was **not run for this GC-only publication**;\n"
+            "the Developer explicitly waived it for that pilot.\n"
+            "The package supplies general setup defaults and a method template. It\n"
+            "contains no personal PHENIX profile, account, server requirement or `t96`\n"
+            "definition. An optional project defaults card can be supplied separately;\n"
+            "another developer adapts its paths and permissions to their own environment.\n" +
+            DOC_CLARIFICATIONS['docs/GUIDED_CODING_README.md'][0])
+        self.assertIn("original project's full server test suite", overview)
+        self.assertIn('**not run for this GC-only publication**', overview)
+        self.assertIn('explicitly waived it for that pilot', overview)
+        self.assertNotIn('t96', overview)
+        verification = builder.general_text('docs/GUIDED_CODING_VERIFICATION.md',
+            "Records (`phenix/.claude/records/2026-10-04-gc-followups-A/`), not in this file.\n"
+            "| PHENIX test discovery (A7, 2026-10-04) | `phenix.find_program search_type=tests "
+            "search_text=<function> tests.search_tests_by=function_called` traced `run_autobuild` to "
+            "its calling tests; the default mode matched test names; a function newer than the static "
+            "index (dated 2026-05-06) produced no entry and no message; `git_affected_tests=True` saw "
+            "only uncommitted modifications in the three module directories. Project guidance, "
+            "not a package feature. |\n"
+            "The full PHENIX server suite was **NOT RUN** under a specific waiver.\n" +
+            DOC_CLARIFICATIONS['docs/GUIDED_CODING_VERIFICATION.md'][0])
+        self.assertIn("original project's `.claude/records/2026-10-04-gc-followups-A/`", verification)
+        self.assertNotIn('Downloads', verification)
+        self.assertNotIn('find_program', verification)
+        self.assertIn('static index (dated 2026-05-06)', verification)
+        self.assertIn('only uncommitted modifications', verification)
+        self.assertIn('not included in the general kit', verification)
+        self.assertIn('**NOT RUN** under a specific waiver', verification)
+        setup = builder.general_text('payload/SETUP.md',
+            'Do not introduce PHENIX, named hosts, or suite shorthand into an unrelated\n'
+            'project. If no task is requested, complete setup and stop.')
+        self.assertIn("another project's commands", setup)
+        self.assertIn('If no task is requested, complete setup and stop.', setup)
+
+    def test_example_repository_renames_preserve_distinct_names_and_absolute_path_controls(self):
+        fixture = ('repositories = ["phenix", "cctbx"]\n'
+                   'remote = "ssh://example.invalid/phenix.git"\n'
+                   'invalid_name = "/Users/dev/unix/PHENIX/modules/phenix"\n')
+        adapted = builder.general_text('tests/tst_example.py', fixture)
+        self.assertIn('["example_project", "companion"]', adapted)
+        self.assertIn('ssh://example.invalid/example_project.git', adapted)
+        self.assertIn('"/Users/dev/Downloads/example_project"', adapted)
+        self.assertNotRegex(adapted, r'(?i)phenix|cctbx')
+        self.assertEqual(builder.general_text('tests/tst_example.py', adapted), adapted)
 
     def test_general_edition_runner_cannot_change_source_and_regenerate_manifest(self):
         site, old, info = self.build_fixture()
@@ -294,7 +420,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
         files['docs/GUIDED_CODING_USER_GUIDE.md'] = (
-            '# Guide\n\n```text\nPlease set up GuidedCoding from /absolute/path/to/cctbx_project/libtbx/guided_coding for this machine.\n```\n').encode()
+            temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md').decode() + '\n```text\nPlease set up GuidedCoding from /absolute/path/to/cctbx_project/libtbx/guided_coding for this machine.\n```\n').encode()
         self.write_source(files)
         info['source_manifest_sha256'] = builder.digest((self.source / 'SOURCE_MANIFEST.sha256').read_bytes())
         with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
@@ -311,13 +437,151 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             self.assertNotIn('GuidedCoding/LICENSE.cctbx.txt', archive.namelist())
         for name, data in outputs.items():
             if name.endswith('.html') and name != 'documentation.html':
+                if name == 'index.html':
+                    data = data.replace(builder.package_source_note(info).encode(), b'', 1)
                 self.assertNotRegex(data.decode(), r'(?i)cctbx|/absolute/path/to|~/Documents/GuidedCoding')
+
+    def test_main_page_names_the_source_adaptations_and_card_beside_download(self):
+        site, old, info = self.build_fixture()
+        with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+             patch.object(builder, 'run_contract_checks', return_value={}), \
+             patch.object(builder, 'run_package_tests', return_value=[]):
+            outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
+        page = outputs['index.html'].decode()
+        self.assertEqual(page.count('id="package-source"'), 1)
+        self.assertLess(page.index('id="download"'), page.index('id="package-source"'))
+        self.assertLess(page.index('id="package-source"'), page.index('id="install"'))
+        self.assertIn('cctbx_project/libtbx/guided_coding</code></a>', page)
+        self.assertIn('/' + info['commit'] + '/libtbx/guided_coding', page)
+        self.assertIn('edits the documentation and local path examples', page)
+        self.assertIn('<code>~/Downloads/GuidedCoding/guided_coding</code>, generalizes project-specific wording', page)
+        self.assertIn('href="GENERAL_DEVELOPER_CARD.md" download>general defaults card', page)
+        self.assertIn('the license, and which files were adapted with their checksums before and after, '
+                      'are recorded with the download', page)
+        self.assertNotIn('exact file changes are recorded with the download', page)
+        builder.verify_general_documentation({'index.html': outputs['index.html']}, info)
+        self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def test_temporary_instruction_edits_and_reason_are_in_zip_and_html(self):
+        site, old, info = self.build_fixture()
+        originals = builder.source_snapshot(self.source)
+        with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+             patch.object(builder, 'run_contract_checks', return_value={}), \
+             patch.object(builder, 'run_package_tests', return_value=[]):
+            outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
+        prefix = 'TMPDIR="$(cd "${TMPDIR:-/tmp}" && pwd -P)" python3 -I -B'
+        reason = 'The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links.'
+        doc_pages = {'docs/' + name: page for name, page, _, _ in builder.DOCUMENTS}
+        total = 0
+        with zipfile.ZipFile(io.BytesIO(outputs['guided_coding.zip'])) as archive:
+            for name in builder.TEMP_HEADERS:
+                text = archive.read('GuidedCoding/guided_coding/' + name).decode()
+                self.assertEqual(text.count(reason), 1, name)
+                page = doc_pages.get(name, 'reference-files.html')
+                if page == 'reference-files.html':
+                    self.assertIn(html.escape(text), outputs[page].decode())
+                else:
+                    self.assertIn('The kit commands resolve <code>TMPDIR</code> because macOS temporary paths '
+                                  'can pass through symbolic links.', outputs[page].decode())
+                count = sum(n for _, n in builder.TEMP_COMMANDS.get(name, ()))
+                self.assertEqual(text.count(prefix), count, name)
+                total += count
+                for command, n in builder.TEMP_COMMANDS.get(name, ()):
+                    fixed = command.replace('python3 -I -B', prefix).strip('`\n')
+                    self.assertEqual(text.count(command.replace('python3 -I -B', prefix)), n, name)
+                    self.assertIn(html.escape(fixed), outputs[page].decode(), name)
+            self.assertEqual(total, 17)
+            self.assertIn(reason.replace('`', ''), archive.read('GuidedCoding/INSTALL.md').decode())
+            for name in originals:
+                if name.startswith(('payload/tools/', 'tests/')):
+                    self.assertEqual(archive.read('GuidedCoding/guided_coding/' + name),
+                                     (self.source / name).read_bytes())
+        builder.require_unchanged_source(self.source, originals)
+        self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def test_changed_missing_or_duplicated_temporary_passage_stops_build(self):
+        site, old, info = self.build_fixture()
+        originals = {p.relative_to(self.source).as_posix(): p.read_bytes()
+                     for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
+        passages = [(name, command, 'instruction') for name, commands in builder.TEMP_COMMANDS.items()
+                    for command, _ in commands]
+        passages += [(name, header + '\n\n', 'explanation anchor')
+                     for name, header in builder.TEMP_HEADERS.items()]
+        for name, before, kind in passages:
+            changed = (before.replace('-I -B', '-B', 1) if kind == 'instruction'
+                       else before.replace('\n\n', ' (changed)\n\n', 1))
+            self.assertNotEqual(changed, before)
+            for replacement in (changed, '', before + '\n\n' + before):
+                with self.subTest(name=name, before=before, replacement=replacement), \
+                     tempfile.TemporaryDirectory(dir=self.root) as scratch:
+                    files = dict(originals)
+                    files[name] = files[name].decode().replace(before, replacement, 1).encode()
+                    self.write_source(files)
+                    info['source_manifest_sha256'] = builder.digest((self.source / 'SOURCE_MANIFEST.sha256').read_bytes())
+                    frozen = builder.source_snapshot(self.source)
+                    with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+                         patch.object(builder, 'run_contract_checks', return_value={}), \
+                         patch.object(builder, 'run_package_tests', return_value=[]), \
+                         patch.object(builder, 'make_zip', wraps=builder.make_zip) as make_zip, \
+                         patch.object(builder, 'publish_local') as publish:
+                        with self.assertRaisesRegex(builder.PackageError,
+                                'required temporary-directory ' + kind + ' missing or duplicated; inspect ' + re.escape(name)):
+                            builder.build_artifacts(self.source, info, b'license', site, Path(scratch))
+                        make_zip.assert_not_called()
+                        publish.assert_not_called()
+                    builder.require_unchanged_source(self.source, frozen)
+                    self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def test_new_unresolved_python_instruction_stops_distribution_adaptation(self):
+        site, old, info = self.build_fixture()
+        (self.source / 'new-instructions.md').write_text('# New instructions\n\npython3 new_tool.py\n')
+        files = {p.relative_to(self.source).as_posix(): p.read_bytes()
+                 for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
+        (self.source / 'SOURCE_MANIFEST.sha256').write_bytes(manifest(files))
+        with self.assertRaisesRegex(builder.PackageError, 'unresolved temporary-directory instruction; inspect new-instructions.md'):
+            builder.general_source(self.source, self.root / 'edition')
+        self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def test_clean_environment_resolves_symbolic_temporary_path(self):
+        alias = self.root / 'alias'
+        alias.symlink_to(self.root, target_is_directory=True)
+        with patch.dict(os.environ, {'TMPDIR': str(alias)}):
+            env = builder.clean_environment(alias)
+        self.assertEqual(env['TMPDIR'], str(self.root))
+        self.assertEqual(env['HOME'], str(self.root))
+
+    def test_kit_test_runner_resolves_symbolic_source_and_temporary_paths(self):
+        files = {'SKILL.md': b'original skill\n', 'tests/tst_example.py': b'# immutable test fixture\n'}
+        self.write_source(files)
+        alias = self.root / 'alias'
+        alias.symlink_to(self.root, target_is_directory=True)
+        def checked(args, source, env):
+            self.assertEqual(source, self.source)
+            self.assertEqual(args, [self.source / 'tests/tst_example.py'])
+            self.assertEqual(env['TMPDIR'], str(self.root))
+            return 'Ran 1 test in 0.001s\n\nOK\n'
+        with patch.object(builder, 'run_checked', side_effect=checked):
+            result = builder.run_package_tests(alias / 'source', alias)
+        self.assertEqual(result[0]['tests'], 1)
+
+    def test_contract_runner_resolves_symbolic_source_and_temporary_paths(self):
+        alias = self.root / 'alias'
+        alias.symlink_to(self.root, target_is_directory=True)
+        def checked(args, source, env, **kwargs):
+            self.assertEqual(source, self.source)
+            self.assertEqual(args[0], self.source / 'payload/tools/screen_check.py')
+            self.assertEqual(env['TMPDIR'], str(self.root))
+            self.assertEqual(env['GC_PAYLOAD_ROOT'], str(self.source / 'payload'))
+            raise RuntimeError('stopped after verifying physical paths')
+        with patch.object(builder, 'run_checked', side_effect=checked), \
+             self.assertRaisesRegex(RuntimeError, 'stopped after verifying physical paths'):
+            builder.run_contract_checks(alias / 'source', (2, 1, 281), alias)
 
     def test_invalid_documentation_build_preserves_existing_output_set(self):
         site, old, info = self.build_fixture()
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
-        files['docs/GUIDED_CODING_USER_GUIDE.md'] = b'# New guide\n\n> Unsupported new syntax\n'
+        files['docs/GUIDED_CODING_USER_GUIDE.md'] = temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md') + b'> Unsupported new syntax\n'
         self.write_source(files)
         info['source_manifest_sha256'] = builder.digest((self.source / 'SOURCE_MANIFEST.sha256').read_bytes())
         with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
@@ -329,33 +593,56 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             publish.assert_not_called()
         self.assertEqual(old, {name: (site / name).read_bytes() for name in old})
 
-    def test_final_documentation_scan_allows_only_the_exact_historical_note(self):
+    def test_final_documentation_scan_allows_only_the_exact_source_notes(self):
         info = {'commit': 'a' * 40}
         note = builder.historical_note(info).encode()
+        main_note = builder.package_source_note(info).encode()
         builder.verify_general_documentation({'documentation.html': note}, info)
+        builder.verify_general_documentation({'index.html': main_note}, info)
         for filename, data in (
-            ('index.html', b'<p>cctbx_project</p>'),
+            ('index.html', main_note + b'<p>cctbx_project</p>'),
             ('user-guide.html', b'<a href="https://example.invalid/CCTBX">guide</a>'),
             ('reference-files.html', b'<p>cc&#116;bx</p>'),
             ('INSTALL.md', b'Use cCtBx here.'),
             ('GENERAL_DEVELOPER_CARD.md', b'Use /absolute/path/to/project.'),
             ('documentation.html', note + b'<p>cctbx</p>'),
-            ('index.html', note),
+            ('index.html', main_note + note),
+            ('documentation.html', note + main_note),
             ('README.md', b'Use cctbx_project/libtbx/guided_coding/.'),
         ):
             with self.subTest(filename=filename, data=data), self.assertRaisesRegex(builder.PackageError, 'unadapted'):
                 builder.verify_general_documentation({filename: data}, info)
-        for data in (note + note, note.replace(b'began', b'started')):
-            with self.subTest(data=data), self.assertRaisesRegex(builder.PackageError, 'historical attribution'):
-                builder.verify_general_documentation({'documentation.html': data}, info)
 
+        for filename, data in (('documentation.html', note + note),
+                               ('documentation.html', note.replace(b'began', b'started')),
+                               ('index.html', main_note + main_note),
+                               ('index.html', main_note.replace(b'Source and adaptations.', b'Source.')),
+                               ('index.html', note)):
+            with self.subTest(filename=filename, data=data), self.assertRaisesRegex(builder.PackageError, 'source attribution'):
+                builder.verify_general_documentation({filename: data}, info)
+
+    def test_final_scan_allows_affiliation_only_in_site_header(self):
+        info = {'commit': 'a' * 40}
+        affiliation = builder.SITE_AFFILIATION.encode()
+        header = b'<header class="site-header">' + affiliation + b'</header>'
+        builder.verify_general_documentation({'overview.html': header + b'<main>General projects.</main>'}, info)
+        for data in (affiliation, b'<main>' + affiliation + b'</main>',
+                     header + b'<p>PhEnIx commands</p>', header + b'<p>Ph&#101;nix commands</p>',
+                     header + b'<pre><code>&lt;header class="site-header"&gt;' + affiliation + b'</code></pre>',
+                     header + header, header.replace(b'Phenix</a>', b'PHENIX</a>')):
+            with self.subTest(data=data), self.assertRaisesRegex(builder.PackageError, 'unadapted'):
+                builder.verify_general_documentation({'overview.html': data}, info)
+        with self.assertRaisesRegex(builder.PackageError, 'unadapted'):
+            builder.verify_general_documentation({'INSTALL.md': header}, info)
     def test_leftover_template_or_installer_reference_refuses_without_replacing_outputs(self):
         site, old, info = self.build_fixture()
         original_templates = {name: (site / name).read_bytes()
                               for name in ('index.template.html', 'docs.template.html')}
         install = builder.installation_text
-        for target in ('index.template.html', 'docs.template.html', 'INSTALL.md',
-                       'GENERAL_DEVELOPER_CARD.md', 'README.md'):
+        for target, reference in ((target, reference)
+                                 for target in ('index.template.html', 'docs.template.html', 'INSTALL.md',
+                                                'GENERAL_DEVELOPER_CARD.md', 'README.md')
+                                 for reference in (b'CCTBX', b'PhEnIx')):
             with self.subTest(target=target), tempfile.TemporaryDirectory(dir=self.root) as directory:
                 for name, data in original_templates.items():
                     (site / name).write_bytes(data)
@@ -363,14 +650,14 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                 (site / 'README.md').write_bytes(b'# Maintenance\n')
                 if target in original_templates:
                     (site / target).write_bytes(original_templates[target].replace(
-                        b'</main>', b'<p>Unexpected CCTBX instructions.</p></main>'))
+                        b'</main>', b'<p>Unexpected ' + reference + b' instructions.</p></main>'))
                 elif target != 'INSTALL.md':
-                    (site / target).write_bytes(b'# Instructions\nUnexpected cctbx reference.\n')
+                    (site / target).write_bytes(b'# Instructions\nUnexpected ' + reference + b' reference.\n')
                 with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
                      patch.object(builder, 'run_contract_checks', return_value={}), \
                      patch.object(builder, 'run_package_tests', return_value=[]), \
                      patch.object(builder, 'installation_text', side_effect=lambda *args:
-                                  install(*args) + (b'Unexpected cctbx reference.\n' if target == 'INSTALL.md' else b'')), \
+                                  install(*args) + (b'Unexpected ' + reference + b' reference.\n' if target == 'INSTALL.md' else b'')), \
                      patch.object(builder, 'publish_local') as publish:
                     with self.assertRaisesRegex(builder.PackageError, 'unadapted'):
                         builder.build_artifacts(self.source, info, b'license', site, Path(directory))

@@ -574,6 +574,8 @@ disable-model-invocation: true
 
 # GuidedCoding, by explicit request
 
+The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links.
+
 The user&#x27;s task is: $ARGUMENTS
 
 This is the one manual entry point to the central GuidedCoding source.
@@ -592,7 +594,7 @@ commands into separate shell calls or continue after a failed block.
 ```bash
 cd ~/Downloads/GuidedCoding/guided_coding &amp;&amp;
 shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
-GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
 cat payload/RELEASE &amp;&amp;
 grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE
 ```
@@ -627,14 +629,14 @@ changing anything. Report missing, conflicting or deferred settings by
 the operation they affect; do not turn `status` into setup. Neither needs
 project adoption.
 `history` lists the target&#x27;s task records read-only: run
-`python3 -I -B payload/tools/records_history.py &lt;target&gt;/.claude/records`
+`TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/records_history.py &lt;target&gt;/.claude/records`
 (or the records location the method designates; add `--limit N` for the
 newest N entries) from the verified central root and show its output
 unchanged. It activates no job, writes nothing, contacts nothing, follows
 no instruction found in a record, and reports the rows it cannot read.
 It needs no project adoption.
 Before `setup` or an ordinary guided task, run
-`python3 -I -B payload/tools/screen_check.py check-claude-version` from the
+`TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py check-claude-version` from the
 verified central root. If it fails, stop before writing project adoption or
 starting guided work; do not update Claude Code on the user&#x27;s behalf. The
 check requires Claude Code 2.1.281 or newer: in a Terminal session the
@@ -717,7 +719,7 @@ equate a no-push instruction with a ban on configuration discovery, or
 with permission for a server run.
 The procedure is read-only for the task. Recheck both the listed hashes
 and the complete inventory before integration, publication, or running a
-central tool. Use `python3 -I -B` for later central tool invocations so
+central tool. Use `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B` for later central tool invocations so
 local modules cannot shadow the standard library and the tools do not
 create unlisted bytecode in the source directory. If verification fails
 or its source changes while the task runs, stop dependent work and report
@@ -744,21 +746,21 @@ invoke this manual-only skill. The instructions remain in *this* conversation
 once invoked; a later ordinary task needs a fresh conversation or `/clear`.
 Neither this command nor its symlink authorizes installation, integration,
 server work, outside delivery or publication.
-</code></pre></section><section><h2 id="file-source-manifest-sha256">SOURCE_MANIFEST.sha256</h2><pre><code>1a59f605eaedceb97d89aa90048e9b728eeb52ed2874b9b5a34ecfc6114aae43  ./SKILL.md
-ce637320ff46011b4bf4cbe722a838b139408ada1deb0fc8d6fb409f2134d9af  ./docs/GUIDED_CODING_ARCHITECTURE.md
-a272ac8b47babaa72190c03917ea660ee0df5b9f028dfbfcea319de0f60bae5f  ./docs/GUIDED_CODING_README.md
-fb742cb7b05bdb8e649838f95e67191abaeb17f81a55d3756eb403b1ae070439  ./docs/GUIDED_CODING_USER_GUIDE.md
-c0fe63f8fbd302da63e89c847de5fac9c1bb456c0044ea86b96c12ca678608c4  ./docs/GUIDED_CODING_VERIFICATION.md
+</code></pre></section><section><h2 id="file-source-manifest-sha256">SOURCE_MANIFEST.sha256</h2><pre><code>67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912  ./SKILL.md
+9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89  ./docs/GUIDED_CODING_ARCHITECTURE.md
+d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426  ./docs/GUIDED_CODING_README.md
+6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b  ./docs/GUIDED_CODING_USER_GUIDE.md
+a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591  ./docs/GUIDED_CODING_VERIFICATION.md
 ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b  ./payload/DEVELOPER_GUIDE_CONTRACT.md
 9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0  ./payload/GUIDE.md
 dd57340b690f2adb2a739546852fd907e6600e8ca357e4083a763bfb25c16e67  ./payload/HELPER.md
 6f7488f1f47daad6862ecbd135f60f100597816e483dc4c844786424773ba3f3  ./payload/OUTSIDE_REVIEWER_BRIEF.md
 f5fdacaaa390c7811fb05009c0b0d2b6eae7d338d8e643710ebd15a77dda3183  ./payload/RELEASE
-c2b7b178231f452211b506e5e3c63b55d8a44f9559e960d52000ac0bc8bea17c  ./payload/REVIEW_TRANSPORT.md
+9feabda2db72fedda743c35376f686078934d87a78e2e6c61e4a6600334116e2  ./payload/REVIEW_TRANSPORT.md
 f43699f157b1ca6e8d886ec3510cdd43aae033909697ea8866fdf6d61decd90d  ./payload/ROLES.md
-106db300575b82d72c6bc45443ed9e7bcc53b8026b75e3d8883ef6defec305a2  ./payload/SETUP.md
+b7b4b7064894af00f8691ffe8453086199bbfbfd3f967854940f25f7e9275e6a  ./payload/SETUP.md
 ca27ebc7ee171b53fa314d7a7b9907e3af78d3fe76a5d42837f9774a1c3facdd  ./payload/SETUP_DEFAULTS.md
-9c34b1782fb9f50178a33f06b3905942b75ce8bcd4e3380b0aebc01f2bd3f460  ./payload/WORKER.md
+30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a  ./payload/WORKER.md
 f12a32aaa310202941291e4392c32e807165205d1b3f05680a42ce023a944563  ./payload/screens/PLAN.md
 995cbe59fcf91406ec4b584e7831af2b36d541cdcd6ac155a05693b7eda204c3  ./payload/screens/PUBLICATION.md
 710b0d4ccc63b3e0175f6be1ca986d595b3f9ced78a16470ebd241a1cbd3b43b  ./payload/screens/RESULT.md
@@ -770,10 +772,10 @@ cac00770d7502fed3fb1dd55d454d692405efc10c330e015a8ea5168a4ae1346  ./payload/temp
 0b6a93f8864e7966681df4aadd227d1393f3a252a0456a347024190ae53aa23d  ./payload/tools/records_history.py
 879690e6ebd51616758fc06a04d491c5aedd47560d822ad2a5d05df6bbb3b466  ./payload/tools/review_bundle.py
 08e6f18263b2abe9e2166981db0f1c8ef79938a15887a260a7f021fcd76a2f5f  ./payload/tools/screen_check.py
-7c96bb07f0a27d2a966bdb7e8cd5a0e3241cb41805dd559a1c5df25bac0a0215  ./tests/tst_publication_precheck_v20.py
-053536b87ca52754f16abd71e4b391bf9423c6af786e221d48210fba1c2889b9  ./tests/tst_records_history_v20.py
+76c04b68abb99bba1c9280ad162822b360f60725c8f68cdec579f18cd2b748e6  ./tests/tst_publication_precheck_v20.py
+54d3e8168c7a164457e492850abe080a7fd2421f26e1c0cb0373e4bf9bccf4fb  ./tests/tst_records_history_v20.py
 69dc3f07a4afcac2aa6bac568a7815fceff3e5e544c559639aff9e0a562e31ee  ./tests/tst_review_bundle_v20.py
-42422d77e3ce38e4a322368461509bf7ce2607d723c6192bddd4b4f2386952c5  ./tests/tst_screen_check_v20.py
+a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c  ./tests/tst_screen_check_v20.py
 </code></pre></section><section><h2 id="file-payload-developer-guide-contract-md">payload/DEVELOPER_GUIDE_CONTRACT.md</h2><pre><code># Developer–Guide Contract
 
 **Version:** 2026-09-17, adopted. Supersedes the 2026-09-05 version,
@@ -1845,11 +1847,13 @@ think, only what the evidence shows.
 </code></pre></section><section><h2 id="file-payload-release">payload/RELEASE</h2><pre><code>guided_coding 2.0 pilot r10 rev17 candidate (followups-20261004; publication conventions without tags, explicit waivers, one dual-scope outside reading bound by OUTGOING.txt, named-installation rollout, job summaries and the read-only history listing, session titles, search roots; checker rules added to screen_check.py; new tools publication_precheck.py and records_history.py; app-aware Claude Code version check (2026-10-06); contract, adoption and setup recipe unchanged; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)
 </code></pre></section><section><h2 id="file-payload-review-transport-md">payload/REVIEW_TRANSPORT.md</h2><pre><code># Outside Reviewer transport, when a gate is due
 
+The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links.
+
 This file is read only for a full-path integration, publication batch, or release kit. The Developer decides exactly what crosses to the Outside Reviewer. The reader gets the **whole archive**, not a summary or a hash pasted in its place.
 
-1. Prepare packet files including `README_FIRST.md`, `PROOF_SUMMARY.md`, and the proposed `APPROVAL_REPORT.md` with the **complete tested diff and exact new test code**. Put the provisional verdict at the end of the proof summary so the reader can examine evidence first. Include code identity, test output and exit statuses, provenance of the decisive criterion, findings and dispositions. For a batch that will be published, also include `OUTGOING.txt` (the exact outgoing commits, bases, trees, remotes and refspecs), `SERVER_SUITE.txt` and `ROSTER_COMPARISON.txt`, so that one reading can address integration and publication together. Freeze once with the central tool, `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; freeze PACKET_DIR` (set `GC_PAYLOAD_ROOT` in this shell call). For a code change, run the screen check before presenting a result.
+1. Prepare packet files including `README_FIRST.md`, `PROOF_SUMMARY.md`, and the proposed `APPROVAL_REPORT.md` with the **complete tested diff and exact new test code**. Put the provisional verdict at the end of the proof summary so the reader can examine evidence first. Include code identity, test output and exit statuses, provenance of the decisive criterion, findings and dispositions. For a batch that will be published, also include `OUTGOING.txt` (the exact outgoing commits, bases, trees, remotes and refspecs), `SERVER_SUITE.txt` and `ROSTER_COMPARISON.txt`, so that one reading can address integration and publication together. Freeze once with the central tool, `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; freeze PACKET_DIR` (set `GC_PAYLOAD_ROOT` in this shell call). For a code change, run the screen check before presenting a result.
 2. After freezing, place `APPROVALS.md` and `CHECKER.md` in a **separate** companions directory **outside the frozen packet**, and `ERRATA.md` there if a correction is needed. The helper refuses a nested companions directory or copies of these reserved companion filenames in the packet before writing. The checker sheet and later approval are not added to or silently applied to the frozen packet.
-3. Run the central tool `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/review_bundle.py&quot; PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz` (set `GC_PAYLOAD_ROOT` in this shell call). Place `REVIEW_BUNDLE.tgz` **in the frozen packet&#x27;s own parent directory**, not in a separate output folder; an alias to that parent is allowed. The tool refuses a missing or changed packet and prints the archive SHA-256 and packet identity. The bundle contains the packet archive, companions, and a checksum list without a self-hash. Make one `REVIEW_MESSAGE.md` in Downloads: a factual cover with **explicit labeled lines** for the change, bundle hash, **SHA-256 of the packet&#x27;s top-level `MANIFEST.sha256`** as packet identity, base, host, process count used in checks, errata status, limits, the two review questions and the scope asked for (integration, publication, or both), followed by the **full central `OUTSIDE_REVIEWER_BRIEF.md`** text. Say `none` or `not applicable` on a required line only if that is the fact; do not omit it. Give no conclusion in the cover. Reopen the actual message file to confirm the complete brief, both identities and every labeled field are present. Give the Developer that message and the bundle together. If an available tool can deliver the Developer-selected exact files to an independent reader, ask him which artifact to send and use it; otherwise give him one simple manual transfer. Do not contact anyone without his authorization.
+3. Run the central tool `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/review_bundle.py&quot; PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz` (set `GC_PAYLOAD_ROOT` in this shell call). Place `REVIEW_BUNDLE.tgz` **in the frozen packet&#x27;s own parent directory**, not in a separate output folder; an alias to that parent is allowed. The tool refuses a missing or changed packet and prints the archive SHA-256 and packet identity. The bundle contains the packet archive, companions, and a checksum list without a self-hash. Make one `REVIEW_MESSAGE.md` in Downloads: a factual cover with **explicit labeled lines** for the change, bundle hash, **SHA-256 of the packet&#x27;s top-level `MANIFEST.sha256`** as packet identity, base, host, process count used in checks, errata status, limits, the two review questions and the scope asked for (integration, publication, or both), followed by the **full central `OUTSIDE_REVIEWER_BRIEF.md`** text. Say `none` or `not applicable` on a required line only if that is the fact; do not omit it. Give no conclusion in the cover. Reopen the actual message file to confirm the complete brief, both identities and every labeled field are present. Give the Developer that message and the bundle together. If an available tool can deliver the Developer-selected exact files to an independent reader, ask him which artifact to send and use it; otherwise give him one simple manual transfer. Do not contact anyone without his authorization.
 4. File the verbatim reply **outside** the frozen packet. Check the archive and packet identities and the `Scope:` line in that reply and disposition every finding. A reading scoped to both gates serves the RESULT and the PUBLICATION screen of that packet. A re-staged or otherwise changed packet has a new identity and needs its own reading or a reassessment addendum bound to it; a reading is never reused across identities. Only then prepare the final result or publication decision. The Outside Reviewer never authorizes integration or a push; that word belongs to the Developer.
 
 The bundle helper establishes transport integrity and file presence. It cannot authenticate who wrote a companion, whether tests really ran, or whether a condition was genuinely met. A release-kit bundle can follow the same transport layout using its own packet and companions, but the kit itself must be reviewed before Worker use.
@@ -2111,8 +2115,8 @@ Explain the immediate purpose in plain language. Establish which activities
 are relevant from the project and request: local tests/builds, CI, remote
 testing, publication, or others. Ask one small question only if relevance
 cannot be established. Servers and domain-specific tools are optional.
-Do not introduce PHENIX, named hosts, or suite shorthand into an unrelated
-project. If no task is requested, complete setup and stop.
+Do not introduce another project&#x27;s commands, named hosts or test-suite
+shortcuts into an unrelated project. If no task is requested, complete setup and stop.
 
 ## 2. Recover before asking the user to remember
 
@@ -2432,6 +2436,8 @@ next Guide does not need the attachment or conversation to find them.
 Conflicts remain visible until resolved by applicable authority or the user.
 </code></pre></section><section><h2 id="file-payload-worker-md">payload/WORKER.md</h2><pre><code># Worker — one bounded local change (GuidedCoding 2.0 pilot)
 
+The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links.
+
 Read the current repository authority and the named job. Only after that authority explicitly adopts `DEVELOPER_GUIDE_CONTRACT.md` version **2026-09-17**, SHA-256 `ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b`, and identifies a separate project method, this release specializes that contract; the adjacent `ROLES.md` supplies its roles. They remain controlling where this file is silent only in a project with verified adoption. If adoption is absent or unclear, return to the SKILL.md adoption gate before guided work. Registering this skill does not itself authorize a new change, integration, or publication; use the Developer&#x27;s current grant for each job.
 
 This file is read through the manually invoked `/gc` skill in the central
@@ -2476,7 +2482,7 @@ authorization from the marker.
 
 **Auto** in Claude Code Desktop is recommended for bounded local work. If you can tell that this session is in Manual, say once before the first plan: “Please set this session to Auto if you want it to run automatically (recommended).” The mode selector can override settings files, so do not infer the live mode from `defaultMode` alone. If the mode is unknown but a routine permission prompt appears, give that same tip once with “If this session is in Manual” at the start. Do not repeat it, block work, change the mode, or put it inside a checked decision screen; Manual is still the Developer&#x27;s choice. The mode is an app setting, not permission to integrate or publish. If a tool asks permission, say what it asks for and preserve the prompt; do not work around a policy. Observe the repository and current grant yourself. If an older installation note predates a verified installed release that the Developer authorized, append a factual superseding note to the record and continue local work; the stale note alone is not a fresh approval gate. If authorization or verification is genuinely absent, stop. Ask the Developer only for meaning, value, risk, waiver, acceptance, or consequential action, or a choice outside the job&#x27;s named discretion. Six reserved decisions never transfer to the Worker.
 
-Use central `screens/PLAN.md` for the first decision, ideally within one minute for a warmed simple change. Draft each screen to a target-local record file, run the central `tools/screen_check.py` as `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; present KIND FILE` (add `--evidence`, `--reading`, and `--disposition` when applicable), and show only that checked, human-facing output before waiting for the Developer&#x27;s choice. Show the presenter&#x27;s output exactly as emitted: the bold attention line outside, and the checked screen body inside its code fence. Do not wrap the entire output in another fence or remove the presenter&#x27;s fence. Do not paste the raw screen or duplicate it with a long preamble. For a separate message that needs the Developer&#x27;s attention, begin with **PLEASE READ — ACTION NEEDED** or **PLEASE READ — NO ACTION NEEDED**, followed by one clear sentence saying what matters. Do not mark routine progress updates as alerts, and do not turn a notice into another approval or pause. Never print full or shortened hashes in any Developer-facing message, including closeout; keep them in records for verification. Say what happened, why it matters, the choice and its effects, **your recommendation and reason**, and what happens next. Classify **light** by consequence, never by file size: it cannot change behavior, requirements, interfaces, or a material claim; a bounded low-consequence change is light only if the greatest effect if wrong is stated and accepted in the plan. Otherwise choose **full**. The Developer approves the criterion and scope; do not ask for information already available in the repository or adopted rules. Record the Developer&#x27;s exact choice and plan file&#x27;s SHA-256 in the target&#x27;s `.claude/records/&lt;date&gt;-&lt;change-id&gt;/RECORD.md`, and keep `JOB_SUMMARY.txt` beside it: `job`, `project`, `title`, `state`, `updated`, `outcome`, `record`, then `ticket`, `procedure`, `installation` and `resources`. Append new `state:`, `updated:` and `outcome:` lines at each change instead of rewriting earlier ones, so the `history` listing shows the latest state. Older flat `&lt;change-id&gt;.md` records stay readable and are not rewritten.
+Use central `screens/PLAN.md` for the first decision, ideally within one minute for a warmed simple change. Draft each screen to a target-local record file, run the central `tools/screen_check.py` as `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; present KIND FILE` (add `--evidence`, `--reading`, and `--disposition` when applicable), and show only that checked, human-facing output before waiting for the Developer&#x27;s choice. Show the presenter&#x27;s output exactly as emitted: the bold attention line outside, and the checked screen body inside its code fence. Do not wrap the entire output in another fence or remove the presenter&#x27;s fence. Do not paste the raw screen or duplicate it with a long preamble. For a separate message that needs the Developer&#x27;s attention, begin with **PLEASE READ — ACTION NEEDED** or **PLEASE READ — NO ACTION NEEDED**, followed by one clear sentence saying what matters. Do not mark routine progress updates as alerts, and do not turn a notice into another approval or pause. Never print full or shortened hashes in any Developer-facing message, including closeout; keep them in records for verification. Say what happened, why it matters, the choice and its effects, **your recommendation and reason**, and what happens next. Classify **light** by consequence, never by file size: it cannot change behavior, requirements, interfaces, or a material claim; a bounded low-consequence change is light only if the greatest effect if wrong is stated and accepted in the plan. Otherwise choose **full**. The Developer approves the criterion and scope; do not ask for information already available in the repository or adopted rules. Record the Developer&#x27;s exact choice and plan file&#x27;s SHA-256 in the target&#x27;s `.claude/records/&lt;date&gt;-&lt;change-id&gt;/RECORD.md`, and keep `JOB_SUMMARY.txt` beside it: `job`, `project`, `title`, `state`, `updated`, `outcome`, `record`, then `ticket`, `procedure`, `installation` and `resources`. Append new `state:`, `updated:` and `outcome:` lines at each change instead of rewriting earlier ones, so the `history` listing shows the latest state. Older flat `&lt;change-id&gt;.md` records stay readable and are not rewritten.
 
 Before updating or rebuilding a working installation, or starting a comparison that needs files to stay fixed, give a bold **PLEASE READ — TEMPORARY SOURCE FREEZE (NO REPLY NEEDED)** notice. Name the affected installation or repositories, what the Developer should avoid changing, and when the restriction ends; unrelated work can continue. If the operation is already running, state its current phase immediately. Give a brief bold **PLEASE READ — SOURCE FREEZE ENDED** notice when it ends. A notice does not pause an already authorized job or ask for another approval.
 
@@ -2486,7 +2492,7 @@ Work in an isolated Git worktree. Use sparse checkout for a few known paths only
 
 Before the first edit, trace active entry points and any source-to-generated-test relationship; check whether supported inputs imply different outputs. Put consequential interpretations in PLAN. Exercise each changed entry point and one decisive wrong-result control per distinct claim; repeat a control after a change to what it checks, not by default after every edit.
 
-Make one target-local directory of evidence, with `CODE_IDENTITY.txt`, `RUN_LOG.txt`, and `CHANGE.diff` for a change. For full path or publication, add `README_FIRST.md` and `PROOF_SUMMARY.md` before freezing so the reviewer can follow the evidence. `CODE_IDENTITY.txt` must include `base_commit:`, `tested_tree:`, `check:`, `outcome:`, `criterion_by:`, `test_written_by:`, and `run_by:` with actual values. The tree must identify the candidate that the logged check exercised, not merely the planning branch. Freeze once with the central `tools/screen_check.py` as `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; freeze DIR`; send the whole immutable directory with its `MANIFEST.sha256`, not just its hash. A correction becomes a new directory and identity. A manifest verifies the bytes in that directory; it does not establish that the code in the log was tested.
+Make one target-local directory of evidence, with `CODE_IDENTITY.txt`, `RUN_LOG.txt`, and `CHANGE.diff` for a change. For full path or publication, add `README_FIRST.md` and `PROOF_SUMMARY.md` before freezing so the reviewer can follow the evidence. `CODE_IDENTITY.txt` must include `base_commit:`, `tested_tree:`, `check:`, `outcome:`, `criterion_by:`, `test_written_by:`, and `run_by:` with actual values. The tree must identify the candidate that the logged check exercised, not merely the planning branch. Freeze once with the central `tools/screen_check.py` as `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; freeze DIR`; send the whole immutable directory with its `MANIFEST.sha256`, not just its hash. A correction becomes a new directory and identity. A manifest verifies the bytes in that directory; it does not establish that the code in the log was tested.
 
 For a passing `outcome:`, write `PASS` with an explanation, or a complete count such as `before 4/4 exit 0; after 4/4 exit 0`. Put failed checks and expected-failure controls in `RUN_LOG.txt` and describe their limits in the result. Do not call a failing run a pass.
 
@@ -2504,7 +2510,7 @@ For a **full** job, follow central `REVIEW_TRANSPORT.md` to make the Outside Rev
 
 ## Result, stop, and action
 
-Use central `screens/RESULT.md` only after checks and any full-path outside reading; show what passed, what did not, the material limits, **your recommendation and reason**, and what **integrate / revise / discard** each does. Run `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; present result SCREEN --evidence DIR [--reading READING] [--disposition NOTE]` and show only its output; the saved screen and records keep the identities. A formatter passing is not an acceptance or an authorization. The Developer chooses. Record the choice verbatim with the screen and evidence identities; re-read the current approval and any revocation before an integration. Verify the exact candidate tree and affected scope again, and stop if they no longer match what was tested and approved. Never infer authorization from a dialog, silence, or Auto mode. Log the resulting commit/target and close out without a third decision screen.
+Use central `screens/RESULT.md` only after checks and any full-path outside reading; show what passed, what did not, the material limits, **your recommendation and reason**, and what **integrate / revise / discard** each does. Run `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/screen_check.py&quot; present result SCREEN --evidence DIR [--reading READING] [--disposition NOTE]` and show only its output; the saved screen and records keep the identities. A formatter passing is not an acceptance or an authorization. The Developer chooses. Record the choice verbatim with the screen and evidence identities; re-read the current approval and any revocation before an integration. Verify the exact candidate tree and affected scope again, and stop if they no longer match what was tested and approved. Never infer authorization from a dialog, silence, or Auto mode. Log the resulting commit/target and close out without a third decision screen.
 
 Before showing RESULT, link to the frozen `APPROVAL_REPORT.md` in a path
 the Developer can actually open and offer its full diff. After the
@@ -2522,7 +2528,7 @@ Before the reading, create the exact proposed commits in isolation: for each rep
 
 If the remote tip moved, a commit was rewritten, or any packet byte changed after the reading, the earlier verdict is never inherited: re-stage the same change on the new tip in isolation, write a new packet directory with its own `OUTGOING.txt` and a `RESTAGE_COMPARISON.txt` (subtree or diff identity and the upstream delta), re-run the package or regression tests (test evidence is reused by rerunning it, not by citing the old run), and obtain the reviewer&#x27;s reassessment of the affected scope, which may be a short addendum reading bound to the new packet identity with a `Supersedes reading SHA256:` line. A combined reading stays valid only while commit, tree, base, destination, packet identity and reading bytes are exactly those it names.
 
-Do not start a server job, rebase or move local master, or push while a decision on that action remains unanswered: a Claude Code permission dialog is not the missing procedure decision. Prepare an alternative replay in a scratch copy while waiting if useful. After PUBLISH, recheck the grant and base, run `python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/publication_precheck.py&quot; check REPO OUTGOING.txt --fetch --dry-run` (one push URL equal to the record; no `insteadOf`, `pushurl`, `mirror`, push refspec, `tagOpt` or `push.followTags=true` setting; commit, tree, parent and remote-tracking base as recorded; a dry run that fast-forwards only the approved branch) and `vet` the exact command text you will run: it accepts only that documented shape and refuses any other word (Git abbreviates options and reads settings from the environment), and it checks only what is submitted to it, so run exactly the vetted text and nothing else: `git -c push.followTags=false push --no-follow-tags &lt;remote&gt; &lt;commit&gt;:refs/heads/&lt;branch&gt;`. Never `--tags`, `--follow-tags`, `--mirror`, `--force`, a wildcard or matching refspec, and no new tag of any kind; count the remote&#x27;s tags before and after. Append actual suite, reading, risk disposition and remote result to the ticket report. If the suite or gate fails, report the failure and present HOLD or an explicit risk choice; never turn `PROCEED IF` into a false `SATISFIED` to placate the checker.
+Do not start a server job, rebase or move local master, or push while a decision on that action remains unanswered: a Claude Code permission dialog is not the missing procedure decision. Prepare an alternative replay in a scratch copy while waiting if useful. After PUBLISH, recheck the grant and base, run `TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B &quot;$GC_PAYLOAD_ROOT/tools/publication_precheck.py&quot; check REPO OUTGOING.txt --fetch --dry-run` (one push URL equal to the record; no `insteadOf`, `pushurl`, `mirror`, push refspec, `tagOpt` or `push.followTags=true` setting; commit, tree, parent and remote-tracking base as recorded; a dry run that fast-forwards only the approved branch) and `vet` the exact command text you will run: it accepts only that documented shape and refuses any other word (Git abbreviates options and reads settings from the environment), and it checks only what is submitted to it, so run exactly the vetted text and nothing else: `git -c push.followTags=false push --no-follow-tags &lt;remote&gt; &lt;commit&gt;:refs/heads/&lt;branch&gt;`. Never `--tags`, `--follow-tags`, `--mirror`, `--force`, a wildcard or matching refspec, and no new tag of any kind; count the remote&#x27;s tags before and after. Append actual suite, reading, risk disposition and remote result to the ticket report. If the suite or gate fails, report the failure and present HOLD or an explicit risk choice; never turn `PROCEED IF` into a false `SATISFIED` to placate the checker.
 
 **Installations are separate from the push.** A publication plan names each installation that will be brought to the published commit: canonical root, access host (two hostnames for one filesystem are one installation), repositories, exact target commits, permitted operations (fetch and fast-forward merge; refresh or rebuild only when the plan says so), verification, reservation and load rule, recovery boundary and stop conditions. Publication authorizes no installation update by itself; &quot;all my installations&quot; or &quot;whatever rebuild is necessary&quot; is not a rollout authorization. Hold an installation, report it as pending and continue the others on a dirty tree, local commits not on the remote, a delta needing a rebuild outside the plan, a foreign reservation or a failed verification. Recovery by reset, within the plan&#x27;s recovery boundary, requires the expected current HEAD, the recorded operation state and confirmation that no intervening work would be lost; a clean tree alone is not enough. Report the publication and each installation&#x27;s outcome separately.
 
@@ -3970,7 +3976,7 @@ class PrecheckFixture(unittest.TestCase):
 
     def block(self, **fields):
         &quot;&quot;&quot;One OUTGOING.txt block (SPEC_A 1.2) bound to the fixture repository.&quot;&quot;&quot;
-        values = dict(repository=&quot;phenix&quot;, remote=&quot;origin&quot;, remote_url=str(self.bare),
+        values = dict(repository=&quot;example_project&quot;, remote=&quot;origin&quot;, remote_url=str(self.bare),
                       base=self.base, commit=self.commit, tree=self.tree)
         values.update(fields)
         values.setdefault(&quot;refspec&quot;, f&quot;{values[&#x27;commit&#x27;]}:refs/heads/master&quot;)
@@ -4021,10 +4027,10 @@ class CheckCommand(PrecheckFixture):
     def test_one_block_passes_and_prints_the_command(self):
         &quot;&quot;&quot;SPEC_A 2.1 step 6: PRECHECK OK line, then the exact push command on
         the next line; --repository may name the single block.&quot;&quot;&quot;
-        ok_line = f&quot;PRECHECK OK phenix {self.commit} -&gt; origin {self.commit}:refs/heads/master&quot;
+        ok_line = f&quot;PRECHECK OK example_project {self.commit} -&gt; origin {self.commit}:refs/heads/master&quot;
         command = (f&quot;git -C {self.repo} -c push.followTags=false push --no-follow-tags &quot;
                    f&quot;origin {self.commit}:refs/heads/master&quot;)
-        for options in ((), (&quot;--repository&quot;, &quot;phenix&quot;)):
+        for options in ((), (&quot;--repository&quot;, &quot;example_project&quot;)):
             with self.subTest(options=options):
                 result = self.check(*options)
                 self.assertEqual(result.returncode, 0, result.stderr)
@@ -4049,7 +4055,7 @@ class CheckCommand(PrecheckFixture):
                 self.assertEqual(result.returncode, 2, result.stdout)
                 self.assertIn(&quot;ERROR:&quot;, result.stderr)
                 self.assertIn(reason, result.stderr)
-        self.outgoing.write_bytes(b&quot;repository: phenix\n\xff\xfe\n&quot;)
+        self.outgoing.write_bytes(b&quot;repository: example_project\n\xff\xfe\n&quot;)
         result = self.check()
         self.assertEqual(result.returncode, 2, result.stdout)
         self.assertIn(&quot;outgoing record is not UTF-8&quot;, result.stderr)
@@ -4061,9 +4067,9 @@ class CheckCommand(PrecheckFixture):
         result = self.check()
         self.assertEqual(result.returncode, 2, result.stdout)
         self.assertIn(&quot;several repositories; name one with --repository&quot;, result.stderr)
-        named = self.check(&quot;--repository&quot;, &quot;phenix&quot;)
+        named = self.check(&quot;--repository&quot;, &quot;example_project&quot;)
         self.assertEqual(named.returncode, 0, named.stderr)
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit}&quot;, named.stdout)
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit}&quot;, named.stdout)
         unknown = self.check(&quot;--repository&quot;, &quot;nowhere&quot;)
         self.assertEqual(unknown.returncode, 2, unknown.stdout)
         self.assertIn(&quot;ERROR:&quot;, unknown.stderr)
@@ -4071,7 +4077,7 @@ class CheckCommand(PrecheckFixture):
     def test_destination_must_equal_remote_url(self):
         &quot;&quot;&quot;SPEC_A 2.1 step 2: `remote get-url --all --push` must print exactly
         one line equal to remote_url; the lines found are reported.&quot;&quot;&quot;
-        self.outgoing.write_text(self.block(remote_url=&quot;ssh://git@example.invalid/phenix.git&quot;))
+        self.outgoing.write_text(self.block(remote_url=&quot;ssh://git@example.invalid/example_project.git&quot;))
         result = self.check()
         self.assertEqual(result.returncode, 2, result.stdout)
         self.assertIn(&quot;push destination differs from outgoing record&quot;, result.stderr)
@@ -4124,7 +4130,7 @@ class CheckCommand(PrecheckFixture):
         result = self.check()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn(&quot;push.default&quot;, (result.stdout + result.stderr).lower())
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit}&quot;, result.stdout)
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit}&quot;, result.stdout)
 
     def test_binding_mismatches_are_refused(self):
         &quot;&quot;&quot;SPEC_A 2.1 step 4: wrong tree, wrong first parent, remote-tracking
@@ -4170,7 +4176,7 @@ class CheckCommand(PrecheckFixture):
         pushes nothing.&quot;&quot;&quot;
         result = self.check(&quot;--dry-run&quot;)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit} -&gt; origin &quot;
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit} -&gt; origin &quot;
                       f&quot;{self.commit}:refs/heads/master&quot;, result.stdout)
         self.assertEqual(self.git(&quot;rev-parse&quot;, &quot;refs/heads/master&quot;, cwd=self.bare), self.base)
 
@@ -4217,7 +4223,7 @@ class CheckCommand(PrecheckFixture):
                 result = self.check()
                 self.git(&quot;config&quot;, &quot;--unset&quot;, &quot;push.followTags&quot;, cwd=self.repo)
                 self.assertEqual(result.returncode, 0, result.stderr)
-                self.assertIn(f&quot;PRECHECK OK phenix {self.commit}&quot;, result.stdout)
+                self.assertIn(f&quot;PRECHECK OK example_project {self.commit}&quot;, result.stdout)
                 self.assertNotIn(&quot;forbidden push setting&quot;, result.stderr)
         self.assertEqual(self.check().returncode, 0)
 
@@ -4283,7 +4289,7 @@ class CheckCommand(PrecheckFixture):
         result = check_dry_run()
         self.assertTrue(calls.exists(), &quot;the fake git never answered the dry-run push&quot;)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit} -&gt; origin &quot;
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit} -&gt; origin &quot;
                       f&quot;{self.commit}:refs/heads/master&quot;, result.stdout)
         self.assertEqual(self.git(&quot;rev-parse&quot;, &quot;refs/heads/master&quot;, cwd=self.bare), self.base)
 
@@ -4364,7 +4370,7 @@ class CheckCommand(PrecheckFixture):
         self.assertEqual((probe.returncode, probe.stdout, probe.stderr), (1, &quot;&quot;, &quot;&quot;))
         control = self.check()
         self.assertEqual(control.returncode, 0, control.stderr)
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit}&quot;, control.stdout)
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit}&quot;, control.stdout)
 
     def test_binding_query_failure_is_refused_despite_correct_output(self):
         &quot;&quot;&quot;SPEC_A 10 (2.1 step 4): a fake git that answers rev-parse --verify
@@ -4386,7 +4392,7 @@ class CheckCommand(PrecheckFixture):
         self.assertNotIn(&quot;PRECHECK OK&quot;, result.stdout)
         control = self.check()
         self.assertEqual(control.returncode, 0, control.stderr)
-        self.assertIn(f&quot;PRECHECK OK phenix {self.commit}&quot;, control.stdout)
+        self.assertIn(f&quot;PRECHECK OK example_project {self.commit}&quot;, control.stdout)
 
 
 class VetCommand(unittest.TestCase):
@@ -4407,7 +4413,7 @@ class VetCommand(unittest.TestCase):
 
     def test_canonical_command_is_accepted(self):
         &quot;&quot;&quot;SPEC_A 2.2: the exact command printed by `check` passes with VET OK.&quot;&quot;&quot;
-        for repo in (&quot;X&quot;, self.temp.name, &quot;/Users/dev/unix/PHENIX/modules/phenix&quot;):
+        for repo in (&quot;X&quot;, self.temp.name, &quot;/Users/dev/Downloads/example_project&quot;):
             with self.subTest(repo=repo):
                 result = self.vet(*self.canonical(repo))
                 self.assertEqual(result.returncode, 0, result.stderr)
@@ -4489,7 +4495,7 @@ class VetCommand(unittest.TestCase):
         absolute or relative path) is refused.&quot;&quot;&quot;
         for remote in (&quot;git@github.com:companion/companion_project.git&quot;,
                        &quot;https://github.com/companion/companion_project.git&quot;,
-                       &quot;ssh://git@example.invalid/phenix.git&quot;,
+                       &quot;ssh://git@example.invalid/example_project.git&quot;,
                        &quot;/tmp/remote.git&quot;, &quot;../remote.git&quot;):
             with self.subTest(remote=remote):
                 command = self.canonical()
@@ -4567,7 +4573,7 @@ class VetCommand(unittest.TestCase):
         push --no-follow-tags origin &lt;40hex&gt;:refs/heads/master` is VET OK; the
         -C directory (which contains `/`) is an option argument, not the
         remote operand.&quot;&quot;&quot;
-        for repo in (&quot;X&quot;, self.temp.name, &quot;/Users/dev/unix/PHENIX/modules/phenix&quot;):
+        for repo in (&quot;X&quot;, self.temp.name, &quot;/Users/dev/Downloads/example_project&quot;):
             with self.subTest(repo=repo):
                 result = self.vet(*self.canonical(repo))
                 self.assertEqual(result.returncode, 0, result.stderr)
@@ -4796,9 +4802,9 @@ IMPORT = re.compile(r&quot;^\s*(?:import\s+(?P&lt;modules&gt;[^#]+)|from\s+(?P&l
 
 
 def summary(job, state, outcome, ticket=&quot;-&quot;):
-    return (f&quot;job: {job}\nproject: phenix\ntitle: {job} title\nstate: {state}\n&quot;
+    return (f&quot;job: {job}\nproject: example_project\ntitle: {job} title\nstate: {state}\n&quot;
             f&quot;updated: 2026-10-01T10:00Z\noutcome: {outcome}\nrecord: RECORD.md\n&quot;
-            f&quot;ticket: {ticket}\nprocedure: r10 rev16\ninstallation: /opt/phenix\nresources: -\n&quot;)
+            f&quot;ticket: {ticket}\nprocedure: r10 rev16\ninstallation: /opt/example_project\nresources: -\n&quot;)
 
 
 def listing(root):
@@ -5394,13 +5400,13 @@ import screen_check as checker
 TREE = &quot;b&quot; * 40
 BASE = &quot;a&quot; * 40
 COMMIT = &quot;c&quot; * 40
-REMOTE_URL = &quot;ssh://git@example.invalid/phenix.git&quot;
+REMOTE_URL = &quot;ssh://git@example.invalid/example_project.git&quot;
 OUTGOING_KEYS = (&quot;repository&quot;, &quot;remote&quot;, &quot;remote_url&quot;, &quot;base&quot;, &quot;commit&quot;, &quot;tree&quot;, &quot;refspec&quot;)
 
 
 def outgoing(omit=None, **fields):
     &quot;&quot;&quot;One OUTGOING.txt block (SPEC_A 1.2); `omit` drops a key, fields override.&quot;&quot;&quot;
-    values = dict(repository=&quot;phenix&quot;, remote=&quot;origin&quot;, remote_url=REMOTE_URL,
+    values = dict(repository=&quot;example_project&quot;, remote=&quot;origin&quot;, remote_url=REMOTE_URL,
                   base=BASE, commit=COMMIT, tree=TREE)
     values.update(fields)
     values.setdefault(&quot;refspec&quot;, f&quot;{values[&#x27;commit&#x27;]}:refs/heads/master&quot;)
@@ -5941,7 +5947,7 @@ class ScreenChecks(unittest.TestCase):
     def publication(self, batch=None, commit=COMMIT):
         reading_id = checker.digest(self.reading.read_bytes())
         if batch is None:
-            batch = f&quot;One local change to shared master.\nphenix commit {commit} to master.&quot;
+            batch = f&quot;One local change to shared master.\nexample_project commit {commit} to master.&quot;
         return self.put(f&quot;PUBLICATION | batch-1 | {self.identity}\n&quot;
                         f&quot;BATCH\n{batch}\n&quot;
                         &quot;SERVER CHECK\nSuite and roster are in evidence.\n&quot;
@@ -6331,7 +6337,7 @@ class ScreenChecks(unittest.TestCase):
 
     def test_outgoing_record_must_be_utf8(self):
         &quot;&quot;&quot;SPEC_A 1.2: a non-UTF-8 OUTGOING.txt is refused.&quot;&quot;&quot;
-        (self.evidence / &quot;OUTGOING.txt&quot;).write_bytes(b&quot;repository: phenix\n\xff\xfe\n&quot;)
+        (self.evidence / &quot;OUTGOING.txt&quot;).write_bytes(b&quot;repository: example_project\n\xff\xfe\n&quot;)
         self.refreeze()
         self.publication_refused(&quot;outgoing record is not UTF-8&quot;)
 
@@ -6399,8 +6405,8 @@ class ScreenChecks(unittest.TestCase):
         for label, batch in (
                 (&quot;absent&quot;, &quot;One local change to shared master.\nNo identifiers here.&quot;),
                 (&quot;inside a longer token&quot;,
-                 f&quot;One local change.\nphenix commit {COMMIT}0 to master.&quot;),
-                (&quot;prefixed&quot;, f&quot;One local change.\nphenix commit x{COMMIT} to master.&quot;)):
+                 f&quot;One local change.\nexample_project commit {COMMIT}0 to master.&quot;),
+                (&quot;prefixed&quot;, f&quot;One local change.\nexample_project commit x{COMMIT} to master.&quot;)):
             with self.subTest(batch=label):
                 self.publication_refused(&quot;outgoing commit is not named in BATCH&quot;, batch=batch)
         with self.subTest(batch=&quot;named only in SERVER CHECK&quot;):
@@ -6424,7 +6430,7 @@ class ScreenChecks(unittest.TestCase):
                                          remote_url=&quot;ssh://git@example.invalid/companion.git&quot;))
         self.refreeze()
         self.ok(&quot;publication&quot;, self.publication(
-            batch=f&quot;Two changes.\nphenix commit {COMMIT} and companion commit {second}.&quot;),
+            batch=f&quot;Two changes.\nexample_project commit {COMMIT} and companion commit {second}.&quot;),
             self.reading, self.evidence)
         self.publication_refused(&quot;outgoing commit is not named in BATCH&quot;)
         (self.evidence / &quot;OUTGOING.txt&quot;).write_text(outgoing() + &quot;\n&quot; + outgoing())

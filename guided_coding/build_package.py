@@ -32,9 +32,42 @@ MAX_TOTAL = 32 * 1024 * 1024
 SHA = re.compile(r"[0-9a-f]{40}")
 SITE = Path(__file__).resolve().parent
 INSTALL_ROOT = "~/Downloads/GuidedCoding/guided_coding"
-EDITION = "general-downloads-v1"
+EDITION = "general-downloads-v2"
 GENERAL_REFERENCE = re.compile(
-    r"cctbx|/absolute/path/to|/path/to/cctbx|libtbx/guided_coding|/~/Downloads/GuidedCoding", re.I)
+    r"cctbx|phenix|/absolute/path/to|/path/to/cctbx|libtbx/guided_coding|/~/Downloads/GuidedCoding", re.I)
+SITE_AFFILIATION = '<a href="https://www.phenix-online.org/">Phenix</a> Software Team'
+TEMP_PREFIX = 'TMPDIR="$(cd "${TMPDIR:-/tmp}" && pwd -P)"'
+TEMP_REASON = "The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links."
+TEMP_HEADERS = {
+    "SKILL.md": "# GuidedCoding, by explicit request",
+    "docs/GUIDED_CODING_ARCHITECTURE.md": "# GuidedCoding architecture",
+    "docs/GUIDED_CODING_VERIFICATION.md": "# GuidedCoding verification and limits",
+    "docs/GUIDED_CODING_USER_GUIDE.md": "# GuidedCoding user guide",
+    "docs/GUIDED_CODING_README.md": "# GuidedCoding — an opt-in coding procedure",
+    "payload/WORKER.md": "# Worker — one bounded local change (GuidedCoding 2.0 pilot)",
+    "payload/REVIEW_TRANSPORT.md": "# Outside Reviewer transport, when a gate is due",
+}
+SOURCE_COMMAND = 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+TEMP_COMMANDS = {
+    "SKILL.md": ((SOURCE_COMMAND, 1),
+                 ('`python3 -I -B payload/tools/records_history.py <target>/.claude/records`', 1),
+                 ('`python3 -I -B payload/tools/screen_check.py check-claude-version`', 1),
+                 ('`python3 -I -B`', 1)),
+    "docs/GUIDED_CODING_ARCHITECTURE.md": (('`python3 -I -B`', 1),),
+    "docs/GUIDED_CODING_VERIFICATION.md": ((SOURCE_COMMAND, 1),
+        ("python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n", 1)),
+    "docs/GUIDED_CODING_USER_GUIDE.md": ((SOURCE_COMMAND, 2),
+        ('GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py check-claude-version &&\n', 1),
+        ('GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py register-skill .\n', 1)),
+    "payload/WORKER.md": (
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" present KIND FILE`', 1),
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze DIR`', 1),
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" present result SCREEN --evidence DIR [--reading READING] [--disposition NOTE]`', 1),
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" check REPO OUTGOING.txt --fetch --dry-run`', 1)),
+    "payload/REVIEW_TRANSPORT.md": (
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze PACKET_DIR`', 1),
+        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/review_bundle.py" PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz`', 1)),
+}
 DOCUMENTS = (
     ("GUIDED_CODING_USER_GUIDE.md", "user-guide.html", "User guide",
      "Register Guided Coding, set up each project, use the commands, update and uninstall."),
@@ -278,6 +311,7 @@ def check_hooks(source):
 
 
 def clean_environment(home):
+    home = home.resolve(strict=True)
     env = {k: v for k, v in os.environ.items()
            if not k.startswith(("CLAUDE", "ANTHROPIC", "GC_", "PYTHON", "GIT_"))}
     env.update(HOME=str(home), TMPDIR=str(home), PYTHONDONTWRITEBYTECODE="1",
@@ -305,6 +339,8 @@ def fake_client(path, version):
 
 def run_contract_checks(source, minimum, scratch):
     """Check current client-selection and registration interfaces with fake clients."""
+    source = source.resolve(strict=True)
+    scratch = scratch.resolve(strict=True)
     tool = source / "payload/tools/screen_check.py"
     env = clean_environment(scratch)
     env["GC_PAYLOAD_ROOT"] = str(source / "payload")
@@ -363,6 +399,8 @@ def run_contract_checks(source, minimum, scratch):
 
 
 def run_package_tests(source, scratch):
+    source = source.resolve(strict=True)
+    scratch = scratch.resolve(strict=True)
     env = clean_environment(scratch)
     results = []
     tests = sorted(source.glob("tests/tst_*.py"))
@@ -418,8 +456,60 @@ def general_text(name, text):
                             "a development or recovery tag. Record the accepted source revision and\n"
                             "manifest with the work; any release tag needs the project's own authorization.")
     elif name == "docs/GUIDED_CODING_README.md":
-        text = text.replace("was published to `cctbx_project` on", "was published on")
+        before = ("`enumcheck-20261002T194333Z` was published to `cctbx_project` on\n"
+                  "2026-10-02 (commit `c36887c7f489018af4f91773246ecde32d1b4e24`), and its\n"
+                  "documentation revision `docs-20261003` on 2026-10-03 (commit\n"
+                  "`b0747a4a55f29db3abe04358480d5867e94cb792`).")
+        after = ("`enumcheck-20261002T194333Z` was published in the original upstream source repository on\n"
+                 "2026-10-02 (upstream commit `c36887c7f489018af4f91773246ecde32d1b4e24`), and its\n"
+                 "documentation revision `docs-20261003` on 2026-10-03 (upstream commit\n"
+                 "`b0747a4a55f29db3abe04358480d5867e94cb792`).")
+        require(text.count(before) == 1, "required general-edition passage missing or duplicated; inspect " + name)
+        text = text.replace(before, after, 1)
+        text = text.replace("The full PHENIX server suite", "The original project's full server test suite")
+        text = text.replace(
+            "contains no personal PHENIX profile, account, server requirement or `t96`\n"
+            "definition. An optional project defaults card can be supplied separately;\n"
+            "another developer adapts its paths and permissions to their own environment.",
+            "contains no personal project profile, account, required server or predefined\n"
+            "test shortcut. You may supply a separate project defaults card; adapt its\n"
+            "paths and permissions to your own environment.")
     elif name == "docs/GUIDED_CODING_VERIFICATION.md":
+        before = ("The skill entry `SKILL.md`, whose session-title instructions these observations exercised, "
+                  "is byte-identical between that revision and the published one;")
+        after = ("The skill entry `SKILL.md`, whose session-title instructions these observations exercised, "
+                 "is byte-identical between that revision and the published upstream revision; "
+                 "this edition's copy differs from its pinned upstream source only in its example source path "
+                 "and temporary-directory handling, "
+                 "not in the session-title instructions;")
+        require(text.count(before) == 1, "required general-edition passage missing or duplicated; inspect " + name)
+        text = text.replace(before, after, 1)
+        # These are historical project-relative records, not new Downloads records.
+        text = text.replace("(`phenix/.claude/records/2026-10-04-gc-followups-A/`)",
+                            "(in the original project's `.claude/records/2026-10-04-gc-followups-A/`)")
+        text = text.replace("record\n`phenix/.claude/records/2026-10-06-gc-app-version-check/`",
+                            "record in the original project's\n`.claude/records/2026-10-06-gc-app-version-check/`")
+        text = text.replace("record `phenix/.claude/records/2026-10-06-gc-app-version-check/`",
+                            "record in the original project's `.claude/records/2026-10-06-gc-app-version-check/`")
+        text = text.replace("This was not a PHENIX full-suite run.",
+                            "This did not run the original project's full test suite.")
+        text = text.replace("not a PHENIX suite", "not the original project's full test suite")
+        # Summarize an out-of-scope historical tool; do not invent a general command.
+        text = text.replace(
+            "| PHENIX test discovery (A7, 2026-10-04) | `phenix.find_program search_type=tests "
+            "search_text=<function> tests.search_tests_by=function_called` traced `run_autobuild` to "
+            "its calling tests; the default mode matched test names; a function newer than the static "
+            "index (dated 2026-05-06) produced no entry and no message; `git_affected_tests=True` saw "
+            "only uncommitted modifications in the three module directories. Project guidance, "
+            "not a package feature. |",
+            "| Historical project test lookup (A7, 2026-10-04) | A project-specific lookup tool "
+            "found calling tests in a trial in the original project; its default mode matched test names. "
+            "Its static index (dated 2026-05-06) missed a newer function without a message, and its "
+            "changed-file mode considered only uncommitted modifications in three module directories. "
+            "This tool is not included in the general kit. |")
+        text = text.replace("The full PHENIX server suite",
+                            "The original project's full server test suite")
+        text = text.replace("PHENIX project during October 2026", "original development project during October 2026")
         text = text.replace("| Test isolation in the repository | [`libtbx/tst_guided_coding.py`](../../tst_guided_coding.py) | Complete source verification of arbitrary unlisted files in the original installation |",
                             "| Standalone test runners | [`tests/tst_screen_check_v20.py`](../tests/tst_screen_check_v20.py) and the other shipped runners | Complete source verification of arbitrary unlisted files in the installation |")
         start = text.find("From an appropriate cctbx environment, the repository wrapper is:")
@@ -434,11 +524,25 @@ def general_text(name, text):
                     "requirements or tools shipped with this installer.\n\n" + text[end:])
         text = text.replace("python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v",
                             f"cd {INSTALL_ROOT} &&\npython3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v")
+    elif name == "docs/GUIDED_CODING_ARCHITECTURE.md":
+        before = ("The personal link exposes the current central checkout, not a pinned\n"
+                  "release. Updating that checkout therefore needs coordination with active\n"
+                  "work and the repository's integration rules.")
+        after = ("The personal link exposes the current central source directory, not a pinned\n"
+                 "release. Replacing that directory therefore needs coordination with active\n"
+                 "work; follow the update steps in INSTALL.md.")
+        require(text.count(before) == 1, "required general-edition passage missing or duplicated; inspect " + name)
+        text = text.replace(before, after, 1)
     elif name == "payload/GUIDE.md":
         text = text.replace("own release convention, read before proposing it: cctbx_project reserves\n"
                             "  tags for releases, and a pilot tag was removed there on 2026-10-03.",
                             "own release convention, read before proposing it. Development and\n"
                             "  recovery records use commit ids and branches, not release tags.")
+    elif name == "payload/SETUP.md":
+        text = text.replace("Do not introduce PHENIX, named hosts, or suite shorthand into an unrelated\n"
+                            "project.",
+                            "Do not introduce another project's commands, named hosts or test-suite\n"
+                            "shortcuts into an unrelated project.")
     paths = ("/absolute/path/to/cctbx_project/libtbx/guided_coding",
              "/path/to/cctbx_project/libtbx/guided_coding",
              "/absolute/path/to/libtbx/guided_coding",
@@ -449,9 +553,30 @@ def general_text(name, text):
     # Test repository names are arbitrary fixtures; preserve the same relationships.
     if name.startswith("tests/") and name.endswith(".py"):
         text = text.replace("cctbx_project", "companion_project").replace("cctbx", "companion")
+        text = text.replace("/Users/dev/unix/PHENIX/modules/phenix", "/Users/dev/Downloads/example_project")
+        text = re.sub("phenix", "example_project", text, flags=re.I)
     if name.endswith(".md") or name.startswith("tests/"):
         require(not GENERAL_REFERENCE.search(text),
                 "unadapted general-edition reference; inspect " + name)
+    return text
+
+
+def temporary_instructions(name, text):
+    """Resolve temporary paths in known instructions; refuse changed source passages."""
+    if not name.endswith(".md"):
+        return text
+    for before, count in TEMP_COMMANDS.get(name, ()):
+        require(text.count(before) == count,
+                "required temporary-directory instruction missing or duplicated; inspect " + name)
+        text = text.replace(before, before.replace("python3 -I -B", TEMP_PREFIX + " python3 -I -B"))
+    if name in TEMP_HEADERS:
+        before = TEMP_HEADERS[name] + "\n\n"
+        require(text.count(before) == 1,
+                "required temporary-directory explanation anchor missing or duplicated; inspect " + name)
+        text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
+    for match in re.finditer("python3", text):
+        require(text[max(0, match.start() - len(TEMP_PREFIX) - 1):match.start()] == TEMP_PREFIX + " ",
+                "unresolved temporary-directory instruction; inspect " + name)
     return text
 
 
@@ -464,7 +589,7 @@ def general_source(source, destination):
             continue
         name = path.relative_to(destination).as_posix()
         before = path.read_bytes()
-        after = (general_text(name, before.decode("utf-8")).encode("utf-8")
+        after = (temporary_instructions(name, general_text(name, before.decode("utf-8"))).encode("utf-8")
                  if path.suffix == ".md" or name.startswith("tests/") else before)
         if after != before:
             path.write_bytes(after)
@@ -485,6 +610,7 @@ def installation_text(info, minimum, edition):
 
 This is the complete general Guided Coding kit. Python 3.10+, Git, Bash and shasum are needed.
 Documentation and installation examples are adapted automatically for this edition.
+{TEMP_REASON.replace('`', '')}
 Its own source manifest covers the packaged files; PACKAGE_INFO.json records the changes.
 Claude Code must be {minimum} or newer when its version can be checked.
 
@@ -573,7 +699,7 @@ def reference_id(path):
 
 
 def historical_note(info):
-    """The only source attribution allowed in the generated HTML."""
+    """The source attribution in the documentation index."""
     return ('<h2 id="historical-origin">Historical origin</h2>'
             '<p>Guided Coding began in the cctbx project. This standalone edition adapts its documentation '
             'and examples for general projects. The '
@@ -582,15 +708,35 @@ def historical_note(info):
             'This edition has its own source manifest; it is not a byte-for-byte copy of that historical revision.</p>')
 
 
+def package_source_note(info):
+    """Explain the package's origin and general adaptations beside the download."""
+    return ('<p class="gc-small" id="package-source"><strong>Source and adaptations.</strong> '
+            'The material comes from '
+            f'<a href="https://github.com/{UPSTREAM}/tree/{info["commit"]}/{SOURCE_PATH}">'
+            '<code>cctbx_project/libtbx/guided_coding</code></a>. '
+            'The packager edits the documentation and local path examples to use '
+            '<code>~/Downloads/GuidedCoding/guided_coding</code>, generalizes project-specific wording '
+            'and examples, and supplies a '
+            '<a href="GENERAL_DEVELOPER_CARD.md" download>general defaults card</a> for your own projects. '
+            'Checking tools and the Developer–Guide Contract are unchanged; the license, and which files '
+            'were adapted with their checksums before and after, are recorded with the download.</p>')
+
+
 def verify_general_documentation(documents, info):
     """Reject leftover references in final pages and installer notes before saving."""
     for name, data in documents.items():
         text = data.decode("utf-8")
-        if name == "documentation.html":
-            note = historical_note(info)
-            require(text.count(note) == 1, "historical attribution changed or duplicated; inspect " + name)
+        notes = {"documentation.html": historical_note(info), "index.html": package_source_note(info)}
+        if name in notes:
+            note = notes[name]
+            require(text.count(note) == 1, "source attribution changed or duplicated; inspect " + name)
             text = text.replace(note, "", 1)
         if name.endswith(".html"):
+            # Preserve the real author affiliation in the shared site header only.
+            header = re.search(r'<header class="site-header">.*?</header>', text, re.S)
+            if header:
+                text = (text[:header.start()] + header[0].replace(SITE_AFFILIATION, "", 1)
+                        + text[header.end():])
             text = html.unescape(text)
         leftover = GENERAL_REFERENCE.search(text)
         require(leftover is None, "unadapted general-edition reference; inspect " + name
@@ -861,6 +1007,9 @@ def build_artifacts(source, info, license_data, site, scratch):
         "DOWNLOAD_URL": "guided_coding.zip", "DOWNLOAD_LABEL": "Download Guided Coding",
         "PACKAGE_STATUS": "Complete general-edition kit, setup card and installation notes.",
     })
+    marker = b"<!-- PACKAGE_SOURCE -->"
+    require(page.count(marker) == 1, "package-source template marker changed; inspect the generator")
+    page = page.replace(marker, package_source_note(info).encode(), 1)
     artifacts = {"guided_coding.zip": archive, "guided_coding.zip.sha256": (sha + "  guided_coding.zip\n").encode(),
             "package.json": (json.dumps(public_metadata, indent=2, sort_keys=True) + "\n").encode(),
             "index.html": page, **documentation}

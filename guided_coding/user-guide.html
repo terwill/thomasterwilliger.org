@@ -566,7 +566,8 @@ main {
     <p>If you already have a working shared registration, keep it. Open a session in each target project and run <code>/guided_coding setup</code> with that project’s card. Each project keeps its own settings while using the shared procedure. Earlier project trials are historical evidence, not defaults for your project.</p>
   </aside>
 <details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#register-once-then-choose-a-project">Register once, then choose a project</a></li><li><a href="#verify-a-source-archive-before-using-it">Verify a source archive before using it</a></li><li><a href="#one-time-registration">One-time registration</a></li><li><a href="#set-up-the-target-project">Set up the target project</a></li><li><a href="#commands-and-decisions">Commands and decisions</a></li><li><a href="#ordinary-conversations-and-session-titles">Ordinary conversations and session titles</a></li><li><a href="#update-publish-or-uninstall">Update, publish or uninstall</a></li></ul></div></details>
-<article class="gc-document"><p>Use <strong><code>/guided_coding</code></strong> to start a guided conversation. <code>/gc</code> remains a short alias. This guide describes the r10 rev17 candidate revision of the opt-in pilot; its <a href="verification.html">verification record</a> separates implemented checks from recorded client observations and remaining limitations.</p>
+<article class="gc-document"><p>The kit commands resolve <code>TMPDIR</code> because macOS temporary paths can pass through symbolic links.</p>
+<p>Use <strong><code>/guided_coding</code></strong> to start a guided conversation. <code>/gc</code> remains a short alias. This guide describes the r10 rev17 candidate revision of the opt-in pilot; its <a href="verification.html">verification record</a> separates implemented checks from recorded client observations and remaining limitations.</p>
 <h2 id="register-once-then-choose-a-project">Register once, then choose a project</h2>
 <p>Keep the procedure in one reviewed, stable directory, normally <code>~/Downloads/GuidedCoding/guided_coding</code>. Register that source once per local Claude Code configuration. You do not install another procedure copy in every repository.</p>
 <p>In ordinary Claude Code, you can request registration with this message, using the Downloads location below, or the stable location you chose:</p>
@@ -581,7 +582,7 @@ main {
 unzip ~/Downloads/guided_coding.zip -d ~/Downloads/guided_coding_review &amp;&amp;
 cd ~/Downloads/guided_coding_review/GuidedCoding/guided_coding &amp;&amp;
 shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
-GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
 cat payload/RELEASE &amp;&amp;
 grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE
 </code></pre>
@@ -592,11 +593,11 @@ grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE
 <p>After the reviewed source is in its authorized central location, inspect any existing personal skill path. Then run the complete guarded block with your canonical source path:</p>
 <pre><code>cd ~/Downloads/GuidedCoding/guided_coding &amp;&amp;
 shasum -a 256 -c SOURCE_MANIFEST.sha256 &amp;&amp;
-GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py verify-source . &amp;&amp;
 cat payload/RELEASE &amp;&amp;
 grep -Fq &#x27;r10 rev17 candidate&#x27; payload/RELEASE &amp;&amp;
-GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py check-claude-version &amp;&amp;
-GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; python3 -I -B payload/tools/screen_check.py register-skill .
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py check-claude-version &amp;&amp;
+GC_PAYLOAD_ROOT=&quot;$(pwd -P)/payload&quot; TMPDIR=&quot;$(cd &quot;${TMPDIR:-/tmp}&quot; &amp;&amp; pwd -P)&quot; python3 -I -B payload/tools/screen_check.py register-skill .
 </code></pre>
 <p><code>register-skill</code> rechecks the source and the Claude Code version itself, then creates exactly one symlink. It refuses an occupied destination, including an existing correct link, a real directory or a dangling link. A second invocation is a refusal, not an upgrade. It also refuses a symlinked configuration or skills directory. Leave unrelated files and links alone; changing an existing installation needs its own inspected, authorized edit.</p>
 <p>If an absolute <code>CLAUDE_CONFIG_DIR</code> is set, the destination is <code>CLAUDE_CONFIG_DIR/skills/guided_coding</code>. The helper rejects <code>..</code> components before creating directories. Use a resolved, ordinary source path: the complete-source checker refuses symlinks in that path, including a <code>/var</code> alias when <code>/private/var</code> is the actual path on a Mac.</p>

@@ -572,6 +572,7 @@ main {
     <a class="gc-button" href="@@DOWNLOAD_URL@@" download>@@DOWNLOAD_LABEL@@</a>
     <p class="gc-small">@@PACKAGE_STATUS@@</p>
     <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">@@COMMIT_SHORT@@</a> · @@COMMIT_DATE@@ · ZIP: @@ZIP_KB@@ KB</p>
+    <!-- PACKAGE_SOURCE -->
   </div>
 
   <section id="install">
@@ -623,7 +624,7 @@ export PATH="$HOME/.local/bin:$PATH"</code></pre>
       <li><a href="GENERAL_DEVELOPER_CARD.md" download>Download the general developer card</a>, attach it in that session and send <code>/guided_coding setup</code>.</li>
       <li>Check the proposed project settings and instruction changes. Approve them when they are right, then let Claude finish saving and checking them.</li>
     </ol>
-    <p>The card asks Claude to discover your project’s environment, build and test commands from its documentation and saved settings. It supplies no Phenix commands, server names or private paths. Remote work can be deferred when it is not needed.</p>
+    <p>The card asks Claude to discover your project’s environment, build and test commands from its documentation and saved settings. It supplies no project-specific commands, server names or private paths. Remote work can be deferred when it is not needed.</p>
     <p>Setup is for the repository you selected. Other repositories or checkouts may need their own setup. Keep any existing project instructions and work.</p>
   </section>
 

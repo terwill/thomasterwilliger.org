@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 150475,
+    "bytes": 151293,
     "file": "guided_coding.zip",
-    "sha256": "f353abb19809603750ac27acfcea4b40ce429de0524354174a46dec5bea3a6a0"
+    "sha256": "661f0e0e40e70ec34b3013f5dc45c31d950b4622741724d99c70e0e444feaa51"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -21,30 +21,30 @@
       {
         "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
         "page": "user-guide.html",
-        "page_sha256": "2372085141ef623679c3ca9097a4c0cecfef484c9be94aea634d821253b61dc0",
+        "page_sha256": "574c8ff3e674d554a696ddf33aeecd3fe1d9efb247935c1560be8b9acbab3214",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "source_sha256": "fb742cb7b05bdb8e649838f95e67191abaeb17f81a55d3756eb403b1ae070439"
+        "source_sha256": "6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b"
       },
       {
         "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
         "page": "overview.html",
-        "page_sha256": "a01a3ca1c81e7c774bd90ce8f0132dd2a9dee80d4ae9e6eaec9e30e6e0259122",
+        "page_sha256": "8b3c4dc69e71422bb95966c9b59672e0ad1775ab79d3ab24aa55799cf64341ee",
         "source": "docs/GUIDED_CODING_README.md",
-        "source_sha256": "a272ac8b47babaa72190c03917ea660ee0df5b9f028dfbfcea319de0f60bae5f"
+        "source_sha256": "d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426"
       },
       {
         "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
         "page": "architecture.html",
-        "page_sha256": "5ccf5528e99eef7bf35c7e1af8755c81de6f440e4df8ec24d8f65c1da0b0753a",
+        "page_sha256": "260bc1c33a0e5ea7b4f952710151c1dcf643b0cf527b4b6fad8c2fb06ba1e1f1",
         "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "source_sha256": "ce637320ff46011b4bf4cbe722a838b139408ada1deb0fc8d6fb409f2134d9af"
+        "source_sha256": "9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89"
       },
       {
         "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
         "page": "verification.html",
-        "page_sha256": "9f78c8e766fb1532c59c8b8e5ff444667c835ef7029781a3d1e8dbb792e6f649",
+        "page_sha256": "87ef51bb68dba1f0e93f7932d244d95e68187b6e5ddc4407db100b15ec544cfc",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
-        "source_sha256": "c0fe63f8fbd302da63e89c847de5fac9c1bb456c0044ea86b96c12ca678608c4"
+        "source_sha256": "a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591"
       }
     ],
     "references": {
@@ -52,12 +52,12 @@
         {
           "anchor": "file-skill-md",
           "source": "SKILL.md",
-          "source_sha256": "1a59f605eaedceb97d89aa90048e9b728eeb52ed2874b9b5a34ecfc6114aae43"
+          "source_sha256": "67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912"
         },
         {
           "anchor": "file-source-manifest-sha256",
           "source": "SOURCE_MANIFEST.sha256",
-          "source_sha256": "acad8065b54fe6cc9081527a2bb67f5b07b9ddc1efc7211672fba42737dbbf35"
+          "source_sha256": "2912b47e940013e078e0d4ac6faa264bfd1c25ac3c1a17decc4502b76923c5f5"
         },
         {
           "anchor": "file-payload-developer-guide-contract-md",
@@ -87,7 +87,7 @@
         {
           "anchor": "file-payload-review-transport-md",
           "source": "payload/REVIEW_TRANSPORT.md",
-          "source_sha256": "c2b7b178231f452211b506e5e3c63b55d8a44f9559e960d52000ac0bc8bea17c"
+          "source_sha256": "9feabda2db72fedda743c35376f686078934d87a78e2e6c61e4a6600334116e2"
         },
         {
           "anchor": "file-payload-roles-md",
@@ -97,7 +97,7 @@
         {
           "anchor": "file-payload-setup-md",
           "source": "payload/SETUP.md",
-          "source_sha256": "106db300575b82d72c6bc45443ed9e7bcc53b8026b75e3d8883ef6defec305a2"
+          "source_sha256": "b7b4b7064894af00f8691ffe8453086199bbfbfd3f967854940f25f7e9275e6a"
         },
         {
           "anchor": "file-payload-setup-defaults-md",
@@ -107,7 +107,7 @@
         {
           "anchor": "file-payload-worker-md",
           "source": "payload/WORKER.md",
-          "source_sha256": "9c34b1782fb9f50178a33f06b3905942b75ce8bcd4e3380b0aebc01f2bd3f460"
+          "source_sha256": "30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a"
         },
         {
           "anchor": "file-payload-screens-plan-md",
@@ -167,12 +167,12 @@
         {
           "anchor": "file-tests-tst-publication-precheck-v20-py",
           "source": "tests/tst_publication_precheck_v20.py",
-          "source_sha256": "7c96bb07f0a27d2a966bdb7e8cd5a0e3241cb41805dd559a1c5df25bac0a0215"
+          "source_sha256": "76c04b68abb99bba1c9280ad162822b360f60725c8f68cdec579f18cd2b748e6"
         },
         {
           "anchor": "file-tests-tst-records-history-v20-py",
           "source": "tests/tst_records_history_v20.py",
-          "source_sha256": "053536b87ca52754f16abd71e4b391bf9423c6af786e221d48210fba1c2889b9"
+          "source_sha256": "54d3e8168c7a164457e492850abe080a7fd2421f26e1c0cb0373e4bf9bccf4fb"
         },
         {
           "anchor": "file-tests-tst-review-bundle-v20-py",
@@ -182,11 +182,11 @@
         {
           "anchor": "file-tests-tst-screen-check-v20-py",
           "source": "tests/tst_screen_check_v20.py",
-          "source_sha256": "42422d77e3ce38e4a322368461509bf7ce2607d723c6192bddd4b4f2386952c5"
+          "source_sha256": "a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c"
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "5f3868012912cf1d4990410c3ba968092ceec4abd2a57e0937c6e241e87eb873"
+      "page_sha256": "47bdff5ffdc1f66c331f08d189afb3e35c5814d07d0536552e7b3a4a6368abde"
     }
   },
   "general_card_sha256": "0bea3dfd6f43458f36da9b456d9196853235bf4df439587df9b0e3df3cf39f38",
@@ -195,27 +195,27 @@
       {
         "file": "SKILL.md",
         "original_sha256": "49572d00944f89d5ec723290d46492e49c86cb24e91c4ecc9d6a308f6ec2011d",
-        "packaged_sha256": "1a59f605eaedceb97d89aa90048e9b728eeb52ed2874b9b5a34ecfc6114aae43"
+        "packaged_sha256": "67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912"
       },
       {
         "file": "docs/GUIDED_CODING_ARCHITECTURE.md",
         "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
-        "packaged_sha256": "ce637320ff46011b4bf4cbe722a838b139408ada1deb0fc8d6fb409f2134d9af"
+        "packaged_sha256": "9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89"
       },
       {
         "file": "docs/GUIDED_CODING_README.md",
         "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
-        "packaged_sha256": "a272ac8b47babaa72190c03917ea660ee0df5b9f028dfbfcea319de0f60bae5f"
+        "packaged_sha256": "d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426"
       },
       {
         "file": "docs/GUIDED_CODING_USER_GUIDE.md",
         "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
-        "packaged_sha256": "fb742cb7b05bdb8e649838f95e67191abaeb17f81a55d3756eb403b1ae070439"
+        "packaged_sha256": "6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b"
       },
       {
         "file": "docs/GUIDED_CODING_VERIFICATION.md",
         "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
-        "packaged_sha256": "c0fe63f8fbd302da63e89c847de5fac9c1bb456c0044ea86b96c12ca678608c4"
+        "packaged_sha256": "a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591"
       },
       {
         "file": "payload/GUIDE.md",
@@ -223,30 +223,45 @@
         "packaged_sha256": "9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0"
       },
       {
+        "file": "payload/REVIEW_TRANSPORT.md",
+        "original_sha256": "c2b7b178231f452211b506e5e3c63b55d8a44f9559e960d52000ac0bc8bea17c",
+        "packaged_sha256": "9feabda2db72fedda743c35376f686078934d87a78e2e6c61e4a6600334116e2"
+      },
+      {
+        "file": "payload/SETUP.md",
+        "original_sha256": "106db300575b82d72c6bc45443ed9e7bcc53b8026b75e3d8883ef6defec305a2",
+        "packaged_sha256": "b7b4b7064894af00f8691ffe8453086199bbfbfd3f967854940f25f7e9275e6a"
+      },
+      {
         "file": "payload/WORKER.md",
         "original_sha256": "1634672aae34afa948a4d6196138c6b4bb3f9f2658731e79552907e7552dab1f",
-        "packaged_sha256": "9c34b1782fb9f50178a33f06b3905942b75ce8bcd4e3380b0aebc01f2bd3f460"
+        "packaged_sha256": "30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a"
       },
       {
         "file": "tests/tst_publication_precheck_v20.py",
         "original_sha256": "ac7747334b7df5ef9b2d776c4bec5564a351e7115dcba0f0e840ec07311bff5e",
-        "packaged_sha256": "7c96bb07f0a27d2a966bdb7e8cd5a0e3241cb41805dd559a1c5df25bac0a0215"
+        "packaged_sha256": "76c04b68abb99bba1c9280ad162822b360f60725c8f68cdec579f18cd2b748e6"
+      },
+      {
+        "file": "tests/tst_records_history_v20.py",
+        "original_sha256": "053536b87ca52754f16abd71e4b391bf9423c6af786e221d48210fba1c2889b9",
+        "packaged_sha256": "54d3e8168c7a164457e492850abe080a7fd2421f26e1c0cb0373e4bf9bccf4fb"
       },
       {
         "file": "tests/tst_screen_check_v20.py",
         "original_sha256": "8bb18b3d1c66c6e6c2b928dc062be60a46086390cbcbc032fc6cb0a3822e9988",
-        "packaged_sha256": "42422d77e3ce38e4a322368461509bf7ce2607d723c6192bddd4b4f2386952c5"
+        "packaged_sha256": "a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c"
       }
     ],
-    "edition": "general-downloads-v1",
+    "edition": "general-downloads-v2",
     "installation_root": "~/Downloads/GuidedCoding/guided_coding",
     "source_files": 31,
-    "source_manifest_sha256": "acad8065b54fe6cc9081527a2bb67f5b07b9ddc1efc7211672fba42737dbbf35"
+    "source_manifest_sha256": "2912b47e940013e078e0d4ac6faa264bfd1c25ac3c1a17decc4502b76923c5f5"
   },
   "generator": {
     "docs_template_sha256": "41282d79908c0e24621c2ba3c60cbbfb67063528d2985d388146eaf8bbf209fa",
-    "script_sha256": "547dbfde33ea3598e82b8be98af62fd74d6a0d0daa3db53faf803499dfd9e388",
-    "template_sha256": "52d1f9441ae8620120898716336892976d398ce33ae95430984fbacb7a5cc7d3"
+    "script_sha256": "0ba5ff4a573cd990ce2259b6dfd15977edfb1b9b871c624991aa15d1e65f9634",
+    "template_sha256": "ff604cb944d2b5cc291eb2090bd8f88444a1cd194c112a28f794103de15ef69e"
   },
   "historical_source_checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -259,25 +274,25 @@
   "historical_source_tests": [
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "a7a8170602972ff38456d4afc51377d205882e36299f59d07bf405f1e24cd0e9",
+      "output_sha256": "4229059fe1c45fa722b92e0879e0025819efdf529eb78640dac8f218666481a2",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "323de75cada1a6cf322dbab996308a67a4a813175af5a749846cb73cbb4b6da0",
+      "output_sha256": "4497db8e83df40ecdb88c44d4840218d58e31ce5cc9376870203bdff85e0b98c",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "6552460ee91636c6a13075666d69cdedc91ef4bd55f8640650152b1c2f3d8106",
+      "output_sha256": "cf7cf1ad810d9a2d3096c09cc9fbb279e300ae0f832c555fec2fbf4ac10bc7cf",
       "skipped": 1,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "771adeb7e5c64439110b3c5a6ab994bd92d6574b168a8f2860c2e049519773e1",
+      "output_sha256": "5d74c2e6dd51f7bf6c178b03228ec4a13505fa8b2af70331919f094669c37181",
       "skipped": 0,
       "tests": 63
     }
@@ -287,25 +302,25 @@
   "package_tests": [
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "49bc769f6391bb55a6c3328a721c7c55f5a306e7b0cabc21ebc45abc6158d39a",
+      "output_sha256": "45175acdfebff31246a3ad51b14105469de35ed1d1752e79b51aa27dff2b9e16",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "ed08808e00f70d7a1ebcda2dc318aa5760e408fa928dfca27690210fc7abd28c",
+      "output_sha256": "bec8cadda5ae08bab37a458576c6ba82132aa42bbe19dd0639bfbfcac5d46e34",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "1b95f13235ea9c84cb546dc7dff2d143e0586e476251621e964ac0daa1658201",
+      "output_sha256": "567c7b3f080d5b1601ad496775205d3baccf367c8bc4a2e64a08ab8f4a1c31c9",
       "skipped": 1,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "ec9a22e6413bce37aa69a0f20f7d96bc19d899a214031280885b31eb64dc93de",
+      "output_sha256": "02ca2ef700171b1d0d9e721e2c65724fb7b7d5389ff0a3806e58fbb1b1d7347e",
       "skipped": 0,
       "tests": 63
     }

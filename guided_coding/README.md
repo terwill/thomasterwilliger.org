@@ -37,7 +37,10 @@ A runner cannot rewrite both a file and its manifest and retain the recorded ide
 The generator first checks and tests that verified source. It then makes a separate
 copy and applies `general_text()` on every build. The adaptation updates the
 four user documents, local examples in the skill and procedure instructions,
-and arbitrary repository names in two test fixtures. It changes the archive-review
+and arbitrary repository names in three test fixtures. Project-specific wording is
+generalized; historical record paths are labeled as relative to the original project.
+The historical test-lookup observation is summarized without suggesting an unshipped
+command. The adaptation changes the archive-review
 example to match this ZIP's `GuidedCoding/` layout. The standalone tests replace an
 unshipped repository-wrapper command. No checking-tool code, Developer–Guide Contract,
 release label or general setup default is changed.
@@ -50,8 +53,10 @@ four package test runners also run against the adapted copy. Unrecognized source
 references fail the build for inspection instead of leaking into the general guide.
 After rendering, a second scan checks every generated HTML page, installer notes,
 general developer card and maintenance README. It detects references in text and
-links, including HTML character escapes. Only the exact generated historical note
-in the documentation index is exempt; original license and provenance records are
+links, including HTML character escapes. Only the exact generated source/adaptation note beside the download and
+historical note in the documentation index are exempt from the source-origin check.
+The exact author-affiliation link is allowed only inside the shared site header;
+it is not a procedure setting. Original license and provenance records are
 preserved separately. Any leftover reports its filename, fails the build and leaves
 existing site outputs untouched.
 
@@ -60,8 +65,8 @@ Do not weaken that refusal to accommodate a new source layout without reviewing 
 The four main documentation pages are rendered from the exact adapted Markdown
 shipped in the ZIP. `reference-files.html` displays the remaining 27 source files
 as exact file text, using the same site header and style. All procedure references
-stay on the website. Original attribution appears only in the historical note and
-source/license records. Original license text is retained.
+stay on the website. Attribution appears in the source/adaptation note beside the download, the
+historical note and source/license records. Original license text is retained.
 
 App/Terminal checks use fake clients and a temporary private configuration; they
 are not native app or real coding-task validation. The expected app-engine behavior
@@ -135,13 +140,16 @@ directory. Project settings and task records belong outside it.
 python3 -B -m unittest discover -s guided_coding/tests -v
 ```
 
-The 35 methods use private temporary directories and no network. They cover source
+The 47 methods use private temporary directories and no network. They cover source
 and manifest changes, file inventory and modes, adapted-copy integrity, Downloads
 and ZIP examples, local documentation links, unsupported references and rendering,
-output preservation, rollback failures, recovery copies and CLI reporting.
+output preservation, rollback failures, recovery copies and CLI reporting. They also
+check project wording, distinct fixture repositories, absolute-path controls and
+the narrow site-header affiliation exception.
 
 The live builder also executes every manifest-listed package test runner on both
-copies and records counts and skips. Native Mac registration, a real coding task,
+copies and records counts and skips. It resolves temporary paths because macOS
+temporary directories can have symbolic-link parents. Native Mac registration, a real coding task,
 and browser rendering/clipboard behavior remain owner checks before publication.
 
 ZIP entries are sorted with fixed timestamps. Test-output hashes may vary with runtime
