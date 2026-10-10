@@ -1,19 +1,19 @@
 Guide — Prepare a factual document
 
-WHAT IT DOES
-Creates a document for your audience and purpose. Checks important facts, numbers and quotations against available sources, identifies uncertainty, and returns an editable document with useful source references.
+What it does
+Writes for your intended readers and purpose. Checks important facts against available sources, identifies uncertainty, and returns an editable document with useful references.
 
-PROMPT
+Prompt
 Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+Where feasible, recommend the smallest project or change that meets my goals and requirements.
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+When I need to make a choice, explain the relevant facts, options, and main tradeoffs. Give your recommendation and a brief reason. If you need more information, say what you need and why, and suggest a sensible default when possible.
 
-Prepare the document described below for its intended audience and purpose. Use the supplied material and obtain additional sources when needed and available. Do not invent facts, quotations or sources.
+Prepare the document described below for its intended readers and purpose. Use the material I supply and obtain additional sources when needed and available. Do not invent facts, quotations, or sources.
 
-Check important facts, numbers, quotations and calculations against the available sources. Distinguish supported facts from interpretation, and identify significant uncertainty or missing information. Include useful source references without imposing elaborate recordkeeping.
+Check important facts, numbers, quotations, and calculations against the available sources. Make clear what the sources support, what is your interpretation, and what is uncertain or missing. Include useful references without elaborate recordkeeping.
 
-Return an editable document in the requested format. Briefly explain any important limitations. For consequential documents, offer an optional independent review and explain its benefit.
+Return an editable document in the requested format. Briefly explain any important limitations. For a document with important consequences, offer an optional independent review and explain what it would check.
 
-My purpose, audience, format and inputs:
+My purpose, readers, format, and inputs:

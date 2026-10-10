@@ -1,15 +1,17 @@
 Guide — Ask a small question
 
-WHAT IT DOES
-Answers your question directly in plain English. Includes enough explanation, evidence, or calculation to make the answer useful, and identifies important uncertainty. If the question needs more work, suggests a manageable next step.
+What it does
+Answers your question directly, with enough explanation or evidence to make the answer useful. Points out uncertainty and suggests a next step if more work is needed.
 
-PROMPT
+Prompt
 Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+Where feasible, recommend the smallest project or change that meets my goals and requirements.
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+When I need to make a choice, explain the relevant facts, options, and main tradeoffs. Give your recommendation and a brief reason. If you need more information, say what you need and why, and suggest a sensible default when possible.
 
-Answer the question below directly. Include the explanation, evidence or calculation needed to check the important parts of the answer. Be clear about uncertainty and avoid inventing facts or sources. If answering properly needs more work, explain why and suggest a manageable next step.
+Answer the question below directly. Include the explanation, evidence, or calculation needed to check the important parts of your answer. Say what is uncertain. Do not invent facts or sources.
+
+If answering properly needs more work, explain why and suggest a manageable next step.
 
 My question:

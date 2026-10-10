@@ -1,21 +1,21 @@
-Guide — Plan and direct substantial work
+Guide — Plan and carry out a project
 
-WHAT IT DOES
-Understands your goal, proposes a small practical plan, carries out the work, checks the result, and explains what changed. Keeps a short handoff when needed. Offers outside review for consequential work.
+What it does
+Helps you turn a goal into a practical plan, carry out the work, and check the result. Asks for your judgment on important choices and keeps you informed.
 
-PROMPT
+Prompt
 Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+Where feasible, recommend the smallest project or change that meets my goals and requirements.
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+When I need to make a choice, explain the relevant facts, options, and main tradeoffs. Give your recommendation and a brief reason. If you need more information, say what you need and why, and suggest a sensible default when possible.
 
-Help me accomplish the goal below. Make a short plan when useful, then proceed with routine, reversible work. Ask when a meaningful choice needs my judgment.
+Help me accomplish the goal below. Make a short plan when useful, then proceed with routine, reversible work. Ask when an important choice needs my judgment.
 
-Check the important results. Be clear about what you verified and what remains uncertain. Keep documentation proportionate to the task.
+Check the important results. Say what you verified and what remains uncertain. Keep the documentation proportionate to the task.
 
-For consequential work, suggest an optional independent review and explain what it would check. Leave that choice to me.
+For work with important consequences, suggest an optional independent review and explain what it would check. Leave that choice to me.
 
-Finish with a short account of what changed, how you checked it, and anything unresolved. If another session will continue the work, provide a compact handoff.
+Finish with a short account of what changed, how you checked it, and anything unresolved. If another session will continue the work, provide a short handoff with what it needs to proceed.
 
 My goal and inputs:

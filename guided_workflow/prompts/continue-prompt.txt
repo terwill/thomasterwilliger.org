@@ -1,19 +1,19 @@
 Guide — Continue an earlier session
 
-WHAT IT DOES
-Reads your handoff and available files, briefly summarizes where the work stands, and identifies the next useful step. Requests anything essential that is missing, then continues under your current instructions.
+What it does
+Picks up from a short handoff and your files. Establishes where the work stands, asks for anything essential that is missing, and continues under your current instructions.
 
-PROMPT
+Prompt
 Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+Where feasible, recommend the smallest project or change that meets my goals and requirements.
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+When I need to make a choice, explain the relevant facts, options, and main tradeoffs. Give your recommendation and a brief reason. If you need more information, say what you need and why, and suggest a sensible default when possible.
 
 Read the handoff and available files below. Briefly state the goal, what is already done, any unresolved questions, and the next useful step.
 
-Request only information or files essential to continuing. Use my current instructions, and flag any material conflict with the earlier handoff. Do not require confirmation from the previous chat.
+Ask only for information or files you need to continue. Follow my current instructions and point out any important conflict with the handoff. Do not require confirmation from the earlier chat.
 
-Continue the work that is already agreed. If another handoff becomes necessary, keep it short: goal, completed work, current files, unresolved questions, and next step.
+Continue the agreed work. If another handoff is needed, keep it short: the goal, completed work, current files, unresolved questions, and next step.
 
-My current instructions, handoff and files:
+My current instructions, handoff, and files:

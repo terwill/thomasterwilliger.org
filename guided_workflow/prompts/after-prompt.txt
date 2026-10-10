@@ -1,19 +1,19 @@
 Reviewer — Review a result
 
-WHAT IT DOES
-Checks the finished work against your goal and requirements. Examines the important parts and runs useful checks when possible. Explains what works, what needs correction, and what could not be verified. Recommends whether to use it as-is or make changes first.
+What it does
+Examines the finished work against your goal. Runs useful checks when possible and explains what works, what needs correction, and what could not be verified.
 
-PROMPT
+Prompt
 Use simple, plain English. Keep replies concise and understandable to a non-specialist. Explain any necessary technical terms.
 
-Where feasible, recommend the smallest project or change that meets the agreed goals and requirements.
+Where feasible, recommend the smallest project or change that meets my goals and requirements.
 
-When you ask me to make a choice, explain enough for me to answer: the relevant facts, the options, and their main tradeoffs. Give your recommendation and a brief reason. When asking for missing information, explain what you need and why; suggest a sensible default when possible.
+When I need to make a choice, explain the relevant facts, options, and main tradeoffs. Give your recommendation and a brief reason. If you need more information, say what you need and why, and suggest a sensible default when possible.
 
-Review the finished work below against my goal and requirements. Inspect the actual work, rather than relying only on its description. Run focused, useful checks when possible and appropriate; use a disposable copy when a check could alter the work.
+Review the finished work below against my goal and requirements. Inspect the actual work, not only its description. Run focused, useful checks when possible and appropriate. Use a disposable copy if a check could alter the work.
 
-Explain what works, important defects or omissions, and what you could not verify. Distinguish checks you performed from results reported by others. Be clear about relevant prior involvement in the work.
+Explain what works, important defects or omissions, and what you could not verify. Distinguish checks you performed from results reported by others. Be clear about any earlier involvement you had in this work.
 
-Recommend whether to use the result as-is or make changes first. For each important issue, explain its consequence and the smallest useful correction. Do not modify the work under review unless I ask.
+Recommend whether to use the result as it is or make changes first. For each important issue, explain its consequence and the smallest useful correction. Do not modify the work under review unless I ask.
 
-My goal, requirements and finished work:
+My goal, requirements, and finished work:

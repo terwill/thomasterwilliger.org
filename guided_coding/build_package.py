@@ -32,7 +32,7 @@ MAX_TOTAL = 32 * 1024 * 1024
 SHA = re.compile(r"[0-9a-f]{40}")
 SITE = Path(__file__).resolve().parent
 INSTALL_ROOT = "~/Downloads/GuidedCoding/guided_coding"
-EDITION = "general-downloads-v2"
+EDITION = "general-downloads-v3"
 GENERAL_REFERENCE = re.compile(
     r"cctbx|phenix|/absolute/path/to|/path/to/cctbx|libtbx/guided_coding|/~/Downloads/GuidedCoding", re.I)
 SITE_AFFILIATION = '<a href="https://www.phenix-online.org/">Phenix</a> Software Team'
@@ -69,8 +69,10 @@ TEMP_COMMANDS = {
         ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/review_bundle.py" PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz`', 1)),
 }
 DOCUMENTS = (
-    ("GUIDED_CODING_USER_GUIDE.md", "user-guide.html", "User guide",
-     "Register Guided Coding, set up each project, use the commands, update and uninstall."),
+    ("GUIDED_CODING_USER_GUIDE.md", "getting-started.html", "User Guide",
+     "Install Guided Coding, set up your project and work through a first task."),
+    ("GUIDED_CODING_COMMAND_REFERENCE.md", "user-guide.html", "Command reference",
+     "Exact registration commands, source checks, controls, updates and removal."),
     ("GUIDED_CODING_README.md", "overview.html", "Overview",
      "What Guided Coding does, its pilot status and where to find the details."),
     ("GUIDED_CODING_ARCHITECTURE.md", "architecture.html", "Architecture",
@@ -84,7 +86,8 @@ OUTPUTS = ("guided_coding.zip", "guided_coding.zip.sha256", "package.json",
 REQUIRED_FILES = {
     "SKILL.md", "SOURCE_MANIFEST.sha256",
     "docs/GUIDED_CODING_ARCHITECTURE.md", "docs/GUIDED_CODING_README.md",
-    "docs/GUIDED_CODING_USER_GUIDE.md", "docs/GUIDED_CODING_VERIFICATION.md",
+    "docs/GUIDED_CODING_USER_GUIDE.md", "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
+    "docs/GUIDED_CODING_VERIFICATION.md",
     "payload/DEVELOPER_GUIDE_CONTRACT.md", "payload/GUIDE.md", "payload/HELPER.md",
     "payload/OUTSIDE_REVIEWER_BRIEF.md", "payload/RELEASE", "payload/REVIEW_TRANSPORT.md",
     "payload/ROLES.md", "payload/SETUP.md", "payload/SETUP_DEFAULTS.md", "payload/WORKER.md",
@@ -418,11 +421,11 @@ def run_package_tests(source, scratch):
     return results
 
 
-REGISTRATION = f"""Please set up GuidedCoding from {INSTALL_ROOT} for this Claude Code configuration. Read docs/GUIDED_CODING_USER_GUIDE.md there. Verify the source and release, check the Claude Code version for this session, and inspect the existing personal skill. If a working shared Guided Coding registration already exists, keep it and show its resolved source. Otherwise register the central link only if the destination is unoccupied. Show what changed. Do not connect to servers, change permission settings, or start a coding task."""
+REGISTRATION = f"""Please set up GuidedCoding from {INSTALL_ROOT} for this Claude Code configuration. Read docs/GUIDED_CODING_COMMAND_REFERENCE.md there. Verify the source and release, check the Claude Code version for this session, and inspect the existing personal skill. If a working shared Guided Coding registration already exists, keep it and show its resolved source. Otherwise register the central link only if the destination is unoccupied. Show what changed. Do not connect to servers, change permission settings, or start a coding task."""
 TASK = "/guided_coding Describe the change you want to make, your requirements, and how you would check the result."
 
 
-def general_text(name, text):
+def legacy_general_text(name, text):
     """Adapt the distribution copy, never the verified input, on every build."""
     if name == "docs/GUIDED_CODING_USER_GUIDE.md":
         text = re.sub(r"(?m)^Please set up GuidedCoding from .+$", lambda _: REGISTRATION, text)
@@ -561,19 +564,123 @@ def general_text(name, text):
     return text
 
 
+
+READABLE_HEADERS = {
+    "docs/GUIDED_CODING_README.md": "# Guided Coding overview",
+    "docs/GUIDED_CODING_ARCHITECTURE.md": "# Guided Coding architecture",
+    "docs/GUIDED_CODING_VERIFICATION.md": "# Guided Coding verification and limits",
+    "docs/GUIDED_CODING_USER_GUIDE.md": "# Guided Coding User Guide",
+}
+CLOUD_SECTION = """## Using Guided Coding in the cloud or with cctbx_project or PHENIX
+
+A cloud session cannot use the link on your computer. It can obtain its own copy from the [source repository](https://github.com/cctbx/cctbx_project/tree/master/libtbx/guided_coding); this guide does not cover cloud setup.
+
+[cctbx_project](https://github.com/cctbx/cctbx_project) includes the Guided Coding source. If you use your own copy, follow the one-time setup below with the path to its `libtbx/guided_coding` folder instead of downloading the kit.
+
+[PHENIX](https://www.phenix-online.org) includes Guided Coding. Run `phenix.developer` to open the instructions and default settings for using it with PHENIX.
+"""
+SOURCE_LINKS = {
+    "https://github.com/cctbx/cctbx_project",
+    "https://github.com/cctbx/cctbx_project/tree/master/libtbx/guided_coding",
+}
+READABLE_PASSAGES = {
+    "docs/GUIDED_CODING_README.md": (
+        "It normally lives in `cctbx_project/libtbx/guided_coding/`, or in the `guided_coding/` folder inside the downloaded `GuidedCoding/` folder.",
+        "In this download it lives in the `guided_coding/` folder inside `GuidedCoding/`."),
+    "docs/GUIDED_CODING_ARCHITECTURE.md": (
+        "The personal link points to the current contents of the shared kit's folder. It does not hold a fixed copy of an older release. Updating that folder can therefore affect every project using it, and must be coordinated with active tasks and the repository's integration rules.",
+        "The personal link points to the current contents of the shared kit's folder. It does not hold a fixed copy of an older release. Updating that folder can therefore affect every project using it. Finish active tasks and follow the User Guide's update instructions."),
+    "docs/GUIDED_CODING_VERIFICATION.md": (
+        "Its `SKILL.md` title instructions matched those in the recorded published revision, but later changes affected the tools, tests and some texts.",
+        "Its `SKILL.md` title instructions matched those in the recorded published revision, but later changes affected the tools, tests and some texts. The downloaded edition also adapts the skill's example source path and temporary-directory handling; it keeps those title instructions."),
+}
+
+
+def readable_scan_text(name, text):
+    """Exempt the exact approved cloud section and labeled historical evidence."""
+    if name == "docs/GUIDED_CODING_USER_GUIDE.md":
+        require(text.count(CLOUD_SECTION.strip()) == 1,
+                "approved cloud and project section changed; inspect " + name)
+        return text.replace(CLOUD_SECTION.strip(), "", 1)
+    if name == "docs/GUIDED_CODING_VERIFICATION.md":
+        text = re.sub(r"(?s)## Historical record\n.*?(?=## Technical reference\n)", "", text, count=1)
+    return text
+
+
+def general_text(name, text):
+    if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
+        # This reference retains the former manual commands, with a new title.
+        text = legacy_general_text("docs/GUIDED_CODING_USER_GUIDE.md", text)
+        return text
+    header = READABLE_HEADERS.get(name)
+    if not header or text.splitlines()[0:1] != [header]:
+        return legacy_general_text(name, text)
+    if name == "docs/GUIDED_CODING_USER_GUIDE.md":
+        require(not GENERAL_REFERENCE.search(readable_scan_text(name, text)),
+                "unadapted general-edition reference; inspect " + name)
+        return text  # Exactly the maintained guide: no second edited version.
+    before, after = READABLE_PASSAGES[name]
+    require(text.count(before) == 1,
+            "required general-edition passage missing or duplicated; inspect " + name)
+    text = text.replace(before, after, 1)
+    if name == "docs/GUIDED_CODING_VERIFICATION.md":
+        start = text.find("### Repository test wrapper\n")
+        end = text.find("### Historical source identities\n", start)
+        require(start != -1 and end != -1, "verification wrapper section changed; inspect the adaptation")
+        text = text[:start] + """### Repository test wrapper
+
+The original development repository has an additional test wrapper outside this kit. Its earlier results and skipped precompilation branch describe that development environment. The download does not include or require that wrapper. Run the four shipped test files from the clean copy described above and report every skip.
+
+""" + text[end:]
+        text = text.replace("The full PHENIX server test suite", "The original project's full server test suite")
+        for record in ("2026-10-04-gc-followups-A", "2026-10-06-gc-app-version-check"):
+            text = text.replace("phenix/.claude/records/" + record, ".claude/records/" + record)
+        text = text.replace("These paths identify historical records.",
+                            "These paths identify historical records relative to the original project.")
+    for path in ("/absolute/path/to/libtbx/guided_coding", "cctbx_project/libtbx/guided_coding/"):
+        text = text.replace(path, INSTALL_ROOT)
+    require(not GENERAL_REFERENCE.search(readable_scan_text(name, text)),
+            "unadapted general-edition reference; inspect " + name)
+    return text
+
+
 def temporary_instructions(name, text):
     """Resolve temporary paths in known instructions; refuse changed source passages."""
     if not name.endswith(".md"):
         return text
-    for before, count in TEMP_COMMANDS.get(name, ()):
+    if name == "docs/GUIDED_CODING_USER_GUIDE.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
+        return text
+    commands = TEMP_COMMANDS.get(name, ())
+    if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
+        commands = TEMP_COMMANDS["docs/GUIDED_CODING_USER_GUIDE.md"]
+    if name == "docs/GUIDED_CODING_ARCHITECTURE.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
+        commands = (('`python3 -I -B`', 2),)
+    if name == "docs/GUIDED_CODING_VERIFICATION.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
+        commands = commands + (('`python3 -I -B`', 1),)
+    for before, count in commands:
+        resolved = before.replace("python3 -I -B", TEMP_PREFIX + " python3 -I -B")
+        already = text.count(resolved)
+        if already == count:
+            continue  # The source itself already resolves TMPDIR here.
+        require(already < count,
+                "required temporary-directory instruction missing or duplicated; inspect " + name)
+        require(already == 0,
+                "partly resolved temporary-directory instruction; inspect " + name)
         require(text.count(before) == count,
                 "required temporary-directory instruction missing or duplicated; inspect " + name)
-        text = text.replace(before, before.replace("python3 -I -B", TEMP_PREFIX + " python3 -I -B"))
-    if name in TEMP_HEADERS:
-        before = TEMP_HEADERS[name] + "\n\n"
+        text = text.replace(before, resolved)
+    if name in TEMP_HEADERS or name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
+        header = TEMP_HEADERS.get(name, "# Guided Coding registration and command reference")
+        if name in READABLE_HEADERS and text.startswith(READABLE_HEADERS[name] + "\n"):
+            header = READABLE_HEADERS[name]
+        before = header + "\n\n"
         require(text.count(before) == 1,
                 "required temporary-directory explanation anchor missing or duplicated; inspect " + name)
         text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
+    for line in text.splitlines():
+        command = line.find("python3")
+        require(command == -1 or line[:command].count("TMPDIR=") < 2,
+                "doubled temporary-directory prefix; inspect " + name)
     for match in re.finditer("python3", text):
         require(text[max(0, match.start() - len(TEMP_PREFIX) - 1):match.start()] == TEMP_PREFIX + " ",
                 "unresolved temporary-directory instruction; inspect " + name)
@@ -606,45 +713,35 @@ def general_source(source, destination):
 
 
 def installation_text(info, minimum, edition):
-    return f"""# Guided Coding for Claude Code
+    return f"""# Guided Coding: installation and first task
 
-This is the complete general Guided Coding kit. Python 3.10+, Git, Bash and shasum are needed.
-Documentation and installation examples are adapted automatically for this edition.
-{TEMP_REASON.replace('`', '')}
-Its own source manifest covers the packaged files; PACKAGE_INFO.json records the changes.
-Claude Code must be {minimum} or newer when its version can be checked.
+Start with `guided_coding/docs/GUIDED_CODING_USER_GUIDE.md` in this folder.
+It is the same User Guide shown on the website. It tells you how to check
+this download, make the command available, set up your project and try a task.
+The general setup card is optional. Keep project settings and task records
+in your project, outside the verified kit.
 
-1. Install/update Claude Code: use the Claude app's Local Code tab on a Mac, or the
-   Terminal CLI on macOS/Linux. Sign in or supply your own API key for the Terminal route.
-2. Download guided_coding.zip into ~/Downloads and verify the website's checksum.
-   Unzip it there and keep ~/Downloads/GuidedCoding. The procedure directory is
-   {INSTALL_ROOT}. For another location, change the path below.
-3. In an ordinary local Claude Code session, send this registration request:
+For the one-time setup, open ordinary Claude Code on your computer and send:
 
 {REGISTRATION}
 
-4. Open a fresh session in the Git repository you intend to change. Confirm with
-   /guided_coding help. Supply GENERAL_DEVELOPER_CARD.md and enter /guided_coding setup.
-   Review the proposed settings and let Claude finish saving and checking them.
-5. In a new session in that repository, send /guided_coding followed by your task.
-   Keep the task, requirements and any bug report in ONE message.
-6. Review the plan, results and decisions. Pass the two reviewer files to a separate
-   capable LLM when asked, preferably a different LLM, then paste its complete review back.
+Then open a fresh conversation in your Git project, enter /guided_coding help,
+and follow the User Guide. Start each new task with /guided_coding and the
+task together in one message. For outside review, use a separate chat,
+preferably with a different AI assistant. You decide whether to keep or publish.
 
-The personal skill link is normally ~/.claude/skills/guided_coding; one registration
-covers projects in that configuration. Cloud sessions cannot use this local installation.
-The app checks its own engine; if unreadable, NOT CHECKED is printed and it continues.
-Terminal sessions still require the claude command on PATH. Review the work and the
-project tests before accepting a result.
+The client minimum is {minimum}. The app checks its own engine and reports
+NOT CHECKED when that version cannot be read; Terminal checks its PATH client.
+A cloud session can obtain its own source copy; creating this local link does
+not set up that session.
 
-To update: finish active tasks, extract the next kit separately, and ask Claude to
-verify that source and inspect the existing link before changing it. Keep the old
-folder until the new registration is checked, then start a fresh session. Do not
-edit the verified guided_coding subfolder or place extra files inside it.
+For updates and removal, follow the User Guide. Finish active tasks, extract
+an update separately and keep the old folder until the new link is checked.
+Do not edit or add files inside guided_coding/.
 
-User guide: {INSTALL_ROOT}/docs/GUIDED_CODING_USER_GUIDE.md
+{TEMP_REASON.replace('`', '')}
+The exact source and adaptations are in PACKAGE_INFO.json.
 General-edition source manifest SHA-256: {edition['source_manifest_sha256']}
-Historical source revision: {info['commit']} (see PACKAGE_INFO.json and LICENSE.txt).
 """.encode()
 
 
@@ -677,7 +774,7 @@ def documentation_link(destination, info):
     if url.scheme:
         require(url.scheme in ("https", "http") and bool(url.netloc),
                 "unsupported documentation link: " + destination)
-        require("cctbx" not in destination.lower(),
+        require("cctbx" not in destination.lower() or destination in SOURCE_LINKS,
                 "source-history links belong only in the historical note")
         return destination
     require(not url.netloc and not url.query and not url.path.startswith("/"),
@@ -700,6 +797,10 @@ def reference_id(path):
 
 def historical_note(info):
     """The source attribution in the documentation index."""
+    if info.get("input_kind") == "local-documentation-preview":
+        plain = dict(info)
+        plain.pop("input_kind")
+        return historical_note(plain) + '<p>This download also includes a local documentation update based on that revision. The updated documentation has not yet been published in the source repository. Its input manifest and file changes are recorded in the package metadata.</p>'
     return ('<h2 id="historical-origin">Historical origin</h2>'
             '<p>Guided Coding began in the cctbx project. This standalone edition adapts its documentation '
             'and examples for general projects. The '
@@ -710,6 +811,10 @@ def historical_note(info):
 
 def package_source_note(info):
     """Explain the package's origin and general adaptations beside the download."""
+    if info.get("input_kind") == "local-documentation-preview":
+        plain = dict(info)
+        plain.pop("input_kind")
+        return package_source_note(plain) + '<p class="gc-small">This build includes a local documentation update. The source repository has not yet received those text changes. The checking tools and contract match the selected baseline.</p>'
     return ('<p class="gc-small" id="package-source"><strong>Source and adaptations.</strong> '
             'The material comes from '
             f'<a href="https://github.com/{UPSTREAM}/tree/{info["commit"]}/{SOURCE_PATH}">'
@@ -731,6 +836,15 @@ def verify_general_documentation(documents, info):
             note = notes[name]
             require(text.count(note) == 1, "source attribution changed or duplicated; inspect " + name)
             text = text.replace(note, "", 1)
+        if name == "getting-started.html":
+            cloud, cloud_toc = render_document("# Cloud section\n\n" + CLOUD_SECTION, info)
+            if cloud in text:
+                text = text.replace(cloud, "", 1)
+                for entry in re.findall(r'<li>.*?</li>', cloud_toc):
+                    text = text.replace(entry, "", 1)
+        if name == "verification.html":
+            text = re.sub(r'(?s)<h2 id="historical-record">.*?(?=<h2 id="technical-reference">)',
+                          "", text, count=1)
         if name.endswith(".html"):
             # Preserve the real author affiliation in the shared site header only.
             header = re.search(r'<header class="site-header">.*?</header>', text, re.S)
@@ -878,7 +992,8 @@ def render_document(markdown, info):
 def build_documentation(source, info, site, original_source=None):
     template = (site / "docs.template.html").read_text()
     outputs, records = {}, []
-    pages = [("index.html", "Install and use"), ("user-guide.html", "User guide"),
+    pages = [("index.html", "Guided Coding"), ("getting-started.html", "User Guide"),
+             ("user-guide.html", "Command reference"),
              ("documentation.html", "Documentation"), ("overview.html", "Overview"),
              ("architecture.html", "Architecture"), ("verification.html", "Verification"),
              ("reference-files.html", "Reference files")]
@@ -902,7 +1017,8 @@ def build_documentation(source, info, site, original_source=None):
         path = "docs/" + name
         data = (source / path).read_bytes()
         body, toc = render_document(data.decode("utf-8"), info)
-        outputs[page] = page_html(page, "Guided Coding " + label.lower(), description,
+        page_title = "Guided Coding " + (label if label == "User Guide" else label.lower())
+        outputs[page] = page_html(page, page_title, description,
                                   path, '<article class="gc-document">' + body + '</article>',
                                   '<details class="gc-panel gc-toc" open><summary>On this page</summary><div>'
                                   + toc + '</div></details>')
@@ -941,7 +1057,7 @@ def build_documentation(source, info, site, original_source=None):
                       + ''.join(reference_blocks))
     outputs["reference-files.html"] = page_html("reference-files.html", "Guided Coding reference files",
         "Complete procedure instructions, checking tools, templates and tests for this edition.", "",
-        reference_body, '<details class="gc-panel gc-toc" open><summary>Files on this page</summary><div><ul>'
+        reference_body, '<details class="gc-panel gc-toc" open><summary>Files on this page</summary><div><ul class="gc-reference-list">'
         + ''.join(reference_toc) + '</ul></div></details>')
     body = ('<p>Start with the user guide for everyday use. The other pages explain the procedure, '
             'its implementation and the evidence behind it.</p><div class="card-grid">' + "".join(cards)
@@ -983,7 +1099,8 @@ def build_artifacts(source, info, license_data, site, scratch):
     metadata = {"package_format": 2, "upstream": info, "general_edition": edition, "release": release,
                 "generator": {"script_sha256": digest(Path(__file__).read_bytes()),
                               "template_sha256": digest((site / "index.template.html").read_bytes()),
-                              "docs_template_sha256": digest((site / "docs.template.html").read_bytes())},
+                              "docs_template_sha256": digest((site / "docs.template.html").read_bytes()),
+                              "main_copy_sha256": digest((site / "main-page.md").read_bytes())},
                 "documentation": documentation_metadata,
                 "minimum_claude_version": version, "checks": edition_checks,
                 "package_tests": edition_tests, "historical_source_checks": checks,
@@ -1003,10 +1120,14 @@ def build_artifacts(source, info, license_data, site, scratch):
         "COMMIT_SHORT": info["commit"][:12],
         "COMMIT_DATE": info["commit_date"][:10], "ZIP_SHA": sha,
         "ZIP_KB": str(round(len(archive) / 1024)), "MIN_VERSION": version,
-        "REGISTRATION": REGISTRATION, "TASK": TASK,
         "DOWNLOAD_URL": "guided_coding.zip", "DOWNLOAD_LABEL": "Download Guided Coding",
         "PACKAGE_STATUS": "Complete general-edition kit, setup card and installation notes.",
     })
+    copy = (site / "main-page.md").read_text()
+    body, _ = render_document(copy, info)
+    main_marker = b"<!-- MAIN_COPY -->"
+    require(page.count(main_marker) == 1, "main-page copy marker changed; inspect the generator")
+    page = page.replace(main_marker, body.encode(), 1)
     marker = b"<!-- PACKAGE_SOURCE -->"
     require(page.count(marker) == 1, "package-source template marker changed; inspect the generator")
     page = page.replace(marker, package_source_note(info).encode(), 1)
@@ -1117,23 +1238,56 @@ def _publish_local_locked(site, artifacts):
             shutil.rmtree(staging)
 
 
+
+
+def prepare_local_documentation(local, baseline, info, destination):
+    """Validate a documentation-only working copy against the fetched baseline."""
+    original = source_snapshot(baseline)
+    proposed = source_snapshot(local)
+    allowed = {"SOURCE_MANIFEST.sha256", "SKILL.md",
+               *("docs/" + name for name, _, _, _ in DOCUMENTS)}
+    for name in set(original) | set(proposed):
+        require(name in allowed or original.get(name) == proposed.get(name),
+                "local preview changed executable or procedure source: " + name)
+    skill = (baseline / "SKILL.md").read_bytes()
+    expected = skill.replace(b"docs/GUIDED_CODING_USER_GUIDE.md",
+                             b"docs/GUIDED_CODING_COMMAND_REFERENCE.md")
+    require((local / "SKILL.md").read_bytes() in (skill, expected),
+            "local preview changed the skill beyond the command-reference path")
+    shutil.copytree(local, destination)
+    require_unchanged_source(local, proposed)
+    return {**info, "input_kind": "local-documentation-preview",
+            "base_source_manifest_sha256": info["source_manifest_sha256"],
+            "source_manifest_sha256": proposed["SOURCE_MANIFEST.sha256"][0],
+            "source_files": len(proposed), "source_tree": None}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ref", default="master", help="upstream ref or accepted commit (default: current master)")
     parser.add_argument("--check-only", action="store_true", help="run all checks without replacing site outputs")
+    parser.add_argument("--source-dir", type=Path,
+                        help="build a documentation-only local preview; --ref must name its full baseline commit")
     args = parser.parse_args(argv)
     try:
         require(sys.version_info >= (3, 10), "Python 3.10 or newer is required")
         require(os.name == "posix", "the current kit and checks require macOS or Linux")
         require(shutil.which("git") is not None, "Git is needed for the upstream tests")
         require(shutil.which("shasum") is not None, "shasum is needed by the installed skill")
-        for name in ("index.template.html", "docs.template.html", "GENERAL_DEVELOPER_CARD.md"):
+        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
             require((SITE / name).is_file(), f"site input missing: {name}")
         with tempfile.TemporaryDirectory(prefix="guided-coding-package-") as temporary:
             root = Path(temporary).resolve()  # Mac /var may alias /private/var
             source = root / "unchanged-source"
             print(f"Fetching {UPSTREAM}:{args.ref} ...", flush=True)
-            info, license_data = download_source(args.ref, source)
+            if args.source_dir is not None:
+                require(SHA.fullmatch(args.ref) is not None,
+                        "a local preview needs --ref with its full baseline commit")
+                baseline = root / "verified-baseline"
+                info, license_data = download_source(args.ref, baseline)
+                info = prepare_local_documentation(args.source_dir.resolve(strict=True), baseline, info, source)
+            else:
+                info, license_data = download_source(args.ref, source)
             print(f"Pinned source: {info['commit']}; checking hooks and tests ...", flush=True)
             scratch = root / "checks"
             scratch.mkdir()

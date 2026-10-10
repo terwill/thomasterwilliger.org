@@ -193,11 +193,14 @@ class PackagingControls(unittest.TestCase):
 
     def build_fixture(self):
         site, old = self.make_site_outputs()
-        for name in ("index.template.html", "docs.template.html", "GENERAL_DEVELOPER_CARD.md"):
+        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
             (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob("*") if p.is_file() and p.name != "SOURCE_MANIFEST.sha256"}
         files.update({name: temp_fixture(name) for name in builder.TEMP_HEADERS})
+        files['docs/GUIDED_CODING_COMMAND_REFERENCE.md'] = (
+            b'# Guided Coding registration and command reference\n\n## One-time registration\n\n' +
+            temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md').split(b'\n\n', 1)[1])
         files['payload/tools/check.py'] = b'# immutable tool sentinel\n'
         files['tests/tst_example.py'] = b'# immutable test sentinel\n'
         for name, (before, _) in DOC_CLARIFICATIONS.items():
@@ -208,6 +211,55 @@ class PackagingControls(unittest.TestCase):
                     (self.source / "SOURCE_MANIFEST.sha256").read_bytes()),
                 "source_files": len(files) + 1, "license_sha256": builder.digest(b"license")}
         return site, old, info
+
+
+    def test_shared_user_guide_is_identical_in_input_download_and_web_source(self):
+        site, old, info = self.build_fixture()
+        guide = ('# Guided Coding User Guide\n\n' + builder.CLOUD_SECTION +
+                 '\n## Publication\n\nOutside review cannot be skipped in this version.\n').encode()
+        files = {p.relative_to(self.source).as_posix(): p.read_bytes()
+                 for p in self.source.rglob('*') if p.is_file() and p.name != 'SOURCE_MANIFEST.sha256'}
+        files['docs/GUIDED_CODING_USER_GUIDE.md'] = guide
+        self.write_source(files)
+        info['source_manifest_sha256'] = builder.digest((self.source / 'SOURCE_MANIFEST.sha256').read_bytes())
+        with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+             patch.object(builder, 'run_contract_checks', return_value={}), \
+             patch.object(builder, 'run_package_tests', return_value=[]):
+            outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
+        with zipfile.ZipFile(io.BytesIO(outputs['guided_coding.zip'])) as archive:
+            self.assertEqual(archive.read('GuidedCoding/guided_coding/docs/GUIDED_CODING_USER_GUIDE.md'), guide)
+            self.assertIn('GuidedCoding/guided_coding/docs/GUIDED_CODING_COMMAND_REFERENCE.md', archive.namelist())
+        metadata = json.loads(outputs['package.json'])
+        record = next(x for x in metadata['documentation']['pages'] if x['page'] == 'getting-started.html')
+        self.assertEqual(record['source_sha256'], builder.digest(guide))
+        self.assertIn(b'Outside review cannot be skipped', outputs['getting-started.html'])
+        self.assertIn(b'id="one-time-registration"', outputs['user-guide.html'])
+        self.assertEqual((self.source / 'docs/GUIDED_CODING_USER_GUIDE.md').read_bytes(), guide)
+
+    def test_cloud_exception_does_not_allow_project_commands_elsewhere(self):
+        guide = '# Guided Coding User Guide\n\n' + builder.CLOUD_SECTION
+        self.assertEqual(builder.general_text('docs/GUIDED_CODING_USER_GUIDE.md', guide), guide)
+        with self.assertRaisesRegex(builder.PackageError, 'unadapted'):
+            builder.general_text('docs/GUIDED_CODING_USER_GUIDE.md', guide + '\nRun phenix.private_command here.\n')
+        with self.assertRaisesRegex(builder.PackageError, 'approved cloud'):
+            builder.general_text('docs/GUIDED_CODING_USER_GUIDE.md', guide.replace('phenix.developer', 'phenix.private_command'))
+
+    def test_local_preview_refuses_changed_tool_even_with_regenerated_manifest(self):
+        baseline = self.root / 'baseline'
+        baseline.mkdir()
+        contents = {'SKILL.md': b'read docs/GUIDED_CODING_USER_GUIDE.md\n',
+                    'payload/tools/check.py': b'original tool\n'}
+        for name, data in contents.items():
+            path = baseline / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        (baseline / 'SOURCE_MANIFEST.sha256').write_bytes(manifest(contents))
+        self.write_source({**contents, 'payload/tools/check.py': b'changed tool\n'})
+        with self.assertRaisesRegex(builder.PackageError, 'executable or procedure'):
+            builder.prepare_local_documentation(self.source, baseline,
+                {'source_manifest_sha256': builder.digest((baseline / 'SOURCE_MANIFEST.sha256').read_bytes())},
+                self.root / 'candidate')
+        self.assertFalse((self.root / 'candidate').exists())
 
     def test_documentation_preserves_examples_and_keeps_references_local(self):
         info = {"commit": "a" * 40}
@@ -267,7 +319,7 @@ printf '<script> & untouched\\n'
         with self.assertRaises(builder.PackageError):
             builder.documentation_link('../../tst_guided_coding.py', info)
         with self.assertRaisesRegex(builder.PackageError, 'source-history links'):
-            builder.documentation_link('https://github.com/cctbx/cctbx_project', info)
+            builder.documentation_link('https://github.com/cctbx/cctbx_project/tree/master', info)
 
     def test_general_paths_and_zip_review_examples_are_adapted_during_each_build(self):
         example = '''# Guide
@@ -532,6 +584,52 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                     builder.require_unchanged_source(self.source, frozen)
                     self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
 
+    def test_source_resolved_verification_command_is_not_prefixed_twice(self):
+        # The case that occurred: the source resolves only the verification test command.
+        name = "docs/GUIDED_CODING_VERIFICATION.md"
+        test_command = "python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n"
+        resolved = builder.TEMP_PREFIX + " " + test_command
+        text = temp_fixture(name).decode().replace(test_command, resolved, 1)
+        adapted = builder.temporary_instructions(name, text)
+        self.assertNotIn(builder.TEMP_PREFIX + " " + builder.TEMP_PREFIX, adapted)
+        self.assertEqual(adapted.count(resolved), 1)
+        for doubled in (builder.TEMP_PREFIX + " " + resolved, resolved + "\n" + resolved):
+            with self.assertRaises(builder.PackageError):
+                builder.temporary_instructions(name, temp_fixture(name).decode().replace(test_command, doubled, 1))
+
+    def test_any_doubled_temporary_prefix_form_is_refused(self):
+        # Outside reading 1, finding 1: unquoted and two-space variants of an
+        # already-resolved command must not be accepted with a second prefix.
+        name = "docs/GUIDED_CODING_VERIFICATION.md"
+        test_command = "python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n"
+        for variant in ('TMPDIR=$(cd "${TMPDIR:-/tmp}" && pwd -P) ',
+                        builder.TEMP_PREFIX + "  "):
+            with self.subTest(variant=variant):
+                text = temp_fixture(name).decode().replace(test_command, variant + test_command, 1)
+                with self.assertRaisesRegex(builder.PackageError,
+                        "doubled temporary-directory prefix; inspect " + re.escape(name)):
+                    builder.temporary_instructions(name, text)
+
+    def test_already_resolved_temporary_instruction_is_not_prefixed_twice(self):
+        for name, commands in builder.TEMP_COMMANDS.items():
+            with self.subTest(name=name):
+                text = temp_fixture(name).decode()
+                for command, _ in commands:
+                    text = text.replace(command, command.replace(
+                        "python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B"))
+                adapted = builder.temporary_instructions(name, text)
+                self.assertNotIn(builder.TEMP_PREFIX + " " + builder.TEMP_PREFIX, adapted)
+                for command, count in commands:
+                    resolved = command.replace("python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B")
+                    self.assertEqual(adapted.count(resolved), count)
+        name = "docs/GUIDED_CODING_USER_GUIDE.md"
+        command = builder.SOURCE_COMMAND
+        resolved = command.replace("python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B")
+        text = temp_fixture(name).decode().replace(command, resolved, 1)
+        with self.assertRaisesRegex(builder.PackageError,
+                "partly resolved temporary-directory instruction; inspect " + re.escape(name)):
+            builder.temporary_instructions(name, text)
+
     def test_new_unresolved_python_instruction_stops_distribution_adaptation(self):
         site, old, info = self.build_fixture()
         (self.source / 'new-instructions.md').write_text('# New instructions\n\npython3 new_tool.py\n')
@@ -764,6 +862,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         (site / "index.template.html").write_text("template")
         (site / "docs.template.html").write_text("template")
         (site / "GENERAL_DEVELOPER_CARD.md").write_text("card")
+        (site / "main-page.md").write_text("# Guided Coding\n\nIntroduction.\n")
         with patch.object(builder, "SITE", site), \
              patch.object(builder, "download_source", side_effect=builder.PackageError("refused")), \
              patch.object(builder, "publish_local") as publish:
@@ -776,6 +875,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         (site / "index.template.html").write_text("template")
         (site / "docs.template.html").write_text("template")
         (site / "GENERAL_DEVELOPER_CARD.md").write_text("card")
+        (site / "main-page.md").write_text("# Guided Coding\n\nIntroduction.\n")
         with patch.object(builder, "SITE", site), \
              patch.object(builder, "download_source", return_value=({}, b"license")), \
              patch.object(builder, "build_artifacts", return_value=old), \
@@ -948,7 +1048,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
 
     def test_cli_reports_failed_rollback_recovery_path_and_returns_failure(self):
         site, old = self.make_site_outputs()
-        for name in ("index.template.html", "docs.template.html", "GENERAL_DEVELOPER_CARD.md"):
+        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
             (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
         real_replace = os.replace
         calls = []

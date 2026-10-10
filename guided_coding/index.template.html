@@ -549,142 +549,27 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main">
-  <h1>Guided Coding for Claude Code</h1>
-  <p class="gc-lead">A structured way to plan, test and review code changes with an LLM.</p>
-  <p>Describe the change you want. Guided Coding helps Claude prepare a plan, implement it, check the result and obtain outside feedback. You keep the decisions about the plan, integrating the result and publishing it.</p>
-  <p>This download contains the complete Guided Coding procedure, checking tools and general project defaults. Keep one central copy and use it in your own Git repositories, with separate settings for each project.</p>
-
-  <nav class="gc-local-nav" aria-label="On this page">
-    <a href="#documentation">User guide and documentation</a><a href="#download">Download</a><a href="#install">Installation</a><a href="#setup">Set up a project</a><a href="#use">Use it</a><a href="#help">Help and updates</a>
+  <h1>Guided Coding</h1>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages">
+    <a href="getting-started.html">User Guide</a><a href="documentation.html">Documentation</a><a href="../guided_workflow/index.html#panel-rewrite">Writing prompt</a>
   </nav>
-
-  <section id="documentation">
-    <h2>User guide and documentation</h2>
-    <p>Read the documentation here in the same format as this page. These pages describe the exact source included in the download.</p>
-    <div class="card-grid">
-      <div class="card"><h3>User guide</h3><p>Registration, project setup, commands, decisions, updates and uninstalling.</p><a class="card-link" href="user-guide.html">Read the user guide</a></div>
-      <div class="card"><h3>Documentation</h3><p>Overview, architecture, verification and links to the procedure’s reference files.</p><a class="card-link" href="documentation.html">Browse the documentation</a></div>
-    </div>
-    <p class="gc-small"><a href="overview.html">Overview</a> · <a href="architecture.html">Architecture</a> · <a href="verification.html">Verification and limits</a></p>
-  </section>
-
+  <!-- MAIN_COPY -->
   <div class="gc-download" id="download">
     <a class="gc-button" href="@@DOWNLOAD_URL@@" download>@@DOWNLOAD_LABEL@@</a>
-    <p class="gc-small">@@PACKAGE_STATUS@@</p>
-    <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">@@COMMIT_SHORT@@</a> · @@COMMIT_DATE@@ · ZIP: @@ZIP_KB@@ KB</p>
-    <!-- PACKAGE_SOURCE -->
+    <p><a href="getting-started.html">Read the User Guide</a> for installation and your first task.</p>
+    <p class="gc-small">@@PACKAGE_STATUS@@ Minimum Claude Code version: @@MIN_VERSION@@.</p>
+    <details class="gc-panel"><summary>Download details and checksum</summary><div>
+      <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">@@COMMIT_SHORT@@</a> · @@COMMIT_DATE@@ · ZIP: @@ZIP_KB@@ KB</p>
+      <p>Check the ZIP before opening it. Download it into Downloads, then run this complete command in Terminal. Stop if the result does not end with <strong>guided_coding.zip: OK</strong>.</p>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '@@ZIP_SHA@@' | shasum -a 256 -c -</code></pre>
+      <button type="button" data-copy="check-download">Copy checksum command</button>
+      <!-- PACKAGE_SOURCE -->
+    </div></details>
   </div>
-
-  <section id="install">
-    <h2>1. Get Claude Code ready</h2>
-    <p>Use a <strong>local</strong> Claude Code session. These instructions cover the Claude app on a Mac and Claude Code in Terminal on macOS or Linux. This installation is stored on your computer; it is not available in a cloud session.</p>
-    <p>You also need Git, Python 3.10 or newer, Bash and <code>shasum</code>. Check <code>git --version</code> and <code>python3 --version</code> in Terminal. If needed, use the official <a href="https://git-scm.com/downloads">Git</a> and <a href="https://www.python.org/downloads/">Python</a> installation instructions.</p>
-    <p><strong>Choose your route.</strong> If you will use an API key, follow the Terminal option below. If you will use the Claude app with your account, follow the app option.</p>
-    <details class="gc-panel" open>
-      <summary>Claude app on a Mac</summary>
-      <div>
-        <p>If you already have the app, choose <strong>Claude → Check for Updates</strong>, then quit and reopen it. Otherwise <a href="https://claude.com/download">download Claude for Mac</a> and install it.</p>
-        <p>Sign in with an account that includes Claude Code: Pro, Max, Team or Enterprise. Use the <strong>Code</strong> tab and choose <strong>Local</strong>. The app includes Claude Code; a separate Terminal installation of <code>claude</code> is not required.</p>
-      </div>
-    </details>
-    <details class="gc-panel">
-      <summary>Claude Code in Terminal</summary>
-      <div>
-        <p>If Claude Code is not installed, enter these lines one at a time. Wait for installation to finish before the second line:</p>
-        <pre id="cli-install"><code>curl -fsSL https://claude.ai/install.sh | bash
-export PATH="$HOME/.local/bin:$PATH"</code></pre>
-        <button type="button" data-copy="cli-install">Copy commands</button>
-        <p>Check with <code>claude --version</code>. Guided Coding requires @@MIN_VERSION@@ or newer. For a native installation, update with <code>claude update</code>; use your package manager if you installed it that way.</p>
-        <p>You can sign in with your Claude account, or use your own API key supplied in <code>ANTHROPIC_API_KEY</code>. For an API key, keep using the Terminal window where the key is set. API usage is billed to that key’s API account. See Anthropic’s <a href="https://code.claude.com/docs/en/authentication">authentication instructions</a>.</p>
-      </div>
-    </details>
-
-    <h2>2. Download and keep the kit in one place</h2>
-    <ol>
-      <li>Download <strong>guided_coding.zip</strong> into your Downloads folder.</li>
-      <li>Before unzipping, check that it matches this page. In Terminal, run the command below. It should end with <strong>guided_coding.zip: OK</strong>; stop if it does not.</li>
-    </ol>
-    <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '@@ZIP_SHA@@' | shasum -a 256 -c -</code></pre>
-    <button type="button" data-copy="check-download">Copy checksum command</button>
-    <p>Double-click the ZIP to unzip it in Downloads. Keep the resulting <strong>GuidedCoding</strong> folder there: Claude will use <code>~/Downloads/GuidedCoding/guided_coding</code> as the central procedure for your projects. If you choose another stable location, change the path in the next message.</p>
-
-    <h2>3. Register Guided Coding once</h2>
-    <p>Open an ordinary local Claude Code session. In the app, use <strong>Code → Local</strong>. In Terminal, run <code>claude</code>. Send this message and let Claude finish:</p>
-    <label for="registration">Registration message</label>
-    <textarea id="registration" readonly rows="7" spellcheck="false">@@REGISTRATION@@</textarea>
-    <button type="button" data-copy="registration">Copy registration message</button>
-    <p>Registration creates a personal link, normally <code>~/.claude/skills/guided_coding</code>, to the verified kit. One registration covers projects in that Claude Code configuration. It does not start a coding task.</p>
+  <section id="install"><h2>Installation and project setup</h2>
+    <p>The <a href="getting-started.html">User Guide</a> takes you through the one-time setup and a first task. The <a href="user-guide.html#one-time-registration">command reference</a> has exact manual commands.</p>
   </section>
-
-  <section id="setup">
-    <h2>4. Set up your own project</h2>
-    <ol>
-      <li>Open a <strong>new</strong> local Code session in the Git repository you intend to change. In the app, select that folder. In Terminal, <code>cd</code> to it before running <code>claude</code>.</li>
-      <li>Enter <code>/guided_coding help</code> to confirm the command is available.</li>
-      <li><a href="GENERAL_DEVELOPER_CARD.md" download>Download the general developer card</a>, attach it in that session and send <code>/guided_coding setup</code>.</li>
-      <li>Check the proposed project settings and instruction changes. Approve them when they are right, then let Claude finish saving and checking them.</li>
-    </ol>
-    <p>The card asks Claude to discover your project’s environment, build and test commands from its documentation and saved settings. It supplies no project-specific commands, server names or private paths. Remote work can be deferred when it is not needed.</p>
-    <p>Setup is for the repository you selected. Other repositories or checkouts may need their own setup. Keep any existing project instructions and work.</p>
-  </section>
-
-  <section id="use">
-    <h2>5. Start a guided coding task</h2>
-    <p>Open a new local Claude Code session in the configured repository. Send <code>/guided_coding</code> followed by your task, requirements and any bug report as <strong>one message</strong>. For example:</p>
-    <pre id="task"><code>@@TASK@@</code></pre>
-    <button type="button" data-copy="task">Copy task starter</button>
-    <p>If you paste a bug report, put it below the command before sending the message. A bug report sent by itself can start ordinary Claude Code work before Guided Coding is involved.</p>
-    <ul class="gc-process">
-      <li><strong>Plan.</strong> Check the proposed goal, scope, tests and limits. Approve or revise the plan.</li>
-      <li><strong>Work and checks.</strong> Claude implements the agreed change and reports the tests and other checks. Approve tool requests when they are reasonable. Auto mode can reduce routine prompts when available.</li>
-      <li><strong>Outside review.</strong> When asked, attach both reviewer files—the message and review package—to a separate capable LLM chat, preferably with a different LLM. Write <code>please review this package</code>, then paste the complete review back into the guided session.</li>
-      <li><strong>Result.</strong> Read the summary, checks and limits. Decide whether to integrate, revise or discard the result.</li>
-      <li><strong>Publication.</strong> Publishing is a separate decision. If you want local work only, include <code>do not publish</code> in your task. Check the closeout summary for local changes and commits.</li>
-    </ul>
-    <p>If you need help understanding a decision, give the relevant text to a <a href="../guided_workflow/index.html">Guided Workflow Helper</a>. You can redirect or stop the coding session at any time.</p>
-  </section>
-
-  <section id="help">
-    <h2>Help and updates</h2>
-    <table>
-      <caption>Guided Coding control commands</caption>
-      <thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead>
-      <tbody>
-        <tr><td><code>/guided_coding help</code></td><td>Explain the available commands.</td></tr>
-        <tr><td><code>/guided_coding status</code></td><td>Read the source, registration and project setup status.</td></tr>
-        <tr><td><code>/guided_coding history</code></td><td>List the project’s recorded tasks.</td></tr>
-        <tr><td><code>/guided_coding setup</code></td><td>Recover settings and propose needed project setup.</td></tr>
-        <tr><td><code>/guided_coding uninstall</code></td><td>Remove only the verified personal link, leaving source and project records.</td></tr>
-      </tbody>
-    </table>
-    <details class="gc-panel">
-      <summary>The command is missing or the wrong kit is loaded</summary>
-      <div><p>Open a fresh local session after registration. Check that the personal link points to the folder you intended and that no competing project skill is selected. Use <code>/guided_coding status</code>. Ask Claude to inspect a conflicting link or directory before changing it.</p></div>
-    </details>
-    <details class="gc-panel">
-      <summary>The client version is too old, or the version says NOT CHECKED</summary>
-      <div><p>Update the client you are using and start a new session. The minimum engine version is @@MIN_VERSION@@; this differs from the app version shown in <strong>About Claude</strong>.</p><p>In app sessions, the checker uses the app’s own engine. When it cannot read that version, it prints <code>NOT CHECKED</code> and continues; this does not confirm that the minimum was met. Terminal sessions still check the <code>claude</code> command on PATH.</p></div>
-    </details>
-    <details class="gc-panel">
-      <summary>Update the Guided Coding kit</summary>
-      <div><p>Finish active guided tasks. Download and verify the new ZIP, then extract it into a separate folder. Ask Claude to verify the new source and inspect the existing registration before changing the link. Keep the old folder until the new registration is checked, then open a fresh session.</p><p>Do not edit the verified <code>guided_coding</code> subfolder or put extra files inside it. Your project settings and records live in your project, outside that source kit.</p></div>
-    </details>
-    <details class="gc-panel">
-      <summary>Stop and undo this task</summary>
-      <div><p>Tell Claude:</p><pre id="stop"><code>Stop this task and restore the project to its state before this task started. Preserve any work that was already present.</code></pre><button type="button" data-copy="stop">Copy stop request</button></div>
-    </details>
-    <p>Read the <a href="user-guide.html">user guide for this edition</a>, <a href="reference-files.html#file-payload-roles-md">role definitions</a> and <a href="verification.html">verification record and limits</a>. The complete prompts, tools, tests and source manifest are in the ZIP and on the <a href="reference-files.html">reference files page</a>.</p>
-    <p class="gc-small">Claude Code references: <a href="https://code.claude.com/docs/en/desktop-quickstart">app setup</a>, <a href="https://code.claude.com/docs/en/setup">Terminal installation</a> and <a href="https://code.claude.com/docs/en/skills">skills</a>.</p>
-  </section>
-
-  <details class="gc-panel gc-maintainer" id="maintainer-notice">
-    <summary>For the maintainer: rebuild this download</summary>
-    <div><p>The generator lives beside the package in the website repository. From the website checkout, run:</p>
-      <pre><code>python3 guided_coding/build_package.py</code></pre>
-      <p>It fetches the procedure source, pins one commit, verifies it and runs the tests. It adapts the documentation and examples for this general edition, creates its own source manifest and checks that edition too. It then writes the ZIP, checksum, metadata, this page and all documentation pages locally. Review the changes before committing and pushing. See <a href="README.md">the maintenance instructions</a> and <a href="package.json">package metadata</a>.</p>
-    </div>
-  </details>
-  <p id="copy-status" class="gc-small gc-copy-status" role="status" aria-live="polite"></p>
+  <p id="copy-status" class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {

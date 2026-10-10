@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding User Guide — Thomas C. Terwilliger</title><meta name="description" content="Install Guided Coding, set up your project and work through a first task."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/getting-started.html"><style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #1a2744;
+  --slate: #3d4f6b;
+  --accent: #2e6da4;
+  --accent-light: #e8f0f8;
+  --warm-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text: #2c2c2c;
+  --text-light: #5a6270;
+  --border: #ddd;
+  --rule: #c4cdd6;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  background: var(--warm-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 0 0;
+}
+
+.header-content {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  background: var(--slate);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: rgba(255,255,255,0.35);
+}
+
+.header-text h1 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 8px;
+  letter-spacing: 0.03em;
+}
+
+.affiliation {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.affiliation a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.affiliation a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+/* ===== NAV ===== */
+.site-nav {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  margin-top: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.site-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.site-nav a.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
+.content-section {
+  padding: 40px 0;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0 0 32px;
+}
+
+/* ===== SECTIONS ON HOME ===== */
+.intro p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  max-width: 72ch;
+}
+
+.intro p:first-child {
+  font-size: 1.12rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.card-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== PUBLICATIONS ===== */
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pub-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pub-meta a:hover {
+  text-decoration: underline;
+}
+
+.pub-year-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub-year-heading:first-of-type {
+  margin-top: 0;
+}
+
+.pub-entry {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.pub-entry:hover {
+  border-left-color: var(--accent);
+}
+
+.pub-entry a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pub-entry a:hover {
+  text-decoration: underline;
+}
+
+.pub-entry i {
+  font-style: italic;
+}
+
+.patents-section {
+  margin-top: 40px;
+}
+
+/* ===== BIO PAGE ===== */
+.bio-section {
+  margin-bottom: 36px;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timeline {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 12px 24px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+
+.timeline li strong {
+  color: var(--navy);
+}
+
+.honors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.honors-list li {
+  padding: 6px 0;
+  font-size: 0.93rem;
+  border-bottom: 1px solid #eee;
+}
+
+.honors-list li:last-child {
+  border-bottom: none;
+}
+
+.honors-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.honors-list a:hover {
+  text-decoration: underline;
+}
+
+.service-text {
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.service-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.service-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SOFTWARE PAGE ===== */
+.software-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.software-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+.software-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.software-card .sw-link {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.software-card .sw-link:hover {
+  background: var(--navy);
+}
+
+/* ===== LINKS PAGE ===== */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.links-list li:last-child {
+  border-bottom: none;
+}
+
+.links-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links-list a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  padding: 24px 0;
+  margin-top: 48px;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.site-footer a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 1.45rem;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .content-section {
+    padding: 28px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-entry {
+    padding-left: 10px;
+  }
+}
+
+.gc-main{padding-top:34px;padding-bottom:34px;width:100%;max-width:920px}
+.gc-main h1,.gc-main h2{font-family:var(--serif);color:var(--navy);line-height:1.3}
+.gc-main h1{font-size:2rem;margin:0 0 8px}.gc-main h2{font-size:1.4rem;margin-top:30px}
+.gc-lead{font-size:1.15rem;color:var(--slate);margin-top:0}.gc-main p{max-width:80ch}
+.gc-download{border-left:4px solid var(--accent);background:var(--accent-light);padding:20px 24px;margin:24px 0}
+.gc-download p{margin:10px 0 0}.gc-button,.gc-main button{display:inline-block;background:var(--accent);color:white;border:0;border-radius:4px;padding:10px 16px;font:600 15px/1.45 var(--sans);text-decoration:none;cursor:pointer}
+.gc-button:hover,.gc-main button:hover{background:#21567f;color:white}
+.gc-local-nav{display:flex;flex-wrap:wrap;gap:10px 20px;border-bottom:1px solid var(--rule);padding:0 0 15px}
+.gc-main a{color:var(--accent)}.gc-main .gc-button{color:#fff}.gc-main section{scroll-margin-top:18px}
+.gc-panel{border:1px solid var(--border);border-radius:6px;margin:14px 0}.gc-panel summary{padding:13px 18px;cursor:pointer;color:var(--navy);font-weight:600}.gc-panel>div{padding:0 18px 16px}
+.gc-main label{display:block;font-weight:600;margin:12px 0 5px}.gc-main textarea{display:block;width:100%;font:15px/1.6 var(--sans);background:#fff;border:1px solid var(--rule);border-radius:3px;color:var(--text);padding:14px;resize:vertical;margin:0 0 10px}
+.gc-main pre{padding:14px 16px;background:#f3f5f7;border:1px solid var(--border);border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}
+.gc-main code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em;overflow-wrap:anywhere}.gc-main pre code{font:inherit}
+.gc-main li+li{margin-top:9px}.gc-main li{padding-left:4px}.gc-process{padding-left:22px}
+.gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
+.gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
+@media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
+
+.gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
+.gc-document h2,.gc-document h3{scroll-margin-top:20px}
+.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
+.gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
+.gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-reference-list{overflow-wrap:anywhere}
+.gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
+.gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
+</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <div class="header-text">
+          <h1>Thomas C. Terwilliger</h1>
+          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
+          <p class="affiliation">
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a><br>
+            Los Alamos National Laboratory Fellow (Retired)
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../software.html" class="active">Software</a>
+        <a href="../bio.html">Biography</a>
+        <a href="../group.html">Group</a>
+        <a href="../news.html">News</a>
+        <a href="../presentations.html">Presentations</a>
+        <a href="../links.html">Links</a>
+      </div>
+    </nav>
+  </header><main class="container gc-main gc-doc-pages">
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="getting-started.html" aria-current="page">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <h1 class="gc-document-title">Guided Coding User Guide</h1>
+  <p class="gc-lead">Install Guided Coding, set up your project and work through a first task.</p>
+<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#before-you-begin">Before you begin</a></li><li><a href="#using-guided-coding-in-the-cloud-or-with-cctbx_project-or-phenix">Using Guided Coding in the cloud or with cctbx_project or PHENIX</a></li><li><a href="#1-download-and-check-the-kit">1. Download and check the kit</a></li><li><a href="#2-one-time-setup-making-the-guided_coding-command-available">2. One-time setup making the /guided_coding command available</a></li><li><a href="#3-set-up-your-project">3. Set up your project</a></li><li><a href="#4-start-your-first-task">4. Start your first task</a></li><li><a href="#5-read-the-plan-and-choose">5. Read the plan and choose</a></li><li><a href="#6-ask-for-outside-review-when-requested">6. Ask for outside review when requested</a></li><li><a href="#7-decide-whether-to-keep-the-result">7. Decide whether to keep the result</a></li><li><a href="#returning-to-a-project">Returning to a project</a></li><li><a href="#stopping-work">Stopping work</a></li><li><a href="#updates-and-removal">Updates and removal</a></li><li><a href="#if-something-goes-wrong">If something goes wrong</a></li><li><a href="#further-details">Further details</a></li></ul></div></details>
+<article class="gc-document"><p>Guided Coding helps you make a software change with Claude and understand the result. You say what you want done. Claude investigates the problem, proposes a plan, makes the change and shows you how it was tested. You decide whether to keep it.</p>
+<p>Start with a small task in a project you know. This guide tells you how to install Guided Coding and set up your project so Claude knows which commands to use to build and test your program. It then takes you through your first task.</p>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>These instructions use the <a href="https://www.thomasterwilliger.org/guided_coding/">Guided Coding download</a>. Use Claude Code on your computer and a project managed with Git. You also need Python 3.10 or newer, Bash to run the shell commands, and <code>shasum</code> to check the download. In Terminal, <code>git --version</code> and <code>python3 --version</code> show which versions of Git and Python you have.</p>
+<p>On a Mac, open the Claude app, choose the <strong>Code</strong> tab and select <strong>Local</strong>. The app includes Claude Code. If you need the app, follow Anthropic’s <a href="https://code.claude.com/docs/en/desktop-quickstart">desktop setup instructions</a>. Update the app if needed and sign in with an account that includes Claude Code.</p>
+<p>You can also use Claude Code in Terminal on macOS or Linux. Follow Anthropic’s <a href="https://code.claude.com/docs/en/setup">Terminal installation</a> and <a href="https://code.claude.com/docs/en/authentication">sign-in and API key</a> instructions. If you use an API key, keep using the Terminal window where you set it.</p>
+<p>Guided Coding checks for Claude Code 2.1.281 or newer. In the app, it checks the copy of Claude Code built into the app. If it cannot read that version, it prints <strong>NOT CHECKED</strong> and continues. You can continue, but the required version has not been confirmed. In Terminal, it checks the <code>claude</code> program that runs when you type that command.</p>
+<h2 id="using-guided-coding-in-the-cloud-or-with-cctbx_project-or-phenix">Using Guided Coding in the cloud or with cctbx_project or PHENIX</h2>
+<p>A cloud session cannot use the link on your computer. It can obtain its own copy from the <a href="https://github.com/cctbx/cctbx_project/tree/master/libtbx/guided_coding">source repository</a>; this guide does not cover cloud setup.</p>
+<p><a href="https://github.com/cctbx/cctbx_project">cctbx_project</a> includes the Guided Coding source. If you use your own copy, follow the one-time setup below with the path to its <code>libtbx/guided_coding</code> folder instead of downloading the kit.</p>
+<p><a href="https://www.phenix-online.org">PHENIX</a> includes Guided Coding. Run <code>phenix.developer</code> to open the instructions and default settings for using it with PHENIX.</p>
+<h2 id="1-download-and-check-the-kit">1. Download and check the kit</h2>
+<p>Download <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip">guided_coding.zip</a> and its <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256">checksum file</a> into Downloads. The checksum file contains a fingerprint of the ZIP. The command below checks whether your downloaded ZIP has that fingerprint.</p>
+<p>These instructions use the exact filenames shown above. If your browser changes a filename or unzips the ZIP automatically, save an unopened copy named <code>guided_coding.zip</code> before continuing.</p>
+<p>In Terminal, run this complete command:</p>
+<pre><code>cd ~/Downloads &amp;&amp; shasum -a 256 -c guided_coding.zip.sha256
+</code></pre>
+<p>The result should end with <code>guided_coding.zip: OK</code>. If it does not, stop and find out why before using the download. This checks the file against the checksum; it does not tell you who supplied the files.</p>
+<p>Unzip <code>guided_coding.zip</code> in Downloads. It creates a folder called <code>GuidedCoding</code>. Keep that folder there. If you prefer another permanent location, change the path in the message in the next section. If a <code>GuidedCoding</code> folder is already there, follow “Updates and removal” below.</p>
+<p>Keep the files inside <code>GuidedCoding/guided_coding</code> as they came in the download. Guided Coding checks them for changes, so editing them or adding files can make the check fail. Keep your project settings and task records in your project.</p>
+<h2 id="2-one-time-setup-making-the-guided_coding-command-available">2. One-time setup making the /guided_coding command available</h2>
+<p>Open a Claude Code conversation on your computer. In the app, choose the <strong>Code</strong> tab, select <strong>Local</strong> and choose a folder. Your home folder is a suitable choice for this one-time step. In Terminal, run <code>claude</code>. Copy and send the whole message below. It gives Claude the exact setup instructions:</p>
+<pre><code>Please set up GuidedCoding from ~/Downloads/GuidedCoding/guided_coding for this Claude Code configuration. Read docs/GUIDED_CODING_COMMAND_REFERENCE.md there. Verify the source and release, check the Claude Code version for this session, and inspect the existing personal skill. If a working shared Guided Coding registration already exists, keep it and show its resolved source. Otherwise register the central link only if the destination is unoccupied. Show what changed. Do not connect to servers, change permission settings, or start a coding task.
+</code></pre>
+<p>Claude checks the kit and creates a link to it. This step is called <strong>registration</strong>. The link lets Claude Code find the <code>/guided_coding</code> command. If a working link already exists, Claude should keep it and show you where it points. If something else is in the way, Claude should inspect it before proposing a change.</p>
+<p>Register once for each Claude Code configuration you use. For the usual setup, that means once on your computer. Registration does not start work on a project. When it is finished, open a new conversation and enter:</p>
+<pre><code>/guided_coding help
+</code></pre>
+<p>If the command is missing, see “If something goes wrong” below.</p>
+<h2 id="3-set-up-your-project">3. Set up your project</h2>
+<p>Open a new Claude Code conversation in the folder for the Git project you want to change. Select that folder in the app. In Terminal, use <code>cd</code> to enter the folder before running <code>claude</code>.</p>
+<p>The download includes an optional <a href="https://www.thomasterwilliger.org/guided_coding/GENERAL_DEVELOPER_CARD.md">general setup card</a>. You can attach it in the app, or tell Claude in Terminal to read <code>~/Downloads/GuidedCoding/GENERAL_DEVELOPER_CARD.md</code>.</p>
+<p>Send:</p>
+<pre><code>/guided_coding setup
+</code></pre>
+<p>Claude reads your project’s documentation and saved settings. It looks for the commands to build and test your program, the folders where those commands should run, and places to keep temporary files and task records. It should ask you only for information it cannot find. Server settings are needed only if your project uses a server.</p>
+<p>Read the proposed settings before approving them. Check that the build and test commands are right and that Claude will run them in the right folders. Claude may also propose a few lines in your project’s instructions saying that Guided Coding’s rules apply there. Read those too. It can keep an existing correct setup.</p>
+<p>After you approve, let Claude finish saving and checking the files. It should save the old settings and the text you approved before changing the project’s instructions. If saving fails, some files may already have changed. Ask what was saved and what needs to be put back before continuing.</p>
+<p>Setup records how to work on your project. By itself, it does not start a coding task, connect to a server or push changes. Each project has its own settings and uses the same Guided Coding kit. If you use a second copy of the same project, run setup there too.</p>
+<h2 id="4-start-your-first-task">4. Start your first task</h2>
+<p>Open a new Claude Code conversation in the project you just set up. Put <code>/guided_coding</code>, your task and any bug report in one message. Here is an example:</p>
+<pre><code>/guided_coding My program crashes when it reads an empty file. Change it so that it prints &quot;The file is empty&quot; and stops. When the file contains data, it should work as before. Add tests for both cases.
+
+[Add details about the program and the crash.]
+</code></pre>
+<p>Use your own task and details before sending the message. Keep the command and bug report together. If you send only a bug report, Claude may start ordinary coding work without loading Guided Coding.</p>
+<p>If you want to keep the changes on your computer, include <code>Do not publish</code> in the task. Start each guided conversation with <code>/guided_coding</code>; you do not need it before every reply. <code>/gc</code> is a shorter spelling of the same command.</p>
+<h2 id="5-read-the-plan-and-choose">5. Read the plan and choose</h2>
+<p>The plan should explain the problem, what Claude will change, how it will check the result and what is still uncertain. Read it before letting Claude make the change.</p>
+<p>Choose <strong>APPROVE</strong> when the plan describes the work you want and a useful way to check it. Choose <strong>REVISE</strong> to ask for a different plan. Choose <strong>STOP</strong> to end the attempt.</p>
+<p>Approving the plan lets Claude do that work. Pushing changes to your repository needs a separate decision later. Claude Code may also ask permission to use a tool. Those prompts are separate from your plan and result decisions. In the app, Claude may suggest Auto mode to reduce routine tool prompts when it is available. You still decide whether to accept the plan, keep the change and publish it.</p>
+<h2 id="6-ask-for-outside-review-when-requested">6. Ask for outside review when requested</h2>
+<p>Claude prepares two files for the reviewer: a message and a package containing the work to review. Use a separate chat, preferably with a different AI assistant. The assistant needs to accept file uploads, open a <code>.tgz</code> package and review code. Attach both files, then write:</p>
+<pre><code>Please review this package.
+</code></pre>
+<p>Copy the reviewer’s complete response back into the Guided Coding conversation. Claude should explain what was fixed in response and what still needs your decision. If the proposed change or review package changes after review, Claude should rerun the relevant tests and ask the reviewer to check the changed version. A short follow-up review may be enough.</p>
+<p>Outside review may wait until publication only if the change cannot affect behavior, requirements, interfaces or an important claim, and you accept the worst possible effect described in the plan. Correcting formatting without changing meaning can qualify. The reviewer recommends what to do; you decide whether to accept the work.</p>
+<h2 id="7-decide-whether-to-keep-the-result">7. Decide whether to keep the result</h2>
+<p>Read what changed, which tests ran and what remains uncertain. The report should show all the file changes and the full code for any new tests. If no tests were added, it should explain how the result was checked.</p>
+<p>Try to explain the change in your own words. Check one important statement in the report. For example, if it says a test passed, look at the test and its recorded result. If you are unsure what the report means, ask for an explanation. You can also give it to a <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a> in a separate chat.</p>
+<p>Choose <strong>INTEGRATE</strong> to put the tested change into your project. Choose <strong>REVISE</strong> to ask for more work. Choose <strong>DISCARD</strong> to abandon the proposed change. The change you accept must be the one that was tested.</p>
+<p>Before publication, the procedure calls for a full test suite and an outside review of exactly the changes to be sent. You can choose to skip the test suite by saying so explicitly for that set of changes. In this version, the outside review cannot be skipped. Claude should record your choice and which checks were not done. A <strong>PUBLISH</strong> decision alone does not skip those checks.</p>
+<p>The choices are <strong>PUBLISH</strong> and <strong>HOLD</strong>. Check which commits will be sent, to which branch and to which repository. A commit is Git’s saved record of a set of changes. Updating copies of your program on other computers or servers needs a separate update plan.</p>
+<h2 id="returning-to-a-project">Returning to a project</h2>
+<p>Open a new Claude Code conversation in your project and send <code>/guided_coding</code> with the next task. Claude should read the saved settings instead of asking you for them again. If you change computers, shells or project folders, or a saved command fails, it may need to check the relevant settings.</p>
+<p>These commands can help:</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody><tr><td><code>/guided_coding help</code></td><td>Explains the commands.</td></tr><tr><td><code>/guided_coding status</code></td><td>Shows which kit is loaded and whether it and your project are set up.</td></tr><tr><td><code>/guided_coding history</code></td><td>Lists the project’s recorded tasks without starting work.</td></tr><tr><td><code>/guided_coding setup</code></td><td>Reads saved settings and proposes any setup changes you need.</td></tr><tr><td><code>/guided_coding uninstall</code></td><td>Removes the link that makes this kit available to Claude Code.</td></tr></tbody></table></div>
+<p>For ordinary Claude Code work, open a new conversation without <code>/guided_coding</code>. The project’s instructions and Claude’s saved memory may still be loaded.</p>
+<h2 id="stopping-work">Stopping work</h2>
+<p>You can ask Claude to change direction or stop at any time. To ask it to undo this task, say:</p>
+<pre><code>Stop this task and restore the project to its state before this task started. Preserve any work that was already present.
+</code></pre>
+<p>Read Claude’s report to see what it restored and what remains unfinished. Do not assume that sending the request was enough to undo the work.</p>
+<h2 id="updates-and-removal">Updates and removal</h2>
+<p>Finish active Guided Coding tasks before updating the kit. Download and check the new ZIP, then unzip it into a new, permanent folder. Keep the old folder in place.</p>
+<ol><li>Ask Claude to check the new kit before changing the working link.</li></ol>
+<ol start="2"><li>In a conversation using the old kit, send <code>/guided_coding uninstall</code> to remove its registration link.</li></ol>
+<ol start="3"><li>Open a new conversation. Send the whole one-time setup message from step 2, replacing <code>~/Downloads/GuidedCoding/guided_coding</code> with the actual path to the new <code>guided_coding</code> folder.</li></ol>
+<ol start="4"><li>Open another new conversation and send <code>/guided_coding help</code> to check that the new kit is available.</li></ol>
+<p>Keep the old folder until the new registration works.</p>
+<p>To remove the link, use <code>/guided_coding uninstall</code>. Claude should confirm that the link points to this kit before removing it. It keeps the kit’s files, your project settings and your task records. Open a new conversation afterward.</p>
+<h2 id="if-something-goes-wrong">If something goes wrong</h2>
+<p><strong>The command is missing, or Claude finds the wrong kit.</strong> Open a new conversation after registration. Ask Claude which folder the registration link points to and whether another project skill uses the same name. It should check those before changing anything.</p>
+<p><strong>Claude Code is too old, or the check says NOT CHECKED.</strong> Update the app or Terminal program you are using, then restart it. The Claude Code version inside the app is different from the app version shown in About Claude. NOT CHECKED means Guided Coding could not read the Claude Code version.</p>
+<p><strong>Claude cannot find a build or test command.</strong> Ask it to read the project’s saved settings and documentation. It should also check the shell in which the command is supposed to run. A command can work in one shell and be unavailable in another. Supply only the missing information.</p>
+<p><strong>Setup fails while saving.</strong> Stop work that uses the new settings. Keep the backup records. Ask Claude which files changed and which ones still need to be restored.</p>
+<h2 id="further-details">Further details</h2>
+<p>The <a href="https://www.thomasterwilliger.org/guided_coding/documentation.html">documentation index</a> links to explanations of the process, the checking tools and the checks that have been run. The <a href="https://www.thomasterwilliger.org/guided_coding/user-guide.html#one-time-registration">registration and command reference</a> gives the manual registration instructions, including how to use a different configuration folder.</p>
+<p>Guided Coding is still being developed. Tests and outside review can miss mistakes. Claude must still follow the procedure. We have not established that Guided Coding produces better fixes than other approaches.</p></article>
+  <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+</main>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>

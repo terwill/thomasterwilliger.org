@@ -529,6 +529,8 @@ main {
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-reference-list{overflow-wrap:anywhere}
+.gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
 </style></head><body id="top"><div class="page-wrapper"><header class="site-header">
     <div class="container">
@@ -557,15 +559,10 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Install and use</a><a href="user-guide.html">User guide</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html" aria-current="page">Reference files</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html" aria-current="page">Reference files</a></nav>
   <h1 class="gc-document-title">Guided Coding reference files</h1>
   <p class="gc-lead">Complete procedure instructions, checking tools, templates and tests for this edition.</p>
-  <p class="gc-small">General edition · These pages describe the files included in the download.</p>
-  <aside class="gc-download gc-doc-note" aria-label="Using the general installer">
-    <p><strong>For your own project.</strong> Follow the <a href="index.html#install">ZIP installation instructions</a> and use the <a href="GENERAL_DEVELOPER_CARD.md" download>general developer card</a>. Keep the procedure at <code>~/Downloads/GuidedCoding/guided_coding</code>, or the stable location you chose. Documentation and examples are adapted automatically when the package is built.</p>
-    <p>If you already have a working shared registration, keep it. Open a session in each target project and run <code>/guided_coding setup</code> with that project’s card. Each project keeps its own settings while using the shared procedure. Earlier project trials are historical evidence, not defaults for your project.</p>
-  </aside>
-<details class="gc-panel gc-toc" open><summary>Files on this page</summary><div><ul><li><a href="#file-skill-md">SKILL.md</a></li><li><a href="#file-source-manifest-sha256">SOURCE_MANIFEST.sha256</a></li><li><a href="#file-payload-developer-guide-contract-md">payload/DEVELOPER_GUIDE_CONTRACT.md</a></li><li><a href="#file-payload-guide-md">payload/GUIDE.md</a></li><li><a href="#file-payload-helper-md">payload/HELPER.md</a></li><li><a href="#file-payload-outside-reviewer-brief-md">payload/OUTSIDE_REVIEWER_BRIEF.md</a></li><li><a href="#file-payload-release">payload/RELEASE</a></li><li><a href="#file-payload-review-transport-md">payload/REVIEW_TRANSPORT.md</a></li><li><a href="#file-payload-roles-md">payload/ROLES.md</a></li><li><a href="#file-payload-setup-md">payload/SETUP.md</a></li><li><a href="#file-payload-setup-defaults-md">payload/SETUP_DEFAULTS.md</a></li><li><a href="#file-payload-worker-md">payload/WORKER.md</a></li><li><a href="#file-payload-screens-plan-md">payload/screens/PLAN.md</a></li><li><a href="#file-payload-screens-publication-md">payload/screens/PUBLICATION.md</a></li><li><a href="#file-payload-screens-result-md">payload/screens/RESULT.md</a></li><li><a href="#file-payload-screens-stop-md">payload/screens/STOP.md</a></li><li><a href="#file-payload-templates-approval-report-md">payload/templates/APPROVAL_REPORT.md</a></li><li><a href="#file-payload-templates-helper-handoff-md">payload/templates/HELPER_HANDOFF.md</a></li><li><a href="#file-payload-templates-project-method-md">payload/templates/PROJECT_METHOD.md</a></li><li><a href="#file-payload-tools-publication-precheck-py">payload/tools/publication_precheck.py</a></li><li><a href="#file-payload-tools-records-history-py">payload/tools/records_history.py</a></li><li><a href="#file-payload-tools-review-bundle-py">payload/tools/review_bundle.py</a></li><li><a href="#file-payload-tools-screen-check-py">payload/tools/screen_check.py</a></li><li><a href="#file-tests-tst-publication-precheck-v20-py">tests/tst_publication_precheck_v20.py</a></li><li><a href="#file-tests-tst-records-history-v20-py">tests/tst_records_history_v20.py</a></li><li><a href="#file-tests-tst-review-bundle-v20-py">tests/tst_review_bundle_v20.py</a></li><li><a href="#file-tests-tst-screen-check-v20-py">tests/tst_screen_check_v20.py</a></li></ul></div></details>
+<details class="gc-panel gc-toc" open><summary>Files on this page</summary><div><ul class="gc-reference-list"><li><a href="#file-skill-md">SKILL.md</a></li><li><a href="#file-source-manifest-sha256">SOURCE_MANIFEST.sha256</a></li><li><a href="#file-payload-developer-guide-contract-md">payload/DEVELOPER_GUIDE_CONTRACT.md</a></li><li><a href="#file-payload-guide-md">payload/GUIDE.md</a></li><li><a href="#file-payload-helper-md">payload/HELPER.md</a></li><li><a href="#file-payload-outside-reviewer-brief-md">payload/OUTSIDE_REVIEWER_BRIEF.md</a></li><li><a href="#file-payload-release">payload/RELEASE</a></li><li><a href="#file-payload-review-transport-md">payload/REVIEW_TRANSPORT.md</a></li><li><a href="#file-payload-roles-md">payload/ROLES.md</a></li><li><a href="#file-payload-setup-md">payload/SETUP.md</a></li><li><a href="#file-payload-setup-defaults-md">payload/SETUP_DEFAULTS.md</a></li><li><a href="#file-payload-worker-md">payload/WORKER.md</a></li><li><a href="#file-payload-screens-plan-md">payload/screens/PLAN.md</a></li><li><a href="#file-payload-screens-publication-md">payload/screens/PUBLICATION.md</a></li><li><a href="#file-payload-screens-result-md">payload/screens/RESULT.md</a></li><li><a href="#file-payload-screens-stop-md">payload/screens/STOP.md</a></li><li><a href="#file-payload-templates-approval-report-md">payload/templates/APPROVAL_REPORT.md</a></li><li><a href="#file-payload-templates-helper-handoff-md">payload/templates/HELPER_HANDOFF.md</a></li><li><a href="#file-payload-templates-project-method-md">payload/templates/PROJECT_METHOD.md</a></li><li><a href="#file-payload-tools-publication-precheck-py">payload/tools/publication_precheck.py</a></li><li><a href="#file-payload-tools-records-history-py">payload/tools/records_history.py</a></li><li><a href="#file-payload-tools-review-bundle-py">payload/tools/review_bundle.py</a></li><li><a href="#file-payload-tools-screen-check-py">payload/tools/screen_check.py</a></li><li><a href="#file-tests-tst-publication-precheck-v20-py">tests/tst_publication_precheck_v20.py</a></li><li><a href="#file-tests-tst-records-history-v20-py">tests/tst_records_history_v20.py</a></li><li><a href="#file-tests-tst-review-bundle-v20-py">tests/tst_review_bundle_v20.py</a></li><li><a href="#file-tests-tst-screen-check-v20-py">tests/tst_screen_check_v20.py</a></li></ul></div></details>
 <p>These are the procedure instructions, tools and tests included in the download, shown as exact file text. The user guide explains everyday use.</p><section><h2 id="file-skill-md">SKILL.md</h2><pre><code>---
 name: gc
 description: Run GuidedCoding for an explicitly chosen coding task, or guide project setup and recovery with /gc setup.
@@ -622,7 +619,7 @@ which skill loaded.
 
 Treat exactly `help`, `status`, `history`, `setup`, `setup &lt;target directory&gt;`,
 and `uninstall` as control requests rather than coding tasks. Read
-`docs/GUIDED_CODING_USER_GUIDE.md` for their exact scope. `help` gives a
+`docs/GUIDED_CODING_COMMAND_REFERENCE.md` for their exact scope. `help` gives a
 short command list; `status` reads the central identity, personal link and
 target adoption and the location/readiness of its declared method without
 changing anything. Report missing, conflicting or deferred settings by
@@ -746,11 +743,12 @@ invoke this manual-only skill. The instructions remain in *this* conversation
 once invoked; a later ordinary task needs a fresh conversation or `/clear`.
 Neither this command nor its symlink authorizes installation, integration,
 server work, outside delivery or publication.
-</code></pre></section><section><h2 id="file-source-manifest-sha256">SOURCE_MANIFEST.sha256</h2><pre><code>67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912  ./SKILL.md
-9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89  ./docs/GUIDED_CODING_ARCHITECTURE.md
-d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426  ./docs/GUIDED_CODING_README.md
-6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b  ./docs/GUIDED_CODING_USER_GUIDE.md
-a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591  ./docs/GUIDED_CODING_VERIFICATION.md
+</code></pre></section><section><h2 id="file-source-manifest-sha256">SOURCE_MANIFEST.sha256</h2><pre><code>9792a208ab3f9e87d481688958dd24618a6d255687651c53a5558225a0a4d286  ./SKILL.md
+98b8105b463db3b0c6f19cf0db6d492410527ea7b131641e8fee91e5014fa9ff  ./docs/GUIDED_CODING_ARCHITECTURE.md
+cacf7ac0e21dc79d6430423af843a11a21d4e8f71e763d20c15fe7d81b7cf853  ./docs/GUIDED_CODING_COMMAND_REFERENCE.md
+7c5d49f0a102f7bf9a713b083a6fe1c2e0bb506aa9e2a1103b70803b11e298d4  ./docs/GUIDED_CODING_README.md
+d18223adeb2cbee0e275a85b7f5435c4b9fb588fb204005fce9090eb43897e4d  ./docs/GUIDED_CODING_USER_GUIDE.md
+10da28767506110943423afce245d5385d3ad99ce15d24e795ce18ffca991abe  ./docs/GUIDED_CODING_VERIFICATION.md
 ab4586810ef683702c8648267d5475fb50659b9fada4b2409293e93a87e6876b  ./payload/DEVELOPER_GUIDE_CONTRACT.md
 9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0  ./payload/GUIDE.md
 dd57340b690f2adb2a739546852fd907e6600e8ca357e4083a763bfb25c16e67  ./payload/HELPER.md
@@ -6631,6 +6629,7 @@ class VersionGateScopeChecks(unittest.TestCase):
 if __name__ == &quot;__main__&quot;:
     unittest.main()
 </code></pre></section>
+  <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>

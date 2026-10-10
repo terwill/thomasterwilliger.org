@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 151293,
+    "bytes": 161410,
     "file": "guided_coding.zip",
-    "sha256": "661f0e0e40e70ec34b3013f5dc45c31d950b4622741724d99c70e0e444feaa51"
+    "sha256": "649e413840fe03eaed84535059b42f70db19faf99c237f9c1d4e735bf4de3563"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -15,36 +15,43 @@
   "documentation": {
     "index": {
       "page": "documentation.html",
-      "page_sha256": "4adad2bab4c93af84c515fe8e9f2fe1daafaa9e5126e1bdb18292f573f4830d0"
+      "page_sha256": "12cf0cc0c5daf51b68353f9b84b8e030ddba9e48b01c739ae1885f836fc47923"
     },
     "pages": [
       {
-        "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
-        "page": "user-guide.html",
-        "page_sha256": "574c8ff3e674d554a696ddf33aeecd3fe1d9efb247935c1560be8b9acbab3214",
+        "original_sha256": "d18223adeb2cbee0e275a85b7f5435c4b9fb588fb204005fce9090eb43897e4d",
+        "page": "getting-started.html",
+        "page_sha256": "2813ab9a41667e2e4ab70010ea69167e85256c95e52aa4207852521f57e1b0ed",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "source_sha256": "6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b"
+        "source_sha256": "d18223adeb2cbee0e275a85b7f5435c4b9fb588fb204005fce9090eb43897e4d"
       },
       {
-        "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
+        "original_sha256": "14c7e59b577b18ddb9eb7db6436626e771dd0f9136707222d4da5c49d6b831ec",
+        "page": "user-guide.html",
+        "page_sha256": "10a899c5e01edbd6930e5b2da234e8acbaf1fb4edc16e5c7aaba161914b5e096",
+        "source": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
+        "source_sha256": "cacf7ac0e21dc79d6430423af843a11a21d4e8f71e763d20c15fe7d81b7cf853"
+      },
+      {
+        "original_sha256": "4a4791703a797d7398234afbc2d978b6b6203b9ef2081a864ca0e702440d115f",
         "page": "overview.html",
-        "page_sha256": "8b3c4dc69e71422bb95966c9b59672e0ad1775ab79d3ab24aa55799cf64341ee",
+        "page_sha256": "41e276443a171b15ab20ddb53457994fa8b04a855052e09ae5bc955463109af4",
         "source": "docs/GUIDED_CODING_README.md",
-        "source_sha256": "d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426"
+        "source_sha256": "7c5d49f0a102f7bf9a713b083a6fe1c2e0bb506aa9e2a1103b70803b11e298d4"
       },
       {
-        "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
+        "original_sha256": "3455734ca0c91d4b92fda54d34cd736bf2b7007371495c853e6fe5aa2c36cb30",
         "page": "architecture.html",
-        "page_sha256": "260bc1c33a0e5ea7b4f952710151c1dcf643b0cf527b4b6fad8c2fb06ba1e1f1",
+        "page_sha256": "e708afd737f29e2bfc7d78e3ee3ff979aeb4401d7e10f75f3fa740c52669a94d",
         "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "source_sha256": "9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89"
+        "source_sha256": "98b8105b463db3b0c6f19cf0db6d492410527ea7b131641e8fee91e5014fa9ff"
       },
       {
-        "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
+        "original_sha256": "961fb4fcb8c069d3c6e838496bef82574331ddbb7945b2905b6ea10f080b962c",
         "page": "verification.html",
-        "page_sha256": "87ef51bb68dba1f0e93f7932d244d95e68187b6e5ddc4407db100b15ec544cfc",
+        "page_sha256": "4d96d4a45848a726deea6092346b3afc6a0a6488f1b1214f676803e6076dbeba",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
-        "source_sha256": "a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591"
+        "source_sha256": "10da28767506110943423afce245d5385d3ad99ce15d24e795ce18ffca991abe"
       }
     ],
     "references": {
@@ -52,12 +59,12 @@
         {
           "anchor": "file-skill-md",
           "source": "SKILL.md",
-          "source_sha256": "67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912"
+          "source_sha256": "9792a208ab3f9e87d481688958dd24618a6d255687651c53a5558225a0a4d286"
         },
         {
           "anchor": "file-source-manifest-sha256",
           "source": "SOURCE_MANIFEST.sha256",
-          "source_sha256": "2912b47e940013e078e0d4ac6faa264bfd1c25ac3c1a17decc4502b76923c5f5"
+          "source_sha256": "5b208c04e5986a3f87c68de151f70ca0e613190f9f42c4ab00e0de0411b1b665"
         },
         {
           "anchor": "file-payload-developer-guide-contract-md",
@@ -186,36 +193,36 @@
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "47bdff5ffdc1f66c331f08d189afb3e35c5814d07d0536552e7b3a4a6368abde"
+      "page_sha256": "5a46e577f190102b06dd616bb15a2ab58b9235a1c0d9b6b8affe8f849720d487"
     }
   },
-  "general_card_sha256": "0bea3dfd6f43458f36da9b456d9196853235bf4df439587df9b0e3df3cf39f38",
+  "general_card_sha256": "fe33fe30e8d819a8330d4782fdbc8066eb4bb936394bb187728a8724799f72a3",
   "general_edition": {
     "adapted_files": [
       {
         "file": "SKILL.md",
-        "original_sha256": "49572d00944f89d5ec723290d46492e49c86cb24e91c4ecc9d6a308f6ec2011d",
-        "packaged_sha256": "67c6ff9c71701cb289a0f391c94292919343f4bc4294c2982f15ae08cf39f912"
+        "original_sha256": "17eb949c9f25acfc309245f2d0fb2dab8a2afb655f4d9bd92e718b904678358e",
+        "packaged_sha256": "9792a208ab3f9e87d481688958dd24618a6d255687651c53a5558225a0a4d286"
       },
       {
         "file": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "original_sha256": "90248dc0618f7ecfc55d7dae83b87a34e03fd024cf6d3f54e26425f88b8d43a6",
-        "packaged_sha256": "9edcd834d0c2e5f7de28746ad9a4fc5f12503d059305e27d3898c945cdc58d89"
+        "original_sha256": "3455734ca0c91d4b92fda54d34cd736bf2b7007371495c853e6fe5aa2c36cb30",
+        "packaged_sha256": "98b8105b463db3b0c6f19cf0db6d492410527ea7b131641e8fee91e5014fa9ff"
+      },
+      {
+        "file": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
+        "original_sha256": "14c7e59b577b18ddb9eb7db6436626e771dd0f9136707222d4da5c49d6b831ec",
+        "packaged_sha256": "cacf7ac0e21dc79d6430423af843a11a21d4e8f71e763d20c15fe7d81b7cf853"
       },
       {
         "file": "docs/GUIDED_CODING_README.md",
-        "original_sha256": "9177b1c43fee79b25eed29f52e5280084060a68232bd131a14b8c39576db9c83",
-        "packaged_sha256": "d3d461912b0f2ba67ae5c4732b4805444cbfdb90a8b1d07b8d11b81fa3f1f426"
-      },
-      {
-        "file": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "original_sha256": "36c29d1d5b633783cf9c5f00b26020859e1f73f1a1a7039dc6785343f50cab5d",
-        "packaged_sha256": "6c263e61e4ae237e5314897ff1648112e0e81b97ef9f283edb4a9238aa100e5b"
+        "original_sha256": "4a4791703a797d7398234afbc2d978b6b6203b9ef2081a864ca0e702440d115f",
+        "packaged_sha256": "7c5d49f0a102f7bf9a713b083a6fe1c2e0bb506aa9e2a1103b70803b11e298d4"
       },
       {
         "file": "docs/GUIDED_CODING_VERIFICATION.md",
-        "original_sha256": "2cb2294b0dcba3100fc8d2dc964dd8b4bb0b6000be63e483ad93c1de80aaaa1c",
-        "packaged_sha256": "a13fbf139d4ad4fc11839c2209faab23cb39c297a934445fabfddd5a3a88b591"
+        "original_sha256": "961fb4fcb8c069d3c6e838496bef82574331ddbb7945b2905b6ea10f080b962c",
+        "packaged_sha256": "10da28767506110943423afce245d5385d3ad99ce15d24e795ce18ffca991abe"
       },
       {
         "file": "payload/GUIDE.md",
@@ -253,15 +260,16 @@
         "packaged_sha256": "a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c"
       }
     ],
-    "edition": "general-downloads-v2",
+    "edition": "general-downloads-v3",
     "installation_root": "~/Downloads/GuidedCoding/guided_coding",
-    "source_files": 31,
-    "source_manifest_sha256": "2912b47e940013e078e0d4ac6faa264bfd1c25ac3c1a17decc4502b76923c5f5"
+    "source_files": 32,
+    "source_manifest_sha256": "5b208c04e5986a3f87c68de151f70ca0e613190f9f42c4ab00e0de0411b1b665"
   },
   "generator": {
-    "docs_template_sha256": "41282d79908c0e24621c2ba3c60cbbfb67063528d2985d388146eaf8bbf209fa",
-    "script_sha256": "0ba5ff4a573cd990ce2259b6dfd15977edfb1b9b871c624991aa15d1e65f9634",
-    "template_sha256": "ff604cb944d2b5cc291eb2090bd8f88444a1cd194c112a28f794103de15ef69e"
+    "docs_template_sha256": "345ebea03e314709465be2f60f019386efb3287e9b5dceafef587c6546349096",
+    "main_copy_sha256": "f7bba7c5bcab779d8215f965abb57d628ddc2c697712b4b08b4727c361144086",
+    "script_sha256": "2d0c843612bfc699f4a18fa4ef22124478a80fe2081b8b7d694b85d82b7e95ac",
+    "template_sha256": "f3c5cfb3f76c2fdc838c189533ef73642b51bd1178c1f6494ee7af3b6e861e9c"
   },
   "historical_source_checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -274,25 +282,25 @@
   "historical_source_tests": [
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "4229059fe1c45fa722b92e0879e0025819efdf529eb78640dac8f218666481a2",
+      "output_sha256": "bca15eadf8180dbe763d018d6f257feb12e3ee96c2d1c94807726c611eef5365",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "4497db8e83df40ecdb88c44d4840218d58e31ce5cc9376870203bdff85e0b98c",
+      "output_sha256": "6a76f81c0c29e8d96f12fe9383518f923537a3a06444243d1bcbe229625f8706",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "cf7cf1ad810d9a2d3096c09cc9fbb279e300ae0f832c555fec2fbf4ac10bc7cf",
-      "skipped": 1,
+      "output_sha256": "7f5ca3031b4645e76bae062d71d8d0b00b00130b19529c9aba8917c64bc3cf6b",
+      "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "5d74c2e6dd51f7bf6c178b03228ec4a13505fa8b2af70331919f094669c37181",
+      "output_sha256": "525872c44ea0ca9d342c2b71785b7ddc070293bc5d733aa9110f5b08350b521f",
       "skipped": 0,
       "tests": 63
     }
@@ -302,39 +310,39 @@
   "package_tests": [
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "45175acdfebff31246a3ad51b14105469de35ed1d1752e79b51aa27dff2b9e16",
+      "output_sha256": "8789e0de5a12cdda3b8fc7e17ed8e2c52a92c314c6c725e0443899dc9e85ca29",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "bec8cadda5ae08bab37a458576c6ba82132aa42bbe19dd0639bfbfcac5d46e34",
+      "output_sha256": "6a76f81c0c29e8d96f12fe9383518f923537a3a06444243d1bcbe229625f8706",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "567c7b3f080d5b1601ad496775205d3baccf367c8bc4a2e64a08ab8f4a1c31c9",
-      "skipped": 1,
+      "output_sha256": "fc39c9ecd933f77ba665e3f805e580e3849129d988e35118dbc1da1eeca2caa3",
+      "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "02ca2ef700171b1d0d9e721e2c65724fb7b7d5389ff0a3806e58fbb1b1d7347e",
+      "output_sha256": "d6a839305a2f4bd3bab18e1253cbaedf2befe94a0fe5e67b2df81193a0ab1ce4",
       "skipped": 0,
       "tests": 63
     }
   ],
   "release": "guided_coding 2.0 pilot r10 rev17 candidate (followups-20261004; publication conventions without tags, explicit waivers, one dual-scope outside reading bound by OUTGOING.txt, named-installation rollout, job summaries and the read-only history listing, session titles, search roots; checker rules added to screen_check.py; new tools publication_precheck.py and records_history.py; app-aware Claude Code version check (2026-10-06); contract, adoption and setup recipe unchanged; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
   "upstream": {
-    "commit": "fc1682a9029dab083f20ded47724831812d406e1",
-    "commit_date": "2026-10-06T20:03:57Z",
+    "commit": "41e537a2987bfc21ff8944114f679a6e62004059",
+    "commit_date": "2026-10-09T22:48:00Z",
     "license_sha256": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
     "repository": "cctbx/cctbx_project",
-    "requested_ref": "fc1682a9029dab083f20ded47724831812d406e1",
-    "source_files": 31,
-    "source_manifest_sha256": "afe4d3c56abfd8299880fcf6a3dde6d639c7f5dc956b20bbef17820988a595d8",
+    "requested_ref": "41e537a2987bfc21ff8944114f679a6e62004059",
+    "source_files": 32,
+    "source_manifest_sha256": "58dd1de282f340da20d3e81543323c8f9f874077c94bfe61c2fefbafabbe1014",
     "source_path": "libtbx/guided_coding",
-    "source_tree": "cfcf1b85408f0fc460587292a7442260cf19fc5b"
+    "source_tree": "0862089ddd6d2dfdf9de4ff2f90ce241c16f244a"
   }
 }

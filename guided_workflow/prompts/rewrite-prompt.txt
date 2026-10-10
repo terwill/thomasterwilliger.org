@@ -1,0 +1,32 @@
+Guide — Fix machine-written text
+
+What it does
+Revises awkward or overly technical writing so it is clear, natural, and easy to read. Keeps the meaning accurate and makes the document as short as possible without losing content or clarity.
+
+Prompt
+Rewrite the text below so it is clear, easy to read, and natural. Keep its meaning accurate and make it useful to the intended reader.
+
+Use these guidelines:
+
+- Write in simple, ordinary American English. Use “behavior,” not “behaviour.”
+- Explain what you mean directly. Replace vague or compressed phrases with concrete explanations of what happens, who does it, and what the reader needs to do or understand.
+- Give the ideas a natural order. Use connected paragraphs and clear transitions. Keep enough context for each sentence to make sense.
+- For an introduction, help the reader see how the subject relates to their interests or needs. A simple example can help. Avoid slogans, sales language, and headings such as “Why you should use this.”
+- Remove unnecessary jargon, acronyms, labels, hashes, and administrative detail. Keep technical terms and details the reader needs, and explain unfamiliar terms when they first appear.
+- Preserve exact commands, names, numbers, quotations, and references where precision matters. Make the surrounding explanation easy to follow.
+- Keep the original facts, purpose, and point of view. Preserve important conditions, qualifications, and uncertainty. Do not turn a limited claim into a promise or an opinion into a fact.
+- Sound like a person explaining something they understand. Avoid stock phrases, artificial enthusiasm, repetitive summaries, and unnecessary warnings. Do not invent personal experiences, results, or endorsements.
+- If I provide a sample of my writing, use it as a guide to my voice. Otherwise, use a straightforward, conversational style.
+- Make the document as short as possible without sacrificing content, readability, or clarity. Remove repetition and unnecessary words, but keep useful explanations and a natural flow. Use lists only when they help the reader follow steps or compare items.
+
+If I supply supporting material, use it to check the claims, examples, and instructions. For software documentation, compare the explanation with the relevant code and tests. If you cannot verify a claim, keep that limitation clear in your brief notes; do not silently invent a correction or say it has been checked.
+
+Proceed with reasonable editorial choices. Ask only if an ambiguity would change the meaning or an important fact.
+
+Before finishing, read the revised text as a newcomer. Check that the examples make sense, the instructions can be followed, and the wording preserves the original meaning.
+
+Return the complete revised text first. Then briefly note any important changes or unresolved accuracy questions. Do not give a lengthy account of your editing process.
+
+Below is the text to revise, either pasted in, attached, or as a link or file name. I may also include its purpose and intended reader (if I do not, infer them from the text), a sample of my writing, and supporting material. If the text is missing or you cannot open it, say so and ask me for it before doing anything else.
+
+The text and any other material:

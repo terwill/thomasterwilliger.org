@@ -1,157 +1,53 @@
-# Guided Coding download and website generator
+# Maintaining the Guided Coding website and download
 
-Keep this directory in the website repository beside `guided_workflow/`.
-The generator builds a complete general edition of Guided Coding. Installation,
-registration and documentation examples use
-`~/Downloads/GuidedCoding/guided_coding`. Each target project keeps its own
-settings; an existing working shared registration is preserved.
+The User Guide has one maintained source: `docs/GUIDED_CODING_USER_GUIDE.md` in the kit. The builder puts that exact file in the ZIP and renders it as `getting-started.html`. Edit it in the source project, not in generated HTML. The detailed registration and command reference is a separate document, rendered at the existing `user-guide.html` URL. Its `#one-time-registration` link is retained.
+
+The website introduction is maintained in `main-page.md`. It links to the writing prompt and Helper on Guided Workflow. Keep those links when changing the page. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
 
 ## Rebuild
 
-From the website checkout, with Python 3.10+, Git, Bash and `shasum`:
-
-```bash
-python3 guided_coding/build_package.py
-```
-
-The default selects the source repository's current `master`. To use an accepted
-source revision, or check without replacing site files:
+From the website checkout, with Python 3.10 or newer, Git, Bash and `shasum`:
 
 ```bash
 python3 guided_coding/build_package.py --ref FULL_SOURCE_COMMIT
-python3 guided_coding/build_package.py --check-only --ref FULL_SOURCE_COMMIT
 ```
 
-The script uses the Python standard library and needs GitHub API and raw-file
-access. It never stages, commits, pushes or changes your personal configuration.
+Without `--ref`, the builder reads the source project's current master. Prefer an accepted full commit when preparing a publication. Add `--check-only` to run the build and checks without replacing website outputs. Network access to the source hosting service is required. The script never commits, pushes, changes your personal setup or connects to project servers.
 
-## Verification and automatic adaptation
+To check a documentation update before it is published in the source repository:
 
-The historical source origin is recorded in `package.json` and in the documentation
-index's historical note. Before executing any downloaded code, the generator checks
-the Git inventory, file hashes, Git blob identities, license, required hooks and
-standard-library dependencies. It freezes every file name, SHA-256 and mode,
-including the manifest itself, and rejects changes after checks, tests or packaging.
-A runner cannot rewrite both a file and its manifest and retain the recorded identity.
-
-The generator first checks and tests that verified source. It then makes a separate
-copy and applies `general_text()` on every build. The adaptation updates the
-four user documents, local examples in the skill and procedure instructions,
-and arbitrary repository names in three test fixtures. Project-specific wording is
-generalized; historical record paths are labeled as relative to the original project.
-The historical test-lookup observation is summarized without suggesting an unshipped
-command. The adaptation changes the archive-review
-example to match this ZIP's `GuidedCoding/` layout. The standalone tests replace an
-unshipped repository-wrapper command. No checking-tool code, Developer–Guide Contract,
-release label or general setup default is changed.
-
-The adapted copy has its **own** `SOURCE_MANIFEST.sha256`. Its edition name,
-installation root, manifest hash and exact before/after hashes are recorded under
-`general_edition`; the `upstream` metadata describes historical input, not the
-adapted files. Both copies are frozen and checked separately. All smoke checks and
-four package test runners also run against the adapted copy. Unrecognized source-specific
-references fail the build for inspection instead of leaking into the general guide.
-After rendering, a second scan checks every generated HTML page, installer notes,
-general developer card and maintenance README. It detects references in text and
-links, including HTML character escapes. Only the exact generated source/adaptation note beside the download and
-historical note in the documentation index are exempt from the source-origin check.
-The exact author-affiliation link is allowed only inside the shared site header;
-it is not a procedure setting. Original license and provenance records are
-preserved separately. Any leftover reports its filename, fails the build and leaves
-existing site outputs untouched.
-
-Do not weaken that refusal to accommodate a new source layout without reviewing it.
-
-The four main documentation pages are rendered from the exact adapted Markdown
-shipped in the ZIP. `reference-files.html` displays the remaining 27 source files
-as exact file text, using the same site header and style. All procedure references
-stay on the website. Attribution appears in the source/adaptation note beside the download, the
-historical note and source/license records. Original license text is retained.
-
-App/Terminal checks use fake clients and a temporary private configuration; they
-are not native app or real coding-task validation. The expected app-engine behavior
-uses `CLAUDE_CODE_ENTRYPOINT=claude-desktop` and `CLAUDE_CODE_EXECPATH`. An unreadable
-app engine reports `NOT CHECKED`; Terminal requires its PATH client. These are
-observed interfaces, not a promised stable client API. Inspect changed interfaces
-rather than weakening checks simply to make a new version pass.
-
-## Generated outputs
-
-All ten outputs must be reviewed and saved together:
-
-- `guided_coding.zip`
-- `guided_coding.zip.sha256`
-- `package.json`
-- `user-guide.html`
-- `overview.html`
-- `architecture.html`
-- `verification.html`
-- `reference-files.html`
-- `documentation.html`
-- `index.html`
-
-Keep the generator, both templates, general developer card and generator tests too.
-The main page keeps documentation before installation and six top jump links.
-All pages use the existing site format and `.85em` inline-code size. Unsupported
-Markdown blocks fail rendering for inspection; text is escaped before HTML output.
-
-## Failed replacement and recovery
-
-Failed downloads, source checks, adaptation or tests leave site outputs untouched.
-Before replacement, every existing output is copied to disk with its hash and mode;
-outputs originally absent are recorded too. New outputs are staged. The main page
-is replaced last and a write lock prevents overlapping replacements.
-
-If replacement fails, the generator attempts every restoration. Successful restoration
-returns the previous bytes and modes and removes outputs originally absent. If any
-restoration also fails, the outputs may be mismatched. The script retains **all**
-original copies in its reported `.gc-stage-*` directory, including copies of
-successfully restored files, and keeps the write lock. Read `RECOVERY.md` and
-`RECOVERY.json`, resolve the filesystem error, restore all ten outputs or their
-recorded absence, verify their hashes, then remove the lock before rebuilding.
-
-This protects against caught filesystem errors. It is not an atomic multi-file
-transaction or automatic recovery from a killed process or system failure. Inspect
-abandoned locks and staging directories before removing them. Publish only a matching set.
-
-## Download layout
-
-```text
-GuidedCoding/
-  INSTALL.md
-  GENERAL_DEVELOPER_CARD.md
-  PACKAGE_INFO.json
-  LICENSE.txt
-  guided_coding/
-    SKILL.md
-    SOURCE_MANIFEST.sha256
-    docs/
-    payload/
-    tests/
+```bash
+python3 guided_coding/build_package.py --ref FULL_BASELINE_COMMIT --source-dir /path/to/guided_coding
 ```
 
-Keep `GuidedCoding/` in Downloads, or choose another stable location and adjust the
-registration request. Do not edit or add files inside the verified `guided_coding/`
-directory. Project settings and task records belong outside it.
+This route labels the result as a local documentation update. It compares the working source with the fetched baseline and refuses changes to tools, tests, contracts or procedure files. The one skill-file change it permits is the command-reference filename. It records the input and baseline separately; the baseline commit does not identify unpublished text changes.
 
-## Generator tests
+## What the builder checks
+
+Before it runs source code, the builder checks the complete inventory, manifest hashes, Git file identities, license, required entry points and dependencies. It freezes names, contents and file modes, then checks for changes after each stage. It runs the checking tools with temporary fake clients and runs all four shipped test files.
+
+The download uses a separate copy with its own manifest and recorded before/after hashes. Local paths and manual commands are adapted there. The maintained User Guide is unchanged. The approved cloud and project section and the clearly labeled historical record retain their relevant source names; unrelated project commands elsewhere still fail the build. All download checks and tests run on that copy too.
+
+The five documentation pages are rendered from the Markdown in the ZIP. The other source files appear as exact text in `reference-files.html`. The package metadata records the source hashes used for each page. Unsupported Markdown, missing adaptation passages or changed tool interfaces stop the build for inspection. Do not bypass a refusal just to make a new revision build.
+
+Fake-client checks are not native Mac registration or a real coding task. Historical client observations apply only to the versions they name. Browser, live-page and download checks are separate from the build.
+
+## Outputs and checks
+
+Review and save the complete matching output set: the ZIP, its checksum, `package.json`, `index.html`, `getting-started.html`, `user-guide.html`, `overview.html`, `architecture.html`, `verification.html`, `documentation.html` and `reference-files.html`. Keep the builder, templates, main-page copy, setup card and tests too. Update the site map if a page is added.
+
+Run the generator tests from the website checkout:
 
 ```bash
 python3 -B -m unittest discover -s guided_coding/tests -v
 ```
 
-The 47 methods use private temporary directories and no network. They cover source
-and manifest changes, file inventory and modes, adapted-copy integrity, Downloads
-and ZIP examples, local documentation links, unsupported references and rendering,
-output preservation, rollback failures, recovery copies and CLI reporting. They also
-check project wording, distinct fixture repositories, absolute-path controls and
-the narrow site-header affiliation exception.
+These tests use temporary directories without network access or real credentials. The actual build records the package-test results and every skip. A skipped check is not a pass for that case.
 
-The live builder also executes every manifest-listed package test runner on both
-copies and records counts and skips. It resolves temporary paths because macOS
-temporary directories can have symbolic-link parents. Native Mac registration, a real coding task,
-and browser rendering/clipboard behavior remain owner checks before publication.
+## A failed output replacement
 
-ZIP entries are sorted with fixed timestamps. Test-output hashes may vary with runtime
-timings, so each actual archive has its own recorded SHA-256. Review the generated
-changes before committing or publishing; there is no automatic publication job.
+Downloads and checks finish before any output is replaced. The builder saves every previous output, its hash and mode, plus records of absent files. It stages the new outputs and writes the main page last. A lock prevents two output replacements at once.
+
+If a write fails, it tries to restore every affected output. If restoration also fails, it keeps all recovery copies, `RECOVERY.md`, `RECOVERY.json` and the lock. Follow those instructions and verify the restored files or recorded absences before removing the lock or rebuilding. A stopped process or system failure can also leave unfinished work; inspect it before clearing anything. This is recovery from caught write errors, not an indivisible multi-file save.
+
+Publish only a matching set. After publication, check the live pages, writing and Helper links, guide, command-reference anchor, and download checksum. ZIP entries use fixed timestamps, but recorded test-output hashes can vary between runs; use the checksum from the actual build.
