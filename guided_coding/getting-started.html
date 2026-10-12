@@ -637,7 +637,7 @@ main {
 </code></pre>
 <p>Read Claude’s report to see what it restored and what remains unfinished. Do not assume that sending the request was enough to undo the work.</p>
 <h2 id="running-several-jobs-unattended-auto-mode">Running several jobs unattended (auto mode)</h2>
-<p>Auto mode works through a list of tasks one at a time while you are away. It is new and has had limited use.</p>
+<p>Auto mode works through a list of tasks one at a time while you are away. It is new and has had limited use. Auto mode runs only on macOS; on other systems its runs are refused.</p>
 <p>Before your first run, start an ordinary Guided Coding task and ask Claude to check whether your project is ready for auto mode and to prepare what is missing. There is no dedicated setup command yet. Your project needs a separate test copy of your software and saved settings for checking that copy, reserving it for testing, keeping task records and keeping enough free disk space. Without these settings, tasks that need the test copy are blocked.</p>
 <p>Type <code>/gc auto</code> yourself, choosing it from the command menu, and paste the task list after it in the same message before sending. A pasted message that merely begins with the command does not start auto mode. Say when the run should end; otherwise it ends at 8 a.m. the next morning.</p>
 <p>Claude shows one start notice and works without asking questions. Each task has its own branch and is tested in the separate copy. Your main branch and working installation stay unchanged. Each task is saved as <strong>Ready for approval</strong>, or as <strong>Blocked</strong> with a reason. Tests that contact outside services are left out unless you allow them for that task in your list.</p>

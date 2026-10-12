@@ -30,7 +30,7 @@ Each task has its own branch and is tested in a separate copy of your software. 
 
 Starting auto mode skips each task’s plan approval and outside review before saving it. Claude decides how to test each change and what counts as passing; your project’s required checks still apply. Claude’s reviewer and checker assistants still examine the work. You can ask for an outside review before approving. Merging and publishing need your later instructions and the usual required review.
 
-Auto mode is new and has had limited use. Your project needs a separate test copy and settings prepared first; see the [User Guide](https://www.thomasterwilliger.org/guided_coding/getting-started.html). Keep the computer powered and awake. If a usage limit interrupts the run, you must resume it yourself.
+Auto mode is new and has had limited use. Auto mode runs only on macOS; on other systems its runs are refused. Your project needs a separate test copy and settings prepared first; see the [User Guide](https://www.thomasterwilliger.org/guided_coding/getting-started.html). Keep the computer powered and awake. If a usage limit interrupts the run, you must resume it yourself.
 
 ## Try it in your own project
 

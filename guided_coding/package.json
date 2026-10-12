@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 257183,
+    "bytes": 257596,
     "file": "guided_coding.zip",
-    "sha256": "6c66185402bb5eb4c43e716eecd43355b463a7d152c47af6698044196d11faf1"
+    "sha256": "055c9db8f09c395ae3f25eab027f6887663e01360a602583d00a2bf6197ae4f8"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -15,22 +15,22 @@
   "documentation": {
     "index": {
       "page": "documentation.html",
-      "page_sha256": "47d13ebe2b62bafe92c1ca1795a2c272ff86505b99d5f555f7f126c2f88e6de1"
+      "page_sha256": "09bcee2533cbe34496886d237150c1df4d80954a8539f8e2fb8dff2889a2f704"
     },
     "pages": [
       {
-        "original_sha256": "5bdafec564498c2f7ef7baa568776f62a76e8b34f0d3a2c60ce3624cef473335",
+        "original_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18",
         "page": "getting-started.html",
-        "page_sha256": "78a0b1204b0bb17b7f71409adb01c95ec515bf217f9e6e90637266b1493ddceb",
+        "page_sha256": "e6ad9f6578970e1a2ec69b15d3db99b393570f67c672280278031ddbcdb6c6e8",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "source_sha256": "5bdafec564498c2f7ef7baa568776f62a76e8b34f0d3a2c60ce3624cef473335"
+        "source_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18"
       },
       {
-        "original_sha256": "8f555a7afab8d704bfc31536264b9a66009127c8b141e54295e385e35b9f9fea",
+        "original_sha256": "30300be722449ee98a5a2609f74640b8f95ff17bcc112b30b5c760c6f0d7a67a",
         "page": "user-guide.html",
-        "page_sha256": "4dfb5f7a8f5cfa3ef2b350b2045771e4b05236ad391195354bbccbd86612b403",
+        "page_sha256": "449d3cc8a43acf80d00144d86795683e9ffec577ee3e59e0acff643464a66ab0",
         "source": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "source_sha256": "e1094231a6903ebc04e47de19cb926b047cbac9c10369cb3c1dd1c4ce45fa624"
+        "source_sha256": "1421699aa053a448993512f48f4994c19df2148beca62119ac57798932986d40"
       },
       {
         "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
@@ -47,11 +47,11 @@
         "source_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
       },
       {
-        "original_sha256": "0190b1927b5976111486edf7218c94b1bd3e6e3581db3eb16ebbebf82e0905ce",
+        "original_sha256": "2e11a256a6c55846c6413bc61f965e812dab9e9728ae50918c2261708373a58a",
         "page": "verification.html",
-        "page_sha256": "afbb0e58e86f146e33d67a291f363f5c3b579456e8b8988dd4b83c6db3b75aa9",
+        "page_sha256": "d33e8840c6b4006fc323efd3c0b6418e38be169261db397c9dd58aeb05a8693e",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
-        "source_sha256": "ebf57a84e56103f6fb488adb4ae52ea7fb037025ab29fd62596c98e94bf63464"
+        "source_sha256": "e7a3b1adfdb23c2c04aedb95ff6993bc5ad8b71f7007a3351618523f9ee82c97"
       }
     ],
     "references": {
@@ -64,7 +64,7 @@
         {
           "anchor": "file-source-manifest-sha256",
           "source": "SOURCE_MANIFEST.sha256",
-          "source_sha256": "7d09ea73f222b0f7d807f392132fcfa7528fd303e0a37bfdf54846c64018aba6"
+          "source_sha256": "3c3fa2e5698474ed7acf90614087f896a1f126764be7ae71559064427138aec5"
         },
         {
           "anchor": "file-auto-queue-py",
@@ -74,7 +74,7 @@
         {
           "anchor": "file-payload-auto-md",
           "source": "payload/AUTO.md",
-          "source_sha256": "fbf5c9bee7e0c0bae74acb949654d262f5e3e5e0e4e61c45b7f4d9abfc6d85ac"
+          "source_sha256": "b5c3472724a80d27114ba1ec5827e7ffc495f9cd7b6c2c02d07e51845084c6fb"
         },
         {
           "anchor": "file-payload-developer-guide-contract-md",
@@ -99,7 +99,7 @@
         {
           "anchor": "file-payload-release",
           "source": "payload/RELEASE",
-          "source_sha256": "a0bd274783a24e539ba4358928f44aa0aad9eb268a1181702e93da9dcffd69b4"
+          "source_sha256": "e85e42b5116afe5adb83a8d8ace336845de74e98a2eb887f9731dc8cf7504025"
         },
         {
           "anchor": "file-payload-review-transport-md",
@@ -223,7 +223,7 @@
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "0a0fe78bb7361d207ce47fac9d3038374c11cc0a7347632d58c3aa7b755037a0"
+      "page_sha256": "7945e64f8460d95190dccc2672085ebe0fcdaa9f4c12b250c9bd2e930b733eb3"
     }
   },
   "general_card_sha256": "fe33fe30e8d819a8330d4782fdbc8066eb4bb936394bb187728a8724799f72a3",
@@ -241,8 +241,8 @@
       },
       {
         "file": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "original_sha256": "8f555a7afab8d704bfc31536264b9a66009127c8b141e54295e385e35b9f9fea",
-        "packaged_sha256": "e1094231a6903ebc04e47de19cb926b047cbac9c10369cb3c1dd1c4ce45fa624"
+        "original_sha256": "30300be722449ee98a5a2609f74640b8f95ff17bcc112b30b5c760c6f0d7a67a",
+        "packaged_sha256": "1421699aa053a448993512f48f4994c19df2148beca62119ac57798932986d40"
       },
       {
         "file": "docs/GUIDED_CODING_README.md",
@@ -251,8 +251,8 @@
       },
       {
         "file": "docs/GUIDED_CODING_VERIFICATION.md",
-        "original_sha256": "0190b1927b5976111486edf7218c94b1bd3e6e3581db3eb16ebbebf82e0905ce",
-        "packaged_sha256": "ebf57a84e56103f6fb488adb4ae52ea7fb037025ab29fd62596c98e94bf63464"
+        "original_sha256": "2e11a256a6c55846c6413bc61f965e812dab9e9728ae50918c2261708373a58a",
+        "packaged_sha256": "e7a3b1adfdb23c2c04aedb95ff6993bc5ad8b71f7007a3351618523f9ee82c97"
       },
       {
         "file": "payload/GUIDE.md",
@@ -293,11 +293,11 @@
     "edition": "general-downloads-v3",
     "installation_root": "~/Downloads/GuidedCoding/guided_coding",
     "source_files": 38,
-    "source_manifest_sha256": "7d09ea73f222b0f7d807f392132fcfa7528fd303e0a37bfdf54846c64018aba6"
+    "source_manifest_sha256": "3c3fa2e5698474ed7acf90614087f896a1f126764be7ae71559064427138aec5"
   },
   "generator": {
     "docs_template_sha256": "757203e78da6b7adce8e0b747aee5be11a1341eb716fd5332d82d89df8541cf6",
-    "main_copy_sha256": "70f1cd22cc660686aaae2261d257d5675d2a8cf445c917316029468773bf787e",
+    "main_copy_sha256": "7f0d01671c5db745e0a34411a989e600763c3c83c4879cbfb81c5ee22b297fe4",
     "script_sha256": "3acd27b73ecd4290f6a0fe367d009f9b95edac1dd35824b370741c62f4597a50",
     "template_sha256": "4cd0c4e5d496fa20f58d4c5b162f72877243f46cef02e5116de3a5df8e547f76"
   },
@@ -312,31 +312,31 @@
   "historical_source_tests": [
     {
       "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "d0a47adcd4d163a61f03f148e55f8b6ce347577146933d9a1caa626b300b5024",
+      "output_sha256": "1ef2406e1486ebe80ebda585bdc24904166897badcbfce408c126fa5625d5a39",
       "skipped": 3,
       "tests": 114
     },
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "f927784e3a5f65be7d44f33882902036028d32509dc11d8e3ac44a962f7bffd1",
+      "output_sha256": "eb509e0ac62de2701451231e105ca0d19c5101f833e4ed2011406f8570a4f588",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "f08d37fe1283b1e19899f61e347c95e0b0f64682fcd14dd029989527a3d559e1",
+      "output_sha256": "7426262ac495ca6880d04590f4d83cec21b6baca5c14325fb41afcecd61f33ea",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "98bfd86fd8234a377614a3249a8b39430e2ee503880479f8fc3824d74c54e6d9",
+      "output_sha256": "15dc4fe8b666b687b6f0fb2b4a2a29038d6081fe9e24fcd9af8dc4a615df9146",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "b6387d08f096b9f6faced1017c9a5191bb81339e064885063beca4c6d95b7b30",
+      "output_sha256": "0d4cced987564f9fc354c16160c7a17358cf05b62e4820d457a56d11a2b4b855",
       "skipped": 0,
       "tests": 100
     }
@@ -346,45 +346,45 @@
   "package_tests": [
     {
       "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "51a59106fdf4ef1e9f0a76ba01687ff50b48af193cd9451107198f0b72e607f6",
+      "output_sha256": "33f75b788a9883b0c12009461b18b708ef2674d5a4c5ac4251ffe8234b82a69b",
       "skipped": 3,
       "tests": 114
     },
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "9acb498d49af410dcf766212b3d723ff9f4b09c78f6b5059abe5a2c3b195fb90",
+      "output_sha256": "e012e8541046bf0613ad91ccb31997185d114d016b0034c16a906d8035803318",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "56aff742ee888b7bf1d20a4fa52838af2c92d339ac38b2837366af8d724445c8",
+      "output_sha256": "a3b96009074d6e4d37b3f94147c3ed2dad7d419b94c75152e377010ed5637d01",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "9972dffd580cb57a5ac848f19d720095df5532dfa0e11c6ffc2062cf174dbbc0",
+      "output_sha256": "15dc4fe8b666b687b6f0fb2b4a2a29038d6081fe9e24fcd9af8dc4a615df9146",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "014fd06aab7886d4cc596b493806306f3cf0f3bad73e3d01f095abd7e64d8a23",
+      "output_sha256": "7d2d8b2cf70fe3446e2df0d814cc8c4dcb98c7747012df7ee4707afa185dcdbb",
       "skipped": 0,
       "tests": 100
     }
   ],
-  "release": "guided_coding 2.0 pilot r10 rev18 candidate (auto mode stages 1-2 with revision 9, 2026-10-09, built on the rev17 followups-20261004 revision: /gc auto, auto status, auto resume and stop with one worker and a sequential queue, auto_queue.py helper for queue state, stop including surviving processes from any shell, tracked runs with time limits and an outbound network block, a required SCREENING.txt outside-access record before Ready, frozen-packet verification bound to approval, test-installation fingerprint, local lock and a morning report with approval summaries, manual recovery after a usage limit, AUTO.md procedure, auto_start and auto_report screens checked by screen_check.py; standard mode, contract, roles and setup unchanged; stage 3 (integration, server suite, publication through the queue) not yet included; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
+  "release": "guided_coding 2.0 pilot r10 rev18 candidate (auto mode stages 1-2 with revision 12, 2026-10-12: runs need macOS and refuse elsewhere, init needs --lock-dir, a test-only launcher that refuses real queues runs the kit tests off macOS; built on the rev17 followups-20261004 revision: /gc auto, auto status, auto resume and stop with one worker and a sequential queue, auto_queue.py helper for queue state, stop including surviving processes from any shell, tracked runs with time limits and an outbound network block, a required SCREENING.txt outside-access record before Ready, frozen-packet verification bound to approval, test-installation fingerprint, local lock and a morning report with approval summaries, manual recovery after a usage limit, AUTO.md procedure, auto_start and auto_report screens checked by screen_check.py; standard mode, contract, roles and setup unchanged; stage 3 (integration, server suite, publication through the queue) not yet included; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
   "upstream": {
-    "commit": "6c84a6b1132c9ae835d5bc51b56e412dc94f8dc6",
-    "commit_date": "2026-10-12T16:22:03Z",
+    "commit": "608b5288a3c28256d3c86f8de48c7a2f2a8c8502",
+    "commit_date": "2026-10-12T19:53:04Z",
     "license_sha256": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
     "repository": "cctbx/cctbx_project",
-    "requested_ref": "6c84a6b1132c9ae835d5bc51b56e412dc94f8dc6",
+    "requested_ref": "608b5288a3c28256d3c86f8de48c7a2f2a8c8502",
     "source_files": 38,
-    "source_manifest_sha256": "da6cb185b8c1ec8b79fb18b32b694f80ee3bfb9575685c7a5fb60a46ea321d07",
+    "source_manifest_sha256": "8a9e90e66478901e96217aacbb00035ec99ae3966bc19f3a4184175b2ad7b876",
     "source_path": "libtbx/guided_coding",
-    "source_tree": "4fe8e0262e097a4bff84fc50fc5ea306ff22eadb"
+    "source_tree": "54236cfed1ac9dfe4b1477ddbb23229cc53d05fe"
   }
 }
