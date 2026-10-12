@@ -47,6 +47,16 @@ TEMP_HEADERS = {
     "payload/WORKER.md": "# Worker — one bounded local change (GuidedCoding 2.0 pilot)",
     "payload/REVIEW_TRANSPORT.md": "# Outside Reviewer transport, when a gate is due",
 }
+# Stop commands documented to run from any shell, csh included, where the
+# TMPDIR prefix fails. Only these exact passages keep a plain python3 line.
+PLAIN_STOP_COMMANDS = {
+    "payload/AUTO.md":
+        "`/gc stop` here, or from any Terminal (any shell, csh included)\n"
+        "`python3 -I -B <procedure root>/auto_queue.py stop`. Report\n",
+    "payload/screens/AUTO_START.md":
+        "<Say /gc stop here, or run this from any Terminal (the next line, exactly):>\n"
+        "python3 -I -B <absolute path of this procedure's auto_queue.py> stop\n",
+}
 SOURCE_COMMAND = 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
 TEMP_COMMANDS = {
     "SKILL.md": ((SOURCE_COMMAND, 1),
@@ -401,6 +411,10 @@ def run_contract_checks(source, minimum, scratch):
             "app_engine_path": "CLAUDE_CODE_EXECPATH"}
 
 
+# Each kit test file may run this long; the auto-mode tests take about 330 s.
+PACKAGE_TEST_TIMEOUT = 900
+
+
 def run_package_tests(source, scratch):
     source = source.resolve(strict=True)
     scratch = scratch.resolve(strict=True)
@@ -409,7 +423,7 @@ def run_package_tests(source, scratch):
     tests = sorted(source.glob("tests/tst_*.py"))
     require(bool(tests), "no upstream tests found")
     for path in tests:
-        output = run_checked([path], source, env)
+        output = run_checked([path], source, env, timeout=PACKAGE_TEST_TIMEOUT)
         match = re.search(r"Ran (\d+) tests? in", output)
         require(match is not None, f"test runner returned no test count: {path.name}")
         require(int(match[1]) > 0, f"test runner executed no tests: {path.name}")
@@ -669,19 +683,35 @@ def temporary_instructions(name, text):
         require(text.count(before) == count,
                 "required temporary-directory instruction missing or duplicated; inspect " + name)
         text = text.replace(before, resolved)
-    if name in TEMP_HEADERS or name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
-        header = TEMP_HEADERS.get(name, "# Guided Coding registration and command reference")
-        if name in READABLE_HEADERS and text.startswith(READABLE_HEADERS[name] + "\n"):
+    if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
+        before = "## One-time registration\n\n"
+        require(text.count(before) == 1,
+                "required temporary-directory explanation anchor missing or duplicated; inspect " + name)
+        text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
+    elif name in TEMP_HEADERS:
+        header = TEMP_HEADERS[name]
+        readable_document = name in READABLE_HEADERS and text.startswith(READABLE_HEADERS[name] + "\n")
+        if readable_document:
             header = READABLE_HEADERS[name]
         before = header + "\n\n"
         require(text.count(before) == 1,
                 "required temporary-directory explanation anchor missing or duplicated; inspect " + name)
-        text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
+        if not readable_document:
+            text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
     for line in text.splitlines():
         command = line.find("python3")
         require(command == -1 or line[:command].count("TMPDIR=") < 2,
                 "doubled temporary-directory prefix; inspect " + name)
+    plain = range(0)
+    passage = PLAIN_STOP_COMMANDS.get(name)
+    if passage and passage in text:
+        require(text.count(passage) == 1, "plain stop command duplicated; inspect " + name)
+        start = text.index(passage)
+        if start == 0 or text[start - 1] == "\n":
+            plain = range(start, start + len(passage))
     for match in re.finditer("python3", text):
+        if match.start() in plain:
+            continue
         require(text[max(0, match.start() - len(TEMP_PREFIX) - 1):match.start()] == TEMP_PREFIX + " ",
                 "unresolved temporary-directory instruction; inspect " + name)
     return text

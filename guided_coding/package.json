@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 161410,
+    "bytes": 257183,
     "file": "guided_coding.zip",
-    "sha256": "649e413840fe03eaed84535059b42f70db19faf99c237f9c1d4e735bf4de3563"
+    "sha256": "6c66185402bb5eb4c43e716eecd43355b463a7d152c47af6698044196d11faf1"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -15,43 +15,43 @@
   "documentation": {
     "index": {
       "page": "documentation.html",
-      "page_sha256": "12cf0cc0c5daf51b68353f9b84b8e030ddba9e48b01c739ae1885f836fc47923"
+      "page_sha256": "47d13ebe2b62bafe92c1ca1795a2c272ff86505b99d5f555f7f126c2f88e6de1"
     },
     "pages": [
       {
-        "original_sha256": "d18223adeb2cbee0e275a85b7f5435c4b9fb588fb204005fce9090eb43897e4d",
+        "original_sha256": "5bdafec564498c2f7ef7baa568776f62a76e8b34f0d3a2c60ce3624cef473335",
         "page": "getting-started.html",
-        "page_sha256": "2813ab9a41667e2e4ab70010ea69167e85256c95e52aa4207852521f57e1b0ed",
+        "page_sha256": "78a0b1204b0bb17b7f71409adb01c95ec515bf217f9e6e90637266b1493ddceb",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "source_sha256": "d18223adeb2cbee0e275a85b7f5435c4b9fb588fb204005fce9090eb43897e4d"
+        "source_sha256": "5bdafec564498c2f7ef7baa568776f62a76e8b34f0d3a2c60ce3624cef473335"
       },
       {
-        "original_sha256": "14c7e59b577b18ddb9eb7db6436626e771dd0f9136707222d4da5c49d6b831ec",
+        "original_sha256": "8f555a7afab8d704bfc31536264b9a66009127c8b141e54295e385e35b9f9fea",
         "page": "user-guide.html",
-        "page_sha256": "10a899c5e01edbd6930e5b2da234e8acbaf1fb4edc16e5c7aaba161914b5e096",
+        "page_sha256": "4dfb5f7a8f5cfa3ef2b350b2045771e4b05236ad391195354bbccbd86612b403",
         "source": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "source_sha256": "cacf7ac0e21dc79d6430423af843a11a21d4e8f71e763d20c15fe7d81b7cf853"
+        "source_sha256": "e1094231a6903ebc04e47de19cb926b047cbac9c10369cb3c1dd1c4ce45fa624"
       },
       {
-        "original_sha256": "4a4791703a797d7398234afbc2d978b6b6203b9ef2081a864ca0e702440d115f",
+        "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
         "page": "overview.html",
-        "page_sha256": "41e276443a171b15ab20ddb53457994fa8b04a855052e09ae5bc955463109af4",
+        "page_sha256": "4216aaea10fc303c8910d2d6ec68b17b40fe56356a77a1f8e279251d8d0d4451",
         "source": "docs/GUIDED_CODING_README.md",
-        "source_sha256": "7c5d49f0a102f7bf9a713b083a6fe1c2e0bb506aa9e2a1103b70803b11e298d4"
+        "source_sha256": "c7fd9f7d6086185c697d3e332eaf8719149b112b2f45b4a870a1e4b5f5bead71"
       },
       {
-        "original_sha256": "3455734ca0c91d4b92fda54d34cd736bf2b7007371495c853e6fe5aa2c36cb30",
+        "original_sha256": "719793c2ab7fe56b0ec390bec0880b7a5138ad961624f62c1ede56d6d23ffaa4",
         "page": "architecture.html",
-        "page_sha256": "e708afd737f29e2bfc7d78e3ee3ff979aeb4401d7e10f75f3fa740c52669a94d",
+        "page_sha256": "8c05a3f100817c947301e96ad1d73b1c6ff72fbb947f080286f18ba145b77200",
         "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "source_sha256": "98b8105b463db3b0c6f19cf0db6d492410527ea7b131641e8fee91e5014fa9ff"
+        "source_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
       },
       {
-        "original_sha256": "961fb4fcb8c069d3c6e838496bef82574331ddbb7945b2905b6ea10f080b962c",
+        "original_sha256": "0190b1927b5976111486edf7218c94b1bd3e6e3581db3eb16ebbebf82e0905ce",
         "page": "verification.html",
-        "page_sha256": "4d96d4a45848a726deea6092346b3afc6a0a6488f1b1214f676803e6076dbeba",
+        "page_sha256": "afbb0e58e86f146e33d67a291f363f5c3b579456e8b8988dd4b83c6db3b75aa9",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
-        "source_sha256": "10da28767506110943423afce245d5385d3ad99ce15d24e795ce18ffca991abe"
+        "source_sha256": "ebf57a84e56103f6fb488adb4ae52ea7fb037025ab29fd62596c98e94bf63464"
       }
     ],
     "references": {
@@ -59,12 +59,22 @@
         {
           "anchor": "file-skill-md",
           "source": "SKILL.md",
-          "source_sha256": "9792a208ab3f9e87d481688958dd24618a6d255687651c53a5558225a0a4d286"
+          "source_sha256": "189438f8fe4324810e7ddd82d98c9c95e68129b5ba52d3fa725cb54cabe05beb"
         },
         {
           "anchor": "file-source-manifest-sha256",
           "source": "SOURCE_MANIFEST.sha256",
-          "source_sha256": "5b208c04e5986a3f87c68de151f70ca0e613190f9f42c4ab00e0de0411b1b665"
+          "source_sha256": "7d09ea73f222b0f7d807f392132fcfa7528fd303e0a37bfdf54846c64018aba6"
+        },
+        {
+          "anchor": "file-auto-queue-py",
+          "source": "auto_queue.py",
+          "source_sha256": "ca14cd1b822431779c1dc1b8fb2b4b0bd55d3d7ec0558714db5601a760468bd8"
+        },
+        {
+          "anchor": "file-payload-auto-md",
+          "source": "payload/AUTO.md",
+          "source_sha256": "fbf5c9bee7e0c0bae74acb949654d262f5e3e5e0e4e61c45b7f4d9abfc6d85ac"
         },
         {
           "anchor": "file-payload-developer-guide-contract-md",
@@ -89,7 +99,7 @@
         {
           "anchor": "file-payload-release",
           "source": "payload/RELEASE",
-          "source_sha256": "f5fdacaaa390c7811fb05009c0b0d2b6eae7d338d8e643710ebd15a77dda3183"
+          "source_sha256": "a0bd274783a24e539ba4358928f44aa0aad9eb268a1181702e93da9dcffd69b4"
         },
         {
           "anchor": "file-payload-review-transport-md",
@@ -115,6 +125,16 @@
           "anchor": "file-payload-worker-md",
           "source": "payload/WORKER.md",
           "source_sha256": "30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a"
+        },
+        {
+          "anchor": "file-payload-screens-auto-report-md",
+          "source": "payload/screens/AUTO_REPORT.md",
+          "source_sha256": "cf2a20bdb8a2b0c063a324dc76bd9f1e59b5a8dd72d8a3a621c84e5c6e8471d0"
+        },
+        {
+          "anchor": "file-payload-screens-auto-start-md",
+          "source": "payload/screens/AUTO_START.md",
+          "source_sha256": "ea5685097149830af2812e078fe6999d5cc145554e85b983e8a49aad0767246e"
         },
         {
           "anchor": "file-payload-screens-plan-md",
@@ -169,7 +189,17 @@
         {
           "anchor": "file-payload-tools-screen-check-py",
           "source": "payload/tools/screen_check.py",
-          "source_sha256": "08e6f18263b2abe9e2166981db0f1c8ef79938a15887a260a7f021fcd76a2f5f"
+          "source_sha256": "f2c9ec0b7368078b11662b968e975a169cd135a922903836aa729ba263d0c9a2"
+        },
+        {
+          "anchor": "file-tests-auto-queue-standin-py",
+          "source": "tests/auto_queue_standin.py",
+          "source_sha256": "d5c34dc16be4ed12833a5649a271d5bbd9d3b26fa3632a35d6298633b7149504"
+        },
+        {
+          "anchor": "file-tests-tst-auto-queue-v20-py",
+          "source": "tests/tst_auto_queue_v20.py",
+          "source_sha256": "a451a0263248b410bc949672a8d05febdefc7f45dec4a9fdef60857cbb84bac4"
         },
         {
           "anchor": "file-tests-tst-publication-precheck-v20-py",
@@ -189,11 +219,11 @@
         {
           "anchor": "file-tests-tst-screen-check-v20-py",
           "source": "tests/tst_screen_check_v20.py",
-          "source_sha256": "a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c"
+          "source_sha256": "8b34ee8a1ec255fd852aba5cafbe2b08982b651f0f7bf14c3d5357525bde65d2"
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "5a46e577f190102b06dd616bb15a2ab58b9235a1c0d9b6b8affe8f849720d487"
+      "page_sha256": "0a0fe78bb7361d207ce47fac9d3038374c11cc0a7347632d58c3aa7b755037a0"
     }
   },
   "general_card_sha256": "fe33fe30e8d819a8330d4782fdbc8066eb4bb936394bb187728a8724799f72a3",
@@ -201,28 +231,28 @@
     "adapted_files": [
       {
         "file": "SKILL.md",
-        "original_sha256": "17eb949c9f25acfc309245f2d0fb2dab8a2afb655f4d9bd92e718b904678358e",
-        "packaged_sha256": "9792a208ab3f9e87d481688958dd24618a6d255687651c53a5558225a0a4d286"
+        "original_sha256": "8846c7cabe83d4aeff44a91ffc7fd5c3636405d35c816e1b028707db46fb530e",
+        "packaged_sha256": "189438f8fe4324810e7ddd82d98c9c95e68129b5ba52d3fa725cb54cabe05beb"
       },
       {
         "file": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "original_sha256": "3455734ca0c91d4b92fda54d34cd736bf2b7007371495c853e6fe5aa2c36cb30",
-        "packaged_sha256": "98b8105b463db3b0c6f19cf0db6d492410527ea7b131641e8fee91e5014fa9ff"
+        "original_sha256": "719793c2ab7fe56b0ec390bec0880b7a5138ad961624f62c1ede56d6d23ffaa4",
+        "packaged_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
       },
       {
         "file": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "original_sha256": "14c7e59b577b18ddb9eb7db6436626e771dd0f9136707222d4da5c49d6b831ec",
-        "packaged_sha256": "cacf7ac0e21dc79d6430423af843a11a21d4e8f71e763d20c15fe7d81b7cf853"
+        "original_sha256": "8f555a7afab8d704bfc31536264b9a66009127c8b141e54295e385e35b9f9fea",
+        "packaged_sha256": "e1094231a6903ebc04e47de19cb926b047cbac9c10369cb3c1dd1c4ce45fa624"
       },
       {
         "file": "docs/GUIDED_CODING_README.md",
-        "original_sha256": "4a4791703a797d7398234afbc2d978b6b6203b9ef2081a864ca0e702440d115f",
-        "packaged_sha256": "7c5d49f0a102f7bf9a713b083a6fe1c2e0bb506aa9e2a1103b70803b11e298d4"
+        "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
+        "packaged_sha256": "c7fd9f7d6086185c697d3e332eaf8719149b112b2f45b4a870a1e4b5f5bead71"
       },
       {
         "file": "docs/GUIDED_CODING_VERIFICATION.md",
-        "original_sha256": "961fb4fcb8c069d3c6e838496bef82574331ddbb7945b2905b6ea10f080b962c",
-        "packaged_sha256": "10da28767506110943423afce245d5385d3ad99ce15d24e795ce18ffca991abe"
+        "original_sha256": "0190b1927b5976111486edf7218c94b1bd3e6e3581db3eb16ebbebf82e0905ce",
+        "packaged_sha256": "ebf57a84e56103f6fb488adb4ae52ea7fb037025ab29fd62596c98e94bf63464"
       },
       {
         "file": "payload/GUIDE.md",
@@ -256,20 +286,20 @@
       },
       {
         "file": "tests/tst_screen_check_v20.py",
-        "original_sha256": "8bb18b3d1c66c6e6c2b928dc062be60a46086390cbcbc032fc6cb0a3822e9988",
-        "packaged_sha256": "a822a9dfd1a25e69157b6ca2c9f0cb57d4ebbca969561680406c39aa51ebc87c"
+        "original_sha256": "5ab78bbd6ccf56e6356614bdc9bfbe27ded1da57fefc045c822025678bab8354",
+        "packaged_sha256": "8b34ee8a1ec255fd852aba5cafbe2b08982b651f0f7bf14c3d5357525bde65d2"
       }
     ],
     "edition": "general-downloads-v3",
     "installation_root": "~/Downloads/GuidedCoding/guided_coding",
-    "source_files": 32,
-    "source_manifest_sha256": "5b208c04e5986a3f87c68de151f70ca0e613190f9f42c4ab00e0de0411b1b665"
+    "source_files": 38,
+    "source_manifest_sha256": "7d09ea73f222b0f7d807f392132fcfa7528fd303e0a37bfdf54846c64018aba6"
   },
   "generator": {
-    "docs_template_sha256": "345ebea03e314709465be2f60f019386efb3287e9b5dceafef587c6546349096",
-    "main_copy_sha256": "f7bba7c5bcab779d8215f965abb57d628ddc2c697712b4b08b4727c361144086",
-    "script_sha256": "2d0c843612bfc699f4a18fa4ef22124478a80fe2081b8b7d694b85d82b7e95ac",
-    "template_sha256": "f3c5cfb3f76c2fdc838c189533ef73642b51bd1178c1f6494ee7af3b6e861e9c"
+    "docs_template_sha256": "757203e78da6b7adce8e0b747aee5be11a1341eb716fd5332d82d89df8541cf6",
+    "main_copy_sha256": "70f1cd22cc660686aaae2261d257d5675d2a8cf445c917316029468773bf787e",
+    "script_sha256": "3acd27b73ecd4290f6a0fe367d009f9b95edac1dd35824b370741c62f4597a50",
+    "template_sha256": "4cd0c4e5d496fa20f58d4c5b162f72877243f46cef02e5116de3a5df8e547f76"
   },
   "historical_source_checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -281,68 +311,80 @@
   },
   "historical_source_tests": [
     {
+      "file": "tests/tst_auto_queue_v20.py",
+      "output_sha256": "d0a47adcd4d163a61f03f148e55f8b6ce347577146933d9a1caa626b300b5024",
+      "skipped": 3,
+      "tests": 114
+    },
+    {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "bca15eadf8180dbe763d018d6f257feb12e3ee96c2d1c94807726c611eef5365",
+      "output_sha256": "f927784e3a5f65be7d44f33882902036028d32509dc11d8e3ac44a962f7bffd1",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "6a76f81c0c29e8d96f12fe9383518f923537a3a06444243d1bcbe229625f8706",
+      "output_sha256": "f08d37fe1283b1e19899f61e347c95e0b0f64682fcd14dd029989527a3d559e1",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "7f5ca3031b4645e76bae062d71d8d0b00b00130b19529c9aba8917c64bc3cf6b",
+      "output_sha256": "98bfd86fd8234a377614a3249a8b39430e2ee503880479f8fc3824d74c54e6d9",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "525872c44ea0ca9d342c2b71785b7ddc070293bc5d733aa9110f5b08350b521f",
+      "output_sha256": "b6387d08f096b9f6faced1017c9a5191bb81339e064885063beca4c6d95b7b30",
       "skipped": 0,
-      "tests": 63
+      "tests": 100
     }
   ],
   "minimum_claude_version": "2.1.281",
   "package_format": 2,
   "package_tests": [
     {
+      "file": "tests/tst_auto_queue_v20.py",
+      "output_sha256": "51a59106fdf4ef1e9f0a76ba01687ff50b48af193cd9451107198f0b72e607f6",
+      "skipped": 3,
+      "tests": 114
+    },
+    {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "8789e0de5a12cdda3b8fc7e17ed8e2c52a92c314c6c725e0443899dc9e85ca29",
+      "output_sha256": "9acb498d49af410dcf766212b3d723ff9f4b09c78f6b5059abe5a2c3b195fb90",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "6a76f81c0c29e8d96f12fe9383518f923537a3a06444243d1bcbe229625f8706",
+      "output_sha256": "56aff742ee888b7bf1d20a4fa52838af2c92d339ac38b2837366af8d724445c8",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "fc39c9ecd933f77ba665e3f805e580e3849129d988e35118dbc1da1eeca2caa3",
+      "output_sha256": "9972dffd580cb57a5ac848f19d720095df5532dfa0e11c6ffc2062cf174dbbc0",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "d6a839305a2f4bd3bab18e1253cbaedf2befe94a0fe5e67b2df81193a0ab1ce4",
+      "output_sha256": "014fd06aab7886d4cc596b493806306f3cf0f3bad73e3d01f095abd7e64d8a23",
       "skipped": 0,
-      "tests": 63
+      "tests": 100
     }
   ],
-  "release": "guided_coding 2.0 pilot r10 rev17 candidate (followups-20261004; publication conventions without tags, explicit waivers, one dual-scope outside reading bound by OUTGOING.txt, named-installation rollout, job summaries and the read-only history listing, session titles, search roots; checker rules added to screen_check.py; new tools publication_precheck.py and records_history.py; app-aware Claude Code version check (2026-10-06); contract, adoption and setup recipe unchanged; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
+  "release": "guided_coding 2.0 pilot r10 rev18 candidate (auto mode stages 1-2 with revision 9, 2026-10-09, built on the rev17 followups-20261004 revision: /gc auto, auto status, auto resume and stop with one worker and a sequential queue, auto_queue.py helper for queue state, stop including surviving processes from any shell, tracked runs with time limits and an outbound network block, a required SCREENING.txt outside-access record before Ready, frozen-packet verification bound to approval, test-installation fingerprint, local lock and a morning report with approval summaries, manual recovery after a usage limit, AUTO.md procedure, auto_start and auto_report screens checked by screen_check.py; standard mode, contract, roles and setup unchanged; stage 3 (integration, server suite, publication through the queue) not yet included; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
   "upstream": {
-    "commit": "41e537a2987bfc21ff8944114f679a6e62004059",
-    "commit_date": "2026-10-09T22:48:00Z",
+    "commit": "6c84a6b1132c9ae835d5bc51b56e412dc94f8dc6",
+    "commit_date": "2026-10-12T16:22:03Z",
     "license_sha256": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
     "repository": "cctbx/cctbx_project",
-    "requested_ref": "41e537a2987bfc21ff8944114f679a6e62004059",
-    "source_files": 32,
-    "source_manifest_sha256": "58dd1de282f340da20d3e81543323c8f9f874077c94bfe61c2fefbafabbe1014",
+    "requested_ref": "6c84a6b1132c9ae835d5bc51b56e412dc94f8dc6",
+    "source_files": 38,
+    "source_manifest_sha256": "da6cb185b8c1ec8b79fb18b32b694f80ee3bfb9575685c7a5fb60a46ea321d07",
     "source_path": "libtbx/guided_coding",
-    "source_tree": "0862089ddd6d2dfdf9de4ff2f90ce241c16f244a"
+    "source_tree": "4fe8e0262e097a4bff84fc50fc5ea306ff22eadb"
   }
 }

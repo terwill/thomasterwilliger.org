@@ -2,7 +2,7 @@
 
 The User Guide has one maintained source: `docs/GUIDED_CODING_USER_GUIDE.md` in the kit. The builder puts that exact file in the ZIP and renders it as `getting-started.html`. Edit it in the source project, not in generated HTML. The detailed registration and command reference is a separate document, rendered at the existing `user-guide.html` URL. Its `#one-time-registration` link is retained.
 
-The website introduction is maintained in `main-page.md`. It links to the writing prompt and Helper on Guided Workflow. Keep those links when changing the page. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
+The website introduction is maintained in `main-page.md`. It links to the Helper on Guided Workflow. Keep that link when changing the page. The writing prompt belongs on Guided Workflow. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
 
 ## Rebuild
 
@@ -50,4 +50,4 @@ Downloads and checks finish before any output is replaced. The builder saves eve
 
 If a write fails, it tries to restore every affected output. If restoration also fails, it keeps all recovery copies, `RECOVERY.md`, `RECOVERY.json` and the lock. Follow those instructions and verify the restored files or recorded absences before removing the lock or rebuilding. A stopped process or system failure can also leave unfinished work; inspect it before clearing anything. This is recovery from caught write errors, not an indivisible multi-file save.
 
-Publish only a matching set. After publication, check the live pages, writing and Helper links, guide, command-reference anchor, and download checksum. ZIP entries use fixed timestamps, but recorded test-output hashes can vary between runs; use the checksum from the actual build.
+Publish only a matching set. After publication, check the live pages, Helper links, guide, command-reference anchor, and download checksum. Check the writing prompt on Guided Workflow. ZIP entries use fixed timestamps, but recorded test-output hashes can vary between runs; use the checksum from the actual build.

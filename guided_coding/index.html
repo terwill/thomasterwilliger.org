@@ -530,7 +530,7 @@ main {
           <h1>Thomas C. Terwilliger</h1>
           <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
           <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium</a><br>
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
             Los Alamos National Laboratory Fellow (Retired)
           </p>
         </div>
@@ -551,25 +551,28 @@ main {
   </header><main class="container gc-main">
   <h1>Guided Coding</h1>
   <nav class="gc-local-nav" aria-label="Guided Coding pages">
-    <a href="getting-started.html">User Guide</a><a href="documentation.html">Documentation</a><a href="../guided_workflow/index.html#panel-rewrite">Writing prompt</a>
+    <a href="getting-started.html">User Guide</a><a href="documentation.html">Documentation</a>
   </nav>
-  <p>When regular Claude makes a fix for you, you are left with some questions: Do I understand the change it made? How was it tested? What remains uncertain?</p>
-<p>Guided Coding organizes that work. You and Claude agree on a plan and a way to check the result. Claude works through the change, prepares tests and a report, and helps you obtain a review from a separate conversation. You decide whether to keep the change and whether to push it to your repository.</p>
+  <p>When Claude Code makes a fix for you, you are left with some questions: Do I understand the change it made? How was it tested? What remains uncertain?</p>
+<p>Guided Coding organizes that work. You and Claude agree on a plan and a way to check the result. Claude works through the change, prepares tests and a report, and helps you obtain a review from a separate conversation. You decide whether to keep the change and whether to push it to your remote Git repository.</p>
 <p>This is the procedure I use in my own software work. You can try the same approach in your own Git project, with settings for your tools and tests.</p>
 <h2 id="a-small-example">A small example</h2>
 <p>Suppose your program crashes when it reads an empty file. You want it to print “The file is empty” and stop. When the file contains data, the program should work as it did before.</p>
-<p>Tell Claude about the crash and what you want the program to do. Claude looks for the cause and proposes a plan. The plan includes tests for an empty file and a file with data. You check the plan before Claude makes the fix.</p>
+<p>You can start Guided Coding and tell Claude about the crash and what you want the program to do. Claude looks for the cause and proposes a plan. The plan includes tests for an empty file and a file with data. You check the plan before Claude makes the fix.</p>
 <p>After making the fix, Claude shows you what changed and what happened in the tests. You pass Claude’s review files to another AI assistant in a separate chat. You read the report and review, then decide whether to keep the fix.</p>
-<h2 id="what-you-decide">What you decide</h2>
-<p>First, you approve a plan that says what Claude will change and how it will test the result. You can ask for a different plan or stop the task.</p>
+<h2 id="what-you-decide-in-guided-coding">What you decide in Guided Coding</h2>
+<p>For an ordinary task, you first approve a plan that says what Claude will change and how it will test the result. You can ask for a different plan or stop the task.</p>
 <p>When the fix is ready, you decide whether to put the tested change into your project. This choice is labeled <strong>INTEGRATE</strong>. You can ask Claude to revise the fix or discard it instead.</p>
-<p>Sending the approved changes to your Git repository is a separate choice, labeled <strong>PUBLISH</strong>. You can keep the changes on your computer without pushing them. The reviewer gives advice; you decide what to do.</p>
+<p>Sending the approved changes to your remote Git repository is a separate choice, labeled <strong>PUBLISH</strong>. You can keep the changes on your computer without pushing them. The reviewer gives advice; you decide what to do.</p>
+<h2 id="several-tasks-while-you-are-away-auto-mode">Several tasks while you are away (auto mode)</h2>
+<p>Auto mode lets Claude work through a list of small tasks one at a time. You give the list and say when the run should end. A task that fails or needs your decision is saved as <strong>Blocked</strong>, with the reason.</p>
+<p>Each task has its own branch and is tested in a separate copy of your software. Claude saves tested changes for your review, with a short report on each change, its checks and what remains uncertain. Approving a saved change accepts that version; it does not merge or publish it.</p>
+<p>Starting auto mode skips each task’s plan approval and outside review before saving it. Claude decides how to test each change and what counts as passing; your project’s required checks still apply. Claude’s reviewer and checker assistants still examine the work. You can ask for an outside review before approving. Merging and publishing need your later instructions and the usual required review.</p>
+<p>Auto mode is new and has had limited use. Your project needs a separate test copy and settings prepared first; see the <a href="https://www.thomasterwilliger.org/guided_coding/getting-started.html">User Guide</a>. Keep the computer powered and awake. If a usage limit interrupts the run, you must resume it yourself.</p>
 <h2 id="try-it-in-your-own-project">Try it in your own project</h2>
 <p>Use Claude Code on your computer. On a Mac, open the Claude app, choose the <strong>Code</strong> tab and select <strong>Local</strong>. You can also use Terminal on macOS or Linux. You need a project managed with Git. The User Guide explains the other tools you need.</p>
 <p><a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip">Download Guided Coding</a>. The <a href="https://www.thomasterwilliger.org/guided_coding/getting-started.html">User Guide</a> tells you how to check the download and make the <code>/guided_coding</code> command available. It also tells you how to set up your project so Claude knows which commands to use to build and test your program.</p>
 <p>Choose a small bug or change for your first task. Open a new Claude Code conversation in your project. Send <code>/guided_coding</code>, your task and any bug report together in one message.</p>
-<h2 id="fix-machine-written-text">Fix machine-written text</h2>
-<p>Use the <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-rewrite">writing prompt on Guided Workflow</a> to make a draft clear, natural, and as short as possible without losing content or clarity. Add or attach the text, or a link to it. If accuracy depends on code or other sources, include those too.</p>
 <h2 id="help-when-you-need-it">Help when you need it</h2>
 <p>Use <code>/guided_coding help</code> to see the commands. Use <code>/guided_coding status</code> to check whether Guided Coding and your project are set up.</p>
 <p>If a report or a choice is hard to understand, give the relevant text to a <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a> and ask it to explain. You can ask the coding session to change direction or stop at any time.</p>
@@ -581,11 +584,11 @@ main {
     <p><a href="getting-started.html">Read the User Guide</a> for installation and your first task.</p>
     <p class="gc-small">Complete general-edition kit, setup card and installation notes. Minimum Claude Code version: 2.1.281.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">41e537a2987b</a> · 2026-10-09 · ZIP: 158 KB</p>
+      <p class="gc-small">Based on revision <a href="documentation.html#historical-origin">6c84a6b1132c</a> · 2026-10-12 · ZIP: 251 KB</p>
       <p>Check the ZIP before opening it. Download it into Downloads, then run this complete command in Terminal. Stop if the result does not end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '649e413840fe03eaed84535059b42f70db19faf99c237f9c1d4e735bf4de3563' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '6c66185402bb5eb4c43e716eecd43355b463a7d152c47af6698044196d11faf1' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
-      <p class="gc-small" id="package-source"><strong>Source and adaptations.</strong> The material comes from <a href="https://github.com/cctbx/cctbx_project/tree/41e537a2987bfc21ff8944114f679a6e62004059/libtbx/guided_coding"><code>cctbx_project/libtbx/guided_coding</code></a>. The packager edits the documentation and local path examples to use <code>~/Downloads/GuidedCoding/guided_coding</code>, generalizes project-specific wording and examples, and supplies a <a href="GENERAL_DEVELOPER_CARD.md" download>general defaults card</a> for your own projects. Checking tools and the Developer–Guide Contract are unchanged; the license, and which files were adapted with their checksums before and after, are recorded with the download.</p>
+      <p class="gc-small" id="package-source"><strong>Source and adaptations.</strong> The material comes from <a href="https://github.com/cctbx/cctbx_project/tree/6c84a6b1132c9ae835d5bc51b56e412dc94f8dc6/libtbx/guided_coding"><code>cctbx_project/libtbx/guided_coding</code></a>. The packager edits the documentation and local path examples to use <code>~/Downloads/GuidedCoding/guided_coding</code>, generalizes project-specific wording and examples, and supplies a <a href="GENERAL_DEVELOPER_CARD.md" download>general defaults card</a> for your own projects. Checking tools and the Developer–Guide Contract are unchanged; the license, and which files were adapted with their checksums before and after, are recorded with the download.</p>
     </div></details>
   </div>
   <section id="install"><h2>Installation and project setup</h2>

@@ -551,6 +551,30 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         builder.require_unchanged_source(self.source, originals)
         self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
 
+    def test_readable_introductions_keep_their_context_and_commands(self):
+        for name in ('docs/GUIDED_CODING_README.md',
+                     'docs/GUIDED_CODING_ARCHITECTURE.md',
+                     'docs/GUIDED_CODING_VERIFICATION.md'):
+            with self.subTest(name=name):
+                first_paragraph = 'Guided Coding keeps the procedure and project settings together.'
+                text = (builder.READABLE_HEADERS[name] + '\n\n' + first_paragraph + '\n\n'
+                        + temp_fixture(name).decode().split('\n\n', 1)[1])
+                if name in ('docs/GUIDED_CODING_ARCHITECTURE.md',
+                            'docs/GUIDED_CODING_VERIFICATION.md'):
+                    text += '\n`python3 -I -B`\n'
+                adapted = builder.temporary_instructions(name, text)
+                self.assertTrue(adapted.startswith(builder.READABLE_HEADERS[name] + '\n\n' + first_paragraph))
+                self.assertNotIn(builder.TEMP_REASON, adapted)
+                self.assertEqual(adapted.count(builder.TEMP_PREFIX + ' python3'), text.count('python3'))
+        reference = ('# Guided Coding registration and command reference\n\n'
+                     'Use this reference for manual registration.\n\n'
+                     '## One-time registration\n\n'
+                     + temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md').decode().split('\n\n', 1)[1])
+        adapted = builder.temporary_instructions('docs/GUIDED_CODING_COMMAND_REFERENCE.md', reference)
+        self.assertTrue(adapted.startswith('# Guided Coding registration and command reference\n\n'
+                                         'Use this reference for manual registration.'))
+        self.assertGreater(adapted.index(builder.TEMP_REASON), adapted.index('## One-time registration'))
+
     def test_changed_missing_or_duplicated_temporary_passage_stops_build(self):
         site, old, info = self.build_fixture()
         originals = {p.relative_to(self.source).as_posix(): p.read_bytes()
@@ -640,6 +664,36 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             builder.general_source(self.source, self.root / 'edition')
         self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
 
+    def test_exact_plain_stop_commands_are_kept_without_prefix(self):
+        # The auto-mode stop command must also run in csh, where the prefix fails.
+        for name, passage in builder.PLAIN_STOP_COMMANDS.items():
+            with self.subTest(name=name):
+                text = '# Stop\n\n' + passage + 'More text.\n'
+                self.assertEqual(builder.temporary_instructions(name, text), text)
+
+    def test_changed_duplicated_or_extra_plain_stop_command_is_refused(self):
+        for name, passage in builder.PLAIN_STOP_COMMANDS.items():
+            changed = (passage.replace('.py stop', '.py status').replace('.py> stop', '.py> status'),
+                       passage.replace('python3 -I -B', 'python3 -B'),
+                       passage.replace('any Terminal', 'a Terminal'),
+                       passage + passage,
+                       passage + 'python3 -I -B other_tool.py\n',
+                       'Added text ' + passage)
+            for text in changed:
+                with self.subTest(name=name, text=text):
+                    self.assertNotEqual(text, passage)
+                    with self.assertRaisesRegex(builder.PackageError,
+                            '(unresolved temporary-directory instruction|plain stop command duplicated); inspect '
+                            + re.escape(name)):
+                        builder.temporary_instructions(name, '# Stop\n\n' + text)
+
+    def test_plain_stop_exception_does_not_apply_to_other_files(self):
+        passage = builder.PLAIN_STOP_COMMANDS['payload/AUTO.md']
+        for name in ('payload/WORKER.md', 'payload/screens/AUTO_REPORT.md', 'SKILL.md'):
+            with self.subTest(name=name):
+                with self.assertRaises(builder.PackageError):
+                    builder.temporary_instructions(name, builder.TEMP_HEADERS.get(name, '# X') + '\n\n' + passage)
+
     def test_clean_environment_resolves_symbolic_temporary_path(self):
         alias = self.root / 'alias'
         alias.symlink_to(self.root, target_is_directory=True)
@@ -653,7 +707,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         self.write_source(files)
         alias = self.root / 'alias'
         alias.symlink_to(self.root, target_is_directory=True)
-        def checked(args, source, env):
+        def checked(args, source, env, timeout=None):
             self.assertEqual(source, self.source)
             self.assertEqual(args, [self.source / 'tests/tst_example.py'])
             self.assertEqual(env['TMPDIR'], str(self.root))
@@ -661,6 +715,19 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         with patch.object(builder, 'run_checked', side_effect=checked):
             result = builder.run_package_tests(alias / 'source', alias)
         self.assertEqual(result[0]['tests'], 1)
+
+    def test_each_kit_test_file_gets_the_longer_time_limit(self):
+        # The auto-mode tests take about 330 s per file; other checks keep 180 s.
+        self.assertEqual(builder.PACKAGE_TEST_TIMEOUT, 900)
+        files = {'SKILL.md': b'original skill\n', 'tests/tst_a.py': b'# a\n', 'tests/tst_b.py': b'# b\n'}
+        self.write_source(files)
+        limits = []
+        def checked(args, source, env, timeout=180):
+            limits.append(timeout)
+            return 'Ran 1 test in 0.001s\n\nOK\n'
+        with patch.object(builder, 'run_checked', side_effect=checked):
+            builder.run_package_tests(self.source, self.root)
+        self.assertEqual(limits, [900, 900])
 
     def test_contract_runner_resolves_symbolic_source_and_temporary_paths(self):
         alias = self.root / 'alias'
