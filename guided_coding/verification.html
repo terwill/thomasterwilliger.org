@@ -559,7 +559,7 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html" aria-current="page">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html" aria-current="page">Verification</a><a href="reference-files.html">Reference files</a></nav>
   <h1 class="gc-document-title">Guided Coding verification and limits</h1>
   <p class="gc-lead">What the tools check, what earlier trials observed and what still needs checking.</p>
 <details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#what-is-checked">What is checked</a></li><li><a href="#what-the-recorded-trials-support">What the recorded trials support</a></li><li><a href="#important-remaining-uncertainty">Important remaining uncertainty</a></li><li><a href="#release-and-source-checks">Release and source checks</a></li><li><a href="#following-a-claim-back-to-the-code">Following a claim back to the code</a></li><li><a href="#historical-record">Historical record</a></li><li><a href="#technical-reference">Technical reference</a></li></ul></div></details>
@@ -681,4 +681,27 @@ grep -Fq &#x27;r10 rev18 candidate&#x27; payload/RELEASE
   <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
-<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
+async function copyText(button, label) {
+  const target = document.getElementById(button.dataset.copy);
+  const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
+  const status = document.getElementById('copy-status');
+  try {
+    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(value);
+    status.textContent = 'Copied. Paste it into the appropriate window.';
+    button.textContent = 'Copied';
+  } catch (error) {
+    if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
+    else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
+    status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
+    button.textContent = 'Text selected';
+  }
+  clearTimeout(button.copyResetTimer);
+  button.copyResetTimer = setTimeout(() => { button.textContent = label; }, 1800);
+}
+for (const button of document.querySelectorAll('button[data-copy]')) {
+  const label = button.textContent;
+  button.addEventListener('click', () => copyText(button, label));
+}
+</script></body></html>

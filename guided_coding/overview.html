@@ -559,7 +559,7 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html" aria-current="page">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html" aria-current="page">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
   <h1 class="gc-document-title">Guided Coding overview</h1>
   <p class="gc-lead">What Guided Coding does, its pilot status and where to find the details.</p>
 <details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#what-a-task-looks-like">What a task looks like</a></li><li><a href="#shared-instructions-project-settings">Shared instructions, project settings</a></li><li><a href="#starting-and-returning-to-work">Starting and returning to work</a></li><li><a href="#what-the-checks-establish">What the checks establish</a></li><li><a href="#current-status-and-limits">Current status and limits</a></li><li><a href="#find-the-right-document">Find the right document</a></li><li><a href="#version-notes">Version notes</a></li></ul></div></details>
@@ -609,4 +609,27 @@ main {
   <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
-<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
+async function copyText(button, label) {
+  const target = document.getElementById(button.dataset.copy);
+  const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
+  const status = document.getElementById('copy-status');
+  try {
+    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(value);
+    status.textContent = 'Copied. Paste it into the appropriate window.';
+    button.textContent = 'Copied';
+  } catch (error) {
+    if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
+    else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
+    status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
+    button.textContent = 'Text selected';
+  }
+  clearTimeout(button.copyResetTimer);
+  button.copyResetTimer = setTimeout(() => { button.textContent = label; }, 1800);
+}
+for (const button of document.querySelectorAll('button[data-copy]')) {
+  const label = button.textContent;
+  button.addEventListener('click', () => copyText(button, label));
+}
+</script></body></html>

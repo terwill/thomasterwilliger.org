@@ -2,7 +2,7 @@
 
 The User Guide has one maintained source: `docs/GUIDED_CODING_USER_GUIDE.md` in the kit. The builder puts that exact file in the ZIP and renders it as `getting-started.html`. Edit it in the source project, not in generated HTML. The detailed registration and command reference is a separate document, rendered at the existing `user-guide.html` URL. Its `#one-time-registration` link is retained.
 
-The website introduction is maintained in `main-page.md`. It links to the Helper on Guided Workflow. Keep that link when changing the page. The writing prompt belongs on Guided Workflow. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
+The website introduction is maintained in `main-page.md`. It links to the Helper on Guided Workflow. Keep that link when changing the page. Four more website pages are maintained as Markdown in `pages/`: Quick Start, How Guided Coding works and the two "Why Guided Coding" pages. The builder renders them with the documentation layout; they may link to other website pages by file name, and Quick Start's ```copy block gets a copy button. Their claims about the kit must match the documentation of the kit revision the site ships (see package.json); recheck them at each rebuild from a new revision. The writing prompt belongs on Guided Workflow. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
 
 ## Rebuild
 
@@ -34,7 +34,7 @@ Fake-client checks are not native Mac registration or a real coding task. Histor
 
 ## Outputs and checks
 
-Review and save the complete matching output set: the ZIP, its checksum, `package.json`, `index.html`, `getting-started.html`, `user-guide.html`, `overview.html`, `architecture.html`, `verification.html`, `documentation.html` and `reference-files.html`. Keep the builder, templates, main-page copy, setup card and tests too. Update the site map if a page is added.
+Review and save the complete matching output set: the ZIP, its checksum, `package.json`, `index.html`, `getting-started.html`, `user-guide.html`, `overview.html`, `architecture.html`, `verification.html`, `documentation.html`, `reference-files.html`, `quick-start.html`, `how-it-works.html`, `why-not-claude-code.html` and `why-not-vibe-coding.html`. Keep the builder, templates, main-page copy, `pages/` sources, setup card and tests too. Update the site map if a page is added.
 
 Run the generator tests from the website checkout:
 

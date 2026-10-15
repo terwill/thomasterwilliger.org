@@ -564,7 +564,30 @@ main {
   <p class="gc-lead">@@DESCRIPTION@@</p>
 <!-- DOCUMENT_TOC -->
 <!-- DOCUMENT_CONTENT -->
-  <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
+  <!-- DOCUMENT_NOTE -->
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
-<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
+async function copyText(button, label) {
+  const target = document.getElementById(button.dataset.copy);
+  const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
+  const status = document.getElementById('copy-status');
+  try {
+    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(value);
+    status.textContent = 'Copied. Paste it into the appropriate window.';
+    button.textContent = 'Copied';
+  } catch (error) {
+    if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
+    else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
+    status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
+    button.textContent = 'Text selected';
+  }
+  clearTimeout(button.copyResetTimer);
+  button.copyResetTimer = setTimeout(() => { button.textContent = label; }, 1800);
+}
+for (const button of document.querySelectorAll('button[data-copy]')) {
+  const label = button.textContent;
+  button.addEventListener('click', () => copyText(button, label));
+}
+</script></body></html>

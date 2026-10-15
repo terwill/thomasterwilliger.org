@@ -90,9 +90,28 @@ DOCUMENTS = (
     ("GUIDED_CODING_VERIFICATION.md", "verification.html", "Verification and limits",
      "What the tools check, what earlier trials observed and what still needs checking."),
 )
+# Website-owned pages, maintained here rather than in the kit.
+SITE_PAGES = (
+    ("pages/why-not-claude-code.md", "why-not-claude-code.html",
+     "Six practices Guided Coding brings together in one procedure."),
+    ("pages/why-not-vibe-coding.md", "why-not-vibe-coding.html",
+     "What can go wrong when an AI writes all the code, and how Guided Coding keeps you in control."),
+    ("pages/how-it-works.md", "how-it-works.html",
+     "The steps Guided Coding carries out and what it adds on top of Claude Code."),
+    ("pages/quick-start.md", "quick-start.html",
+     "One message to Claude Code that explains Guided Coding and walks you through setup."),
+)
 OUTPUTS = ("guided_coding.zip", "guided_coding.zip.sha256", "package.json",
            *(document[1] for document in DOCUMENTS), "reference-files.html",
-           "documentation.html", "index.html")
+           "documentation.html", *(page[1] for page in SITE_PAGES), "index.html")
+SITE_LINKS = frozenset(name for name in OUTPUTS if name.endswith(".html"))
+DOC_NOTE = ('<p class="gc-small">These pages are generated from the documentation in the download. '
+            'Start with the <a href="getting-started.html">User Guide</a>. The '
+            '<a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>')
+SITE_NOTE = ('<p class="gc-small">This page is part of the Guided Coding website. The '
+             '<a href="getting-started.html">User Guide</a> and the other documentation pages are '
+             'generated from the documentation in the download.</p>')
+COPY_LABEL = "Copy these instructions"
 REQUIRED_FILES = {
     "SKILL.md", "SOURCE_MANIFEST.sha256",
     "docs/GUIDED_CODING_ARCHITECTURE.md", "docs/GUIDED_CODING_README.md",
@@ -742,32 +761,58 @@ def general_source(source, destination):
             "source_files": len(parse_manifest(manifest)) + 1, "adapted_files": changes}
 
 
+SAME_CONVERSATION = ("If Claude Code is already helping you install Guided Coding, it can perform this "
+                     "registration in the same conversation. Open a new conversation only afterward, "
+                     "to use /guided_coding.")  # The Developer's exact sentence.
+CODE_TAB_STEPS = """1. In the Claude app, open the Code tab and start a new session.
+2. Under Environment, choose Local, then My computer.
+3. At the bottom of the page, use the folder selector to choose your project
+   folder. In the Mac folder window, press Cmd+Shift+G and paste the full path.
+4. Type your message and send it."""
+
+
 def installation_text(info, minimum, edition):
     return f"""# Guided Coding: installation and first task
 
 Start with `guided_coding/docs/GUIDED_CODING_USER_GUIDE.md` in this folder.
 It is the same User Guide shown on the website. It tells you how to check
-this download, make the command available, set up your project and try a task.
-The general setup card is optional. Keep project settings and task records
-in your project, outside the verified kit.
+this download, make the /guided_coding command available (registration), set
+up your project and try a task. The general setup card,
+GENERAL_DEVELOPER_CARD.md, is optional. Keep project settings and task
+records in your project. Do not put them in the guided_coding folder.
 
-For the one-time setup, open ordinary Claude Code on your computer and send:
+For the one-time registration, open Claude Code on your computer (without
+/guided_coding) and send:
 
 {REGISTRATION}
 
-Then open a fresh conversation in your Git project, enter /guided_coding help,
-and follow the User Guide. Start each new task with /guided_coding and the
-task together in one message. For outside review, use a separate chat,
-preferably with a different AI assistant. You decide whether to keep or publish.
+{SAME_CONVERSATION}
 
-The client minimum is {minimum}. The app checks its own engine and reports
-NOT CHECKED when that version cannot be read; Terminal checks its PATH client.
-A cloud session can obtain its own source copy; creating this local link does
-not set up that session.
+Supported systems: Guided Coding runs on macOS and Linux. On Linux its tests
+run, but a real /guided_coding session there has not yet been observed. Auto
+mode runs only on macOS. Windows is not supported.
 
-For updates and removal, follow the User Guide. Finish active tasks, extract
-an update separately and keep the old folder until the new link is checked.
-Do not edit or add files inside guided_coding/.
+To open a new conversation in your Git project with the Claude app on a Mac:
+
+{CODE_TAB_STEPS}
+
+In Terminal on macOS or Linux, change to the project folder and run claude.
+
+Then, in that new conversation, enter /guided_coding help and follow the User
+Guide. Start each task with one message that contains /guided_coding and
+the task. For outside review, use a separate chat, preferably with a different
+AI assistant. You decide whether to keep or publish each change.
+
+Guided Coding needs Claude Code {minimum} or newer. In the Claude app, it
+checks the app's built-in Claude Code; if it cannot read the version, it
+reports NOT CHECKED. In Terminal, it checks the claude command you run.
+This registration covers Claude Code on your computer only. A cloud session
+needs its own copy of the kit.
+
+For updates and removal, follow the User Guide. Before updating, finish any
+active tasks. Unzip the update into a new folder, and keep the old folder
+until you have checked that the new one works. Do not edit or add files
+inside guided_coding/.
 
 {TEMP_REASON.replace('`', '')}
 The exact source and adaptations are in PACKAGE_INFO.json.
@@ -798,9 +843,14 @@ def render_page(template, replacements):
                   template).encode()
 
 
-def documentation_link(destination, info):
-    """Keep all procedure references in this edition's local documentation."""
+def documentation_link(destination, info, site=False):
+    """Keep all procedure references in this edition's local documentation.
+
+    Website-owned pages (site=True) may also link to the other website pages.
+    """
     url = urlsplit(destination)
+    if site and not url.scheme and not url.netloc and not url.query and url.path in SITE_LINKS:
+        return destination
     if url.scheme:
         require(url.scheme in ("https", "http") and bool(url.netloc),
                 "unsupported documentation link: " + destination)
@@ -887,7 +937,7 @@ def verify_general_documentation(documents, info):
                 + (": " + leftover[0] if leftover else ""))
 
 
-def document_inline(text, info):
+def document_inline(text, info, site=False):
     """Render the inline Markdown used by the shipped docs, escaping all HTML."""
     output = []
     position = 0
@@ -901,19 +951,19 @@ def document_inline(text, info):
             label_end = text.find("](", position + 1)
             end = text.find(")", label_end + 2)
             require(end != -1, "unclosed documentation link")
-            destination = documentation_link(text[label_end + 2:end], info)
+            destination = documentation_link(text[label_end + 2:end], info, site)
             output.append('<a href="' + html.escape(destination, quote=True) + '">'
-                          + document_inline(text[position + 1:label_end], info) + "</a>")
+                          + document_inline(text[position + 1:label_end], info, site) + "</a>")
             position = end + 1
         elif text.startswith("**", position):
             end = text.find("**", position + 2)
             require(end != -1, "unclosed documentation emphasis")
-            output.append("<strong>" + document_inline(text[position + 2:end], info) + "</strong>")
+            output.append("<strong>" + document_inline(text[position + 2:end], info, site) + "</strong>")
             position = end + 2
         elif text[position] == "*":
             end = text.find("*", position + 1)
             require(end != -1, "unclosed documentation emphasis")
-            output.append("<em>" + document_inline(text[position + 1:end], info) + "</em>")
+            output.append("<em>" + document_inline(text[position + 1:end], info, site) + "</em>")
             position = end + 1
         else:
             output.append(html.escape(text[position]))
@@ -921,12 +971,16 @@ def document_inline(text, info):
     return "".join(output)
 
 
-def render_document(markdown, info):
+def render_document(markdown, info, site=False):
     """Small standard-library renderer for the four upstream reference documents.
 
     Handles their paragraphs, ATX headings, fenced code, flat lists and tables.
     Refuse unsupported block syntax rather than silently changing its meaning.
+    Website-owned text (site=True) may link to website pages and may hold one
+    ```copy block, shown with a copy button.
     """
+    inline = lambda text: document_inline(text, info, site)
+    copy_blocks = 0
     lines = markdown.splitlines()
     require(bool(lines) and lines[0].startswith("# "), "documentation needs a title")
     blocks, toc, used_ids = [], [], {}
@@ -951,7 +1005,15 @@ def render_document(markdown, info):
                 code.append(lines[position])
                 position += 1
             require(position < len(lines), "unclosed documentation code fence")
-            blocks.append("<pre><code>" + html.escape("\n".join(code) + "\n") + "</code></pre>")
+            if site and line == "```copy":
+                copy_blocks += 1
+                require(copy_blocks == 1, "only one copy block per website page")
+                blocks.append('<pre class="gc-copy-box" id="copy-text"><code>' + html.escape("\n".join(code))
+                              + '</code></pre><button type="button" data-copy="copy-text">' + COPY_LABEL
+                              + '</button><p id="copy-status" class="gc-copy-status gc-small" role="status" '
+                              'aria-live="polite"></p>')
+            else:
+                blocks.append("<pre><code>" + html.escape("\n".join(code) + "\n") + "</code></pre>")
             position += 1
             continue
         heading = re.fullmatch(r"(#{2,6}) (.+)", line)
@@ -961,9 +1023,9 @@ def render_document(markdown, info):
             count = used_ids.get(slug, 0)
             used_ids[slug] = count + 1
             anchor = slug + ("-" + str(count) if count else "")
-            blocks.append(f'<h{level} id="{anchor}">' + document_inline(label, info) + f"</h{level}>")
+            blocks.append(f'<h{level} id="{anchor}">' + inline(label) + f"</h{level}>")
             if level == 2:
-                toc.append(f'<li><a href="#{anchor}">' + document_inline(label, info) + "</a></li>")
+                toc.append(f'<li><a href="#{anchor}">' + inline(label) + "</a></li>")
             position += 1
             continue
         if line.startswith("|"):
@@ -978,11 +1040,11 @@ def render_document(markdown, info):
             while position < len(lines) and lines[position].startswith("|"):
                 row = cells(lines[position])
                 require(len(row) == len(header), "documentation table column count differs")
-                rows.append("<tr>" + "".join("<td>" + document_inline(c, info) + "</td>"
+                rows.append("<tr>" + "".join("<td>" + inline(c) + "</td>"
                                               for c in row) + "</tr>")
                 position += 1
             blocks.append('<div class="gc-table-wrap"><table><thead><tr>'
-                          + "".join('<th scope="col">' + document_inline(c, info) + "</th>" for c in header)
+                          + "".join('<th scope="col">' + inline(c) + "</th>" for c in header)
                           + "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></div>")
             continue
         item = list_item.fullmatch(line)
@@ -1003,7 +1065,7 @@ def render_document(markdown, info):
                             "unsupported nested documentation block")
                     text.append(continuation)
                     position += 1
-                items.append("<li>" + document_inline(" ".join(text), info) + "</li>")
+                items.append("<li>" + inline(" ".join(text)) + "</li>")
             blocks.append(f"<{kind}{start}>" + "".join(items) + f"</{kind}>")
             continue
         paragraph = []
@@ -1015,20 +1077,21 @@ def render_document(markdown, info):
                     "unsupported documentation block: " + text[:80])
             paragraph.append(text)
             position += 1
-        blocks.append("<p>" + document_inline(" ".join(paragraph), info) + "</p>")
+        blocks.append("<p>" + inline(" ".join(paragraph)) + "</p>")
     return "\n".join(blocks), "<ul>" + "".join(toc) + "</ul>"
 
 
 def build_documentation(source, info, site, original_source=None):
     template = (site / "docs.template.html").read_text()
     outputs, records = {}, []
-    pages = [("index.html", "Guided Coding"), ("getting-started.html", "User Guide"),
+    pages = [("index.html", "Guided Coding"), ("quick-start.html", "Quick Start"),
+             ("how-it-works.html", "How it works"), ("getting-started.html", "User Guide"),
              ("user-guide.html", "Command reference"),
              ("documentation.html", "Documentation"), ("overview.html", "Overview"),
              ("architecture.html", "Architecture"), ("verification.html", "Verification"),
              ("reference-files.html", "Reference files")]
 
-    def page_html(page, title, description, source_path, body, toc):
+    def page_html(page, title, description, source_path, body, toc, note=DOC_NOTE):
         navigation = "".join('<a href="' + name + '"'
                              + (' aria-current="page"' if name == page else '')
                              + '>' + label + '</a>' for name, label in pages)
@@ -1036,7 +1099,7 @@ def build_documentation(source, info, site, original_source=None):
             "PAGE": page, "TITLE": title, "DESCRIPTION": description,
         }).decode()
         for marker, block in (("DOCUMENT_NAV", navigation), ("DOCUMENT_CONTENT", body),
-                              ("DOCUMENT_TOC", toc)):
+                              ("DOCUMENT_TOC", toc), ("DOCUMENT_NOTE", note)):
             comment = "<!-- " + marker + " -->"
             require(rendered.count(comment) == 1, "documentation template marker changed: " + marker)
             rendered = rendered.replace(comment, block, 1)
@@ -1058,6 +1121,20 @@ def build_documentation(source, info, site, original_source=None):
                         "page_sha256": digest(outputs[page])})
         cards.append('<div class="card"><h2>' + label + '</h2><p>' + description
                      + '</p><a class="card-link" href="' + page + '">Read ' + label.lower() + '</a></div>')
+    site_records, site_links = [], []
+    for path, page, description in SITE_PAGES:
+        data = (site / path).read_bytes()
+        text = data.decode("utf-8")
+        title = text.splitlines()[0][2:] if text.startswith("# ") else ""
+        require(bool(title), "website page needs a title: " + path)
+        body, toc = render_document(text, info, site=True)
+        toc_block = ('<details class="gc-panel gc-toc" open><summary>On this page</summary><div>'
+                     + toc + '</div></details>') if "<li>" in toc else ""
+        outputs[page] = page_html(page, title, description, path,
+                                  '<article class="gc-document">' + body + '</article>', toc_block, SITE_NOTE)
+        site_records.append({"source": path, "source_sha256": digest(data), "page": page,
+                             "page_sha256": digest(outputs[page])})
+        site_links.append('<li><a href="' + page + '">' + html.escape(title) + '</a></li>')
     references = (("payload/DEVELOPER_GUIDE_CONTRACT.md", "Developer–Guide Contract"),
                   ("payload/ROLES.md", "Roles and responsibilities"),
                   ("payload/SETUP.md", "Project setup procedure"),
@@ -1090,13 +1167,14 @@ def build_documentation(source, info, site, original_source=None):
         reference_body, '<details class="gc-panel gc-toc" open><summary>Files on this page</summary><div><ul class="gc-reference-list">'
         + ''.join(reference_toc) + '</ul></div></details>')
     body = ('<p>Start with the user guide for everyday use. The other pages explain the procedure, '
-            'its implementation and the evidence behind it.</p><div class="card-grid">' + "".join(cards)
+            'its implementation and the evidence behind it.</p><ul>' + "".join(site_links) + '</ul>'
+            '<div class="card-grid">' + "".join(cards)
             + '</div><h2 id="procedure-files">Procedure and reference files</h2>'
             '<p>These links open the reference files here on the website. The same general-edition '
             'files are included in the ZIP.</p><ul>' + reference_links + '</ul>' + historical_note(info))
     outputs["documentation.html"] = page_html("documentation.html", "Guided Coding documentation",
         "User guide, overview, architecture, verification and procedure reference files.", "docs", body, "")
-    return outputs, {"pages": records,
+    return outputs, {"pages": records, "site_pages": site_records,
                      "references": {"page": "reference-files.html",
                                     "page_sha256": digest(outputs["reference-files.html"]),
                                     "files": reference_records},
@@ -1154,10 +1232,11 @@ def build_artifacts(source, info, license_data, site, scratch):
         "PACKAGE_STATUS": "Complete general-edition kit, setup card and installation notes.",
     })
     copy = (site / "main-page.md").read_text()
-    body, _ = render_document(copy, info)
+    body, _ = render_document(copy, info, site=True)
     main_marker = b"<!-- MAIN_COPY -->"
     require(page.count(main_marker) == 1, "main-page copy marker changed; inspect the generator")
     page = page.replace(main_marker, body.encode(), 1)
+    require(page.count(b'id="copy-status"') == 1, "main page copy status must appear once")
     marker = b"<!-- PACKAGE_SOURCE -->"
     require(page.count(marker) == 1, "package-source template marker changed; inspect the generator")
     page = page.replace(marker, package_source_note(info).encode(), 1)
@@ -1304,7 +1383,8 @@ def main(argv=None):
         require(os.name == "posix", "the current kit and checks require macOS or Linux")
         require(shutil.which("git") is not None, "Git is needed for the upstream tests")
         require(shutil.which("shasum") is not None, "shasum is needed by the installed skill")
-        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
+        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md",
+                     *(page[0] for page in SITE_PAGES)):
             require((SITE / name).is_file(), f"site input missing: {name}")
         with tempfile.TemporaryDirectory(prefix="guided-coding-package-") as temporary:
             root = Path(temporary).resolve()  # Mac /var may alias /private/var

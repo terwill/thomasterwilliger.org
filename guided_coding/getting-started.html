@@ -559,7 +559,7 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="getting-started.html" aria-current="page">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html" aria-current="page">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
   <h1 class="gc-document-title">Guided Coding User Guide</h1>
   <p class="gc-lead">Install Guided Coding, set up your project and work through a first task.</p>
 <details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#before-you-begin">Before you begin</a></li><li><a href="#using-guided-coding-in-the-cloud-or-with-cctbx_project-or-phenix">Using Guided Coding in the cloud or with cctbx_project or PHENIX</a></li><li><a href="#1-download-and-check-the-kit">1. Download and check the kit</a></li><li><a href="#2-one-time-setup-making-the-guided_coding-command-available">2. One-time setup making the /guided_coding command available</a></li><li><a href="#3-set-up-your-project">3. Set up your project</a></li><li><a href="#4-start-your-first-task">4. Start your first task</a></li><li><a href="#5-read-the-plan-and-choose">5. Read the plan and choose</a></li><li><a href="#6-ask-for-outside-review-when-requested">6. Ask for outside review when requested</a></li><li><a href="#7-decide-whether-to-keep-the-result">7. Decide whether to keep the result</a></li><li><a href="#returning-to-a-project">Returning to a project</a></li><li><a href="#stopping-work">Stopping work</a></li><li><a href="#running-several-jobs-unattended-auto-mode">Running several jobs unattended (auto mode)</a></li><li><a href="#updates-and-removal">Updates and removal</a></li><li><a href="#if-something-goes-wrong">If something goes wrong</a></li><li><a href="#further-details">Further details</a></li></ul></div></details>
@@ -666,4 +666,27 @@ main {
   <p class="gc-small">These pages are generated from the documentation in the download. Start with the <a href="getting-started.html">User Guide</a>. The <a href="GENERAL_DEVELOPER_CARD.md" download>setup card</a> is optional.</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
-<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div></body></html>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
+async function copyText(button, label) {
+  const target = document.getElementById(button.dataset.copy);
+  const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
+  const status = document.getElementById('copy-status');
+  try {
+    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(value);
+    status.textContent = 'Copied. Paste it into the appropriate window.';
+    button.textContent = 'Copied';
+  } catch (error) {
+    if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
+    else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
+    status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
+    button.textContent = 'Text selected';
+  }
+  clearTimeout(button.copyResetTimer);
+  button.copyResetTimer = setTimeout(() => { button.textContent = label; }, 1800);
+}
+for (const button of document.querySelectorAll('button[data-copy]')) {
+  const label = button.textContent;
+  button.addEventListener('click', () => copyText(button, label));
+}
+</script></body></html>

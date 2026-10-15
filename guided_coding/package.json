@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 257596,
+    "bytes": 258486,
     "file": "guided_coding.zip",
-    "sha256": "055c9db8f09c395ae3f25eab027f6887663e01360a602583d00a2bf6197ae4f8"
+    "sha256": "a5ca192fb69326d747b7bad808dd5c362604fc181684bd8d5114501596f8d7b5"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -15,41 +15,41 @@
   "documentation": {
     "index": {
       "page": "documentation.html",
-      "page_sha256": "09bcee2533cbe34496886d237150c1df4d80954a8539f8e2fb8dff2889a2f704"
+      "page_sha256": "d5de9f7f5b2fc7ce2fe751fb5861e0763c4cd06d3c63ee82fd7548bdad493fa2"
     },
     "pages": [
       {
         "original_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18",
         "page": "getting-started.html",
-        "page_sha256": "e6ad9f6578970e1a2ec69b15d3db99b393570f67c672280278031ddbcdb6c6e8",
+        "page_sha256": "0c89260bbb765baa3be005217e209c2f1163aea5a40753aec44e2cb9d6a400d6",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
         "source_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18"
       },
       {
         "original_sha256": "30300be722449ee98a5a2609f74640b8f95ff17bcc112b30b5c760c6f0d7a67a",
         "page": "user-guide.html",
-        "page_sha256": "449d3cc8a43acf80d00144d86795683e9ffec577ee3e59e0acff643464a66ab0",
+        "page_sha256": "f4cd74f773315e0cace1fd1fd173513e9aee2f9aa11dc3e969016576dcc347e8",
         "source": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
         "source_sha256": "1421699aa053a448993512f48f4994c19df2148beca62119ac57798932986d40"
       },
       {
         "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
         "page": "overview.html",
-        "page_sha256": "4216aaea10fc303c8910d2d6ec68b17b40fe56356a77a1f8e279251d8d0d4451",
+        "page_sha256": "853a71c64df8b708bdc6e190b6203889e595a415be8a1f357db5fb57918cadf9",
         "source": "docs/GUIDED_CODING_README.md",
         "source_sha256": "c7fd9f7d6086185c697d3e332eaf8719149b112b2f45b4a870a1e4b5f5bead71"
       },
       {
         "original_sha256": "719793c2ab7fe56b0ec390bec0880b7a5138ad961624f62c1ede56d6d23ffaa4",
         "page": "architecture.html",
-        "page_sha256": "8c05a3f100817c947301e96ad1d73b1c6ff72fbb947f080286f18ba145b77200",
+        "page_sha256": "705f3669baf06d58e421408c4f30918dd5e523b254eb41f339ff2cb2048a24a8",
         "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
         "source_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
       },
       {
         "original_sha256": "2e11a256a6c55846c6413bc61f965e812dab9e9728ae50918c2261708373a58a",
         "page": "verification.html",
-        "page_sha256": "d33e8840c6b4006fc323efd3c0b6418e38be169261db397c9dd58aeb05a8693e",
+        "page_sha256": "7687f007798127f82a482b40c8e90ce6b2e8405877a50cfacd49156f24e7f45c",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
         "source_sha256": "e7a3b1adfdb23c2c04aedb95ff6993bc5ad8b71f7007a3351618523f9ee82c97"
       }
@@ -223,8 +223,34 @@
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "7945e64f8460d95190dccc2672085ebe0fcdaa9f4c12b250c9bd2e930b733eb3"
-    }
+      "page_sha256": "be64b65965085697344bb89d51a1ec2ff9fff2d8370a2bb63964e5bf0264a312"
+    },
+    "site_pages": [
+      {
+        "page": "why-not-claude-code.html",
+        "page_sha256": "025a8b7977417190c85e9ec4bcbca1ed1c2bc010a4a40c1b4788058e7899c225",
+        "source": "pages/why-not-claude-code.md",
+        "source_sha256": "95b27a966d307d88ef2c990f2422a4dbfbfdf0a8ee64b782cad01b94c6b9a6e8"
+      },
+      {
+        "page": "why-not-vibe-coding.html",
+        "page_sha256": "5132962e0dc3ed7eb5bc4ae6a2437f233a5320f0c681cd4b7b708a9d6cced1a0",
+        "source": "pages/why-not-vibe-coding.md",
+        "source_sha256": "41f89bb58b8484ddcf93bd48f06fa3059c740e83ab50265714f6504ba8bf84c1"
+      },
+      {
+        "page": "how-it-works.html",
+        "page_sha256": "d2d9501d1e22fc072a51080c63f5b30526a28a0c790c7c892529afab5fcec8eb",
+        "source": "pages/how-it-works.md",
+        "source_sha256": "7b4c4e9173e6ae6064b831053614685a1c7fe49b5f8d1ce483089dfcfe2c49cc"
+      },
+      {
+        "page": "quick-start.html",
+        "page_sha256": "5b72c14b58a380e59e8812eb8781de239d3c4288430c8e111231fd415fafa171",
+        "source": "pages/quick-start.md",
+        "source_sha256": "5581749b433975cb91411b5f1fe0811f5f867b18a778257868a20f4045be89aa"
+      }
+    ]
   },
   "general_card_sha256": "fe33fe30e8d819a8330d4782fdbc8066eb4bb936394bb187728a8724799f72a3",
   "general_edition": {
@@ -296,10 +322,10 @@
     "source_manifest_sha256": "3c3fa2e5698474ed7acf90614087f896a1f126764be7ae71559064427138aec5"
   },
   "generator": {
-    "docs_template_sha256": "757203e78da6b7adce8e0b747aee5be11a1341eb716fd5332d82d89df8541cf6",
-    "main_copy_sha256": "7f0d01671c5db745e0a34411a989e600763c3c83c4879cbfb81c5ee22b297fe4",
-    "script_sha256": "3acd27b73ecd4290f6a0fe367d009f9b95edac1dd35824b370741c62f4597a50",
-    "template_sha256": "4cd0c4e5d496fa20f58d4c5b162f72877243f46cef02e5116de3a5df8e547f76"
+    "docs_template_sha256": "34213861e0b0e1e722e0b84e820a74ab04b833ced8ac7c72483a715753adef33",
+    "main_copy_sha256": "96815aaff09c80c543eced046eafa9fbe42acea05df5a89005be661ecc84e177",
+    "script_sha256": "7fba14b60eddbe88488a7899f9e92a26b63874046d129e45afc673d4d5d36c46",
+    "template_sha256": "f5043d6a78f100dccf1d2a5b76d6e74b68237c9b0a998c330b6fc89a465221b2"
   },
   "historical_source_checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -312,31 +338,31 @@
   "historical_source_tests": [
     {
       "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "1ef2406e1486ebe80ebda585bdc24904166897badcbfce408c126fa5625d5a39",
+      "output_sha256": "4120a3e7dd3560e55eb6289f1714c4c66241a6ffaf5f516b271c80c64a22157f",
       "skipped": 3,
       "tests": 114
     },
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "eb509e0ac62de2701451231e105ca0d19c5101f833e4ed2011406f8570a4f588",
+      "output_sha256": "4f9fa29955d19646b9824b9976432e1fee210ec84dfa0ce4ad5571fbaacbf176",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "7426262ac495ca6880d04590f4d83cec21b6baca5c14325fb41afcecd61f33ea",
+      "output_sha256": "229fface2ee6c7e7dd89ca0c66be2f3ede6c7c489a725893e9b06e9599b85c71",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "15dc4fe8b666b687b6f0fb2b4a2a29038d6081fe9e24fcd9af8dc4a615df9146",
+      "output_sha256": "6178f4432cca7c0bc20177bc5fa161d1deeec42ccb05d50fe2e6f6c9bea28f8b",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "0d4cced987564f9fc354c16160c7a17358cf05b62e4820d457a56d11a2b4b855",
+      "output_sha256": "47a7447aa980306712f9a9d94e1c18489a0be0a9c2ad9625fab96d755424027d",
       "skipped": 0,
       "tests": 100
     }
@@ -346,31 +372,31 @@
   "package_tests": [
     {
       "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "33f75b788a9883b0c12009461b18b708ef2674d5a4c5ac4251ffe8234b82a69b",
+      "output_sha256": "0d5f7f70943d1c73890dc4019877c77add14558d6046713d4f6f6ed013b153c6",
       "skipped": 3,
       "tests": 114
     },
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "e012e8541046bf0613ad91ccb31997185d114d016b0034c16a906d8035803318",
+      "output_sha256": "155fdf15dab9ed85952fafa84280fd310f317d5b088694a0d578b1ae26202222",
       "skipped": 0,
       "tests": 27
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "a3b96009074d6e4d37b3f94147c3ed2dad7d419b94c75152e377010ed5637d01",
+      "output_sha256": "e7c0de3065aadf80ff830b37f2fe26e90b4389d1a4c07cba8e80b0b10bab7898",
       "skipped": 0,
       "tests": 15
     },
     {
       "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "15dc4fe8b666b687b6f0fb2b4a2a29038d6081fe9e24fcd9af8dc4a615df9146",
+      "output_sha256": "0a68351797b46269a480fc500f9330420dffe0f4f17c8c131796b2e1e5c5eaf8",
       "skipped": 0,
       "tests": 13
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "7d2d8b2cf70fe3446e2df0d814cc8c4dcb98c7747012df7ee4707afa185dcdbb",
+      "output_sha256": "701f60085e75e82464ba76d85fcec8099120eb4a1dc7f2be78613c3f1d4d2dca",
       "skipped": 0,
       "tests": 100
     }

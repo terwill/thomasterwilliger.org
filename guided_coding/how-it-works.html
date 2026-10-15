@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How Guided Coding works — Thomas C. Terwilliger</title><meta name="description" content="The steps Guided Coding carries out and what it adds on top of Claude Code."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/how-it-works.html"><style>
+/* ===== BASE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy: #1a2744;
+  --slate: #3d4f6b;
+  --accent: #2e6da4;
+  --accent-light: #e8f0f8;
+  --warm-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text: #2c2c2c;
+  --text-light: #5a6270;
+  --border: #ddd;
+  --rule: #c4cdd6;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  background: var(--warm-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 0 0;
+}
+
+.header-content {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.photo {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.photo-placeholder {
+  width: 130px;
+  height: 165px;
+  border-radius: 4px;
+  border: 3px solid rgba(255,255,255,0.2);
+  background: var(--slate);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: rgba(255,255,255,0.35);
+}
+
+.header-text h1 {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 8px;
+  letter-spacing: 0.03em;
+}
+
+.affiliation {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.affiliation a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.affiliation a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.5);
+}
+
+/* ===== NAV ===== */
+.site-nav {
+  background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+  margin-top: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-nav .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.site-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.site-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+}
+
+.site-nav a.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* ===== MAIN CONTENT ===== */
+.content-section {
+  padding: 40px 0;
+}
+
+.page-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 10px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin: 0 0 32px;
+}
+
+/* ===== SECTIONS ON HOME ===== */
+.intro p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  max-width: 72ch;
+}
+
+.intro p:first-child {
+  font-size: 1.12rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.card-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== PUBLICATIONS ===== */
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pub-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pub-meta a:hover {
+  text-decoration: underline;
+}
+
+.pub-year-heading {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 36px 0 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub-year-heading:first-of-type {
+  margin-top: 0;
+}
+
+.pub-entry {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  padding-left: 16px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.pub-entry:hover {
+  border-left-color: var(--accent);
+}
+
+.pub-entry a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.pub-entry a:hover {
+  text-decoration: underline;
+}
+
+.pub-entry i {
+  font-style: italic;
+}
+
+.patents-section {
+  margin-top: 40px;
+}
+
+/* ===== BIO PAGE ===== */
+.bio-section {
+  margin-bottom: 36px;
+}
+
+.bio-section h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.timeline {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 12px 24px;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+
+.timeline li strong {
+  color: var(--navy);
+}
+
+.honors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.honors-list li {
+  padding: 6px 0;
+  font-size: 0.93rem;
+  border-bottom: 1px solid #eee;
+}
+
+.honors-list li:last-child {
+  border-bottom: none;
+}
+
+.honors-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.honors-list a:hover {
+  text-decoration: underline;
+}
+
+.service-text {
+  font-size: 0.93rem;
+  line-height: 1.7;
+}
+
+.service-text a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.service-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SOFTWARE PAGE ===== */
+.software-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+}
+
+.software-card h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin: 0 0 10px;
+}
+
+.software-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.software-card .sw-link {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.software-card .sw-link:hover {
+  background: var(--navy);
+}
+
+/* ===== LINKS PAGE ===== */
+.links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.links-list li:last-child {
+  border-bottom: none;
+}
+
+.links-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.links-list a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  padding: 24px 0;
+  margin-top: 48px;
+  font-size: 0.82rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.site-footer a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .header-content {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header-text h1 {
+    font-size: 1.45rem;
+  }
+
+  .site-nav a {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .content-section {
+    padding: 28px 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pub-entry {
+    padding-left: 10px;
+  }
+}
+
+.gc-main{padding-top:34px;padding-bottom:34px;width:100%;max-width:920px}
+.gc-main h1,.gc-main h2{font-family:var(--serif);color:var(--navy);line-height:1.3}
+.gc-main h1{font-size:2rem;margin:0 0 8px}.gc-main h2{font-size:1.4rem;margin-top:30px}
+.gc-lead{font-size:1.15rem;color:var(--slate);margin-top:0}.gc-main p{max-width:80ch}
+.gc-download{border-left:4px solid var(--accent);background:var(--accent-light);padding:20px 24px;margin:24px 0}
+.gc-download p{margin:10px 0 0}.gc-button,.gc-main button{display:inline-block;background:var(--accent);color:white;border:0;border-radius:4px;padding:10px 16px;font:600 15px/1.45 var(--sans);text-decoration:none;cursor:pointer}
+.gc-button:hover,.gc-main button:hover{background:#21567f;color:white}
+.gc-local-nav{display:flex;flex-wrap:wrap;gap:10px 20px;border-bottom:1px solid var(--rule);padding:0 0 15px}
+.gc-main a{color:var(--accent)}.gc-main .gc-button{color:#fff}.gc-main section{scroll-margin-top:18px}
+.gc-panel{border:1px solid var(--border);border-radius:6px;margin:14px 0}.gc-panel summary{padding:13px 18px;cursor:pointer;color:var(--navy);font-weight:600}.gc-panel>div{padding:0 18px 16px}
+.gc-main label{display:block;font-weight:600;margin:12px 0 5px}.gc-main textarea{display:block;width:100%;font:15px/1.6 var(--sans);background:#fff;border:1px solid var(--rule);border-radius:3px;color:var(--text);padding:14px;resize:vertical;margin:0 0 10px}
+.gc-main pre{padding:14px 16px;background:#f3f5f7;border:1px solid var(--border);border-radius:3px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}
+.gc-main code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.85em;overflow-wrap:anywhere}.gc-main pre code{font:inherit}
+.gc-main li+li{margin-top:9px}.gc-main li{padding-left:4px}.gc-process{padding-left:22px}
+.gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
+.gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
+@media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
+
+.gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
+.gc-document h2,.gc-document h3{scroll-margin-top:20px}
+.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
+.gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
+.gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-reference-list{overflow-wrap:anywhere}
+.gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
+.gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
+</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
+        <div class="header-text">
+          <h1>Thomas C. Terwilliger</h1>
+          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
+          <p class="affiliation">
+            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
+            Los Alamos National Laboratory Fellow (Retired)
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <div class="container">
+        <a href="../index.html">Home</a>
+        <a href="../publications.html">Publications</a>
+        <a href="../software.html" class="active">Software</a>
+        <a href="../bio.html">Biography</a>
+        <a href="../group.html">Group</a>
+        <a href="../news.html">News</a>
+        <a href="../presentations.html">Presentations</a>
+        <a href="../links.html">Links</a>
+      </div>
+    </nav>
+  </header><main class="container gc-main gc-doc-pages">
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html" aria-current="page">How it works</a><a href="getting-started.html">User Guide</a><a href="user-guide.html">Command reference</a><a href="documentation.html">Documentation</a><a href="overview.html">Overview</a><a href="architecture.html">Architecture</a><a href="verification.html">Verification</a><a href="reference-files.html">Reference files</a></nav>
+  <h1 class="gc-document-title">How Guided Coding works</h1>
+  <p class="gc-lead">The steps Guided Coding carries out and what it adds on top of Claude Code.</p>
+<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#you-start-with-claude-code">You start with Claude Code</a></li><li><a href="#fixing-a-bug-the-steps">Fixing a bug: the steps</a></li><li><a href="#building-new-code-the-steps">Building new code: the steps</a></li><li><a href="#the-technical-details">The technical details</a></li><li><a href="#limits">Limits</a></li><li><a href="#more-information">More information</a></li></ul></div></details>
+<article class="gc-document"><h2 id="you-start-with-claude-code">You start with Claude Code</h2>
+<p>Guided Coding runs inside Claude Code, in the Claude app or in Terminal. Claude still reads your code, makes the changes and runs the tests. Guided Coding adds structure and checks to that work: a plan you approve, tests and a report you can read, reviews, and separate decisions for keeping and publishing a change.</p>
+<p>It is used only when you ask for it. Start a conversation in your project with <code>/guided_coding</code> and your task. Ordinary Claude Code conversations are not affected.</p>
+<h2 id="fixing-a-bug-the-steps">Fixing a bug: the steps</h2>
+<ol><li><strong>Startup checks.</strong> Guided Coding checks that its own files are complete and unchanged, that your Claude Code version is new enough, and that your project is set up for Guided Coding and its settings are saved.</li><li><strong>Plan.</strong> Claude looks for the cause and shows a one-page plan: the goal, which files will change, how the result will be checked and what could go wrong. You choose <strong>APPROVE</strong>, <strong>REVISE</strong> or <strong>STOP</strong>.</li><li><strong>Light or full path.</strong> The plan says which path the task takes. A change takes the light path only if two things are true. It cannot affect how the program behaves, what it requires, its interfaces or an important claim. You also accept the worst case stated in the plan. Every other change takes the full path. The size of the change does not decide this.</li><li><strong>Separate working copy.</strong> Claude makes the change on its own Git branch, usually in a separate working folder (a Git worktree). Your own work and your main branch stay untouched.</li><li><strong>Tests.</strong> The key check should fail on the old code for the reason in the bug report and pass on the fixed code. Claude also runs a control test. It shows that the check can detect a wrong result.</li><li><strong>Reviewer agent (full path).</strong> A separate reviewer agent reads the finished change before its evidence is saved.</li><li><strong>Saved evidence.</strong> Claude saves the change, the test logs and a report in an evidence folder and seals it with a list of checksums (a fingerprint of each file&#x27;s contents). Any later change to that evidence can then be detected.</li><li><strong>Checker agent (full path).</strong> A separate checker agent reads the sealed evidence against a checklist.</li><li><strong>Outside review (full path).</strong> Claude prepares a message and a review package. You attach both in a separate chat, preferably with a different AI assistant. You copy its reply back, and Claude answers each finding.</li><li><strong>Your decision.</strong> The report shows the complete change, the full code of every new test, the test results and what remains uncertain. You choose <strong>INTEGRATE</strong> to add the change to your project, <strong>REVISE</strong> or <strong>DISCARD</strong>.</li><li><strong>Publication, separately.</strong> Sending the change to your remote Git repository is a later <strong>PUBLISH</strong> or <strong>HOLD</strong> decision. Before it, Claude is instructed to run your project&#x27;s full test suite and compare it with an earlier run. An outside review of exactly the commits to be sent is also required. You can waive the test suite for one set of commits, in your own words. In this version the outside review cannot be skipped.</li></ol>
+<h2 id="building-new-code-the-steps">Building new code: the steps</h2>
+<p>New code follows the same steps. The difference is in the plan and the tests. The plan says what the new code should do and how that will be checked. The tests show the new behavior working, and the report includes the full code of every new test. If a change has no new test, the report says what check was used instead.</p>
+<h2 id="the-technical-details">The technical details</h2>
+<p>These are the parts Guided Coding adds on top of Claude Code. Some are enforced by small checking tools that come with the Guided Coding files (the kit). Others are instructions that Claude is told to follow. The tools cannot make Claude follow them.</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Part</th><th scope="col">What it does</th><th scope="col">Enforced by a tool?</th></tr></thead><tbody><tr><td>Source check</td><td>Before each use, checks every kit file against the kit&#x27;s list of checksums. It refuses changed, missing or extra files.</td><td>Yes</td></tr><tr><td>Version check</td><td>Requires Claude Code 2.1.281 or newer. In the app, if the version cannot be read, it says so and continues.</td><td>Yes</td></tr><tr><td>Project adoption</td><td>Your project&#x27;s instruction file names the exact version of the rules it uses and where its settings are saved. Without it, Guided Coding does not start a task.</td><td>Instruction</td></tr><tr><td>Project settings</td><td>One file in your project records its build and test commands, folders and rules for keeping and publishing changes.</td><td>Instruction</td></tr><tr><td>Branches and worktrees</td><td>Each change gets its own Git branch, usually in a separate working folder. This keeps files apart. It does not separate installed programs, servers or shared data.</td><td>Instruction</td></tr><tr><td>Save and restore</td><td>When a test must run in your main folder, Claude saves the original files, applies the change, runs the test and puts the originals back.</td><td>Instruction</td></tr><tr><td>Reviewer and checker agents</td><td>On full-path tasks, a reviewer agent reads the finished change and a checker agent reads the sealed evidence.</td><td>Instruction</td></tr><tr><td>Sealed evidence</td><td>The evidence folder is sealed with a list of checksums. Any later change is detected. Sealing does not make the evidence true.</td><td>Yes</td></tr><tr><td>Screen checker</td><td>Checks that the plan, result and publication screens have their required parts and refer to the same evidence. It checks that the report shows the complete change. It requires a matching outside review before a full-path result or a publication. It checks form, not accuracy.</td><td>Yes, form only</td></tr><tr><td>Publication check</td><td>Before a push, compares the planned commits with Git. It accepts only one approved push command, which sends no Git tags. It never pushes by itself.</td><td>Yes</td></tr><tr><td>Task records</td><td>Each task keeps its decisions, the kit version used and its evidence in your project&#x27;s <code>.claude/records</code> folder. <code>/guided_coding history</code> lists them.</td><td>Instruction (a tool lists the records)</td></tr><tr><td>Auto mode</td><td>Works through a list of small tasks one at a time while you are away, with a time limit on each run. Outside network access is blocked unless a task is explicitly granted it. Runs only on macOS.</td><td>Yes</td></tr><tr><td>Lock</td><td>Auto mode locks its own test copy of your program while it runs. There is no other lock. Separate conversations coordinate through messages.</td><td>Yes, auto mode only</td></tr></tbody></table></div>
+<h2 id="limits">Limits</h2>
+<p>Guided Coding is a pilot. Its tools check files, forms and identities. They do not show that a test checks the right thing, that a log is truthful or that a reviewer is independent. The reviewer and checker agents are the same kind of model as the one doing the work. Guided Coding has not established that it produces better fixes than other approaches. The <a href="verification.html">verification and limits</a> page has the details.</p>
+<h2 id="more-information">More information</h2>
+<ul><li><a href="quick-start.html">Quick Start</a>: set up Guided Coding by giving Claude Code one message.</li><li><a href="index.html#install">Installation and project setup</a>, on the main page.</li><li><a href="getting-started.html">User Guide</a>: setup and a first task, step by step.</li><li><a href="documentation.html">Documentation</a>: overview, architecture, verification and the procedure files.</li></ul></article>
+  <p class="gc-small">This page is part of the Guided Coding website. The <a href="getting-started.html">User Guide</a> and the other documentation pages are generated from the documentation in the download.</p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+</main>
+<footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
+async function copyText(button, label) {
+  const target = document.getElementById(button.dataset.copy);
+  const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
+  const status = document.getElementById('copy-status');
+  try {
+    if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(value);
+    status.textContent = 'Copied. Paste it into the appropriate window.';
+    button.textContent = 'Copied';
+  } catch (error) {
+    if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
+    else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
+    status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
+    button.textContent = 'Text selected';
+  }
+  clearTimeout(button.copyResetTimer);
+  button.copyResetTimer = setTimeout(() => { button.textContent = label; }, 1800);
+}
+for (const button of document.querySelectorAll('button[data-copy]')) {
+  const label = button.textContent;
+  button.addEventListener('click', () => copyText(button, label));
+}
+</script></body></html>

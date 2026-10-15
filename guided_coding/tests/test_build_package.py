@@ -51,6 +51,15 @@ def manifest(files):
                    for name, data in sorted(files.items())).encode()
 
 
+SITE_INPUTS = ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md",
+               *(page[0] for page in builder.SITE_PAGES))
+
+
+def copy_site_inputs(site):
+    for name in SITE_INPUTS:
+        (site / name).parent.mkdir(parents=True, exist_ok=True)
+        (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
+
 def temp_fixture(name):
     """Minimal source prose containing every guarded upstream instruction."""
     text = builder.TEMP_HEADERS[name] + '\n\n'
@@ -193,8 +202,7 @@ class PackagingControls(unittest.TestCase):
 
     def build_fixture(self):
         site, old = self.make_site_outputs()
-        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
-            (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
+        copy_site_inputs(site)
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob("*") if p.is_file() and p.name != "SOURCE_MANIFEST.sha256"}
         files.update({name: temp_fixture(name) for name in builder.TEMP_HEADERS})
@@ -485,6 +493,15 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             metadata = json.loads(archive.read('GuidedCoding/PACKAGE_INFO.json'))
             self.assertIn(builder.REGISTRATION, guide)
             self.assertIn(builder.REGISTRATION, install)
+            self.assertIn(builder.REGISTRATION + '\n\n' + builder.SAME_CONVERSATION + '\n', install)
+            self.assertIn(builder.CODE_TAB_STEPS, install)
+            for step in ('open the Code tab and start a new session', 'choose Local, then My computer',
+                         'At the bottom of the page, use the folder selector', 'Cmd+Shift+G',
+                         'Type your message and send it'):
+                self.assertEqual(install.count(step), 1, step)
+            self.assertIn('Guided Coding runs on macOS and Linux', install)
+            self.assertIn('Auto\nmode runs only on macOS. Windows is not supported.', install)
+            self.assertIn('In Terminal on macOS or Linux, change to the project folder and run claude.', install)
             self.assertIn(metadata['general_edition']['source_manifest_sha256'], install)
             self.assertNotIn('GuidedCoding/LICENSE.cctbx.txt', archive.namelist())
         for name, data in outputs.items():
@@ -501,8 +518,8 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
         page = outputs['index.html'].decode()
         self.assertEqual(page.count('id="package-source"'), 1)
+        self.assertLess(page.index('id="install"'), page.index('id="download"'))
         self.assertLess(page.index('id="download"'), page.index('id="package-source"'))
-        self.assertLess(page.index('id="package-source"'), page.index('id="install"'))
         self.assertIn('cctbx_project/libtbx/guided_coding</code></a>', page)
         self.assertIn('/' + info['commit'] + '/libtbx/guided_coding', page)
         self.assertIn('edits the documentation and local path examples', page)
@@ -513,6 +530,77 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         self.assertNotIn('exact file changes are recorded with the download', page)
         builder.verify_general_documentation({'index.html': outputs['index.html']}, info)
         self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+
+    def build_outputs(self):
+        site, old, info = self.build_fixture()
+        with patch.object(builder, 'check_hooks', return_value=(2, 1, 281)), \
+             patch.object(builder, 'run_contract_checks', return_value={}), \
+             patch.object(builder, 'run_package_tests', return_value=[]):
+            outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
+        self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
+        return outputs, info
+
+    def test_website_pages_are_rendered_listed_and_linked(self):
+        outputs, info = self.build_outputs()
+        self.assertEqual(set(outputs), set(builder.OUTPUTS))
+        metadata = json.loads(outputs['package.json'])
+        recorded = {item['page']: item for item in metadata['documentation']['site_pages']}
+        for source, page, description in builder.SITE_PAGES:
+            data = (SCRIPT.parent / source).read_bytes()
+            title = data.decode().splitlines()[0][2:]
+            html_page = outputs[page].decode()
+            self.assertIn('<h1 class="gc-document-title">' + html.escape(title) + '</h1>', html_page)
+            self.assertIn(html.escape(description), html_page)
+            self.assertEqual(html_page.count(builder.SITE_NOTE), 1)
+            self.assertNotIn(builder.DOC_NOTE, html_page)
+            self.assertEqual(recorded[page]['source_sha256'], builder.digest(data))
+            self.assertEqual(recorded[page]['page_sha256'], builder.digest(outputs[page]))
+            self.assertIn('<a href="' + page + '">' + html.escape(title) + '</a>',
+                          outputs['documentation.html'].decode())
+        for page in ('getting-started.html', 'documentation.html', 'reference-files.html'):
+            text = outputs[page].decode()
+            self.assertEqual(text.count(builder.DOC_NOTE), 1, page)
+            self.assertIn('<a href="quick-start.html">Quick Start</a>', text)
+            self.assertIn('<a href="how-it-works.html">How it works</a>', text)
+        main = outputs['index.html'].decode()
+        self.assertIn('<h1>Guided Coding Help and Information</h1>', main)
+        self.assertNotIn('Current status', main)
+        for page in ('why-not-claude-code.html', 'why-not-vibe-coding.html', 'how-it-works.html',
+                     'quick-start.html'):
+            self.assertIn('href="' + page + '"', main)
+        install = main[main.index('id="install"'):main.index('id="download"')]
+        self.assertIn('Claude: perform registration in the current conversation. A new conversation '
+                      'is needed only to use the command afterward.', install)
+        self.assertEqual(main.count('id="copy-status"'), 1)
+        for name, data in outputs.items():
+            if name.endswith('.html'):
+                builder.verify_general_documentation({name: data}, info)
+
+    def test_quick_start_copy_box_holds_the_exact_instructions(self):
+        outputs, _ = self.build_outputs()
+        source = (SCRIPT.parent / 'pages/quick-start.md').read_text()
+        expected = source.split('```copy\n', 1)[1].split('\n```', 1)[0]
+        page = outputs['quick-start.html'].decode()
+        match = re.search(r'<pre class="gc-copy-box" id="copy-text"><code>(.*?)</code></pre>', page, re.S)
+        self.assertIsNotNone(match)
+        self.assertEqual(html.unescape(match[1]), expected)
+        self.assertIn('<button type="button" data-copy="copy-text">' + builder.COPY_LABEL + '</button>', page)
+        self.assertEqual(page.count('id="copy-status"'), 1)
+        self.assertIn('navigator.clipboard.writeText', page)
+
+    def test_site_links_and_copy_blocks_are_limited_to_website_pages(self):
+        info = {"commit": "a" * 40}
+        with self.assertRaises(builder.PackageError):
+            builder.render_document('# Kit\n\nSee [start](quick-start.html).\n', info)
+        body, _ = builder.render_document('# Site\n\nSee [start](quick-start.html).\n', info, site=True)
+        self.assertIn('<a href="quick-start.html">start</a>', body)
+        for link in ('quick-start.html?x=1', 'missing-page.html', '/quick-start.html'):
+            with self.assertRaises(builder.PackageError, msg=link):
+                builder.render_document('# Site\n\n[x](' + link + ')\n', info, site=True)
+        body, _ = builder.render_document('# Kit\n\n```copy\ntext\n```\n', info)
+        self.assertEqual(body, '<pre><code>text\n</code></pre>')
+        with self.assertRaises(builder.PackageError):
+            builder.render_document('# Site\n\n```copy\na\n```\n\n```copy\nb\n```\n', info, site=True)
 
     def test_temporary_instruction_edits_and_reason_are_in_zip_and_html(self):
         site, old, info = self.build_fixture()
@@ -930,6 +1018,9 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         (site / "docs.template.html").write_text("template")
         (site / "GENERAL_DEVELOPER_CARD.md").write_text("card")
         (site / "main-page.md").write_text("# Guided Coding\n\nIntroduction.\n")
+        for source, _, _ in builder.SITE_PAGES:
+            (site / source).parent.mkdir(exist_ok=True)
+            (site / source).write_text("# Page\n\nText.\n")
         with patch.object(builder, "SITE", site), \
              patch.object(builder, "download_source", side_effect=builder.PackageError("refused")), \
              patch.object(builder, "publish_local") as publish:
@@ -943,6 +1034,9 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
         (site / "docs.template.html").write_text("template")
         (site / "GENERAL_DEVELOPER_CARD.md").write_text("card")
         (site / "main-page.md").write_text("# Guided Coding\n\nIntroduction.\n")
+        for source, _, _ in builder.SITE_PAGES:
+            (site / source).parent.mkdir(exist_ok=True)
+            (site / source).write_text("# Page\n\nText.\n")
         with patch.object(builder, "SITE", site), \
              patch.object(builder, "download_source", return_value=({}, b"license")), \
              patch.object(builder, "build_artifacts", return_value=old), \
@@ -1115,8 +1209,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
 
     def test_cli_reports_failed_rollback_recovery_path_and_returns_failure(self):
         site, old = self.make_site_outputs()
-        for name in ("index.template.html", "docs.template.html", "main-page.md", "GENERAL_DEVELOPER_CARD.md"):
-            (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
+        copy_site_inputs(site)
         real_replace = os.replace
         calls = []
 
