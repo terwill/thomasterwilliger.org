@@ -468,12 +468,13 @@ def check_hooks(source):
                       r"else sha256sum -c SOURCE_MANIFEST\.sha256; fi)\s*&&\s*"
                       r"GC_PAYLOAD_ROOT[^\n]+verify-source", skill) is not None,
             "skill no longer guards source execution with its listed checksum")
-    # Revision 13 and later: the whole guarded block must be exactly this, ending
+    # The whole guarded block must be exactly the revision 13 and later one, ending
     # its fence, so nothing (`; true`, `|| true`, another line) can follow a check.
-    if "grep -Eq '^" in skill or "if command -v shasum" in skill:
-        require(sum(len(block.findall(skill)) for block in GUARD_BLOCKS) == 1
-                and skill.count("screen_check.py verify-source") == 1,
-                "skill no longer guards source execution with its listed checksum")
+    # An older skill (grep -Fq release check) needs inspection. verify-source
+    # appears once, however the command around it is spaced.
+    require(sum(len(block.findall(skill)) for block in GUARD_BLOCKS) == 1
+            and skill.count("verify-source") == 1,
+            "skill no longer guards source execution with its listed checksum")
     release = (source / "payload/RELEASE").read_text()
     # Before revision 13: a literal label contained in RELEASE. Since then: an
     # anchored label (only `\.` escaped) equal to RELEASE's whole label, the text
@@ -985,17 +986,20 @@ def temporary_instructions(name, text):
     require(SOURCE_PYTHON not in outside
             and re.search(r"python(?:3(?:\.\d+)?)? -[IB]", others) is None,
             "unadapted interpreter command; inspect " + name)
-    # A bare python or python3 that starts a command (line start, `...`, or
-    # after && or ;) must be the documented venv step.
-    for match in re.finditer(r"(?:^|`|&& |; )(python3?)\b(?!`)", outside, re.M):
-        require(outside.startswith(" -m venv ", match.end(1)),
-                "unresolved temporary-directory instruction; inspect " + name)
-    # Any other python3 is the interpreter's name in prose or the documented
-    # step that makes the virtual environment; a command must name GENERAL_PYTHON.
-    for match in re.finditer(r"(?<![\w.~-])python3\b", outside):
-        prose = (outside[match.start() - 1:match.end() + 1] == "`python3`"
-                 and outside[match.end() + 1:match.end() + 3] != " -")
-        require(prose or outside.startswith(" -m venv ", match.end()),
+    # A path-qualified interpreter given an argument, or continued on the next
+    # line, runs a command (/usr/bin/python x.py); only GENERAL_PYTHON may.
+    require(re.search(r"/(?:python|pypy)\d*(?:\.\d+)*m?(?:[ \t]+[^\s(]|\\\n)",
+                      outside.replace(GENERAL_PYTHON, "\0")) is None,
+            "unadapted interpreter command; inspect " + name)
+    # Any other interpreter name is the name in prose (`python3`), a placeholder
+    # (<python>) or the documented step that makes the virtual environment; a
+    # command must name GENERAL_PYTHON. Paths to python or pypy are left to the
+    # rule above; any python3 counts here.
+    for match in re.finditer(r"(?<![\w.~-])python3(?:\.\d+)*m?\b|(?<![\w.~/-])(?:python(?:[0-24-9]\d*)?|pypy\d*)(?:\.\d+)*m?\b", outside):
+        word = match[0]
+        around = outside[match.start() - 1:match.end() + 1]
+        prose = around == "`" + word + "`" and outside[match.end() + 1:match.end() + 3] != " -"
+        require(prose or around == "<" + word + ">" or outside.startswith(" -m venv ", match.end()),
                 "unresolved temporary-directory instruction; inspect " + name)
     if history is not None:
         text = text.replace(HISTORY_MARK, history, 1)
@@ -1050,6 +1054,56 @@ RESTRICTED_AUTO_NOTE = (" Auto mode also needs the\npsutil package for Python, a
                         "Python named libtbx.python, or python3 or python3.N inside a conda_base/bin/\nfolder.")
 
 
+# Names and attributes that reach module globals by a computed name.
+DYNAMIC_BINDING = frozenset(("setattr", "delattr", "globals", "locals", "vars", "exec", "eval", "__import__",
+                             "__dict__", "__setattr__", "__builtins__", "builtins", "__main__", "modules",
+                             "_getframe", "f_globals", "f_locals", "f_back", "currentframe", "stack", "inspect"))
+
+
+def identifier_uses(tree, name):
+    """Every node that carries name as an identifier, or as a whole string."""
+    return [node for node in ast.walk(tree) for _, value in ast.iter_fields(node)
+            if value == name or (isinstance(value, list) and name in value)]
+
+
+def dynamic_binding(tree):
+    """Nodes through which a name could be bound without naming it."""
+    return [node for node in ast.walk(tree)
+            if getattr(node, "id", None) in DYNAMIC_BINDING or getattr(node, "attr", None) in DYNAMIC_BINDING
+            # A name spelled as a string (getattr(sys, "modules")); the test
+            # `__name__ == "__main__"` is ordinary.
+            or (isinstance(node, ast.Constant) and node.value in DYNAMIC_BINDING and node.value != "__main__")
+            or (isinstance(node, ast.alias) and {node.name, node.asname} & DYNAMIC_BINDING)
+            or (isinstance(node, ast.Call) and getattr(node.func, "id", None) == "getattr"
+                and not (len(node.args) > 1 and isinstance(node.args[1], ast.Constant)))
+            or (isinstance(node, ast.Attribute) and not isinstance(node.ctx, ast.Load)
+                and node.attr in ("compile", "fullmatch"))]
+
+
+def applies_interpreter(function):
+    """stop_line is a plain function whose body has
+    `if not INTERPRETER.fullmatch(<its own value>): return False`, and every
+    statement before it can only return False."""
+    if function.decorator_list or any(isinstance(node, (ast.Yield, ast.YieldFrom, ast.Await))
+                                      for node in ast.walk(function)):
+        return False
+    for position, statement in enumerate(function.body):
+        test = getattr(statement, "test", None)
+        if (isinstance(statement, ast.If) and not statement.orelse
+                and isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not)
+                and isinstance(test.operand, ast.Call) and isinstance(test.operand.func, ast.Attribute)
+                and test.operand.func.attr == "fullmatch" and isinstance(test.operand.func.value, ast.Name)
+                and test.operand.func.value.id == "INTERPRETER"
+                and len(test.operand.args) == 1 and not test.operand.keywords
+                and isinstance(test.operand.args[0], ast.Name) and test.operand.args[0].id != "INTERPRETER"
+                and len(statement.body) == 1 and isinstance(statement.body[0], ast.Return)
+                and isinstance(statement.body[0].value, ast.Constant) and statement.body[0].value.value is False):
+            return all(isinstance(node.value, ast.Constant) and node.value.value is False
+                       for earlier in function.body[:position] for node in ast.walk(earlier)
+                       if isinstance(node, ast.Return))
+    return False
+
+
 def auto_mode_note(source):
     """The installation note for the shipped auto-mode interpreter rule."""
     path = source / "payload/tools/screen_check.py"
@@ -1057,26 +1111,38 @@ def auto_mode_note(source):
         return ""  # Only reduced test fixtures; check_hooks requires it in a real build.
     text = path.read_text()
     tree = ast.parse(text)
-    stores = [node for node in ast.walk(tree)
-              if isinstance(node, ast.Name) and node.id == "INTERPRETER" and isinstance(node.ctx, ast.Store)]
-    named = [node for node in ast.walk(tree) if isinstance(node, ast.Constant) and node.value == "INTERPRETER"]
-    used = any(isinstance(node, ast.FunctionDef) and node.name == "stop_line" and any(
-        isinstance(call, ast.Attribute) and call.attr == "fullmatch" and isinstance(call.value, ast.Name)
-        and call.value.id == "INTERPRETER" for call in ast.walk(node)) for node in tree.body)
-    # Exactly one plain top-level assignment, no other binding of the name, and
-    # stop_line() must apply it; otherwise the note's claim needs inspection.
+    uses = identifier_uses(tree, "INTERPRETER")
+    dynamic = dynamic_binding(tree)
+    if not uses and not dynamic:
+        return ""
+    # Only these may name INTERPRETER: one plain top-level assignment, read only
+    # inside one undecorated top-level stop_line, which refuses what the rule
+    # does not match; stop_line is otherwise only called, and re is only
+    # imported and read. Anything else (an attribute, keyword, import, def,
+    # match capture, string, computed name) needs inspection of the note's claim.
+    stores = [node for node in uses if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)]
+    checks = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "stop_line"]
+    reads = [node for check in checks for node in ast.walk(check)
+             if isinstance(node, ast.Name) and node.id == "INTERPRETER" and isinstance(node.ctx, ast.Load)]
+    imports = [alias for node in tree.body if isinstance(node, ast.Import) for alias in node.names
+               if alias.name == "re" and alias.asname is None]
+    other = [node for node in uses if node not in stores and node not in reads]
+    other += [node for node in identifier_uses(tree, "stop_line")
+              if node not in checks and not (isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load))]
+    other += [node for node in identifier_uses(tree, "re")
+              if not isinstance(node, ast.Constant) and node not in imports
+              and not (isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load))]
     lines = text.splitlines()
     rules = [lines[node.lineno - 1].strip() for node in stores]
-    single = (len(stores) == 1 and not named and used
-              and any(isinstance(node, ast.Assign) and node.targets[0] is stores[0] for node in tree.body))
-    if stores or named:
-        require(single, "auto-mode interpreter rule changed; inspect the installation text")
+    require(len(stores) == 1 and not other and not dynamic and len(checks) == 1
+            and applies_interpreter(checks[0])
+            and any(isinstance(node, ast.Assign) and node.targets == [stores[0]] for node in tree.body),
+            "auto-mode interpreter rule changed; inspect the installation text")
     if rules == [RESTRICTED_INTERPRETER]:
         return RESTRICTED_AUTO_NOTE
     if rules == [GENERAL_INTERPRETER]:
         return GENERAL_AUTO_NOTE
-    require(not rules, "auto-mode interpreter rule changed; inspect the installation text")
-    return ""
+    require(False, "auto-mode interpreter rule changed; inspect the installation text")
 
 
 def installation_text(info, minimum, edition, auto_note=""):

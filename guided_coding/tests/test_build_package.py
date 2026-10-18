@@ -1255,7 +1255,8 @@ REVISION_17_GUARD = (
     "cat payload/RELEASE &&\n"
     "grep -Eq '^guided_coding 2\\.0 pilot r10 rev19 ' payload/RELEASE\n")
 REVISION_17_RELEASE = "guided_coding 2.0 pilot r10 rev19 (revision 17, 2026-10-16: test)\n"
-STOP_LINE = "def stop_line(line):\n    return INTERPRETER.fullmatch(line)\n"
+# The kit's form: a direct `if not INTERPRETER.fullmatch(...): return False` in stop_line.
+STOP_LINE = "def stop_line(line):\n    if not INTERPRETER.fullmatch(line):\n        return False\n    return True\n"
 
 
 class Revision17Rules(unittest.TestCase):
@@ -1284,11 +1285,13 @@ class Revision17Rules(unittest.TestCase):
     def test_revision_17_source_and_release_guards_are_accepted(self):
         self.hooks_source(REVISION_17_GUARD)
         self.assertEqual(builder.check_hooks(self.source), (2, 1, 281))
+        # The pre-revision-13 form is no longer accepted (checker criterion B1).
         old = ("shasum -a 256 -c SOURCE_MANIFEST.sha256 &&\n"
                'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
                "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE\n")
         self.hooks_source(old)
-        self.assertEqual(builder.check_hooks(self.source), (2, 1, 281))
+        with self.assertRaisesRegex(builder.PackageError, "no longer guards source execution"):
+            builder.check_hooks(self.source)
 
     def test_changed_source_guard_is_refused(self):
         for guard in (
@@ -1470,7 +1473,7 @@ class Revision17Rules(unittest.TestCase):
                  "no longer guards"),
                 ("shasum -a 256 -c SOURCE_MANIFEST.sha256 &&\n"
                  'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
-                 "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE || true\n", "does not match"),
+                 "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE || true\n", "no longer guards"),
                 ("shasum -a 256 SOURCE_MANIFEST.sha256 &&\n"
                  'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
                  "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE\n", "no longer guards")):
@@ -1693,6 +1696,207 @@ class Revision18Rules(unittest.TestCase):
                 adapted = builder.temporary_instructions(
                     name, text + "\n`" + builder.TEMP_PREFIX + " " + source_form + "-m unittest x`\n")
                 self.assertIn(builder.TEMP_PREFIX + " " + builder.GENERAL_PYTHON + " -B -m unittest x", adapted)
+
+
+class Revision19Checks(unittest.TestCase):
+    """Inputs the revision 18 builder accepted that the independent checker
+    found unsafe: interpreter forms, pre-revision-13 and second guard blocks,
+    and other ways to rebind or bypass the auto-mode interpreter rule."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.source = Path(self.temporary.name).resolve() / "source"
+
+    def test_chained_prefixed_indented_and_path_qualified_python_is_refused(self):
+        # Checker criterion A: only the exact venv Python may run a tool.
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        bare = "unresolved temporary-directory instruction; inspect " + re.escape(name)
+        qualified = "unadapted interpreter command; inspect " + re.escape(name)
+        for extra, message in (
+                ("Run `x || python x.py`.", bare),
+                ("Run `x | python x.py`.", bare),
+                ("Run `$(python x.py)`.", bare),
+                ("Run `sudo python x.py`.", bare),
+                ("  python x.py", bare),
+                ("/usr/bin/python x.py", qualified),
+                ("/usr/bin/python -s -I x.py", qualified)):
+            with self.subTest(extra=extra), self.assertRaisesRegex(builder.PackageError, message):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+        # Controls: the venv step and the interpreter named in prose stay accepted.
+        for extra in ("Plain harmless line.",
+                      "First `python3 -m venv ~/guided_coding_venv`.",
+                      "The tools run with `python`.",
+                      "The tools run with `python3`.",
+                      "It needs a module which <python> does not have.",
+                      "Name `DIR/bin/python` (the venv Python)."):
+            with self.subTest(control=extra):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+
+    def test_pre_revision_13_guard_with_a_checksum_that_cannot_fail_is_refused(self):
+        # Checker criterion B1: `true ||` makes the checksum harmless.
+        guard = ("true || shasum -a 256 -c SOURCE_MANIFEST.sha256 &&\n"
+                 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+                 "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE\n")
+        Revision17Rules.hooks_source(self, guard)
+        with self.assertRaisesRegex(builder.PackageError, "no longer guards source execution"):
+            builder.check_hooks(self.source)
+
+    def test_second_checker_block_with_other_whitespace_is_refused(self):
+        # Checker criterion B2: the exact guard plus a second run spelled with
+        # two spaces or a tab before verify-source.
+        for gap in ("  ", "\t"):
+            guard = (REVISION_17_GUARD + "```\n\n```bash\n"
+                     'GC_PAYLOAD_ROOT="$(pwd -P)/payload" libtbx.python -I -B payload/tools/screen_check.py'
+                     + gap + "verify-source .\n")
+            with self.subTest(gap=gap):
+                Revision17Rules.hooks_source(self, guard)
+                with self.assertRaisesRegex(builder.PackageError, "no longer guards source execution"):
+                    builder.check_hooks(self.source)
+
+    def test_other_rebinding_and_bypassing_stop_line_forms_are_refused(self):
+        # Checker criterion B3.
+        checker = self.source / "payload/tools/screen_check.py"
+        checker.parent.mkdir(parents=True)
+        # Controls: the kit's stop_line form with either shipped rule gives its note.
+        for rule, note in ((builder.GENERAL_INTERPRETER, builder.GENERAL_AUTO_NOTE),
+                           (builder.RESTRICTED_INTERPRETER, builder.RESTRICTED_AUTO_NOTE)):
+            with self.subTest(rule=rule[:40]):
+                checker.write_text("import re\n" + rule + "\n" + STOP_LINE)
+                self.assertEqual(builder.auto_mode_note(self.source), note)
+        # Control: early `return False` guards before the check, as in the kit, are accepted.
+        checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n"
+                           "def stop_line(line):\n    if not line:\n        return False\n"
+                           "    if line.startswith('#'):\n        return False\n"
+                           "    if not INTERPRETER.fullmatch(line):\n        return False\n    return True\n")
+        self.assertEqual(builder.auto_mode_note(self.source), builder.GENERAL_AUTO_NOTE)
+        for extra in ("globals().update(INTERPRETER=None)\n",
+                      "setattr(mod, 'INTER' + 'PRETER', None)\n",
+                      "from re import compile as INTERPRETER\n",
+                      "def INTERPRETER():\n    pass\n",
+                      "def stop_line(line):\n    return True\n"):
+            with self.subTest(extra=extra):
+                checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n" + STOP_LINE + extra)
+                with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+                    builder.auto_mode_note(self.source)
+        # A sole stop_line that calls the rule but ignores its result, and one
+        # that can return True before the check.
+        for stop_line in ("def stop_line(x):\n    INTERPRETER.fullmatch(x)\n    return True\n",
+                          "def stop_line(line):\n    if line:\n        return True\n"
+                          "    if not INTERPRETER.fullmatch(line):\n        return False\n    return True\n"):
+            with self.subTest(stop_line=stop_line):
+                checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n" + stop_line)
+                with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+                    builder.auto_mode_note(self.source)
+
+    def test_bare_interpreter_names_after_any_shell_word_are_refused(self):
+        # Reviewer class "bare interpreter name": a bare python, python2, python3,
+        # python3.N, pypy or pypy3 is refused wherever it can run.
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        bare = "unresolved temporary-directory instruction; inspect " + re.escape(name)
+        qualified = "unadapted interpreter command; inspect " + re.escape(name)
+        for extra, message in (
+                ("Run `x ||  python x.py`.", bare),
+                ("Run `x &&python x.py`.", bare),
+                ("Run `x;python x.py`.", bare),
+                ("Run `x & python x.py`.", bare),
+                ("Run `exec python x.py`.", bare),
+                ("Run `env python x.py`.", bare),
+                ("Run `/usr/bin/env python x.py`.", bare),
+                ("Run `nohup python x.py`.", bare),
+                ("Run `command python x.py`.", bare),
+                ("Run `time python x.py`.", bare),
+                ("Run `xargs python x.py`.", bare),
+                ("Run `doas python x.py`.", bare),
+                ("Run `sudo -E python x.py`.", bare),
+                ("Run `sudo  python x.py`.", bare),
+                ("Run `(python x.py)`.", bare),
+                ("Run `{ python x.py; }`.", bare),
+                ("Run `FOO=1 python x.py`.", bare),
+                ("Run `if x; then python x.py; fi`.", bare),
+                ("Run `bash -c 'python x.py'`.", bare),
+                ('Run `"python" x.py`.', bare),
+                ("Run `\\python x.py`.", bare),
+                ("Run `python2 x.py`.", bare),
+                ("Run `pypy3 x.py`.", bare),
+                ("Run `python2.7 x.py`.", bare),
+                ("Run `pypy3.10 x.py`.", bare),
+                ("Run `python3m x.py`.", bare),
+                ("/usr/bin/python2 x.py", qualified),
+                ("/opt/pypy3 x.py", qualified),
+                ("/usr/bin/python\\\n    x.py", qualified),
+                ("/usr/bin/python2.7 x.py", qualified),
+                ("/opt/pypy/bin/pypy3.10 x.py", qualified),
+                ("/usr/bin/python3m x.py", qualified),
+                ("/usr/bin/python\tx.py", qualified)):
+            with self.subTest(extra=extra), self.assertRaisesRegex(builder.PackageError, message):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+        # Controls: the earlier accepted prose and venv step stay accepted.
+        for extra in ("Plain harmless line.",
+                      "First `python3 -m venv ~/guided_coding_venv`.",
+                      "The tools run with `python`.",
+                      "The tools run with `python3`.",
+                      "It needs a module which <python> does not have.",
+                      "Name `DIR/bin/python` (the venv Python)."):
+            with self.subTest(control=extra):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+
+    def test_only_one_plain_interpreter_rule_and_stop_line_are_accepted(self):
+        # Reviewer class "only one plain INTERPRETER and stop_line".
+        checker = self.source / "payload/tools/screen_check.py"
+        checker.parent.mkdir(parents=True)
+        rule = builder.GENERAL_INTERPRETER + "\n"
+        for source in (
+                "import re\n" + rule + STOP_LINE + "import sys\nsys.modules[__name__].INTERPRETER = re.compile('.*')\n",
+                "import re\n" + rule + STOP_LINE + "import __main__ as M\nM.INTERPRETER = re.compile('.*')\n",
+                "import re\n" + rule + STOP_LINE + "match re.compile('.*'):\n    case INTERPRETER:\n        pass\n",
+                "import re\n" + rule + STOP_LINE + "import builtins\nbuiltins.globals()['INTER' + 'PRETER'] = None\n",
+                "import re\n" + rule + STOP_LINE + "import builtins as B\nB.exec('x = 1')\n",
+                "import re\n" + rule + STOP_LINE + "import builtins\ngetattr(builtins, 'ex' + 'ec')('x = 1')\n",
+                "import re\n" + rule + STOP_LINE + "import sys\nsys._getframe().f_globals['X'] = 1\n",
+                # Other bindings of the name stop_line.
+                "import re\n" + rule + STOP_LINE + "stop_line = lambda line: True\n",
+                "import re\n" + rule + STOP_LINE + "from os import path as stop_line\n",
+                "import re\n" + rule + STOP_LINE + "def other(stop_line=None):\n    return stop_line\n",
+                "import re\nre.compile = lambda *a: None\n" + rule + STOP_LINE,
+                # Frame, module-dictionary and reflection access (checker round 3).
+                "import re\n" + rule + STOP_LINE
+                + 'import inspect\ninspect.currentframe().f_locals["INTER" + "PRETER"] = re.compile(".*")\n',
+                "import re\n" + rule + STOP_LINE + 'import sys\ngetattr(getattr(sys, "modules")[__name__], '
+                '"__dict__")["INTER" + "PRETER"] = re.compile(".*")\n',
+                "import re\n" + rule + STOP_LINE
+                + 'import inspect\ninspect.stack()[0].frame.f_locals.update({"INTER" + "PRETER": None})\n',
+                "import re\n" + rule + STOP_LINE + "x = vars()\n",
+                "import re\n" + rule + STOP_LINE + 'eval("1")\n',
+                "import re\n" + rule + STOP_LINE + "y = object.__dict__\n",
+                "import re\n" + rule + STOP_LINE + 'object.__setattr__(object, "a", 1)\n',
+                "import re\n" + rule + STOP_LINE + "from builtins import setattr as s\n",
+                # A module other than re, or re rebound after the rule.
+                "import evil as re\n" + rule + STOP_LINE,
+                "import regex as re\n" + rule + STOP_LINE,
+                "import re\n" + rule + STOP_LINE + "re = None\n",
+                "import re\n" + rule + STOP_LINE + "from os import path as re\n",
+                # A single plain rule with a pattern the builder does not know.
+                'import re\nINTERPRETER = re.compile(r"/.+/other")\n' + STOP_LINE,
+                # stop_line variants: a decorator, a generator and a constant argument.
+                "import re\n" + rule + "def always(f):\n    return lambda line: True\n@always\n" + STOP_LINE,
+                "import re\n" + rule + STOP_LINE.replace("    return True\n", "    yield line\n    return True\n"),
+                "import re\n" + rule + STOP_LINE.replace("fullmatch(line)", "fullmatch('/a/python')"),
+                "import re\n" + rule + STOP_LINE.replace("fullmatch(line)", "fullmatch(string=line)"),
+                "import re\n" + rule + STOP_LINE.replace("fullmatch(line)", "fullmatch(line, pos=1)")):
+            with self.subTest(source=source.replace(rule, "<rule>\n")):
+                checker.write_text(source)
+                with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+                    builder.auto_mode_note(self.source)
+        # Control: the plain rule and the kit's stop_line give the note.
+        checker.write_text("import re\n" + rule + STOP_LINE)
+        self.assertEqual(builder.auto_mode_note(self.source), builder.GENERAL_AUTO_NOTE)
+        # Control: a main guard after them, as in the kit, is accepted too.
+        checker.write_text("import re\n" + rule + STOP_LINE + 'if __name__ == "__main__":\n    pass\n')
+        self.assertEqual(builder.auto_mode_note(self.source), builder.GENERAL_AUTO_NOTE)
+
 
 class ScriptModeRunsEveryTest(unittest.TestCase):
     def test_no_test_class_follows_the_script_entry_point(self):
