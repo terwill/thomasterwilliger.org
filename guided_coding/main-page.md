@@ -23,7 +23,7 @@ After making the fix, Claude shows you what changed and what happened in the tes
 
 For an ordinary task, you first approve a plan that says what Claude will change and how it will test the result. You can ask for a different plan or stop the task.
 
-When the fix is ready, you decide whether to put the tested change into your project. This choice is called **INTEGRATE**. You can ask Claude to revise the fix or discard it instead.
+When the fix is ready, you decide whether to put the tested change into your project. This choice is called **INTEGRATE**. You can ask Claude to revise the fix or discard it instead. You can waive the outside review for one change before **INTEGRATE**, in your own words; a review is still required before publication.
 
 Sending the approved changes to your remote Git repository is a separate choice, called **PUBLISH**. You can keep the changes on your computer without pushing them. The reviewer gives advice; you decide what to do.
 
@@ -35,7 +35,7 @@ Each task has its own Git branch. Claude tests it in a separate copy of your sof
 
 In auto mode, you do not approve each task’s plan, and no outside review happens before a change is saved. Claude decides how to test each change and what counts as passing. Your project’s required checks still apply. Claude’s reviewer and checker agents still examine the work. You can ask for an outside review before approving. To add a change to your project or publish it, you give a later instruction. The usual required review still applies.
 
-Auto mode is new and has had limited use. Auto mode runs only on macOS. On other systems it refuses to run. Your project needs a separate test copy and settings prepared first; see the [User Guide](https://www.thomasterwilliger.org/guided_coding/getting-started.html). Keep the computer powered and awake. If a usage limit interrupts the run, you must resume it yourself.
+Auto mode is new and has had limited use. Auto mode runs only on macOS. On other systems it refuses to run. It also needs the psutil package for Python, installed in a virtual environment as the User Guide shows. Your project needs a separate test copy and settings prepared first; see the [User Guide](https://www.thomasterwilliger.org/guided_coding/getting-started.html). Keep the computer powered and awake. If a usage limit interrupts the run, you must resume it yourself.
 
 ## Try it in your own project
 

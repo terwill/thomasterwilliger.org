@@ -16,9 +16,11 @@ It is used only when you ask for it. Start a conversation in your project with `
 6. **Reviewer agent (full path).** A separate reviewer agent reads the finished change before its evidence is saved.
 7. **Saved evidence.** Claude saves the change, the test logs and a report in an evidence folder and seals it with a list of checksums (a fingerprint of each file's contents). Any later change to that evidence can then be detected.
 8. **Checker agent (full path).** A separate checker agent reads the sealed evidence against a checklist.
-9. **Outside review (full path).** Claude prepares a message and a review package. You attach both in a separate chat, preferably with a different AI assistant. You copy its reply back, and Claude answers each finding.
-10. **Your decision.** The report shows the complete change, the full code of every new test, the test results and what remains uncertain. You choose **INTEGRATE** to add the change to your project, **REVISE** or **DISCARD**.
-11. **Publication, separately.** Sending the change to your remote Git repository is a later **PUBLISH** or **HOLD** decision. Before it, Claude is instructed to run your project's full test suite and compare it with an earlier run. An outside review of exactly the commits to be sent is also required. You can waive the test suite for one set of commits, in your own words. In this version the outside review cannot be skipped.
+9. **Outside review (full path).** Claude prepares a message and a review package. You attach both in a separate chat, preferably with a different AI assistant. You copy its reply back, and Claude answers each finding. You can waive this review for one change, in your own words. The waiver covers only adding that exact change to your project, never its publication.
+10. **Your decision.** The report shows the complete change, the full code of every new test, the test results and what remains uncertain. While the outside review is still pending, you can **ACCEPT** the exact tested change; this records your acceptance and changes nothing else. After the review, or your recorded waiver, you choose **INTEGRATE** to add the change to your project, **REVISE** or **DISCARD**.
+11. **Publication, separately.** Sending the change to your remote Git repository is a later **PUBLISH** or **HOLD** decision. Before it, Claude is instructed to run your project's full test suite and compare it with an earlier run. An outside review of exactly the commits to be sent is also required. You can waive the test suite for one set of commits, in your own words. In this version the outside review before publication cannot be skipped. If your project forbids Claude to push, Claude runs the same checks, gives you the exact push command to run yourself, and then confirms what reached the remote repository.
+
+Each time Claude hands the work back to you, it describes the practical situation first, recommends what to do and lists the complete next steps.
 
 ## Building new code: the steps
 
@@ -38,10 +40,10 @@ These are the parts Guided Coding adds on top of Claude Code. Some are enforced 
 | Save and restore | When a test must run in your main folder, Claude saves the original files, applies the change, runs the test and puts the originals back. | Instruction |
 | Reviewer and checker agents | On full-path tasks, a reviewer agent reads the finished change and a checker agent reads the sealed evidence. | Instruction |
 | Sealed evidence | The evidence folder is sealed with a list of checksums. Any later change is detected. Sealing does not make the evidence true. | Yes |
-| Screen checker | Checks that the plan, result and publication screens have their required parts and refer to the same evidence. It checks that the report shows the complete change. It requires a matching outside review before a full-path result or a publication. It checks form, not accuracy. | Yes, form only |
-| Publication check | Before a push, compares the planned commits with Git. It accepts only one approved push command, which sends no Git tags. It never pushes by itself. | Yes |
+| Screen checker | Checks that the plan, stop, accept, result and publication screens have their required parts, including a recommendation and the next step, and refer to the same evidence. It checks that the report shows the complete change. It requires a matching outside review, or your recorded waiver, before a full-path result, and an outside review before a publication. It checks form, not accuracy. | Yes, form only |
+| Publication check | Before a push, compares the planned commits with Git. It accepts only one approved push command, which sends no Git tags. It never pushes by itself. When you push yourself, it confirms afterwards that the remote branch has the planned commit and that no tag changed. | Yes |
 | Task records | Each task keeps its decisions, the kit version used and its evidence in your project's `.claude/records` folder. `/guided_coding history` lists them. | Instruction (a tool lists the records) |
-| Auto mode | Works through a list of small tasks one at a time while you are away, with a time limit on each run. Outside network access is blocked unless a task is explicitly granted it. Runs only on macOS. | Yes |
+| Auto mode | Works through a list of small tasks one at a time while you are away, with a time limit on each run. Outside network access is blocked unless a task is explicitly granted it. Runs only on macOS, and needs the psutil package for Python, installed in a virtual environment as the User Guide shows. | Yes |
 | Lock | Auto mode locks its own test copy of your program while it runs. There is no other lock. Separate conversations coordinate through messages. | Yes, auto mode only |
 
 ## Limits

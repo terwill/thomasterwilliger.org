@@ -60,9 +60,13 @@ def copy_site_inputs(site):
         (site / name).parent.mkdir(parents=True, exist_ok=True)
         (site / name).write_bytes((SCRIPT.parent / name).read_bytes())
 
+REFERENCE = 'docs/GUIDED_CODING_COMMAND_REFERENCE.md'
+REFERENCE_HEADER = '# Guided Coding registration and command reference\n\n## One-time registration\n\n'
+
+
 def temp_fixture(name):
     """Minimal source prose containing every guarded upstream instruction."""
-    text = builder.TEMP_HEADERS[name] + '\n\n'
+    text = REFERENCE_HEADER if name == REFERENCE else builder.TEMP_HEADERS[name] + '\n\n'
     for command, count in builder.TEMP_COMMANDS.get(name, ()):
         for _ in range(count):
             text += (command + '\n\n' if command.startswith('`') else
@@ -206,9 +210,7 @@ class PackagingControls(unittest.TestCase):
         files = {p.relative_to(self.source).as_posix(): p.read_bytes()
                  for p in self.source.rglob("*") if p.is_file() and p.name != "SOURCE_MANIFEST.sha256"}
         files.update({name: temp_fixture(name) for name in builder.TEMP_HEADERS})
-        files['docs/GUIDED_CODING_COMMAND_REFERENCE.md'] = (
-            b'# Guided Coding registration and command reference\n\n## One-time registration\n\n' +
-            temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md').split(b'\n\n', 1)[1])
+        files[REFERENCE] = temp_fixture(REFERENCE)
         files['payload/tools/check.py'] = b'# immutable tool sentinel\n'
         files['tests/tst_example.py'] = b'# immutable test sentinel\n'
         for name, (before, _) in DOC_CLARIFICATIONS.items():
@@ -609,7 +611,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
              patch.object(builder, 'run_contract_checks', return_value={}), \
              patch.object(builder, 'run_package_tests', return_value=[]):
             outputs = builder.build_artifacts(self.source, info, b'license', site, self.root)
-        prefix = 'TMPDIR="$(cd "${TMPDIR:-/tmp}" && pwd -P)" python3 -I -B'
+        prefix = builder.TEMP_PREFIX + ' ' + builder.PY
         reason = 'The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links.'
         doc_pages = {'docs/' + name: page for name, page, _, _ in builder.DOCUMENTS}
         total = 0
@@ -624,13 +626,14 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                     self.assertIn('The kit commands resolve <code>TMPDIR</code> because macOS temporary paths '
                                   'can pass through symbolic links.', outputs[page].decode())
                 count = sum(n for _, n in builder.TEMP_COMMANDS.get(name, ()))
-                self.assertEqual(text.count(prefix), count, name)
+                self.assertEqual(text.count(prefix) + text.count(builder.ENV_TEMP + ' ' + builder.PY),
+                                 count, name)
                 total += count
                 for command, n in builder.TEMP_COMMANDS.get(name, ()):
-                    fixed = command.replace('python3 -I -B', prefix).strip('`\n')
-                    self.assertEqual(text.count(command.replace('python3 -I -B', prefix)), n, name)
-                    self.assertIn(html.escape(fixed), outputs[page].decode(), name)
-            self.assertEqual(total, 17)
+                    resolved = builder.resolve_temporary(command)
+                    self.assertEqual(text.count(resolved), n, name)
+                    self.assertIn(html.escape(resolved.strip('`\n')), outputs[page].decode(), name)
+            self.assertEqual(total, 22)
             self.assertIn(reason.replace('`', ''), archive.read('GuidedCoding/INSTALL.md').decode())
             for name in originals:
                 if name.startswith(('payload/tools/', 'tests/')):
@@ -647,17 +650,15 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                 first_paragraph = 'Guided Coding keeps the procedure and project settings together.'
                 text = (builder.READABLE_HEADERS[name] + '\n\n' + first_paragraph + '\n\n'
                         + temp_fixture(name).decode().split('\n\n', 1)[1])
-                if name in ('docs/GUIDED_CODING_ARCHITECTURE.md',
-                            'docs/GUIDED_CODING_VERIFICATION.md'):
-                    text += '\n`python3 -I -B`\n'
                 adapted = builder.temporary_instructions(name, text)
                 self.assertTrue(adapted.startswith(builder.READABLE_HEADERS[name] + '\n\n' + first_paragraph))
                 self.assertNotIn(builder.TEMP_REASON, adapted)
-                self.assertEqual(adapted.count(builder.TEMP_PREFIX + ' python3'), text.count('python3'))
+                self.assertEqual(adapted.count(builder.TEMP_PREFIX + ' ' + builder.GENERAL_PYTHON)
+                                 + adapted.count(builder.ENV_TEMP + ' ' + builder.GENERAL_PYTHON),
+                                 text.count(builder.GENERAL_PYTHON))
         reference = ('# Guided Coding registration and command reference\n\n'
                      'Use this reference for manual registration.\n\n'
-                     '## One-time registration\n\n'
-                     + temp_fixture('docs/GUIDED_CODING_USER_GUIDE.md').decode().split('\n\n', 1)[1])
+                     + temp_fixture(REFERENCE).decode().split('\n\n', 1)[1])
         adapted = builder.temporary_instructions('docs/GUIDED_CODING_COMMAND_REFERENCE.md', reference)
         self.assertTrue(adapted.startswith('# Guided Coding registration and command reference\n\n'
                                          'Use this reference for manual registration.'))
@@ -697,23 +698,27 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                     self.assertEqual(old, {n: (site / n).read_bytes() for n in old})
 
     def test_source_resolved_verification_command_is_not_prefixed_twice(self):
-        # The case that occurred: the source resolves only the verification test command.
+        # The case that occurs: the source resolves its own test command (revision 13
+        # writes it as a shell-neutral `env TMPDIR=...` line).
         name = "docs/GUIDED_CODING_VERIFICATION.md"
-        test_command = "python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n"
-        resolved = builder.TEMP_PREFIX + " " + test_command
-        text = temp_fixture(name).decode().replace(test_command, resolved, 1)
+        test_command = builder.PY + " -m unittest discover -s tests -p 'tst_*.py' -v\n"
+        resolved = "env " + builder.ENV_TEMP + " " + test_command
+        text = temp_fixture(name).decode()
+        self.assertEqual(text.count(resolved), 1)
         adapted = builder.temporary_instructions(name, text)
-        self.assertNotIn(builder.TEMP_PREFIX + " " + builder.TEMP_PREFIX, adapted)
+        self.assertNotIn(builder.ENV_TEMP + " " + builder.ENV_TEMP, adapted)
+        self.assertNotIn(builder.TEMP_PREFIX, adapted.replace(builder.TEMP_REASON, ""))
         self.assertEqual(adapted.count(resolved), 1)
-        for doubled in (builder.TEMP_PREFIX + " " + resolved, resolved + "\n" + resolved):
+        for doubled in (resolved.replace(test_command, builder.ENV_TEMP + " " + test_command),
+                        resolved + "\n" + resolved):
             with self.assertRaises(builder.PackageError):
-                builder.temporary_instructions(name, temp_fixture(name).decode().replace(test_command, doubled, 1))
+                builder.temporary_instructions(name, text.replace(resolved, doubled, 1))
 
     def test_any_doubled_temporary_prefix_form_is_refused(self):
         # Outside reading 1, finding 1: unquoted and two-space variants of an
         # already-resolved command must not be accepted with a second prefix.
         name = "docs/GUIDED_CODING_VERIFICATION.md"
-        test_command = "python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n"
+        test_command = builder.PY + " -m unittest discover -s tests -p 'tst_*.py' -v\n"
         for variant in ('TMPDIR=$(cd "${TMPDIR:-/tmp}" && pwd -P) ',
                         builder.TEMP_PREFIX + "  "):
             with self.subTest(variant=variant):
@@ -727,16 +732,15 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             with self.subTest(name=name):
                 text = temp_fixture(name).decode()
                 for command, _ in commands:
-                    text = text.replace(command, command.replace(
-                        "python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B"))
+                    text = text.replace(command, builder.resolve_temporary(command))
                 adapted = builder.temporary_instructions(name, text)
                 self.assertNotIn(builder.TEMP_PREFIX + " " + builder.TEMP_PREFIX, adapted)
+                self.assertNotIn(builder.ENV_TEMP + " " + builder.ENV_TEMP, adapted)
                 for command, count in commands:
-                    resolved = command.replace("python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B")
-                    self.assertEqual(adapted.count(resolved), count)
+                    self.assertEqual(adapted.count(builder.resolve_temporary(command)), count)
         name = "docs/GUIDED_CODING_USER_GUIDE.md"
         command = builder.SOURCE_COMMAND
-        resolved = command.replace("python3 -I -B", builder.TEMP_PREFIX + " python3 -I -B")
+        resolved = builder.resolve_temporary(command)
         text = temp_fixture(name).decode().replace(command, resolved, 1)
         with self.assertRaisesRegex(builder.PackageError,
                 "partly resolved temporary-directory instruction; inspect " + re.escape(name)):
@@ -761,9 +765,9 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
 
     def test_changed_duplicated_or_extra_plain_stop_command_is_refused(self):
         for name, passage in builder.PLAIN_STOP_COMMANDS.items():
-            changed = (passage.replace('.py stop', '.py status').replace('.py> stop', '.py> status'),
-                       passage.replace('python3 -I -B', 'python3 -B'),
-                       passage.replace('any Terminal', 'a Terminal'),
+            changed = (passage.replace('auto_queue.py stop', 'auto_queue.py status'),
+                       passage.replace("python3' -I -B", "python3' -B"),
+                       passage.replace('start screen', 'screen'),
                        passage + passage,
                        passage + 'python3 -I -B other_tool.py\n',
                        'Added text ' + passage)
@@ -771,7 +775,7 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
                 with self.subTest(name=name, text=text):
                     self.assertNotEqual(text, passage)
                     with self.assertRaisesRegex(builder.PackageError,
-                            '(unresolved temporary-directory instruction|plain stop command duplicated); inspect '
+                            '(unresolved temporary-directory instruction|plain stop command duplicated|unadapted interpreter command); inspect '
                             + re.escape(name)):
                         builder.temporary_instructions(name, '# Stop\n\n' + text)
 
@@ -1239,6 +1243,464 @@ cd /path/to/empty-gc-review/libtbx/guided_coding &&
             builder.publish_local(site, {name: b"new" for name in old})
         self.assertEqual(old, {name: (site / name).read_bytes() for name in old})
         self.assertTrue(lock.is_dir())
+
+
+
+
+REVISION_17_GUARD = (
+    "cd /absolute/path/to/libtbx/guided_coding &&\n"
+    "if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c SOURCE_MANIFEST.sha256; "
+    "else sha256sum -c SOURCE_MANIFEST.sha256; fi &&\n"
+    'GC_PAYLOAD_ROOT="$(pwd -P)/payload" libtbx.python -I -B payload/tools/screen_check.py verify-source . &&\n'
+    "cat payload/RELEASE &&\n"
+    "grep -Eq '^guided_coding 2\\.0 pilot r10 rev19 ' payload/RELEASE\n")
+REVISION_17_RELEASE = "guided_coding 2.0 pilot r10 rev19 (revision 17, 2026-10-16: test)\n"
+STOP_LINE = "def stop_line(line):\n    return INTERPRETER.fullmatch(line)\n"
+
+
+class Revision17Rules(unittest.TestCase):
+    """Kit revisions 13-17: guards, interpreter, shell-neutral lines and passages."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.source = Path(self.temporary.name).resolve() / "source"
+
+    def hooks_source(self, guard, release=REVISION_17_RELEASE):
+        markers = ("name: gc\ndisable-model-invocation: true\n$ARGUMENTS CLAUDE_SKILL_DIR "
+                   "CLAUDE_PROJECT_DIR check-claude-version payload/SETUP.md payload/SETUP_DEFAULTS.md\n")
+        files = {name: b"# placeholder\n" for name in builder.REQUIRED_FILES}
+        files["SKILL.md"] = (markers + "```bash\n" + guard + "```\n").encode()
+        files["payload/RELEASE"] = release.encode()
+        for tool, functions in builder.REQUIRED_FUNCTIONS.items():
+            body = "".join(f"def {function}():\n    pass\n" for function in sorted(functions))
+            if tool == "screen_check.py":
+                body = "MIN_CLAUDE_VERSION = (2, 1, 281)\n" + body
+            files["payload/tools/" + tool] = body.encode()
+        for name, data in files.items():
+            (self.source / name).parent.mkdir(parents=True, exist_ok=True)
+            (self.source / name).write_bytes(data)
+
+    def test_revision_17_source_and_release_guards_are_accepted(self):
+        self.hooks_source(REVISION_17_GUARD)
+        self.assertEqual(builder.check_hooks(self.source), (2, 1, 281))
+        old = ("shasum -a 256 -c SOURCE_MANIFEST.sha256 &&\n"
+               'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+               "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE\n")
+        self.hooks_source(old)
+        self.assertEqual(builder.check_hooks(self.source), (2, 1, 281))
+
+    def test_changed_source_guard_is_refused(self):
+        for guard in (
+                REVISION_17_GUARD.replace("; else sha256sum -c SOURCE_MANIFEST.sha256; fi &&", "; fi;"),
+                REVISION_17_GUARD.replace("else sha256sum -c SOURCE_MANIFEST.sha256", "else true"),
+                REVISION_17_GUARD.replace("fi &&\n", "fi ||\n"),
+                REVISION_17_GUARD.replace("if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c "
+                                          "SOURCE_MANIFEST.sha256; else sha256sum -c SOURCE_MANIFEST.sha256; fi &&\n", "")):
+            with self.subTest(guard=guard):
+                self.assertNotEqual(guard, REVISION_17_GUARD)
+                self.hooks_source(guard)
+                with self.assertRaisesRegex(builder.PackageError, "no longer guards source execution"):
+                    builder.check_hooks(self.source)
+
+    def test_anchored_release_guard_must_match_the_start_of_release(self):
+        for guard, release, message in (
+                (REVISION_17_GUARD, "guided_coding 2.0 pilot r10 rev20 (later)\n", "does not match"),
+                (REVISION_17_GUARD, "note: guided_coding 2.0 pilot r10 rev19 (moved)\n", "does not match"),
+                (REVISION_17_GUARD.replace("rev19 '", "rev19'"), REVISION_17_RELEASE, "pattern needs inspection"),
+                (REVISION_17_GUARD.replace("pilot r10", "pilot.*r10"), REVISION_17_RELEASE, "pattern needs inspection"),
+                (REVISION_17_GUARD.replace("grep -Eq '^guided_coding 2\\.0 pilot r10 rev19 ' payload/RELEASE\n", ""),
+                 REVISION_17_RELEASE, None)):
+            with self.subTest(guard=guard[-60:], release=release):
+                self.hooks_source(guard, release)
+                # Without its release line the block is no longer the exact guard block.
+                expected = "release guard " + message if message else "no longer guards"
+                with self.assertRaisesRegex(builder.PackageError, expected):
+                    builder.check_hooks(self.source)
+
+    def test_interpreter_commands_name_a_general_python_and_resolve_tmpdir(self):
+        name = "payload/WORKER.md"
+        text = (builder.TEMP_HEADERS[name] + "\n\n"
+                + "\n\n".join(command.replace("python3 -I -B", "libtbx.python -I -B")
+                              for command, _ in builder.TEMP_COMMANDS[name]) + "\n")
+        adapted = builder.temporary_instructions(name, text)
+        self.assertNotIn("libtbx.python", adapted)
+        for command, count in builder.TEMP_COMMANDS[name]:
+            self.assertEqual(adapted.count(builder.TEMP_PREFIX + " " + command.lstrip("`")), count)
+        # Control: an interpreter call the rules do not know is refused, not shipped.
+        with self.assertRaisesRegex(builder.PackageError, "unadapted interpreter command; inspect " + name):
+            builder.temporary_instructions(name, text + "\n`libtbx.python -c pass`\n")
+
+    def test_shell_neutral_env_lines_get_the_shell_neutral_tmpdir_form(self):
+        name = REFERENCE
+        text = temp_fixture(name).decode().replace("python3 -I -B", "libtbx.python -I -B")
+        adapted = builder.temporary_instructions(name, text)
+        lines = [line for line in adapted.splitlines() if builder.GENERAL_PYTHON in line]
+        self.assertEqual(len(lines), 4)
+        for line in lines:
+            self.assertTrue(line.startswith('env GC_PAYLOAD_ROOT="`pwd -P`/payload" ' + builder.ENV_TEMP
+                                            + " " + builder.PY + " "), line)
+            self.assertNotIn("$(", line)  # Not bash-only syntax: the block also runs in csh.
+        # Control: a bare python3 on an env line is still refused.
+        with self.assertRaisesRegex(builder.PackageError, "unresolved temporary-directory instruction"):
+            builder.temporary_instructions(name, text + "\nenv A=b python3 -c pass\n")
+
+    def test_interpreter_name_in_prose_is_allowed_but_not_a_bare_command(self):
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        builder.temporary_instructions(name, text + "\nThe tools run with `python3`.\n")
+        for extra in ("\nRun `python3 tool.py`.\n", "\npython3 tool.py\n"):
+            with self.subTest(extra=extra), \
+                 self.assertRaisesRegex(builder.PackageError, "unresolved temporary-directory instruction"):
+                builder.temporary_instructions(name, text + extra)
+
+    def test_verification_history_keeps_the_commands_it_records(self):
+        name = "docs/GUIDED_CODING_VERIFICATION.md"
+        history = ("## Historical record\n\nRevision 16 used `libtbx.python -I -B` instead of "
+                   "`python3 -I -B`; its STOP line was `/ABS/libtbx.python -I -B <auto_queue.py> stop`.\n\n")
+        body = temp_fixture(name).decode()
+        text = body + history + "## Technical reference\n\nMore.\n"
+        adapted = builder.temporary_instructions(name, text)
+        self.assertIn(history, adapted)
+        self.assertEqual(adapted.count(history), 1)
+        # Control: the same sentence outside the historical record is refused.
+        with self.assertRaisesRegex(builder.PackageError, "inspect " + re.escape(name)):
+            builder.temporary_instructions(name, body + history.split("\n\n", 1)[1])
+        # Control (checker D5): the exemption ends at the technical reference.
+        with self.assertRaisesRegex(builder.PackageError, "unadapted interpreter command"):
+            builder.temporary_instructions(name, text + "Run `libtbx.python payload/x.py`.\n")
+
+    def test_each_general_passage_is_replaced_once_and_a_changed_one_is_refused(self):
+        for name, passages in builder.GENERAL_PASSAGES.items():
+            for before, after in passages:
+                with self.subTest(name=name, before=before[:50]):
+                    text = "# Title\n\nUses libtbx.python here.\n\n" + "\n\n".join(b for b, _ in passages) + "\n"
+                    adapted = builder.general_passages(name, text)
+                    if after and after != before:
+                        # Exactly once per listed replacement that contains this text.
+                        self.assertEqual(adapted.count(after), sum(a.count(after) for _, a in passages))
+                    if after != before:
+                        self.assertNotIn(before, adapted)
+                    for changed in (text.replace(before, before.replace(" ", "  ", 1), 1),
+                                    text.replace(before, "", 1),
+                                    text.replace(before, before + "\n" + before, 1)):
+                        with self.assertRaisesRegex(builder.PackageError,
+                                "required general-edition passage missing or duplicated; inspect " + re.escape(name)):
+                            builder.general_passages(name, changed)
+
+    def test_general_passages_leave_no_source_reference(self):
+        for name, passages in builder.GENERAL_PASSAGES.items():
+            for _, after in passages:
+                with self.subTest(name=name, after=after[:50]):
+                    self.assertIsNone(builder.GENERAL_REFERENCE.search(after))
+                    self.assertNotIn("libtbx.python -", after)
+
+    @patch.dict(builder.TOOL_MESSAGE_QUOTES, {"tests/tst_auto_queue_v20.py": (
+        '"REFUSED: requires psutil: run with the cctbx conda Python (libtbx.python) or pip "',)})
+    def test_quoted_tool_message_is_kept_and_other_test_names_are_renamed(self):
+        # Kit revisions 16-17 quoted such a message; revision 18 needs none.
+        name = "tests/tst_auto_queue_v20.py"
+        (quote,) = builder.TOOL_MESSAGE_QUOTES[name]
+        text = ("MESSAGE = (\n    " + quote + "\n    \"install psutil\")\n"
+                "REPO = 'cctbx_project'\nOTHER = 'cctbx conda Python'\n")
+        adapted = builder.legacy_general_text(name, text)
+        self.assertEqual(adapted.count(quote), 1)
+        self.assertIn("REPO = 'companion_project'", adapted)
+        self.assertIn("OTHER = 'companion conda Python'", adapted)
+        # Control: a changed quotation is not silently renamed.
+        with self.assertRaisesRegex(builder.PackageError, "quoted tool message changed; inspect " + re.escape(name)):
+            builder.legacy_general_text(name, text.replace("or pip", "or  pip"))
+        # The exemption is only for that file.
+        with self.assertRaisesRegex(builder.PackageError, "unadapted general-edition reference"):
+            builder.legacy_general_text("docs/OTHER.md", quote + "\n")
+
+    def test_installation_note_follows_the_shipped_interpreter_rule(self):
+        checker = self.source / "payload/tools/screen_check.py"
+        checker.parent.mkdir(parents=True)
+        checker.write_text("import re\n" + builder.RESTRICTED_INTERPRETER + "\n" + STOP_LINE)
+        self.assertEqual(builder.auto_mode_note(self.source), builder.RESTRICTED_AUTO_NOTE)
+        checker.write_text("import re\n")
+        self.assertEqual(builder.auto_mode_note(self.source), "")
+        checker.write_text('import re\nINTERPRETER = re.compile(r"/.+/python3")\n')
+        with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+            builder.auto_mode_note(self.source)
+        text = builder.installation_text({}, "2.1.281", {"source_manifest_sha256": "0" * 64},
+                                         builder.RESTRICTED_AUTO_NOTE).decode()
+        self.assertIn("Windows is not supported. Auto mode also needs the\npsutil package", text)
+
+    @patch.dict(builder.TOOL_MESSAGE_QUOTES, {"tests/tst_auto_queue_v20.py": (
+        '"REFUSED: requires psutil: run with the cctbx conda Python (libtbx.python) or pip "',)})
+    def test_reference_page_may_show_unchanged_tools_but_nothing_else_with_source_names(self):
+        edition = self.source
+        tool = "MESSAGE = 'run with the cctbx conda Python'\n"
+        (edition / "payload/tools").mkdir(parents=True)
+        (edition / "payload/tools/screen_check.py").write_text(tool)
+        (edition / "docs").mkdir()
+        (edition / "docs/NOTE.md").write_text("Plain text.\n")
+        (edition / "tests").mkdir()
+        (edition / "tests/tst_auto_queue_v20.py").write_text(
+            "M = " + builder.TOOL_MESSAGE_QUOTES["tests/tst_auto_queue_v20.py"][0] + "\n")
+        blocks = builder.verbatim_blocks(edition)
+        self.assertEqual(len(blocks), 2)
+        page = ("<section><pre><code>" + html.escape(tool) + "</code></pre></section>"
+                "<p>" + html.escape(builder.TOOL_MESSAGE_QUOTES["tests/tst_auto_queue_v20.py"][0]) + "</p>")
+        builder.verify_general_documentation({"reference-files.html": page.encode()}, {'commit': 'a' * 40}, blocks)
+        # Controls: the same text elsewhere on the page, in another page, or a changed
+        # tool text is still refused.
+        for name, text in (("reference-files.html", page + "<p>cctbx</p>"),
+                           ("reference-files.html", page.replace("conda Python", "conda  Python", 1)),
+                           ("overview.html", page)):
+            with self.subTest(name=name, text=text[-40:]), self.assertRaises(builder.PackageError):
+                builder.verify_general_documentation({name: text.encode()}, {'commit': 'a' * 40}, blocks)
+        # Adapted Markdown is never exempt.
+        (edition / "docs/NOTE.md").write_text("cctbx\n")
+        self.assertEqual(builder.verbatim_blocks(edition), blocks)
+
+    def test_weakened_guards_are_refused(self):
+        # Reviewer finding 6: a one-word label, a guard made harmless by `||`,
+        # and a checksum command without -c.
+        for guard, message in (
+                (REVISION_17_GUARD.replace("pilot r10 rev19 '", "'").replace("2\\.0 ", ""),
+                 "does not match"),
+                (REVISION_17_GUARD.replace("' payload/RELEASE\n", "' payload/RELEASE || true\n"),
+                 "no longer guards"),
+                (REVISION_17_GUARD.replace("' payload/RELEASE\n", "' payload/RELEASE; true\n"),
+                 "no longer guards"),
+                (REVISION_17_GUARD + "grep -Eq '^guided_coding ' payload/RELEASE || true\n",
+                 "no longer guards"),
+                ("shasum -a 256 -c SOURCE_MANIFEST.sha256 &&\n"
+                 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+                 "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE || true\n", "does not match"),
+                ("shasum -a 256 SOURCE_MANIFEST.sha256 &&\n"
+                 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+                 "grep -Fq 'guided_coding 2.0 pilot r10 rev19' payload/RELEASE\n", "no longer guards")):
+            with self.subTest(guard=guard[-70:]):
+                self.assertNotEqual(guard, REVISION_17_GUARD)
+                self.hooks_source(guard)
+                with self.assertRaisesRegex(builder.PackageError, message):
+                    builder.check_hooks(self.source)
+
+    def test_prefix_doubled_by_the_replacement_is_refused(self):
+        # Reviewer finding 2: the source sets TMPDIR itself on a listed command line.
+        name = "SKILL.md"
+        text = temp_fixture(name).decode().replace(builder.SOURCE_COMMAND, "TMPDIR=/tmp " + builder.SOURCE_COMMAND, 1)
+        with self.assertRaisesRegex(builder.PackageError, "doubled temporary-directory prefix; inspect SKILL.md"):
+            builder.temporary_instructions(name, text)
+
+    def test_other_unresolved_interpreter_forms_are_refused(self):
+        # Reviewer findings 4 and 5.
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        for extra, message in (
+                ("Run `libtbx.python payload/tools/screen_check.py check X`.", "unadapted interpreter command"),
+                ("Run `python3` -I -B payload/tools/screen_check.py check X.", "unresolved temporary-directory"),
+                ('TMPDIR="`cd /tmp && pwd -P`" python3 -I -B x.py', "unresolved temporary-directory")):
+            with self.subTest(extra=extra), self.assertRaisesRegex(builder.PackageError, message):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+        guide = builder.READABLE_HEADERS["docs/GUIDED_CODING_USER_GUIDE.md"] + "\n\nCheck `libtbx.python --version`.\n"
+        with self.assertRaisesRegex(builder.PackageError, "unadapted interpreter command"):
+            builder.temporary_instructions("docs/GUIDED_CODING_USER_GUIDE.md", guide)
+
+    def test_only_listed_files_may_show_source_names_on_the_reference_page(self):
+        # Reviewer finding 3.
+        note = "cd /path/to/cctbx_project && libtbx.python x\n"
+        (self.source / "payload/templates").mkdir(parents=True)
+        (self.source / "payload/templates/NOTE.txt").write_text(note)
+        blocks = builder.verbatim_blocks(self.source)
+        self.assertEqual(blocks, ())
+        page = "<pre><code>" + html.escape(note) + "</code></pre>"
+        with self.assertRaisesRegex(builder.PackageError, "unadapted general-edition reference"):
+            builder.verify_general_documentation({"reference-files.html": page.encode()},
+                                                 {"commit": "a" * 40}, blocks)
+
+    def test_installation_note_needs_exactly_the_restricted_rule(self):
+        # Reviewer finding 10: a later redefinition is not hidden by the literal.
+        checker = self.source / "payload/tools/screen_check.py"
+        checker.parent.mkdir(parents=True)
+        checker.write_text(builder.RESTRICTED_INTERPRETER + '\nINTERPRETER = re.compile(r"/.+")\n')
+        with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+            builder.auto_mode_note(self.source)
+
+
+
+class Revision18Rules(unittest.TestCase):
+    """Kit revision 18: the venv Python, the approved README section and the
+    rules deferred from the revision 17 review."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.source = Path(self.temporary.name).resolve() / "source"
+
+    def test_commands_name_the_virtual_environment_python(self):
+        name = "payload/WORKER.md"
+        for source_form in ("libtbx.python -I -B", "python3 -I -B"):
+            with self.subTest(source_form=source_form):
+                text = (builder.TEMP_HEADERS[name] + "\n\n" + "\n\n".join(
+                    command.replace(builder.PY, source_form) for command, _ in builder.TEMP_COMMANDS[name]) + "\n")
+                adapted = builder.temporary_instructions(name, text)
+                self.assertNotIn(source_form, adapted.replace(builder.PY, ""))
+                for command, count in builder.TEMP_COMMANDS[name]:
+                    self.assertEqual(adapted.count(builder.resolve_temporary(command)), count)
+        self.assertEqual(builder.GENERAL_PYTHON, "~/guided_coding_venv/bin/python")
+        # Control: an unmapped interpreter form is refused, not shipped.
+        with self.assertRaisesRegex(builder.PackageError, "unadapted interpreter command"):
+            builder.temporary_instructions(name, text + "\n`/usr/bin/python3 -I -B x.py`\n")
+
+    def test_venv_step_is_allowed_but_other_interpreter_forms_are_refused(self):
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        builder.temporary_instructions(name, text + "\nFirst `python3 -m venv ~/guided_coding_venv`.\n")
+        for extra, message in (
+                ("Run `python -I -B payload/tools/screen_check.py check X`.", "unadapted interpreter command"),
+                ("Run `python3.11 -B x.py`.", "unadapted interpreter command"),
+                ("Run `python3 -m pip install psutil`.", "unresolved temporary-directory"),
+                ("Run `~/guided_coding_venv/bin/python x.py`.", "unresolved temporary-directory")):
+            with self.subTest(extra=extra), self.assertRaisesRegex(builder.PackageError, message):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+
+    def test_only_the_exact_approved_where_included_section_is_exempt(self):
+        name = "docs/GUIDED_CODING_README.md"
+        text = builder.READABLE_HEADERS[name] + "\n\nIntro.\n\n" + builder.INCLUDED_SECTION + "\n## Next\n\nMore.\n"
+        self.assertNotIn("cctbx", builder.readable_scan_text(name, text))
+        for changed in (text.replace("includes Guided Coding.", "bundles Guided Coding.", 1),
+                        text.replace(builder.INCLUDED_SECTION, builder.INCLUDED_SECTION * 2, 1)):
+            with self.subTest(changed=changed[:40]), \
+                 self.assertRaisesRegex(builder.PackageError, "approved where-included section changed"):
+                builder.readable_scan_text(name, changed)
+        # The same text elsewhere, without its heading, is not exempt.
+        loose = builder.READABLE_HEADERS[name] + "\n\n" + builder.INCLUDED_SECTION.split("\n\n", 1)[1]
+        self.assertIsNotNone(builder.GENERAL_REFERENCE.search(builder.readable_scan_text(name, loose)))
+
+    def test_rendered_where_included_section_is_exempt_only_on_the_overview(self):
+        info = {"commit": "a" * 40}
+        body, _ = builder.render_document("# Overview\n\n" + builder.INCLUDED_SECTION, info)
+        builder.verify_general_documentation({"overview.html": body.encode()}, info)
+        for name, page in (("architecture.html", body), ("overview.html", body + "<p>cctbx</p>")):
+            with self.subTest(name=name), self.assertRaises(builder.PackageError):
+                builder.verify_general_documentation({name: page.encode()}, info)
+
+    def test_original_host_and_test_wrapper_names_are_refused_outside_exempt_text(self):
+        for text in ("a Linux run (anaconda, October 12)", "run `libtbx/tst_guided_coding.py` too"):
+            with self.subTest(text=text):
+                self.assertIsNotNone(builder.GENERAL_REFERENCE.search(text))
+        self.assertIsNone(builder.GENERAL_REFERENCE.search("an Anaconda-style conda install, anacondas"))
+
+    def test_installation_note_follows_the_revision_18_rule_and_refuses_rebinding(self):
+        checker = self.source / "payload/tools/screen_check.py"
+        checker.parent.mkdir(parents=True)
+        checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n" + STOP_LINE)
+        self.assertEqual(builder.auto_mode_note(self.source), builder.GENERAL_AUTO_NOTE)
+        for extra in ('    INTERPRETER = re.compile(r"/.+")\n', 'globals()["INTERPRETER"] = None\n'):
+            with self.subTest(extra=extra):
+                checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n" + STOP_LINE + extra)
+                with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+                    builder.auto_mode_note(self.source)
+        # Reviewer finding 3: other forms of rebinding, and a stop_line that ignores the rule.
+        for extra in ('INTERPRETER: re.Pattern = re.compile(r"/.+")\n', '(INTERPRETER := None)\n',
+                      'INTERPRETER, X = None, None\n', "setattr(object, 'INTER' 'PRETER', None)\n"):
+            with self.subTest(extra=extra):
+                checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\n" + STOP_LINE + extra)
+                with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+                    builder.auto_mode_note(self.source)
+        checker.write_text("import re\n" + builder.GENERAL_INTERPRETER + "\ndef stop_line(x):\n    return True\n")
+        with self.assertRaisesRegex(builder.PackageError, "auto-mode interpreter rule changed"):
+            builder.auto_mode_note(self.source)
+
+    def test_guard_block_with_a_harmless_checksum_command_is_refused(self):
+        guard = REVISION_17_GUARD.replace(
+            "if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c SOURCE_MANIFEST.sha256; "
+            "else sha256sum -c SOURCE_MANIFEST.sha256; fi &&",
+            "if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c x; echo SOURCE_MANIFEST.sha256; "
+            "else sha256sum -c SOURCE_MANIFEST.sha256; fi &&")
+        self.assertNotEqual(guard, REVISION_17_GUARD)
+        Revision17Rules.hooks_source(self, guard)
+        with self.assertRaisesRegex(builder.PackageError, "no longer guards"):
+            builder.check_hooks(self.source)
+
+    def test_download_form_of_the_guard_block_is_accepted_and_still_exact(self):
+        # The builder rechecks the hooks on the adapted download copy.
+        fixture = temp_fixture("SKILL.md").decode()
+        block = "```bash\n" + builder.SOURCE_COMMAND + "```"
+        self.assertEqual(fixture.count(block), 1)
+        source = fixture.replace(block, "```bash\n" + REVISION_17_GUARD + "```")
+        adapted = builder.temporary_instructions("SKILL.md", builder.legacy_general_text("SKILL.md", source))
+        guard = adapted[adapted.index("```bash\n") + 8:adapted.rindex("```\n")]
+        self.assertIn("cd " + builder.INSTALL_ROOT + " &&", guard)
+        Revision17Rules.hooks_source(self, guard)
+        self.assertEqual(builder.check_hooks(self.source), (2, 1, 281))
+        Revision17Rules.hooks_source(self, guard.replace("fi &&\n", "fi ||\n"))
+        with self.assertRaisesRegex(builder.PackageError, "no longer guards"):
+            builder.check_hooks(self.source)
+
+    def test_other_interpreter_paths_and_bare_names_are_refused(self):
+        # Reviewer findings 1, 6 and 7: only the exact venv Python may run a tool.
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        for extra, message in (
+                ('Run `/usr/bin/python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze DIR`.', "unadapted interpreter command"),
+                ("use `/opt/build/conda_base/bin/python3 -I -B payload/tools/screen_check.py verify-source .`", "unadapted interpreter command"),
+                ("Run `python3 -m venv /tmp/v && /tmp/v/bin/python -I -B x.py`.", "unadapted interpreter command"),
+                ("Run `DIR/bin/python -I -B x.py`.", "unadapted interpreter command"),
+                ("Run `~/other/bin/python -I -B x.py`.", "unadapted interpreter command"),
+                ("Run `python payload/tools/screen_check.py check X`.", "unresolved temporary-directory"),
+                ("Then `python3 -m venv v && python x.py`.", "unresolved temporary-directory")):
+            with self.subTest(extra=extra), self.assertRaisesRegex(builder.PackageError, message):
+                builder.temporary_instructions(name, text + "\n" + extra + "\n")
+
+    def test_guard_block_must_be_exact_whenever_the_release_check_is_present(self):
+        # Reviewer finding 2: a checksum that cannot fail, or a second checker run.
+        for guard in (
+                REVISION_17_GUARD.replace(
+                    "if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c SOURCE_MANIFEST.sha256; "
+                    "else sha256sum -c SOURCE_MANIFEST.sha256; fi &&", "true || shasum -a 256 -c SOURCE_MANIFEST.sha256 &&"),
+                REVISION_17_GUARD + "```\n\n```bash\n"
+                'GC_PAYLOAD_ROOT="$(pwd -P)/payload" libtbx.python -I -B payload/tools/screen_check.py verify-source .\n'):
+            with self.subTest(guard=guard[-80:]):
+                Revision17Rules.hooks_source(self, guard)
+                with self.assertRaisesRegex(builder.PackageError, "no longer guards"):
+                    builder.check_hooks(self.source)
+
+    def test_test_literals_that_check_the_tool_message_stay_exact(self):
+        # Reviewer finding 4: the shipped test checks that the message does not name cctbx.
+        name = "tests/tst_auto_queue_v20.py"
+        text = ("# no longer names cctbx\n"
+                "def test_psutil_message_names_this_python_and_not_cctbx(self):\n"
+                '    """... and does not name cctbx."""\n'
+                '    self.assertNotIn("cctbx", result.stderr)\n'
+                '    self.assertNotIn("cctbx", PSUTIL_MESSAGE)\n'
+                "REPO = 'cctbx_project'\n")
+        adapted = builder.legacy_general_text(name, text)
+        self.assertEqual(adapted.count('self.assertNotIn("cctbx"'), 2)
+        self.assertIn("REPO = 'companion_project'", adapted)
+
+    def test_exactly_one_guard_block_and_text_after_the_section_is_scanned(self):
+        # Checker gaps M4a and M3b.
+        Revision17Rules.hooks_source(self, REVISION_17_GUARD + "```\n\n```bash\n" + REVISION_17_GUARD)
+        with self.assertRaisesRegex(builder.PackageError, "no longer guards"):
+            builder.check_hooks(self.source)
+        name = "docs/GUIDED_CODING_README.md"
+        text = (builder.READABLE_HEADERS[name] + "\n\n" + builder.INCLUDED_SECTION
+                + "Added: see cctbx_project too.\n\n## Next\n")
+        self.assertIsNotNone(builder.GENERAL_REFERENCE.search(builder.readable_scan_text(name, text)))
+
+    def test_short_interpreter_forms_are_mapped_too(self):
+        # Checker gaps M1b and M1d: `-B` without `-I`.
+        name = "payload/WORKER.md"
+        text = temp_fixture(name).decode()
+        for source_form in ("libtbx.python -B ", "python3 -B "):
+            with self.subTest(source_form=source_form):
+                adapted = builder.temporary_instructions(
+                    name, text + "\n`" + builder.TEMP_PREFIX + " " + source_form + "-m unittest x`\n")
+                self.assertIn(builder.TEMP_PREFIX + " " + builder.GENERAL_PYTHON + " -B -m unittest x", adapted)
+
+class ScriptModeRunsEveryTest(unittest.TestCase):
+    def test_no_test_class_follows_the_script_entry_point(self):
+        # Reviewer finding 1: a class after the main guard is skipped in script mode.
+        import ast
+        tree = ast.parse(Path(__file__).read_text())
+        guard = next(index for index, node in enumerate(tree.body) if isinstance(node, ast.If))
+        self.assertFalse([node.name for node in tree.body[guard:] if isinstance(node, ast.ClassDef)])
 
 
 if __name__ == "__main__":

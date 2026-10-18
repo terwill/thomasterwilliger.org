@@ -34,7 +34,8 @@ SITE = Path(__file__).resolve().parent
 INSTALL_ROOT = "~/Downloads/GuidedCoding/guided_coding"
 EDITION = "general-downloads-v3"
 GENERAL_REFERENCE = re.compile(
-    r"cctbx|phenix|/absolute/path/to|/path/to/cctbx|libtbx/guided_coding|/~/Downloads/GuidedCoding", re.I)
+    r"cctbx|phenix|/absolute/path/to|/path/to/cctbx|libtbx/guided_coding|/~/Downloads/GuidedCoding"
+    r"|libtbx/tst_guided_coding|(?-i:\banaconda\b)", re.I)  # The original project's host, lower case.
 SITE_AFFILIATION = '<a href="https://www.phenix-online.org/">Phenix</a> Software Team'
 TEMP_PREFIX = 'TMPDIR="$(cd "${TMPDIR:-/tmp}" && pwd -P)"'
 TEMP_REASON = "The kit commands resolve `TMPDIR` because macOS temporary paths can pass through symbolic links."
@@ -46,38 +47,170 @@ TEMP_HEADERS = {
     "docs/GUIDED_CODING_README.md": "# GuidedCoding — an opt-in coding procedure",
     "payload/WORKER.md": "# Worker — one bounded local change (GuidedCoding 2.0 pilot)",
     "payload/REVIEW_TRANSPORT.md": "# Outside Reviewer transport, when a gate is due",
+    "payload/PUBLICATION_PACKET.md": "# Publication packet checklist",
 }
-# Stop commands documented to run from any shell, csh included, where the
-# TMPDIR prefix fails. Only these exact passages keep a plain python3 line.
+# Kit revision 16 names the cctbx conda Python, libtbx.python, in its tool
+# commands. Revision 18 says any Python 3.10 or newer serves, and its User
+# Guide (shipped unchanged) tells download readers to make a virtual
+# environment with psutil and use its Python for Guided Coding. The download's
+# commands therefore name that Python (Developer decision, 2026-10-17). The
+# mapping is applied after the exact passages below, outside the verification
+# page's historical record.
+SOURCE_PYTHON = "libtbx.python"
+GENERAL_PYTHON = "~/guided_coding_venv/bin/python"
+PY = GENERAL_PYTHON + " -I -B"  # The documented tool invocation in the download.
+# Revision 13 writes its Terminal blocks for bash, zsh, csh and tcsh as
+# `env NAME="`...`" ...` lines. TEMP_PREFIX is bash syntax, so those lines
+# resolve TMPDIR with the kit's own shell-neutral form instead.
+ENV_TEMP = 'TMPDIR="`cd /tmp && pwd -P`"'
+# The auto-mode stop passage documents interpreter names and paths, not a
+# command to run with TMPDIR; it is kept exactly as written (revision 18).
 PLAIN_STOP_COMMANDS = {
     "payload/AUTO.md":
-        "`/gc stop` here, or from any Terminal (any shell, csh included)\n"
-        "`python3 -I -B <procedure root>/auto_queue.py stop`. Report\n",
-    "payload/screens/AUTO_START.md":
-        "<Say /gc stop here, or run this from any Terminal (the next line, exactly):>\n"
-        "python3 -I -B <absolute path of this procedure's auto_queue.py> stop\n",
+        "`<interpreter> -I -B <procedure root>/auto_queue.py stop`, with both paths absolute as the\n"
+        "start screen prints them (the interpreter: the absolute interpreter path printed on the start\n"
+        "screen, the Python that runs the kit, which has psutil; never a bare `python3`, which may be\n"
+        "another Python without psutil). The checker accepts any absolute path to an existing executable\n"
+        "file named `python`, `python3`, `python3.N` or `libtbx.python` (revision 18). A path containing\n"
+        "a space is written in single or double quotes (`'/Users/a b/venv/bin/python3' -I -B ... stop`);\n",
 }
-SOURCE_COMMAND = 'GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py verify-source . &&\n'
+SOURCE_COMMAND = f'GC_PAYLOAD_ROOT="$(pwd -P)/payload" {PY} payload/tools/screen_check.py verify-source . &&\n'
+ENV_SOURCE_COMMAND = (f'env GC_PAYLOAD_ROOT="`pwd -P`/payload" {PY} '
+                      'payload/tools/screen_check.py verify-source . && \\\n')
 TEMP_COMMANDS = {
     "SKILL.md": ((SOURCE_COMMAND, 1),
-                 ('`python3 -I -B payload/tools/records_history.py <target>/.claude/records`', 1),
-                 ('`python3 -I -B payload/tools/screen_check.py check-claude-version`', 1),
-                 ('`python3 -I -B`', 1)),
-    "docs/GUIDED_CODING_ARCHITECTURE.md": (('`python3 -I -B`', 1),),
-    "docs/GUIDED_CODING_VERIFICATION.md": ((SOURCE_COMMAND, 1),
-        ("python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v\n", 1)),
+                 (f'`{PY} payload/tools/records_history.py <target>/.claude/records`', 1),
+                 (f'`{PY} payload/tools/screen_check.py check-claude-version`', 1),
+                 (f'`{PY}`', 1)),
+    "docs/GUIDED_CODING_ARCHITECTURE.md": ((f'`{PY}`', 1),),
+    "docs/GUIDED_CODING_VERIFICATION.md": ((ENV_SOURCE_COMMAND, 1),
+        (f"env {ENV_TEMP} {PY} -m unittest discover -s tests -p 'tst_*.py' -v\n", 1)),
     "docs/GUIDED_CODING_USER_GUIDE.md": ((SOURCE_COMMAND, 2),
-        ('GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py check-claude-version &&\n', 1),
-        ('GC_PAYLOAD_ROOT="$(pwd -P)/payload" python3 -I -B payload/tools/screen_check.py register-skill .\n', 1)),
+        (f'GC_PAYLOAD_ROOT="$(pwd -P)/payload" {PY} payload/tools/screen_check.py check-claude-version &&\n', 1),
+        (f'GC_PAYLOAD_ROOT="$(pwd -P)/payload" {PY} payload/tools/screen_check.py register-skill .\n', 1)),
+    "docs/GUIDED_CODING_COMMAND_REFERENCE.md": ((ENV_SOURCE_COMMAND, 2),
+        (f'env GC_PAYLOAD_ROOT="`pwd -P`/payload" {PY} payload/tools/screen_check.py check-claude-version && \\\n', 1),
+        (f'env GC_PAYLOAD_ROOT="`pwd -P`/payload" {PY} payload/tools/screen_check.py register-skill .\n', 1)),
     "payload/WORKER.md": (
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" present KIND FILE`', 1),
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze DIR`', 1),
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" present result SCREEN --evidence DIR [--reading READING] [--disposition NOTE]`', 1),
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" check REPO OUTGOING.txt --fetch --dry-run`', 1)),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" present KIND FILE`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze DIR`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" present result SCREEN --evidence DIR [--reading READING] [--disposition NOTE]`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" outgoing REPO --commit C --remote origin --branch master --fetch >> PACKET/OUTGOING.txt`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" check-draft publication DIR`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" check REPO OUTGOING.txt --fetch --dry-run`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" confirm REPO OUTGOING.txt --before`', 1)),
     "payload/REVIEW_TRANSPORT.md": (
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze PACKET_DIR`', 1),
-        ('`python3 -I -B "$GC_PAYLOAD_ROOT/tools/review_bundle.py" PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz`', 1)),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" freeze PACKET_DIR`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/review_bundle.py" PACKET_DIR COMPANIONS_DIR REVIEW_BUNDLE.tgz`', 1)),
+    "payload/PUBLICATION_PACKET.md": (
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/publication_precheck.py" outgoing REPO --commit C --remote origin --branch master --fetch >> PACKET/OUTGOING.txt`', 1),
+        (f'`{PY} "$GC_PAYLOAD_ROOT/tools/screen_check.py" check-draft publication DIR`', 1)),
 }
+# The tools ship unchanged, so a test that compares a tool's exact message
+# must keep quoting it unchanged; renaming it would make the test fail. Only
+# these exact literals are kept, each once, and the reference scan skips them.
+# Revision 18's test checks that the tool's psutil message does NOT name
+# cctbx; renaming those literals would make that check meaningless.
+TOOL_MESSAGE_QUOTES = {
+    "tests/tst_auto_queue_v20.py": (
+        "no longer names cctbx", "names_this_python_and_not_cctbx", "does not name cctbx",
+        'self.assertNotIn("cctbx", result.stderr)', 'self.assertNotIn("cctbx", PSUTIL_MESSAGE)'),
+}
+VENV = ("the Python of the virtual environment the User Guide sets up (written\n"
+        "`~/guided_coding_venv/bin/python`)")
+# Revision 18 passages naming the cctbx conda Python, a cctbx/PHENIX example
+# or the original project's Linux host, and their general wording. Each must
+# appear exactly once in its file; a changed passage stops the build for
+# inspection. Revision 18 keeps its cctbx-specific sentences short and
+# standalone, so the download drops them.
+GENERAL_PASSAGES = {
+    "SKILL.md": ((
+        "Every command here writes the interpreter as `libtbx.python`; any Python\n"
+        "3.10 or newer serves in its place. Auto mode (`auto_queue.py`) also needs\n"
+        "the psutil package; without it the helper stops with exit 18. Install it\n"
+        "in a venv and run the kit with that venv's Python: `python3 -m venv DIR`,\n"
+        "then `DIR/bin/python -m pip install psutil`, then use `DIR/bin/python`.\n",
+        "Every command here writes the interpreter as `~/guided_coding_venv/bin/python`,\n"
+        "the Python of the virtual environment the User Guide sets up; any Python\n"
+        "3.10 or newer serves in its place. Auto mode (`auto_queue.py`) also needs\n"
+        "the psutil package; without it the helper stops with exit 18. Install it\n"
+        "in that environment: `python3 -m venv ~/guided_coding_venv`, then\n"
+        "`~/guided_coding_venv/bin/python -m pip install psutil`.\n"),
+        ("In a cctbx or Phenix build, `libtbx.python` is the build's conda Python, which has psutil.\n"
+         "When `libtbx.python` is not on PATH, use that build's `conda_base/bin/python3` by its absolute path.\n",
+         "")),
+    "docs/GUIDED_CODING_ARCHITECTURE.md": ((
+        "The documented tool calls use `libtbx.python -I -B` (revision 16; before, `python3 -I -B`). "
+        "Any Python 3.10 or newer serves in place of `libtbx.python`, and every tool refuses an older one "
+        "before doing anything (revision 18; exit 19). In a cctbx or Phenix build, the kit's `libtbx.python` "
+        "calls run that build's conda Python, which includes psutil. When `libtbx.python` is not on PATH, "
+        "that build's `conda_base/bin/python3` serves. The auto-mode helper needs psutil for its process "
+        "table (without psutil it stops with exit 18 and names the venv route: `python3 -m venv DIR`, then "
+        "`DIR/bin/python -m pip install psutil`, not `--user`, which `-I` ignores);",
+        "The documented tool calls use " + VENV.replace("\n", " ") + " with `-I -B`; any Python 3.10 or "
+        "newer serves in its place, and every tool refuses an older one before doing anything (exit 19). "
+        "The auto-mode helper needs psutil for its process table, installed in that environment (without "
+        "psutil it stops with exit 18 and names the virtual-environment route; not `--user`, which `-I` "
+        "ignores);"),
+        ("a file not named `python`, `python3`, `python3.N` or `libtbx.python`,",
+         "a file not named `python`, `python3`, `python3.N` or `libtbx.python`,")),
+    "docs/GUIDED_CODING_VERIFICATION.md": (
+        ("The calls use `libtbx.python -I -B` (revision 16; before, `python3 -I -B`); any Python 3.10 or "
+         "newer serves in place of `libtbx.python` (revision 18). In a cctbx or Phenix build, `libtbx.python` "
+         "is the build's conda Python. When `libtbx.python` is not on PATH, the build's "
+         "`conda_base/bin/python3` serves.",
+         "The calls use " + VENV.replace("\n", " ") + " with `-I -B`; any Python 3.10 or newer serves "
+         "in its place."),
+        ("a real Linux run of the kit suite (anaconda, October 12, 2026:",
+         "a real Linux run of the kit suite (on a Linux server, October 12, 2026:"),
+        ("the anaconda run of October 13, 2026", "the Linux server run of October 13, 2026"),
+        ("(the Linux timing sensitivity observed on anaconda)",
+         "(the Linux timing sensitivity observed on a Linux server)"),
+        ("Logs: `libtbx/tst_guided_coding.py` prints", "Logs: the original repository's test wrapper prints")),
+    "docs/GUIDED_CODING_README.md": ((
+        "and the kit's commands use the cctbx conda Python (`libtbx.python`), which has psutil;",
+        "and the auto-mode helper needs psutil;"),),
+    "docs/GUIDED_CODING_COMMAND_REFERENCE.md": (
+        ("Use an empty staging directory. Replace the paths and paste this **whole\n"
+         "block** as one command, not separate commands (each line ends with `\\`,\n"
+         "which continues it on the next line):",
+         "Use an empty staging directory in Downloads. Paste this **whole block** as\n"
+         "one command, not separate commands (each line ends with `\\`, which\n"
+         "continues it on the next line); it refuses an existing review directory:"),
+        ("mkdir /path/to/empty-gc-review && \\\n"
+         "tar -xzf /path/to/reviewed-guided-coding.tgz -C /path/to/empty-gc-review && \\\n"
+         "cd /path/to/empty-gc-review/libtbx/guided_coding && \\\n",
+         "mkdir ~/Downloads/guided_coding_review && \\\n"
+         "unzip ~/Downloads/guided_coding.zip -d ~/Downloads/guided_coding_review && \\\n"
+         "cd ~/Downloads/guided_coding_review/GuidedCoding/guided_coding && \\\n"),
+        ("such as the\ngenerated PHENIX developer page, where the card is HTML-escaped:",
+         "such as a\ngenerated web page, where the card is HTML-escaped:"),
+        ("(cctbx's\ndraft `AGENTS.md` says \"in any form\", which this procedure reads as including\n",
+         "(a project's\n`AGENTS.md` may say \"in any form\", which this procedure reads as including\n"),
+        ("The helper needs\nPython 3.10 or newer (written `libtbx.python`) and psutil; without\n"
+         "psutil every helper command stops (exit 18, \"requires psutil, which\n"
+         "<python> does not have: make a venv and install it there (python3 -m venv\n"
+         "DIR, then DIR/bin/python -m pip install psutil; not --user, which the\n"
+         "kit's -I ignores), then run with DIR/bin/python; or use libtbx.python\").",
+         "The helper needs\nPython 3.10 or newer (written `~/guided_coding_venv/bin/python`) and psutil; without\n"
+         "psutil every helper command stops (exit 18, with a message naming the\n"
+         "virtual-environment route the User Guide describes)."),
+        ("(anaconda, October 12,\n2026:", "(on a Linux server, October 12,\n2026:")),
+    "payload/AUTO.md": (
+        ("(written `libtbx.python`; see\nSKILL.md)", "(written `~/guided_coding_venv/bin/python`; see\nSKILL.md)"),
+        ("The kit's own suite (`tests/tst_*_v20.py`, and `libtbx/tst_guided_coding.py`) runs with Python\n"
+         "3.10 or newer that has psutil: `libtbx.python -B -m unittest discover -s tests -p 'tst_*.py' -v` from the\n"
+         "kit root, TMPDIR set to a resolved path.",
+         "The kit's own suite (`tests/tst_*_v20.py`) runs with Python 3.10 or newer that has psutil:\n"
+         f"`{TEMP_PREFIX} {GENERAL_PYTHON} -B -m unittest discover -s tests -p 'tst_*.py' -v` from the\n"
+         "kit root."),
+        ("(`tests/tst_*_v20.py`, and `libtbx/tst_guided_coding.py` in the shared suite)",
+         "(`tests/tst_*_v20.py`)"),
+        ("(anaconda, October 12, 2026:", "(on a Linux server, October 12, 2026:")),
+    "payload/PUBLICATION_PACKET.md": (("repository: cctbx_project\n", "repository: my_project\n"),),
+}
+
+
 DOCUMENTS = (
     ("GUIDED_CODING_USER_GUIDE.md", "getting-started.html", "User Guide",
      "Install Guided Coding, set up your project and work through a first task."),
@@ -120,6 +253,7 @@ REQUIRED_FILES = {
     "payload/DEVELOPER_GUIDE_CONTRACT.md", "payload/GUIDE.md", "payload/HELPER.md",
     "payload/OUTSIDE_REVIEWER_BRIEF.md", "payload/RELEASE", "payload/REVIEW_TRANSPORT.md",
     "payload/ROLES.md", "payload/SETUP.md", "payload/SETUP_DEFAULTS.md", "payload/WORKER.md",
+    "payload/PUBLICATION_PACKET.md",  # Kit revision 13; the architecture page links to it.
     "payload/screens/PLAN.md", "payload/screens/PUBLICATION.md",
     "payload/screens/RESULT.md", "payload/screens/STOP.md",
     "payload/templates/APPROVAL_REPORT.md", "payload/templates/HELPER_HANDOFF.md",
@@ -302,6 +436,21 @@ def download_source(ref, destination):
     }, license_data
 
 
+def guard_block(root, interpreter):
+    return re.compile(
+        r"```bash\n" + re.escape("cd " + root + " &&\n"
+        "if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c SOURCE_MANIFEST.sha256; "
+        "else sha256sum -c SOURCE_MANIFEST.sha256; fi &&\n"
+        'GC_PAYLOAD_ROOT="$(pwd -P)/payload" ' + interpreter + " payload/tools/screen_check.py verify-source . &&\n"
+        "cat payload/RELEASE &&\n")
+        + r"grep -Eq '\^[^'\n]+' payload/RELEASE\n```\n")
+
+
+# The kit's own block, and the same block as the download adapts it.
+GUARD_BLOCKS = (guard_block("/absolute/path/to/libtbx/guided_coding", SOURCE_PYTHON + " -I -B"),
+                guard_block(INSTALL_ROOT, TEMP_PREFIX + " " + PY))
+
+
 def check_hooks(source):
     actual = {p.relative_to(source).as_posix() for p in source.rglob("*") if p.is_file()}
     missing = REQUIRED_FILES - actual
@@ -311,12 +460,32 @@ def check_hooks(source):
                    "CLAUDE_SKILL_DIR", "CLAUDE_PROJECT_DIR", "verify-source",
                    "check-claude-version", "payload/SETUP.md", "payload/SETUP_DEFAULTS.md"):
         require(marker in skill, f"required skill hook changed: {marker}")
-    require(re.search(r"shasum[^\n]+SOURCE_MANIFEST\.sha256\s*&&\s*"
+    # The listed hashes must be checked, and only their success may lead on to
+    # the downloaded checker. Revision 13 checks them with shasum where it
+    # exists and with sha256sum otherwise; any other wording needs inspection.
+    require(re.search(r"(?:shasum[^\n]* -c [^\n]*SOURCE_MANIFEST\.sha256"
+                      r"|if command -v shasum >/dev/null 2>&1; then shasum -a 256 -c SOURCE_MANIFEST\.sha256; "
+                      r"else sha256sum -c SOURCE_MANIFEST\.sha256; fi)\s*&&\s*"
                       r"GC_PAYLOAD_ROOT[^\n]+verify-source", skill) is not None,
             "skill no longer guards source execution with its listed checksum")
-    release_checks = re.findall(r"grep -Fq '([^']+)' payload/RELEASE", skill)
+    # Revision 13 and later: the whole guarded block must be exactly this, ending
+    # its fence, so nothing (`; true`, `|| true`, another line) can follow a check.
+    if "grep -Eq '^" in skill or "if command -v shasum" in skill:
+        require(sum(len(block.findall(skill)) for block in GUARD_BLOCKS) == 1
+                and skill.count("screen_check.py verify-source") == 1,
+                "skill no longer guards source execution with its listed checksum")
     release = (source / "payload/RELEASE").read_text()
-    require(bool(release_checks) and all(label in release for label in release_checks),
+    # Before revision 13: a literal label contained in RELEASE. Since then: an
+    # anchored label (only `\.` escaped) equal to RELEASE's whole label, the text
+    # before its "(". A guard followed by `||` checks nothing and is not counted.
+    release_checks = re.findall(r"grep -Fq '([^']+)' payload/RELEASE(?![^\n]*\|\|)", skill)
+    anchored = re.findall(r"grep -Eq '\^([^']+)' payload/RELEASE(?![^\n]*\|\|)", skill)
+    require(all(re.fullmatch(r"(?:[A-Za-z0-9_-]|\\\.)+(?: (?:[A-Za-z0-9_-]|\\\.)+)* ", label)
+                for label in anchored),
+            "skill release guard pattern needs inspection")
+    require(bool(release_checks or anchored)
+            and all(label in release for label in release_checks)
+            and all(label.replace("\\.", ".") == release.split("(", 1)[0] for label in anchored),
             "skill release guard does not match the bundled RELEASE text")
     for name, required in REQUIRED_FUNCTIONS.items():
         path = source / "payload/tools" / name
@@ -552,14 +721,15 @@ def legacy_general_text(name, text):
         if start != -1:
             end = text.find("For native validation,", start)
             require(end != -1, "verification wrapper section changed; inspect the adaptation")
-            text = (text[:start] + "This standalone kit includes all four test runners. Use the command above\n"
+            text = (text[:start] + "This standalone kit includes all its test runners. Use the command above\n"
                     "from the verified source directory; it is a separate authorized check,\n"
                     "not a command to continue after a failed source guard. Report every skip.\n"
                     "The repository-wrapper and precompiler observations in the historical\n"
                     "trials describe the earlier development environment, not additional\n"
                     "requirements or tools shipped with this installer.\n\n" + text[end:])
-        text = text.replace("python3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v",
-                            f"cd {INSTALL_ROOT} &&\npython3 -I -B -m unittest discover -s tests -p 'tst_*.py' -v")
+        # The older bash form starts its line; a revision 13 `env` line is left as it is.
+        text = re.sub(r"(?m)^python3 -I -B -m unittest discover -s tests -p 'tst_\*\.py' -v",
+                      lambda match: f"cd {INSTALL_ROOT} &&\n" + match[0], text)
     elif name == "docs/GUIDED_CODING_ARCHITECTURE.md":
         before = ("The personal link exposes the current central checkout, not a pinned\n"
                   "release. Updating that checkout therefore needs coordination with active\n"
@@ -587,13 +757,19 @@ def legacy_general_text(name, text):
     for path in paths:
         text = text.replace(path, INSTALL_ROOT)
     # Test repository names are arbitrary fixtures; preserve the same relationships.
+    quotes = TOOL_MESSAGE_QUOTES.get(name, ())
     if name.startswith("tests/") and name.endswith(".py"):
+        for number, quote in enumerate(quotes):
+            require(text.count(quote) == 1, "quoted tool message changed; inspect " + name)
+            text = text.replace(quote, f"\0quote {number}\0", 1)
         text = text.replace("cctbx_project", "companion_project").replace("cctbx", "companion")
         text = text.replace("/Users/dev/unix/PHENIX/modules/phenix", "/Users/dev/Downloads/example_project")
         text = re.sub("phenix", "example_project", text, flags=re.I)
     if name.endswith(".md") or name.startswith("tests/"):
         require(not GENERAL_REFERENCE.search(text),
                 "unadapted general-edition reference; inspect " + name)
+    for number, quote in enumerate(quotes):
+        text = text.replace(f"\0quote {number}\0", quote, 1)
     return text
 
 
@@ -612,6 +788,10 @@ A cloud session cannot use the link on your computer. It can obtain its own copy
 
 [PHENIX](https://www.phenix-online.org) includes Guided Coding. Run `phenix.developer` to open the instructions and default settings for using it with PHENIX.
 """
+# Kit revision 18 moved that section to the overview (README), and the User
+# Guide links to it. The Developer approved shipping it exactly (2026-10-17):
+# it names where else Guided Coding is included. Only this exact text is exempt.
+INCLUDED_SECTION = "## Where Guided Coding is included\n\nA cloud session cannot use the link on your computer. It can obtain its own copy from the [source repository](https://github.com/cctbx/cctbx_project/tree/master/libtbx/guided_coding); the User Guide does not cover cloud setup.\n\n[cctbx_project](https://github.com/cctbx/cctbx_project) includes the Guided Coding source. If you use your own copy, follow the User Guide's one-time setup with the path to its `libtbx/guided_coding` folder instead of downloading the kit.\n\n[PHENIX](https://www.phenix-online.org) includes Guided Coding. Run `phenix.developer` to open the instructions and default settings for using it with PHENIX.\n\nIn a cctbx or PHENIX build the kit's commands use the build's conda Python, `libtbx.python`, which has psutil.\n\nElsewhere any Python 3.10 or newer serves. Auto mode also needs psutil, installed in a virtual environment whose Python then runs the kit: `python3 -m venv DIR`, then `DIR/bin/python -m pip install psutil`, then use `DIR/bin/python` (not `pip install --user`: the kit runs Python with `-I`, which ignores the user site directory).\n"
 SOURCE_LINKS = {
     "https://github.com/cctbx/cctbx_project",
     "https://github.com/cctbx/cctbx_project/tree/master/libtbx/guided_coding",
@@ -632,15 +812,35 @@ READABLE_PASSAGES = {
 def readable_scan_text(name, text):
     """Exempt the exact approved cloud section and labeled historical evidence."""
     if name == "docs/GUIDED_CODING_USER_GUIDE.md":
-        require(text.count(CLOUD_SECTION.strip()) == 1,
-                "approved cloud and project section changed; inspect " + name)
-        return text.replace(CLOUD_SECTION.strip(), "", 1)
+        # Up to revision 17 the guide carried the approved section itself.
+        if "## Using Guided Coding in the cloud or with cctbx_project or PHENIX" in text:
+            require(text.count(CLOUD_SECTION.strip()) == 1,
+                    "approved cloud and project section changed; inspect " + name)
+            return text.replace(CLOUD_SECTION.strip(), "", 1)
+        return text
+    if name == "docs/GUIDED_CODING_README.md" and "## Where Guided Coding is included" in text:
+        require(text.count(INCLUDED_SECTION) == 1,
+                "approved where-included section changed; inspect " + name)
+        return text.replace(INCLUDED_SECTION, "", 1)
     if name == "docs/GUIDED_CODING_VERIFICATION.md":
         text = re.sub(r"(?s)## Historical record\n.*?(?=## Technical reference\n)", "", text, count=1)
     return text
 
 
+def general_passages(name, text):
+    """Replace each listed revision 16-17 passage exactly once; refuse a changed one."""
+    for before, after in GENERAL_PASSAGES.get(name, ()):
+        require(text.count(before) == 1,
+                "required general-edition passage missing or duplicated; inspect " + name)
+        text = text.replace(before, after, 1)
+    return text
+
+
 def general_text(name, text):
+    # Only revision 16 and later name the conda Python; in an older file these
+    # passages cannot occur, and the final reference scan still applies.
+    if SOURCE_PYTHON in text or "conda Python" in text:
+        text = general_passages(name, text)
     if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
         # This reference retains the former manual commands, with a new title.
         text = legacy_general_text("docs/GUIDED_CODING_USER_GUIDE.md", text)
@@ -662,7 +862,7 @@ def general_text(name, text):
         require(start != -1 and end != -1, "verification wrapper section changed; inspect the adaptation")
         text = text[:start] + """### Repository test wrapper
 
-The original development repository has an additional test wrapper outside this kit. Its earlier results and skipped precompilation branch describe that development environment. The download does not include or require that wrapper. Run the four shipped test files from the clean copy described above and report every skip.
+The original development repository has an additional test wrapper outside this kit. Its earlier results and skipped precompilation branch describe that development environment. The download does not include or require that wrapper. Run the shipped test files from the clean copy described above and report every skip.
 
 """ + text[end:]
         text = text.replace("The full PHENIX server test suite", "The original project's full server test suite")
@@ -677,21 +877,53 @@ The original development repository has an additional test wrapper outside this 
     return text
 
 
+HISTORY = re.compile(r"(?s)## Historical record\n.*?(?=## Technical reference\n)")
+HISTORY_MARK = "\0historical record\0"
+
+
+def resolve_temporary(command):
+    """The TMPDIR-resolving form of one documented tool command."""
+    if TEMP_PREFIX in command or ENV_TEMP in command:
+        return command  # The source itself resolves TMPDIR here.
+    if command.startswith("env "):
+        return command.replace(" " + PY, " " + ENV_TEMP + " " + PY, 1)
+    return command.replace(PY, TEMP_PREFIX + " " + PY)
+
+
+def doubled_prefix(name, text):
+    for line in text.splitlines():
+        command = line.find(GENERAL_PYTHON)
+        require(command == -1 or line[:command].count("TMPDIR=") < 2,
+                "doubled temporary-directory prefix; inspect " + name)
+
+
 def temporary_instructions(name, text):
-    """Resolve temporary paths in known instructions; refuse changed source passages."""
+    """Name a general Python and resolve temporary paths in known instructions;
+    refuse changed source passages."""
     if not name.endswith(".md"):
         return text
     if name == "docs/GUIDED_CODING_USER_GUIDE.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
+        # Shipped unchanged, so it may not name the kit's own interpreter at all.
+        require(SOURCE_PYTHON not in text, "unadapted interpreter command; inspect " + name)
         return text
+    history = None
+    if name == "docs/GUIDED_CODING_VERIFICATION.md":
+        # Labeled historical evidence keeps the commands it records, unchanged.
+        found = HISTORY.search(text)
+        require(HISTORY_MARK not in text, "unexpected text in " + name)
+        if found:
+            history = found[0]
+            text = text[:found.start()] + HISTORY_MARK + text[found.end():]
+    for interpreter in (SOURCE_PYTHON + " -I -B", SOURCE_PYTHON + " -B "):
+        text = text.replace(interpreter, GENERAL_PYTHON + interpreter[len(SOURCE_PYTHON):])
+    # An older kit wrote python3 in its commands; name the same Python.
+    text = re.sub(r"(?<![\w/.-])python3 (-I -B|-B )", GENERAL_PYTHON + r" \1", text)
+    doubled_prefix(name, text)
     commands = TEMP_COMMANDS.get(name, ())
-    if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
-        commands = TEMP_COMMANDS["docs/GUIDED_CODING_USER_GUIDE.md"]
     if name == "docs/GUIDED_CODING_ARCHITECTURE.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
-        commands = (('`python3 -I -B`', 2),)
-    if name == "docs/GUIDED_CODING_VERIFICATION.md" and text.startswith(READABLE_HEADERS[name] + "\n"):
-        commands = commands + (('`python3 -I -B`', 1),)
+        commands = ((f'`{PY}`', 1),)
     for before, count in commands:
-        resolved = before.replace("python3 -I -B", TEMP_PREFIX + " python3 -I -B")
+        resolved = resolve_temporary(before)
         already = text.count(resolved)
         if already == count:
             continue  # The source itself already resolves TMPDIR here.
@@ -702,6 +934,7 @@ def temporary_instructions(name, text):
         require(text.count(before) == count,
                 "required temporary-directory instruction missing or duplicated; inspect " + name)
         text = text.replace(before, resolved)
+    doubled_prefix(name, text)  # Again: a replacement must not add a second prefix.
     if name == "docs/GUIDED_CODING_COMMAND_REFERENCE.md":
         before = "## One-time registration\n\n"
         require(text.count(before) == 1,
@@ -717,22 +950,55 @@ def temporary_instructions(name, text):
                 "required temporary-directory explanation anchor missing or duplicated; inspect " + name)
         if not readable_document:
             text = text.replace(before, before + TEMP_REASON + "\n\n", 1)
-    for line in text.splitlines():
-        command = line.find("python3")
-        require(command == -1 or line[:command].count("TMPDIR=") < 2,
-                "doubled temporary-directory prefix; inspect " + name)
-    plain = range(0)
+    plain = []
     passage = PLAIN_STOP_COMMANDS.get(name)
     if passage and passage in text:
         require(text.count(passage) == 1, "plain stop command duplicated; inspect " + name)
         start = text.index(passage)
         if start == 0 or text[start - 1] == "\n":
-            plain = range(start, start + len(passage))
-    for match in re.finditer("python3", text):
-        if match.start() in plain:
+            plain.append(range(start, start + len(passage)))
+    if name == "docs/GUIDED_CODING_README.md" and text.count(INCLUDED_SECTION) == 1:
+        start = text.index(INCLUDED_SECTION)
+        plain.append(range(start, start + len(INCLUDED_SECTION)))
+    # The builder's own exact general wording may name interpreters; it is
+    # reviewed text, not a source passage.
+    for _, after in GENERAL_PASSAGES.get(name, ()):
+        if after != passage and text.count(after) == 1:
+            start = text.index(after)
+            plain.append(range(start, start + len(after)))
+    for match in re.finditer(re.escape(GENERAL_PYTHON), text):
+        if any(match.start() in span for span in plain):
             continue
-        require(text[max(0, match.start() - len(TEMP_PREFIX) - 1):match.start()] == TEMP_PREFIX + " ",
+        if (text[match.start() - 1:match.end() + 1] == "`" + GENERAL_PYTHON + "`"
+                and text[match.end() + 1:match.end() + 3] != " -"):
+            continue  # The interpreter's name in prose, not a command.
+        line_start = text.rfind("\n", 0, match.start()) + 1
+        require(text[max(0, match.start() - len(TEMP_PREFIX) - 1):match.start()] == TEMP_PREFIX + " "
+                or (text[max(0, match.start() - len(ENV_TEMP) - 1):match.start()] == ENV_TEMP + " "
+                    and text.startswith("env ", line_start)),
                 "unresolved temporary-directory instruction; inspect " + name)
+    outside = "".join(char for position, char in enumerate(text)
+                      if not any(position in span for span in plain))
+    # Only the exact GENERAL_PYTHON may run a tool with -I or -B; any other
+    # interpreter path or name (/usr/bin/python3, DIR/bin/python) is refused.
+    others = outside.replace(GENERAL_PYTHON + " -", "\0")
+    require(SOURCE_PYTHON not in outside
+            and re.search(r"python(?:3(?:\.\d+)?)? -[IB]", others) is None,
+            "unadapted interpreter command; inspect " + name)
+    # A bare python or python3 that starts a command (line start, `...`, or
+    # after && or ;) must be the documented venv step.
+    for match in re.finditer(r"(?:^|`|&& |; )(python3?)\b(?!`)", outside, re.M):
+        require(outside.startswith(" -m venv ", match.end(1)),
+                "unresolved temporary-directory instruction; inspect " + name)
+    # Any other python3 is the interpreter's name in prose or the documented
+    # step that makes the virtual environment; a command must name GENERAL_PYTHON.
+    for match in re.finditer(r"(?<![\w.~-])python3\b", outside):
+        prose = (outside[match.start() - 1:match.end() + 1] == "`python3`"
+                 and outside[match.end() + 1:match.end() + 3] != " -")
+        require(prose or outside.startswith(" -m venv ", match.end()),
+                "unresolved temporary-directory instruction; inspect " + name)
+    if history is not None:
+        text = text.replace(HISTORY_MARK, history, 1)
     return text
 
 
@@ -771,7 +1037,49 @@ CODE_TAB_STEPS = """1. In the Claude app, open the Code tab and start a new sess
 4. Type your message and send it."""
 
 
-def installation_text(info, minimum, edition):
+# Revision 16-17: the auto-mode start check accepts only these interpreter names.
+RESTRICTED_INTERPRETER = (
+    'INTERPRETER = re.compile(r"/.+/libtbx\\.python|/.+/conda_base/bin/python3(?:\\.\\d+)?")')
+# Revision 18: any absolute path to a python, python3, python3.N or libtbx.python.
+GENERAL_INTERPRETER = 'INTERPRETER = re.compile(r"/.+/(?:python(?:3(?:\\.\\d+)?)?|libtbx\\.python)")'
+GENERAL_AUTO_NOTE = ("\n\nCreate the virtual environment the User Guide describes before registration:\n"
+                     "every command in this download runs Guided Coding with its Python,\n"
+                     "~/guided_coding_venv/bin/python. Auto mode also needs the psutil package\n"
+                     "installed there.")
+RESTRICTED_AUTO_NOTE = (" Auto mode also needs the\npsutil package for Python, and in this kit revision it starts only with a\n"
+                        "Python named libtbx.python, or python3 or python3.N inside a conda_base/bin/\nfolder.")
+
+
+def auto_mode_note(source):
+    """The installation note for the shipped auto-mode interpreter rule."""
+    path = source / "payload/tools/screen_check.py"
+    if not path.is_file():
+        return ""  # Only reduced test fixtures; check_hooks requires it in a real build.
+    text = path.read_text()
+    tree = ast.parse(text)
+    stores = [node for node in ast.walk(tree)
+              if isinstance(node, ast.Name) and node.id == "INTERPRETER" and isinstance(node.ctx, ast.Store)]
+    named = [node for node in ast.walk(tree) if isinstance(node, ast.Constant) and node.value == "INTERPRETER"]
+    used = any(isinstance(node, ast.FunctionDef) and node.name == "stop_line" and any(
+        isinstance(call, ast.Attribute) and call.attr == "fullmatch" and isinstance(call.value, ast.Name)
+        and call.value.id == "INTERPRETER" for call in ast.walk(node)) for node in tree.body)
+    # Exactly one plain top-level assignment, no other binding of the name, and
+    # stop_line() must apply it; otherwise the note's claim needs inspection.
+    lines = text.splitlines()
+    rules = [lines[node.lineno - 1].strip() for node in stores]
+    single = (len(stores) == 1 and not named and used
+              and any(isinstance(node, ast.Assign) and node.targets[0] is stores[0] for node in tree.body))
+    if stores or named:
+        require(single, "auto-mode interpreter rule changed; inspect the installation text")
+    if rules == [RESTRICTED_INTERPRETER]:
+        return RESTRICTED_AUTO_NOTE
+    if rules == [GENERAL_INTERPRETER]:
+        return GENERAL_AUTO_NOTE
+    require(not rules, "auto-mode interpreter rule changed; inspect the installation text")
+    return ""
+
+
+def installation_text(info, minimum, edition, auto_note=""):
     return f"""# Guided Coding: installation and first task
 
 Start with `guided_coding/docs/GUIDED_CODING_USER_GUIDE.md` in this folder.
@@ -790,7 +1098,7 @@ For the one-time registration, open Claude Code on your computer (without
 
 Supported systems: Guided Coding runs on macOS and Linux. On Linux its tests
 run, but a real /guided_coding session there has not yet been observed. Auto
-mode runs only on macOS. Windows is not supported.
+mode runs only on macOS. Windows is not supported.{auto_note}
 
 To open a new conversation in your Git project with the Claude app on a Mac:
 
@@ -907,21 +1215,49 @@ def package_source_note(info):
             'were adapted with their checksums before and after, are recorded with the download.</p>')
 
 
-def verify_general_documentation(documents, info):
+# Unchanged files whose exact text names the source project (kit revisions
+# 16-17). Only these may show it on the reference page; any other file that
+# does still stops the build.
+VERBATIM_FILES = ("auto_queue.py", "payload/RELEASE", "payload/tools/screen_check.py")
+
+
+def verbatim_blocks(edition):
+    """Reference-page blocks that must show unchanged source text containing a
+    source reference: the listed tools and release line ship byte-identical,
+    and a test may quote a tool message exactly (TOOL_MESSAGE_QUOTES)."""
+    blocks = []
+    for name in VERBATIM_FILES:
+        path = edition / name
+        if path.is_file():
+            text = path.read_text()
+            if GENERAL_REFERENCE.search(text):
+                blocks.append("<pre><code>" + html.escape(text) + "</code></pre>")
+    for name, quotes in TOOL_MESSAGE_QUOTES.items():
+        if (edition / name).is_file():
+            blocks.extend(html.escape(quote) for quote in quotes)
+    return tuple(blocks)
+
+
+def verify_general_documentation(documents, info, verbatim=()):
     """Reject leftover references in final pages and installer notes before saving."""
     for name, data in documents.items():
         text = data.decode("utf-8")
+        if name == "reference-files.html":
+            for block in verbatim:
+                require(text.count(block) >= 1, "verbatim reference block missing; inspect " + name)
+                text = text.replace(block, "")
         notes = {"documentation.html": historical_note(info), "index.html": package_source_note(info)}
         if name in notes:
             note = notes[name]
             require(text.count(note) == 1, "source attribution changed or duplicated; inspect " + name)
             text = text.replace(note, "", 1)
-        if name == "getting-started.html":
-            cloud, cloud_toc = render_document("# Cloud section\n\n" + CLOUD_SECTION, info)
-            if cloud in text:
-                text = text.replace(cloud, "", 1)
-                for entry in re.findall(r'<li>.*?</li>', cloud_toc):
-                    text = text.replace(entry, "", 1)
+        for page, section in (("getting-started.html", CLOUD_SECTION), ("overview.html", INCLUDED_SECTION)):
+            if name == page:
+                rendered, rendered_toc = render_document("# Section\n\n" + section, info)
+                if rendered in text:
+                    text = text.replace(rendered, "", 1)
+                    for entry in re.findall(r'<li>.*?</li>', rendered_toc):
+                        text = text.replace(entry, "", 1)
         if name == "verification.html":
             text = re.sub(r'(?s)<h2 id="historical-record">.*?(?=<h2 id="technical-reference">)',
                           "", text, count=1)
@@ -1143,7 +1479,8 @@ def build_documentation(source, info, site, original_source=None):
                   ("payload/GUIDE.md", "Guide instructions"),
                   ("payload/WORKER.md", "Worker instructions"),
                   ("payload/OUTSIDE_REVIEWER_BRIEF.md", "Outside reviewer brief"),
-                  ("payload/REVIEW_TRANSPORT.md", "Review package instructions"))
+                  ("payload/REVIEW_TRANSPORT.md", "Review package instructions"),
+                  ("payload/PUBLICATION_PACKET.md", "Publication packet checklist"))
     reference_links = "".join('<li><a href="' + documentation_link("../" + path, info)
                               + '">' + label + '</a></li>' for path, label in references)
     reference_records, reference_blocks, reference_toc = [], [], []
@@ -1217,7 +1554,7 @@ def build_artifacts(source, info, license_data, site, scratch):
     encoded_metadata = (json.dumps(metadata, indent=2, sort_keys=True) + "\n").encode()
     extras = {
         "PACKAGE_INFO.json": encoded_metadata, "LICENSE.txt": license_data,
-        "INSTALL.md": installation_text(info, version, edition),
+        "INSTALL.md": installation_text(info, version, edition, auto_mode_note(adapted)),
         "GENERAL_DEVELOPER_CARD.md": (site / "GENERAL_DEVELOPER_CARD.md").read_bytes(),
     }
     archive = make_zip(adapted, extras)
@@ -1247,7 +1584,7 @@ def build_artifacts(source, info, license_data, site, scratch):
     documents.update({name: extras[name] for name in ("INSTALL.md", "GENERAL_DEVELOPER_CARD.md")})
     if (site / "README.md").is_file():
         documents["README.md"] = (site / "README.md").read_bytes()
-    verify_general_documentation(documents, info)
+    verify_general_documentation(documents, info, verbatim_blocks(adapted))
     require_unchanged_source(source, original)
     require_unchanged_source(adapted, packaged_snapshot)
     return artifacts

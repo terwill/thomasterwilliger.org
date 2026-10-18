@@ -1,8 +1,8 @@
 {
   "archive": {
-    "bytes": 258486,
+    "bytes": 395063,
     "file": "guided_coding.zip",
-    "sha256": "a5ca192fb69326d747b7bad808dd5c362604fc181684bd8d5114501596f8d7b5"
+    "sha256": "0887962a474569695a33ce27f1317bcc3df49af8119236777ef0d629973f4691"
   },
   "checks": {
     "app_engine_path": "CLAUDE_CODE_EXECPATH",
@@ -15,43 +15,43 @@
   "documentation": {
     "index": {
       "page": "documentation.html",
-      "page_sha256": "d5de9f7f5b2fc7ce2fe751fb5861e0763c4cd06d3c63ee82fd7548bdad493fa2"
+      "page_sha256": "26edd3a34f6fec48011c0e0cabf653d3faba448decaa76bf9e03b2da143e280a"
     },
     "pages": [
       {
-        "original_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18",
+        "original_sha256": "a03d5ef0a0e3e554ad0fb30341c8eee86a026ee71f7bbb384072178a9ae59e3e",
         "page": "getting-started.html",
-        "page_sha256": "0c89260bbb765baa3be005217e209c2f1163aea5a40753aec44e2cb9d6a400d6",
+        "page_sha256": "3e16c97cfa65f6c1b97bb150e36c2469c6d990390b8276ecab223a4d0a0981e1",
         "source": "docs/GUIDED_CODING_USER_GUIDE.md",
-        "source_sha256": "b7656fb7c22dab30ef54971c07c6d83966265c90eea54f1337871c6fd4805b18"
+        "source_sha256": "a03d5ef0a0e3e554ad0fb30341c8eee86a026ee71f7bbb384072178a9ae59e3e"
       },
       {
-        "original_sha256": "30300be722449ee98a5a2609f74640b8f95ff17bcc112b30b5c760c6f0d7a67a",
+        "original_sha256": "50fd7b461ccf7798d46c1d7dfd5a199431381c6b6fe3683bc42feb25f41dea9f",
         "page": "user-guide.html",
-        "page_sha256": "f4cd74f773315e0cace1fd1fd173513e9aee2f9aa11dc3e969016576dcc347e8",
+        "page_sha256": "1e090e0778d009f093f4060068e42c107b71746a9be6f4f84abc189d8778eaab",
         "source": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "source_sha256": "1421699aa053a448993512f48f4994c19df2148beca62119ac57798932986d40"
+        "source_sha256": "9bb5add0820d7145c3205a826aa2a5a11c45c236b80799eb468f7c5571d8a17f"
       },
       {
-        "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
+        "original_sha256": "1ff54ed6ffcddf45bfdba0d7935cb7cd9a6a1e84fe7c980ebd93cd21bafb8cd5",
         "page": "overview.html",
-        "page_sha256": "853a71c64df8b708bdc6e190b6203889e595a415be8a1f357db5fb57918cadf9",
+        "page_sha256": "f42083bf06919cadd6bc400e4126d40130ebd34d0887c36d03042ed4fd4a416e",
         "source": "docs/GUIDED_CODING_README.md",
-        "source_sha256": "c7fd9f7d6086185c697d3e332eaf8719149b112b2f45b4a870a1e4b5f5bead71"
+        "source_sha256": "155b8dbe4060b192b349029920c559f1eee967f0c847067ed742141fb57b93a5"
       },
       {
-        "original_sha256": "719793c2ab7fe56b0ec390bec0880b7a5138ad961624f62c1ede56d6d23ffaa4",
+        "original_sha256": "7ba0dae438f1ef9678f82fd412150fffc84b220474c5aea9ed8fc47ef3bc4be6",
         "page": "architecture.html",
-        "page_sha256": "705f3669baf06d58e421408c4f30918dd5e523b254eb41f339ff2cb2048a24a8",
+        "page_sha256": "8a0e77669e4587f99a09de8d3e1ee1efa984e36909b38d196ae12ee82d659ad5",
         "source": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "source_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
+        "source_sha256": "3c73f9a3bced48d9dd2647dcf7a8a2e2653fc8750c732005abca5189b8390431"
       },
       {
-        "original_sha256": "2e11a256a6c55846c6413bc61f965e812dab9e9728ae50918c2261708373a58a",
+        "original_sha256": "f81ec52abc026f129eca076618e26a68fcb1fb1513f6c8544f212b5d48135c4e",
         "page": "verification.html",
-        "page_sha256": "7687f007798127f82a482b40c8e90ce6b2e8405877a50cfacd49156f24e7f45c",
+        "page_sha256": "933e88a3d01a12afd23d2b1d6d8f9aa6cbe32b415095c76ad8e7d70ef86f81bb",
         "source": "docs/GUIDED_CODING_VERIFICATION.md",
-        "source_sha256": "e7a3b1adfdb23c2c04aedb95ff6993bc5ad8b71f7007a3351618523f9ee82c97"
+        "source_sha256": "f360428f1ff3295394e15c617944fa16168f6d67cd8a84e361a4c806d8889594"
       }
     ],
     "references": {
@@ -59,22 +59,22 @@
         {
           "anchor": "file-skill-md",
           "source": "SKILL.md",
-          "source_sha256": "189438f8fe4324810e7ddd82d98c9c95e68129b5ba52d3fa725cb54cabe05beb"
+          "source_sha256": "96308787cea2d4a5a58d1087696a1a8d42ec6f797b2a5c230553debc8a779f5b"
         },
         {
           "anchor": "file-source-manifest-sha256",
           "source": "SOURCE_MANIFEST.sha256",
-          "source_sha256": "3c3fa2e5698474ed7acf90614087f896a1f126764be7ae71559064427138aec5"
+          "source_sha256": "21ca520c7dfc21660216fc8a81b383c920e2adc1fa992e755831eafad65318cb"
         },
         {
           "anchor": "file-auto-queue-py",
           "source": "auto_queue.py",
-          "source_sha256": "ca14cd1b822431779c1dc1b8fb2b4b0bd55d3d7ec0558714db5601a760468bd8"
+          "source_sha256": "5c95e66da3113b880376e99f29a2972c8da7941d8304f4ad8e69ae9ceef0fddc"
         },
         {
           "anchor": "file-payload-auto-md",
           "source": "payload/AUTO.md",
-          "source_sha256": "b5c3472724a80d27114ba1ec5827e7ffc495f9cd7b6c2c02d07e51845084c6fb"
+          "source_sha256": "18aaa44589f34537081bc2a95d5bbe5e5f38e4fd2945ce76a7d0094763d06fc6"
         },
         {
           "anchor": "file-payload-developer-guide-contract-md",
@@ -84,27 +84,32 @@
         {
           "anchor": "file-payload-guide-md",
           "source": "payload/GUIDE.md",
-          "source_sha256": "9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0"
+          "source_sha256": "630f7c66f1466242f285e45256e2dcc743ffeb2b6a5ac53bd21775f6ff68d8f1"
         },
         {
           "anchor": "file-payload-helper-md",
           "source": "payload/HELPER.md",
-          "source_sha256": "dd57340b690f2adb2a739546852fd907e6600e8ca357e4083a763bfb25c16e67"
+          "source_sha256": "b9ced7e81e06f182d8f998cfba236fbcd4ded8e51f56b0814e76a1a8891a7d62"
         },
         {
           "anchor": "file-payload-outside-reviewer-brief-md",
           "source": "payload/OUTSIDE_REVIEWER_BRIEF.md",
-          "source_sha256": "6f7488f1f47daad6862ecbd135f60f100597816e483dc4c844786424773ba3f3"
+          "source_sha256": "84f380bc408dc9073db55d9aa8848e8bb375ad6719c2a5ea9afc7393bb38903b"
+        },
+        {
+          "anchor": "file-payload-publication-packet-md",
+          "source": "payload/PUBLICATION_PACKET.md",
+          "source_sha256": "27e9174f5d4b75c2b675f4ca2b7c50374b4a437eed688900015d25cede698a26"
         },
         {
           "anchor": "file-payload-release",
           "source": "payload/RELEASE",
-          "source_sha256": "e85e42b5116afe5adb83a8d8ace336845de74e98a2eb887f9731dc8cf7504025"
+          "source_sha256": "9d2be6fbe86e5f80173040638dfd78ed41f086d279dbe3e5e4e1c184464709c0"
         },
         {
           "anchor": "file-payload-review-transport-md",
           "source": "payload/REVIEW_TRANSPORT.md",
-          "source_sha256": "9feabda2db72fedda743c35376f686078934d87a78e2e6c61e4a6600334116e2"
+          "source_sha256": "e30482935138581f9a9cb8197d570ffe8ee092087cbd642ec47945779351bfed"
         },
         {
           "anchor": "file-payload-roles-md",
@@ -114,17 +119,22 @@
         {
           "anchor": "file-payload-setup-md",
           "source": "payload/SETUP.md",
-          "source_sha256": "b7b4b7064894af00f8691ffe8453086199bbfbfd3f967854940f25f7e9275e6a"
+          "source_sha256": "a9637b506c2236d8f94100cc73e6679bc835979aec94c7da2c876f361fcba920"
         },
         {
           "anchor": "file-payload-setup-defaults-md",
           "source": "payload/SETUP_DEFAULTS.md",
-          "source_sha256": "ca27ebc7ee171b53fa314d7a7b9907e3af78d3fe76a5d42837f9774a1c3facdd"
+          "source_sha256": "66b6464e9c7888a5792901f77ce98a49e4040ddd96821c1c7f4b03513538e649"
         },
         {
           "anchor": "file-payload-worker-md",
           "source": "payload/WORKER.md",
-          "source_sha256": "30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a"
+          "source_sha256": "52cfd2eeefbeda16cd35077733abc7e859df9d5b75092c90f8c92010f3d3399b"
+        },
+        {
+          "anchor": "file-payload-screens-accept-md",
+          "source": "payload/screens/ACCEPT.md",
+          "source_sha256": "17382628e436a843c8947ad5230113e52d4bed602b51e9fb91aebc4e153ed310"
         },
         {
           "anchor": "file-payload-screens-auto-report-md",
@@ -134,7 +144,7 @@
         {
           "anchor": "file-payload-screens-auto-start-md",
           "source": "payload/screens/AUTO_START.md",
-          "source_sha256": "ea5685097149830af2812e078fe6999d5cc145554e85b983e8a49aad0767246e"
+          "source_sha256": "f91df84774db85ae16c463da00a5406d69ef360e7ad9e3045dc75685fa368dd0"
         },
         {
           "anchor": "file-payload-screens-plan-md",
@@ -144,22 +154,22 @@
         {
           "anchor": "file-payload-screens-publication-md",
           "source": "payload/screens/PUBLICATION.md",
-          "source_sha256": "995cbe59fcf91406ec4b584e7831af2b36d541cdcd6ac155a05693b7eda204c3"
+          "source_sha256": "7bb1c9ef5e8e342be7c27f0a2b613cb4a7d55eb10a57617d8ced0ed20159a9b6"
         },
         {
           "anchor": "file-payload-screens-result-md",
           "source": "payload/screens/RESULT.md",
-          "source_sha256": "710b0d4ccc63b3e0175f6be1ca986d595b3f9ced78a16470ebd241a1cbd3b43b"
+          "source_sha256": "b8ecc8cc756ef0f54b2ee63d6de463e564fde87bc85acc300e74b2130a79a446"
         },
         {
           "anchor": "file-payload-screens-stop-md",
           "source": "payload/screens/STOP.md",
-          "source_sha256": "d1a96d3a828e710e41cfd0f2619b3f817cd20f3a3bf3e88ea67f7094d199daa5"
+          "source_sha256": "90649702953af87919c737bb9f2d8bc1a49ffc29ab3ae26326f75ff693f3ec5c"
         },
         {
           "anchor": "file-payload-templates-approval-report-md",
           "source": "payload/templates/APPROVAL_REPORT.md",
-          "source_sha256": "cac00770d7502fed3fb1dd55d454d692405efc10c330e015a8ea5168a4ae1346"
+          "source_sha256": "f11ac3a27f74cca3da2da2cbd050be7c6f2d6fe635fe1b800fb637cd71fa81ce"
         },
         {
           "anchor": "file-payload-templates-helper-handoff-md",
@@ -169,42 +179,47 @@
         {
           "anchor": "file-payload-templates-project-method-md",
           "source": "payload/templates/PROJECT_METHOD.md",
-          "source_sha256": "6d8a931ecaa16c506d800592421e12228b200852cfb43e5a927aa867db4324eb"
+          "source_sha256": "3739cd900561b1ab059b1d6adf107af7c644c955c1470b25827c06931c240638"
+        },
+        {
+          "anchor": "file-payload-tools-fingerprint-normalize-py",
+          "source": "payload/tools/fingerprint_normalize.py",
+          "source_sha256": "300664a554304131ec0367715526160d693f038d206b0156af0b9ab7a8293dba"
         },
         {
           "anchor": "file-payload-tools-publication-precheck-py",
           "source": "payload/tools/publication_precheck.py",
-          "source_sha256": "458430a81c9c28e1b8b7d00f4dba96f3409746c13109b79f75b5cdaf45aa15c8"
+          "source_sha256": "9e43fd99a88aa25fcfc2f7f6761d27c0684c1da35675909f826b873578904182"
         },
         {
           "anchor": "file-payload-tools-records-history-py",
           "source": "payload/tools/records_history.py",
-          "source_sha256": "0b6a93f8864e7966681df4aadd227d1393f3a252a0456a347024190ae53aa23d"
+          "source_sha256": "89b30a33f82f2537ebeb04febf06664dc398cf54593e64de135b403337e61f86"
         },
         {
           "anchor": "file-payload-tools-review-bundle-py",
           "source": "payload/tools/review_bundle.py",
-          "source_sha256": "879690e6ebd51616758fc06a04d491c5aedd47560d822ad2a5d05df6bbb3b466"
+          "source_sha256": "b9a68aae35aa4081265eff04dcf22b78e09476d72432e780984886e6f02afca3"
         },
         {
           "anchor": "file-payload-tools-screen-check-py",
           "source": "payload/tools/screen_check.py",
-          "source_sha256": "f2c9ec0b7368078b11662b968e975a169cd135a922903836aa729ba263d0c9a2"
+          "source_sha256": "8ff6acb653c429c958f039a93d8fb869e89557f40669ca92dff4dca21d66c950"
         },
         {
           "anchor": "file-tests-auto-queue-standin-py",
           "source": "tests/auto_queue_standin.py",
-          "source_sha256": "d5c34dc16be4ed12833a5649a271d5bbd9d3b26fa3632a35d6298633b7149504"
+          "source_sha256": "09fd034e8a04af31e16d4d6a1a951022cb40160d5941d286f69cdb614803de99"
         },
         {
           "anchor": "file-tests-tst-auto-queue-v20-py",
           "source": "tests/tst_auto_queue_v20.py",
-          "source_sha256": "a451a0263248b410bc949672a8d05febdefc7f45dec4a9fdef60857cbb84bac4"
+          "source_sha256": "16e3147d550e2636f330e7542bfa30acc800eb02ff6537c2cae2a02ad49228a3"
         },
         {
           "anchor": "file-tests-tst-publication-precheck-v20-py",
           "source": "tests/tst_publication_precheck_v20.py",
-          "source_sha256": "76c04b68abb99bba1c9280ad162822b360f60725c8f68cdec579f18cd2b748e6"
+          "source_sha256": "cb640d8c9cf6e8f7e81c04c2cde46c66a00546b9c0d0f24a941b35368a8f37b1"
         },
         {
           "anchor": "file-tests-tst-records-history-v20-py",
@@ -219,18 +234,18 @@
         {
           "anchor": "file-tests-tst-screen-check-v20-py",
           "source": "tests/tst_screen_check_v20.py",
-          "source_sha256": "8b34ee8a1ec255fd852aba5cafbe2b08982b651f0f7bf14c3d5357525bde65d2"
+          "source_sha256": "306d16afa67183680d829f964163d21033d1d14f87015a769e484503cf81dbbf"
         }
       ],
       "page": "reference-files.html",
-      "page_sha256": "be64b65965085697344bb89d51a1ec2ff9fff2d8370a2bb63964e5bf0264a312"
+      "page_sha256": "cd4c091aeb5949775f9a5eb464c16c25fb590a667387bdc98aa16ccef5f40801"
     },
     "site_pages": [
       {
         "page": "why-not-claude-code.html",
-        "page_sha256": "025a8b7977417190c85e9ec4bcbca1ed1c2bc010a4a40c1b4788058e7899c225",
+        "page_sha256": "64277b194c19f0114e31f74e222f7a787b5baaea790ae2de9dda43636e5f7ac0",
         "source": "pages/why-not-claude-code.md",
-        "source_sha256": "95b27a966d307d88ef2c990f2422a4dbfbfdf0a8ee64b782cad01b94c6b9a6e8"
+        "source_sha256": "ac99c7a9d17a1a938b1cd03d5fa53fb23b36f369ff4d25c85d4ef8323b73df3d"
       },
       {
         "page": "why-not-vibe-coding.html",
@@ -240,15 +255,15 @@
       },
       {
         "page": "how-it-works.html",
-        "page_sha256": "d2d9501d1e22fc072a51080c63f5b30526a28a0c790c7c892529afab5fcec8eb",
+        "page_sha256": "add1a99e53a92b78181725f5714e2a20923eb729612ed4b3a73dbd3d8a7b5807",
         "source": "pages/how-it-works.md",
-        "source_sha256": "7b4c4e9173e6ae6064b831053614685a1c7fe49b5f8d1ce483089dfcfe2c49cc"
+        "source_sha256": "55114c20303c9bc8742a1a8ea0079e5e466d216208344c90a9a5e1c99381ce89"
       },
       {
         "page": "quick-start.html",
-        "page_sha256": "5b72c14b58a380e59e8812eb8781de239d3c4288430c8e111231fd415fafa171",
+        "page_sha256": "71df8817131432b609fa365b991f21e0ba2fcabf9ce9464bb984a334afdd7d7f",
         "source": "pages/quick-start.md",
-        "source_sha256": "5581749b433975cb91411b5f1fe0811f5f867b18a778257868a20f4045be89aa"
+        "source_sha256": "4dd35a760979eb17dcc78033cf44e9a3a4ad13077e82039e2007adb3456e5151"
       }
     ]
   },
@@ -257,53 +272,63 @@
     "adapted_files": [
       {
         "file": "SKILL.md",
-        "original_sha256": "8846c7cabe83d4aeff44a91ffc7fd5c3636405d35c816e1b028707db46fb530e",
-        "packaged_sha256": "189438f8fe4324810e7ddd82d98c9c95e68129b5ba52d3fa725cb54cabe05beb"
+        "original_sha256": "ee6f6b4dfa0a54b495a7651e95ba9d1a8047026e4dc5e622ede3442c651b2fad",
+        "packaged_sha256": "96308787cea2d4a5a58d1087696a1a8d42ec6f797b2a5c230553debc8a779f5b"
       },
       {
         "file": "docs/GUIDED_CODING_ARCHITECTURE.md",
-        "original_sha256": "719793c2ab7fe56b0ec390bec0880b7a5138ad961624f62c1ede56d6d23ffaa4",
-        "packaged_sha256": "a4c81ecca17cc82d393e7dc40a857164ad2c29363e4192a263edc00c67b45d76"
+        "original_sha256": "7ba0dae438f1ef9678f82fd412150fffc84b220474c5aea9ed8fc47ef3bc4be6",
+        "packaged_sha256": "3c73f9a3bced48d9dd2647dcf7a8a2e2653fc8750c732005abca5189b8390431"
       },
       {
         "file": "docs/GUIDED_CODING_COMMAND_REFERENCE.md",
-        "original_sha256": "30300be722449ee98a5a2609f74640b8f95ff17bcc112b30b5c760c6f0d7a67a",
-        "packaged_sha256": "1421699aa053a448993512f48f4994c19df2148beca62119ac57798932986d40"
+        "original_sha256": "50fd7b461ccf7798d46c1d7dfd5a199431381c6b6fe3683bc42feb25f41dea9f",
+        "packaged_sha256": "9bb5add0820d7145c3205a826aa2a5a11c45c236b80799eb468f7c5571d8a17f"
       },
       {
         "file": "docs/GUIDED_CODING_README.md",
-        "original_sha256": "fc314be21a01ab338849bdfcc130ded7ccfc95cd5e2c59d000de0aa9882dca28",
-        "packaged_sha256": "c7fd9f7d6086185c697d3e332eaf8719149b112b2f45b4a870a1e4b5f5bead71"
+        "original_sha256": "1ff54ed6ffcddf45bfdba0d7935cb7cd9a6a1e84fe7c980ebd93cd21bafb8cd5",
+        "packaged_sha256": "155b8dbe4060b192b349029920c559f1eee967f0c847067ed742141fb57b93a5"
       },
       {
         "file": "docs/GUIDED_CODING_VERIFICATION.md",
-        "original_sha256": "2e11a256a6c55846c6413bc61f965e812dab9e9728ae50918c2261708373a58a",
-        "packaged_sha256": "e7a3b1adfdb23c2c04aedb95ff6993bc5ad8b71f7007a3351618523f9ee82c97"
+        "original_sha256": "f81ec52abc026f129eca076618e26a68fcb1fb1513f6c8544f212b5d48135c4e",
+        "packaged_sha256": "f360428f1ff3295394e15c617944fa16168f6d67cd8a84e361a4c806d8889594"
+      },
+      {
+        "file": "payload/AUTO.md",
+        "original_sha256": "d940e2c897c999e7701f7ea3628cdc7f16a07ce35c215cea61096c94bd7ad962",
+        "packaged_sha256": "18aaa44589f34537081bc2a95d5bbe5e5f38e4fd2945ce76a7d0094763d06fc6"
       },
       {
         "file": "payload/GUIDE.md",
-        "original_sha256": "9cd1f3ae7df4932d7d6a56aefd613162ab344216afd14bdd0c673c513a311627",
-        "packaged_sha256": "9f842eb68ddc58c07b126876d3d052b317be0c666deb555848c7b19c42d362b0"
+        "original_sha256": "e8feb40cdd0c5297a2ded80c2fe0726447bc8196532efc7c222a52dd111b1cdf",
+        "packaged_sha256": "630f7c66f1466242f285e45256e2dcc743ffeb2b6a5ac53bd21775f6ff68d8f1"
+      },
+      {
+        "file": "payload/PUBLICATION_PACKET.md",
+        "original_sha256": "40c2b17221ea07c352589bf25a6b3c320046a018a0c4fea9da492f760d08a05b",
+        "packaged_sha256": "27e9174f5d4b75c2b675f4ca2b7c50374b4a437eed688900015d25cede698a26"
       },
       {
         "file": "payload/REVIEW_TRANSPORT.md",
-        "original_sha256": "c2b7b178231f452211b506e5e3c63b55d8a44f9559e960d52000ac0bc8bea17c",
-        "packaged_sha256": "9feabda2db72fedda743c35376f686078934d87a78e2e6c61e4a6600334116e2"
+        "original_sha256": "48d65bdc4c2d20a6c60444b7199834fa6ad3bfd411b929bf0f4dd4957ed67e06",
+        "packaged_sha256": "e30482935138581f9a9cb8197d570ffe8ee092087cbd642ec47945779351bfed"
       },
       {
         "file": "payload/SETUP.md",
-        "original_sha256": "106db300575b82d72c6bc45443ed9e7bcc53b8026b75e3d8883ef6defec305a2",
-        "packaged_sha256": "b7b4b7064894af00f8691ffe8453086199bbfbfd3f967854940f25f7e9275e6a"
+        "original_sha256": "889f07a357959c0d2a7ee1d362f18908d4abc8b80971fb5541d8013fdd2399d3",
+        "packaged_sha256": "a9637b506c2236d8f94100cc73e6679bc835979aec94c7da2c876f361fcba920"
       },
       {
         "file": "payload/WORKER.md",
-        "original_sha256": "1634672aae34afa948a4d6196138c6b4bb3f9f2658731e79552907e7552dab1f",
-        "packaged_sha256": "30c6fe0e594d998a9555a98ccfdccd353ba028cc43fe73e15d303470b4a6b39a"
+        "original_sha256": "a7020e2bb91f28de7f6b1e37c24560aad233456fba4437083fe822412ddc53c2",
+        "packaged_sha256": "52cfd2eeefbeda16cd35077733abc7e859df9d5b75092c90f8c92010f3d3399b"
       },
       {
         "file": "tests/tst_publication_precheck_v20.py",
-        "original_sha256": "ac7747334b7df5ef9b2d776c4bec5564a351e7115dcba0f0e840ec07311bff5e",
-        "packaged_sha256": "76c04b68abb99bba1c9280ad162822b360f60725c8f68cdec579f18cd2b748e6"
+        "original_sha256": "3aec0786b54f81afdaa129f2bdc768ab1f3f177b1189a4312da51b701955b92e",
+        "packaged_sha256": "cb640d8c9cf6e8f7e81c04c2cde46c66a00546b9c0d0f24a941b35368a8f37b1"
       },
       {
         "file": "tests/tst_records_history_v20.py",
@@ -312,19 +337,19 @@
       },
       {
         "file": "tests/tst_screen_check_v20.py",
-        "original_sha256": "5ab78bbd6ccf56e6356614bdc9bfbe27ded1da57fefc045c822025678bab8354",
-        "packaged_sha256": "8b34ee8a1ec255fd852aba5cafbe2b08982b651f0f7bf14c3d5357525bde65d2"
+        "original_sha256": "399bae9bab1784bd32316aa0c18730b9497766ea81d14e23170515c33373f812",
+        "packaged_sha256": "306d16afa67183680d829f964163d21033d1d14f87015a769e484503cf81dbbf"
       }
     ],
     "edition": "general-downloads-v3",
     "installation_root": "~/Downloads/GuidedCoding/guided_coding",
-    "source_files": 38,
-    "source_manifest_sha256": "3c3fa2e5698474ed7acf90614087f896a1f126764be7ae71559064427138aec5"
+    "source_files": 41,
+    "source_manifest_sha256": "21ca520c7dfc21660216fc8a81b383c920e2adc1fa992e755831eafad65318cb"
   },
   "generator": {
     "docs_template_sha256": "34213861e0b0e1e722e0b84e820a74ab04b833ced8ac7c72483a715753adef33",
-    "main_copy_sha256": "96815aaff09c80c543eced046eafa9fbe42acea05df5a89005be661ecc84e177",
-    "script_sha256": "7fba14b60eddbe88488a7899f9e92a26b63874046d129e45afc673d4d5d36c46",
+    "main_copy_sha256": "d5c3cde6bb99342113927a5fac9909d540b1e34cb1e3789ae7f29cda8fddcd21",
+    "script_sha256": "75f5b924b9a439e68ec36fbd4dbcb49a94442bca36881128b85b9fc1114b73da",
     "template_sha256": "f5043d6a78f100dccf1d2a5b76d6e74b68237c9b0a998c330b6fc89a465221b2"
   },
   "historical_source_checks": {
@@ -338,19 +363,53 @@
   "historical_source_tests": [
     {
       "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "4120a3e7dd3560e55eb6289f1714c4c66241a6ffaf5f516b271c80c64a22157f",
-      "skipped": 3,
-      "tests": 114
+      "output_sha256": "733b44b7d3d42f5bb1de3c9f91f33effb5a98aed5e0e65829fdaab4776e31372",
+      "skipped": 4,
+      "tests": 163
     },
     {
       "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "4f9fa29955d19646b9824b9976432e1fee210ec84dfa0ce4ad5571fbaacbf176",
+      "output_sha256": "0bebd2a4cb1eb0f7c8fcfc69fe7e4624c6899fc101e0786d2bbfb3993aad5037",
       "skipped": 0,
-      "tests": 27
+      "tests": 42
     },
     {
       "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "229fface2ee6c7e7dd89ca0c66be2f3ede6c7c489a725893e9b06e9599b85c71",
+      "output_sha256": "80166cdcf1d6d89f252dce80d45c2f48c3b06eaf193a4625ee3fec290b5c088b",
+      "skipped": 0,
+      "tests": 15
+    },
+    {
+      "file": "tests/tst_review_bundle_v20.py",
+      "output_sha256": "3bcecb4264fbb6c766bf7b597c42a4907356679f9c5fbf680956d58928d3f26e",
+      "skipped": 0,
+      "tests": 13
+    },
+    {
+      "file": "tests/tst_screen_check_v20.py",
+      "output_sha256": "5f9466c43a13b868c3dbcc36af0af93d987baba254a8671d3700bced390616ed",
+      "skipped": 0,
+      "tests": 139
+    }
+  ],
+  "minimum_claude_version": "2.1.281",
+  "package_format": 2,
+  "package_tests": [
+    {
+      "file": "tests/tst_auto_queue_v20.py",
+      "output_sha256": "3338e1906dab697bfd3a53c0776074511119eceba55610713669ffb36943c457",
+      "skipped": 4,
+      "tests": 163
+    },
+    {
+      "file": "tests/tst_publication_precheck_v20.py",
+      "output_sha256": "5fa364fad81969c9b62b1a535a95683d041cd70e0ec274d2099a3fb7c2f69937",
+      "skipped": 0,
+      "tests": 42
+    },
+    {
+      "file": "tests/tst_records_history_v20.py",
+      "output_sha256": "16756c38853f129718fdf7c13cf58fe80b71ee8f8b775f21126780574500f954",
       "skipped": 0,
       "tests": 15
     },
@@ -362,55 +421,21 @@
     },
     {
       "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "47a7447aa980306712f9a9d94e1c18489a0be0a9c2ad9625fab96d755424027d",
+      "output_sha256": "d7127dcfc8f86e5cf89f63457f511b7874397c9301f9927cec322248170beaba",
       "skipped": 0,
-      "tests": 100
+      "tests": 139
     }
   ],
-  "minimum_claude_version": "2.1.281",
-  "package_format": 2,
-  "package_tests": [
-    {
-      "file": "tests/tst_auto_queue_v20.py",
-      "output_sha256": "0d5f7f70943d1c73890dc4019877c77add14558d6046713d4f6f6ed013b153c6",
-      "skipped": 3,
-      "tests": 114
-    },
-    {
-      "file": "tests/tst_publication_precheck_v20.py",
-      "output_sha256": "155fdf15dab9ed85952fafa84280fd310f317d5b088694a0d578b1ae26202222",
-      "skipped": 0,
-      "tests": 27
-    },
-    {
-      "file": "tests/tst_records_history_v20.py",
-      "output_sha256": "e7c0de3065aadf80ff830b37f2fe26e90b4389d1a4c07cba8e80b0b10bab7898",
-      "skipped": 0,
-      "tests": 15
-    },
-    {
-      "file": "tests/tst_review_bundle_v20.py",
-      "output_sha256": "0a68351797b46269a480fc500f9330420dffe0f4f17c8c131796b2e1e5c5eaf8",
-      "skipped": 0,
-      "tests": 13
-    },
-    {
-      "file": "tests/tst_screen_check_v20.py",
-      "output_sha256": "701f60085e75e82464ba76d85fcec8099120eb4a1dc7f2be78613c3f1d4d2dca",
-      "skipped": 0,
-      "tests": 100
-    }
-  ],
-  "release": "guided_coding 2.0 pilot r10 rev18 candidate (auto mode stages 1-2 with revision 12, 2026-10-12: runs need macOS and refuse elsewhere, init needs --lock-dir, a test-only launcher that refuses real queues runs the kit tests off macOS; built on the rev17 followups-20261004 revision: /gc auto, auto status, auto resume and stop with one worker and a sequential queue, auto_queue.py helper for queue state, stop including surviving processes from any shell, tracked runs with time limits and an outbound network block, a required SCREENING.txt outside-access record before Ready, frozen-packet verification bound to approval, test-installation fingerprint, local lock and a morning report with approval summaries, manual recovery after a usage limit, AUTO.md procedure, auto_start and auto_report screens checked by screen_check.py; standard mode, contract, roles and setup unchanged; stage 3 (integration, server suite, publication through the queue) not yet included; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
+  "release": "guided_coding 2.0 pilot r10 rev19 (revision 18, 2026-10-17: the tools run under any Python 3.10 or newer and refuse an older one (exit 19), only auto_queue.py needs psutil, installed in a venv (not --user, which -I ignores), and its message names that route and no longer cctbx, the auto-mode stop line accepts any absolute Python 3 interpreter path (screen_check.py stop-command prints the running one by default) and only printable characters inside quotes, a User Guide that names no particular installation; built on revision 17, 2026-10-16: one reporting rule for every hand-back (practical situation first, recommendation and complete next steps), checked Recommendation and Next lines on the STOP and PUBLICATION screens, read a step before describing it, an outside-reading waiver for full-path integration (OUTSIDE_WAIVER.md, screen_check.py --waiver; never publication), a no-push publication variant with publication_precheck.py confirm, personal untracked adoption beside a project AGENTS.md, quoted interpreter paths in the auto-mode stop line (screen_check.py stop-command), User Guide steps 2-3 and supported systems (Windows not supported), tests for two revision 15 follow-ups; auto_queue.py unchanged; built on revision 16, 2026-10-15: auto_queue.py reads the process table through psutil instead of /bin/ps, with the same refusals, and stops (exit 18) without psutil; the kit's commands use the cctbx conda Python (libtbx.python); tests that need git or sandbox-exec skip without them, the suite also runs inside sandbox-exec, and each survivors() attribution rule has its own test; built on revision 15, 2026-10-15: the kit's tests no longer need sh, bash, sleep, true, cc, ar or ranlib (Python child processes and archive and Mach-O fixtures written by the tests, real-tool conformance tests where cc, ar and ranlib exist; kit code unchanged); built on revision 14, 2026-10-14: zombie processes count as gone in auto_queue.py (exited processes not yet collected, as in Linux containers whose process 1 never reaps; an unreadable process table still refuses); built on revision 13, 2026-10-13: ACCEPT screen, check-draft and --corrections in screen_check.py, publication_precheck.py outgoing for the one-commit OUTGOING.txt block, stricter final publication and reading checks; auto_queue.py fails closed (exit 17) when the process table cannot be read, adds transfer and a fingerprint normalizer that reports timestamp-only differences for attended validation; synchronized faster tests; clearer setup and first-use instructions with shell-neutral Terminal commands; built on rev18, revision 12: auto mode stages 1-2 (/gc auto, auto status, auto resume and stop with one worker and a sequential queue, auto_queue.py with tracked runs, time limits, an outbound network block, SCREENING.txt, installation fingerprint, local lock and morning report; runs need macOS), standard mode, contract, roles and setup unchanged, stage 3 not yet included; status and validation limits in docs/GUIDED_CODING_README.md and docs/GUIDED_CODING_VERIFICATION.md)",
   "upstream": {
-    "commit": "608b5288a3c28256d3c86f8de48c7a2f2a8c8502",
-    "commit_date": "2026-10-12T19:53:04Z",
+    "commit": "e68e36ed8c95c255c01419be47313399cad42fcb",
+    "commit_date": "2026-10-18T00:06:04Z",
     "license_sha256": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
     "repository": "cctbx/cctbx_project",
-    "requested_ref": "608b5288a3c28256d3c86f8de48c7a2f2a8c8502",
-    "source_files": 38,
-    "source_manifest_sha256": "8a9e90e66478901e96217aacbb00035ec99ae3966bc19f3a4184175b2ad7b876",
+    "requested_ref": "e68e36ed8c95c255c01419be47313399cad42fcb",
+    "source_files": 41,
+    "source_manifest_sha256": "f6600e6b36cbc2fb56363e8c2e2de0f13cc845ac00418403ebc36f1afa5d41b2",
     "source_path": "libtbx/guided_coding",
-    "source_tree": "54236cfed1ac9dfe4b1477ddbb23229cc53d05fe"
+    "source_tree": "8e558dd1d9770d9fda33568800490d97e8e5a98a"
   }
 }
