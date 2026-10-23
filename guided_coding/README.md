@@ -1,53 +1,64 @@
 # Maintaining the Guided Coding website and download
 
-The User Guide has one maintained source: `docs/GUIDED_CODING_USER_GUIDE.md` in the kit. The builder puts that exact file in the ZIP and renders it as `getting-started.html`. Edit it in the source project, not in generated HTML. The detailed registration and command reference is a separate document, rendered at the existing `user-guide.html` URL. Its `#one-time-registration` link is retained.
+The Guided Coding pages describe GuidedCoding from the repository `cctbx/guided_coding` (revision 22 and later: five
+instruction files for Claude Code). The earlier kit, which this site described up to 2026-10-23, is retired and kept
+on that repository's branch `full-kit-rev21`.
 
-The website introduction is maintained in `main-page.md`. It links to the Helper on Guided Workflow. Keep that link when changing the page. Four more website pages are maintained as Markdown in `pages/`: Quick Start, How Guided Coding works and the two "Why Guided Coding" pages. The builder renders them with the documentation layout; they may link to other website pages by file name, and Quick Start's ```copy block gets a copy button. Their claims about the kit must match the documentation of the kit revision the site ships (see package.json); recheck them at each rebuild from a new revision. The writing prompt belongs on Guided Workflow. `index.template.html` and `docs.template.html` supply the site layout. The general setup card is optional.
+## Sources
+
+- **Website-owned text:**
+  - `main-page.md`, the main page; it keeps the "Two things matter more than any procedure" section and the link to
+    the Guided Workflow Helper;
+  - `pages/quick-start.md`, `pages/how-it-works.md`, `pages/why-not-claude-code.md` and
+    `pages/why-not-vibe-coding.md`.
+
+  Their claims must match the revision the site ships. The evidence wording is fixed: one review pass after plain
+  Claude Code cut missed program errors per job from 0.81 to 0.47; GuidedCoding always includes a review pass
+  (the code-review skill the study measured when available, else Claude's own review, reported as such) and, where
+  feasible, a proving test, with further checks when needed; GuidedCoding as now written has not itself been measured.
+- **Generated from the repository:**
+  - `getting-started.html`, from its `README.md`;
+  - `verification.html`, from its `EVIDENCE.md`;
+  - `reference-files.html`, which shows its five skill files as text;
+  - `documentation.html`, an index.
+- **Retired pages:** `overview.html`, `architecture.html` and `user-guide.html` are short stubs pointing to the new
+  pages, so that old links keep working. `user-guide.html` keeps its `#one-time-registration` anchor.
+- **Layout:** `index.template.html` and `docs.template.html`.
 
 ## Rebuild
 
-From the website checkout, with Python 3.10 or newer, Git, Bash and `shasum`:
+From the website checkout, with Python 3.10 or newer and Git:
 
 ```bash
-python3 guided_coding/build_package.py --ref FULL_SOURCE_COMMIT
+python3 guided_coding/build_site.py --ref FULL_COMMIT
 ```
 
-Run it with a Python that has psutil (since kit revision 16 the auto-mode tests need it; without it they are skipped, and the build records the skips). Without `--ref`, the builder reads the source project's current master. Prefer an accepted full commit when preparing a publication. Add `--check-only` to run the build and checks without replacing website outputs. Network access to the source hosting service is required. The script never commits, pushes, changes your personal setup or connects to project servers.
+`FULL_COMMIT` is the published `cctbx/guided_coding` commit. Add `--source-dir /path/to/guided_coding` to read it
+from a local clone instead of fetching it, and `--check-only` to build and check without replacing anything.
 
-To check a documentation update before it is published in the source repository:
+**What the builder does:**
+1. It runs the repository's own `tst_guided_coding.py`.
+2. It renders the pages, builds `guided_coding.zip` with fixed timestamps, and writes its checksum and
+   `package.json` (the source commit and the hashes of every file and page).
+3. It checks that every relative link and anchor resolves.
+4. Only then does it replace the outputs, keeping the previous ones in `guided_coding/.previous/`.
 
-```bash
-python3 guided_coding/build_package.py --ref FULL_BASELINE_COMMIT --source-dir /path/to/guided_coding
-```
+It never commits or pushes. It refuses a commit that is not on the source's origin/master. Its Markdown renderer
+supports a small subset (headings, paragraphs, lists, fenced code, tables, block quotes, code spans, links, `**` and
+`*`). It refuses the forms it knows it cannot render, such as underscore emphasis, autolinks and HTML entities. Still,
+look at each changed page in a preview.
 
-This route labels the result as a local documentation update. It compares the working source with the fetched baseline and refuses changes to tools, tests, contracts or procedure files. The one skill-file change it permits is the command-reference filename. It records the input and baseline separately; the baseline commit does not identify unpublished text changes.
-
-## What the builder checks
-
-Before it runs source code, the builder checks the complete inventory, manifest hashes, Git file identities, license, required entry points and dependencies. It also checks that the skill's guarded block is exactly the kit's (from kit revision 13: the listed hashes with `shasum`, or `sha256sum` where it is missing, then the downloaded checker, then the release check) and that the skill runs the checker nowhere else. It freezes names, contents and file modes, then checks for changes after each stage. It runs the checking tools with temporary fake clients and runs every shipped test file.
-
-The download uses a separate copy with its own manifest and recorded before/after hashes. Local paths and manual commands are adapted there. Since kit revision 16 the kit names its build's conda Python, `libtbx.python`, in its commands. Kit revision 18 lets any Python 3.10 or newer serve and tells download readers to make a virtual environment with psutil (`~/guided_coding_venv`), so the download's commands name `~/guided_coding_venv/bin/python`; the kit's exact passages about the conda Python get general wording or are dropped. The overview's section "Where Guided Coding is included", which names the other software that includes Guided Coding and which the User Guide links to, ships exactly as approved: the build requires that exact text once, and scans everything around it like any other text. The reference-files page shows the unchanged `auto_queue.py`, `payload/tools/screen_check.py` and `payload/RELEASE` exactly as shipped, including the source names in them; any other file naming the source project still stops the build. Shell-neutral `env` command lines (kit revision 13 and later, also for csh) resolve `TMPDIR` in the same shell-neutral form the kit uses, which sets it to the resolved `/tmp` rather than your own `TMPDIR`; other commands keep the bash prefix. The verification page's historical record keeps the commands it records. A test that compares a tool's exact message keeps quoting it, because the tools ship unchanged. The maintained User Guide is unchanged. The approved cloud and project section and the clearly labeled historical record retain their relevant source names; unrelated project commands elsewhere still fail the build. All download checks and tests run on that copy too.
-
-The five documentation pages are rendered from the Markdown in the ZIP. The other source files appear as exact text in `reference-files.html`. The package metadata records the source hashes used for each page. Unsupported Markdown, missing adaptation passages or changed tool interfaces stop the build for inspection. Do not bypass a refusal just to make a new revision build.
-
-Fake-client checks are not native Mac registration or a real coding task. Historical client observations apply only to the versions they name. Browser, live-page and download checks are separate from the build.
-
-## Outputs and checks
-
-Review and save the complete matching output set: the ZIP, its checksum, `package.json`, `index.html`, `getting-started.html`, `user-guide.html`, `overview.html`, `architecture.html`, `verification.html`, `documentation.html`, `reference-files.html`, `quick-start.html`, `how-it-works.html`, `why-not-claude-code.html` and `why-not-vibe-coding.html`. Keep the builder, templates, main-page copy, `pages/` sources, setup card and tests too. Update the site map if a page is added.
-
-Run the generator tests from the website checkout:
+## Tests
 
 ```bash
 python3 -B -m unittest discover -s guided_coding/tests -v
 ```
 
-These tests use temporary directories without network access or real credentials. The actual build records the package-test results and every skip. A skipped check is not a pass for that case.
+The tests use temporary folders, no network, and a small fake source repository.
 
-## A failed output replacement
+## Publishing
 
-Downloads and checks finish before any output is replaced. The builder saves every previous output, its hash and mode, plus records of absent files. It stages the new outputs and writes the main page last. A lock prevents two output replacements at once.
-
-If a write fails, it tries to restore every affected output. If restoration also fails, it keeps all recovery copies, `RECOVERY.md`, `RECOVERY.json` and the lock. Follow those instructions and verify the restored files or recorded absences before removing the lock or rebuilding. A stopped process or system failure can also leave unfinished work; inspect it before clearing anything. This is recovery from caught write errors, not an indivisible multi-file save.
-
-Publish only a matching set. After publication, check the live pages, Helper links, guide, command-reference anchor, and download checksum. Check the writing prompt on Guided Workflow. ZIP entries use fixed timestamps, but recorded test-output hashes can vary between runs; use the checksum from the actual build.
+Publish only a matching set of outputs. After publication, check:
+- the live pages;
+- the download checksum against `guided_coding.zip.sha256`;
+- the Guided Workflow Helper links.

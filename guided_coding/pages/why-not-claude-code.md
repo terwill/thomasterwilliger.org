@@ -1,12 +1,30 @@
 # Why Guided Coding and not just Claude Code?
 
-Guided Coding brings six practices together in a consistent procedure. Some are already possible with Claude Code, but Guided Coding makes them part of a structured process with recorded decisions and evidence. Some apply only to full-path tasks. A full-path task is any change that could affect how your program behaves, what it requires, its interfaces or an important claim.
+Claude Code can already fix bugs well. Guided Coding adds a few habits to every change, so that you can check the
+result without reading every line. The step the study measured, a review pass, can also be run with plain
+Claude Code; Guided Coding makes it routine, and adds the proving test, the triggered checks, the scope rule and the
+report:
 
-1. Automatic reviews of the finished work by separate reviewer and checker agents, on full-path tasks, before you are asked to approve it.
-2. A short written plan for every task outside auto mode, which you approve, revise or stop before anything changes.
-3. Clear descriptions of plans, work done, and requested approvals, each with a recommendation and the complete next steps.
-4. Outside reviews of the finished work, including its plan and tests, by a separate AI chat you choose. These happen before a full-path change is applied, unless you waive one for that change, and always before publication.
-5. A record of who chose each test's goal, who wrote the test and who ran it. The record also says whether the key check was made by an agent that did not plan the change.
-6. Before publication, a run of your project's full test suite compared with an earlier run. Skipping it needs your explicit waiver for that set of commits.
+- **A review pass, every time.** One code-review pass over the change, with each of its fixes checked, and any fix
+  that changes behaviour beyond the task reverted and raised with you. If the code-review skill is missing, Claude
+  reviews the change itself, and says so.
+- **A test that proves the fix,** where feasible. It fails on the old code for the reason in the task and passes on
+  the new code. Where no such test is feasible, the report says why and what evidence was used instead.
+- **Further checks only when the change needs them.** These are a live call, commands for another platform, or an
+  outside review by another AI assistant.
+- **A scope rule.** Claude asks before changing behaviour, interfaces, defaults or formats you did not ask about.
+- **A short report.** What changed, what proves it, what was not checked, your decisions with recommendations, and
+  the recommended next action.
 
-Some of these are instructions that Claude follows rather than checks a tool enforces. [How Guided Coding works](how-it-works.html) explains each step and shows which parts a tool enforces.
+## What the evidence shows
+
+In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job
+from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code's code-review skill, the review the
+study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible,
+a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use.
+[Evidence and limits](verification.html) gives the details, including the evidence against.
+
+## And the most important part
+
+Guided Coding does not replace your judgement. **Ask until you understand** each change, and **stay in control**:
+Claude proposes, you decide. [How Guided Coding works](how-it-works.html) explains each step.
