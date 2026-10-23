@@ -15,6 +15,20 @@ This is the procedure I use in my own software work. You can use it in any proje
 - [How Guided Coding works](how-it-works.html)
 - [Quick Start with Guided Coding](quick-start.html)
 
+## Start here
+
+Guided Coding runs inside Claude Code, so you need Claude Code first. If you do not have it yet, follow
+[Anthropic's Claude Code quickstart](https://code.claude.com/docs/en/quickstart), then come back here. Guided Coding
+has been tested on macOS; it should work on Linux, and has not been tested on Windows.
+
+1. **Recommended: let Claude install it with you.** Open [Quick Start](quick-start.html), copy its one message into
+   Claude Code, and follow Claude's directions.
+2. **Prefer to install it yourself?** [Download the ZIP](#download), or use the [install commands](getting-started.html)
+   for Git or the ZIP.
+3. **Then use it.** Open Claude Code in the folder of the project you want to change, and type `/gc` followed by
+   what you want done. Installing is once per computer; `/gc setup` is optional, once per project, and saves that
+   project's build and test commands.
+
 ## Two things matter more than any procedure
 
 **Ask until you understand.** Before you accept a change, you should be able to say what was wrong, what changed,

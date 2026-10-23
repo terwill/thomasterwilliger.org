@@ -40,7 +40,7 @@ PAGES = [
     ("how-it-works.html", "How it works", "How Guided Coding works",
      "What happens in a Guided Coding job, and what you decide.", "pages/how-it-works.md"),
     ("getting-started.html", "Install", "Installing Guided Coding",
-     "Registration, moving from the earlier kit, and going back.", "repo:README.md"),
+     "Install, update, move from the earlier kit, or go back.", "repo:README.md"),
     ("verification.html", "Evidence", "Evidence and limits",
      "What the study showed, what it did not, and the behaviour checks of this revision.", "repo:EVIDENCE.md"),
     ("why-not-claude-code.html", None, "Why Guided Coding and not just Claude Code?",

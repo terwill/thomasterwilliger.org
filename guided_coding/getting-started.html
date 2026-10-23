@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Installing Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="Registration, moving from the earlier kit, and going back."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/getting-started.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Installing Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="Install, update, move from the earlier kit, or go back."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/getting-started.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -561,18 +561,17 @@ main {
   </header><main class="container gc-main gc-doc-pages">
   <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html" aria-current="page">Install</a><a href="verification.html">Evidence</a><a href="documentation.html">Documentation</a></nav>
   <h1 class="gc-document-title">Installing Guided Coding</h1>
-  <p class="gc-lead">Registration, moving from the earlier kit, and going back.</p>
-<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#what-the-evidence-says">What the evidence says</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#install-and-register-it-once">Install and register it (once)</a></li><li><a href="#if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</a></li><li><a href="#tests">Tests</a></li></ul></div></details>
+  <p class="gc-lead">Install, update, move from the earlier kit, or go back.</p>
+<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#requirements">Requirements</a></li><li><a href="#install-and-register-it-once">Install and register it (once)</a></li><li><a href="#what-the-evidence-says">What the evidence says</a></li><li><a href="#if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</a></li><li><a href="#tests">Tests</a></li></ul></div></details>
 <p>GuidedCoding is a Claude Code skill, <code>/gc</code>, for making a bug fix or a bounded change you can trust, with little of your attention:</p>
 <ul><li>a test that proves the fix;</li><li>one review pass;</li><li>extra checks only when a change needs them (a live call, a run on another platform, an outside review);</li><li>a short report.</li></ul>
 <p><code>/gc batch</code> runs a supervised list of such jobs one at a time.</p>
 <p>The skill is the <a href="reference-files.html"><code>guided_coding/</code></a> folder. It is a set of instructions for Claude, with no code to install. Start with <a href="reference-files.html#skill-md"><code>guided_coding/SKILL.md</code></a>.</p>
-<h2 id="what-the-evidence-says">What the evidence says</h2>
-<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes a review pass (Claude Code&#x27;s code-review skill, the review the study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible, a test that proves the fix, with further checks when needed. GuidedCoding as now written has not itself been measured; it is being evaluated in real use. More in <a href="verification.html">EVIDENCE.md</a>.</p>
 <h2 id="requirements">Requirements</h2>
-<p>Claude Code. Git, unless you install from the ZIP download. The review step uses Claude Code&#x27;s code-review skill when it is available.</p>
+<ul><li><strong>Claude Code.</strong> If you do not have it yet, follow <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a> first.</li><li><strong>Git,</strong> unless you install from the ZIP download.</li><li><strong>macOS or Linux.</strong> GuidedCoding has been tested on macOS; it should work on Linux, and has not been tested on Windows.</li></ul>
+<p>The review step uses Claude Code&#x27;s code-review skill when it is available. To let Claude Code install GuidedCoding with you instead of running the commands yourself, see the website&#x27;s <a href="https://www.thomasterwilliger.org/guided_coding/quick-start.html">Quick Start</a>.</p>
 <h2 id="install-and-register-it-once">Install and register it (once)</h2>
-<p>Put the repository somewhere, then make a link from your Claude Code skills folder to its <code>guided_coding/</code> folder. The commands below are for bash or zsh, and are complete: copy a whole block, with no editing. If your shell is csh or tcsh, type <code>bash</code> first, and <code>exit</code> afterwards. They check before they change anything, and they stop on anything unexpected. If you set <code>CLAUDE_CONFIG_DIR</code>, they use that folder instead of <code>~/.claude</code>.</p>
+<p>Put the repository somewhere, then make a link from your Claude Code skills folder to its <code>guided_coding/</code> folder. Open Terminal (on a Mac) or a terminal window (on Linux), paste a whole block, and press Return. The blocks are complete: copy each one whole, with no editing. They are for bash or zsh, the usual shells. If your shell is csh or tcsh, type <code>bash</code> first, and <code>exit</code> afterwards. They check before they change anything, and they stop on anything unexpected. If you set <code>CLAUDE_CONFIG_DIR</code>, they use that folder instead of <code>~/.claude</code>.</p>
 <p><strong>Most people: in your home folder, with Git.</strong> This puts GuidedCoding in <code>~/guided_coding</code> and registers it:</p>
 <pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
@@ -583,7 +582,7 @@ if [ -e &quot;$SKILLS/gc&quot; ] || [ -L &quot;$SKILLS/gc&quot; ]; then echo &qu
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot;
 END
 </code></pre>
-<p><strong>Without Git: from the ZIP download.</strong> Download <code>guided_coding.zip</code> into your Downloads folder, then run this. It unpacks the ZIP into <code>~/guided_coding</code> and registers it:</p>
+<p><strong>Without Git: from the ZIP download.</strong> Download <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip"><code>guided_coding.zip</code></a> into your Downloads folder, then run this. It unpacks the ZIP into <code>~/guided_coding</code> and registers it:</p>
 <pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 DIR=&quot;$HOME/guided_coding&quot;
@@ -608,13 +607,15 @@ if [ -e &quot;$SKILLS/gc&quot; ] || [ -L &quot;$SKILLS/gc&quot; ]; then echo &qu
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot;
 END
 </code></pre>
-<p><strong>Then</strong> start a new Claude Code conversation and type <code>/gc</code>. It should introduce itself. Optionally, run <code>/gc setup</code> once per project to save its build and test commands in <code>.claude/GC_NOTES.md</code>.</p>
+<p><strong>Then</strong> start a new Claude Code conversation in the folder of the project you want to change, and type <code>/gc</code>. It should introduce itself. After that, type <code>/gc</code> followed by what you want done. Installing is once per computer; optionally, run <code>/gc setup</code> once per project to save its build and test commands in <code>.claude/GC_NOTES.md</code>.</p>
+<h2 id="what-the-evidence-says">What the evidence says</h2>
+<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes a review pass (Claude Code&#x27;s code-review skill, the review the study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible, a test that proves the fix, with further checks when needed. GuidedCoding as now written has not itself been measured; it is being evaluated in real use. More in <a href="verification.html">EVIDENCE.md</a>.</p>
 <h2 id="if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</h2>
 <p>Revision 22 replaces the earlier kit with this much shorter procedure. The earlier kit had approval screens, evidence packets checked by its own tools, and an unattended auto mode. They are retired, and kept on the branch <code>full-kit-rev21</code>.</p>
 <p>What you gain, and what you lose:</p>
 <ul><li><strong>Gained:</strong> a shorter, prompt-only procedure that asks for your attention only when a decision is needed.</li><li><strong>Lost:</strong> the screens, packets, checker tools and the unattended auto mode. <code>/gc batch</code> is supervised, not unattended.</li></ul>
 <p><strong>To move:</strong></p>
-<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first clone as in &quot;Register it&quot;, then run this from the folder that contains <code>modules</code> (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre><code>sh &lt;&lt;&#x27;END&#x27;
+<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first clone as in &quot;In a PHENIX installation&quot; under &quot;Install and register it (once)&quot;, then run this from the folder that contains <code>modules</code> (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 OLD=&quot;$SKILLS/guided_coding&quot;
 NEW=&quot;$PWD/modules/guided_coding/guided_coding&quot;
@@ -638,7 +639,7 @@ git checkout full-kit-rev21
 <pre><code>python3 tst_guided_coding.py
 </code></pre>
 <p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="verification.html">EVIDENCE.md</a>.</p>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/0cf629a4cf048e431d9d3b5c2c3483222313f8b6">cctbx/guided_coding 0cf629a</a> (2026-10-23).</p>
+  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/b8345f607fb62f703d84b9f30095e4a11301d86e">cctbx/guided_coding b8345f6</a> (2026-10-23).</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
