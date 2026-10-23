@@ -12,7 +12,8 @@ your main check that the instructions were followed.
 ## Two things matter more than any procedure
 
 **Ask until you understand.** If you cannot say what was wrong, what changed and how the test shows it is fixed, ask
-until you can. If you still do not understand a change, do not accept it.
+until you can. If you still do not understand a change, do not accept it. If a second opinion would help, ask for an outside review
+(below).
 
 **You are in control, not the AI.** Claude proposes; you decide the task, its reach, what to keep, and whether
 anything is pushed or installed. You can redirect or stop it at any time.
@@ -49,6 +50,9 @@ anything is pushed or installed. You can redirect or stop it at any time.
 
 An outside review means: Claude writes one file with the task, the full change, the tests and their output, and the
 question. You paste it into another AI assistant and paste the reply back. Claude answers each finding.
+You can ask for an outside review on any job, even when no trigger applies; it is then handled in the same way. The
+file leaves out keys and private data, but it contains your code: share it only with an assistant your project
+allows.
 
 ## Consequential work
 

@@ -558,7 +558,7 @@ main {
 <p>This is the procedure I use in my own software work. You can use it in any project managed with Git.</p>
 <ul><li><a href="why-not-claude-code.html">Why Guided Coding and not just Claude Code?</a></li><li><a href="why-not-vibe-coding.html">Why Guided Coding and not Vibe Coding?</a></li><li><a href="how-it-works.html">How Guided Coding works</a></li><li><a href="quick-start.html">Quick Start with Guided Coding</a></li></ul>
 <h2 id="two-things-matter-more-than-any-procedure">Two things matter more than any procedure</h2>
-<p><strong>Ask until you understand.</strong> Before you accept a change, you should be able to say what was wrong, what changed, and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you still do not understand it, do not accept it.</p>
+<p><strong>Ask until you understand.</strong> Before you accept a change, you should be able to say what was wrong, what changed, and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you still do not understand it, do not accept it. If you are unsure about a change, or it matters a lot, ask Claude for an outside review file. Give it to another AI assistant for a second opinion, then paste the reply back to Claude to address. A second reader, especially a different model, may catch problems that the first one missed.</p>
 <p><strong>You are in control, not the AI.</strong> Claude proposes; you decide. You decide what the task is, how far the change may reach, what to keep, and whether and when anything is pushed or installed. Guided Coding asks you before it changes behaviour you did not ask for and before any irreversible step, and it commits or pushes only when you ask. You can redirect or stop it at any time.</p>
 <h2 id="a-small-example">A small example</h2>
 <p>Suppose your program crashes when it reads an empty file. You want it to print &quot;The file is empty&quot; and stop. When the file contains data, the program should work as it did before.</p>
@@ -580,9 +580,9 @@ main {
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/1ea24a489facd56b7e8ec5074c730b88032d5092">1ea24a4</a> · 2026-10-23 · ZIP: 53 KB</p>
+      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/0cf629a4cf048e431d9d3b5c2c3483222313f8b6">0cf629a</a> · 2026-10-23 · ZIP: 53 KB</p>
       <p>To check the ZIP, download it into Downloads, then run this command in Terminal. The result should end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '4d7b6e36577b55d97a6ef51b84b6885550b3fadecb8e6efc7f22c873348d051d' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '9279cb1b34a4c84cd814ccd7345e5f1d2cca552fa2e6ff3e540896bfdd0a0388' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
   </div>

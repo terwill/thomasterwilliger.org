@@ -20,7 +20,9 @@ This is the procedure I use in my own software work. You can use it in any proje
 **Ask until you understand.** Before you accept a change, you should be able to say what was wrong, what changed,
 and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but
 it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you
-still do not understand it, do not accept it.
+still do not understand it, do not accept it. If you are unsure about a change, or it matters a lot, ask Claude
+for an outside review file. Give it to another AI assistant for a second opinion, then paste the reply back to
+Claude to address. A second reader, especially a different model, may catch problems that the first one missed.
 
 **You are in control, not the AI.** Claude proposes; you decide. You decide what the task is, how far the change may
 reach, what to keep, and whether and when anything is pushed or installed. Guided Coding asks you before it changes
