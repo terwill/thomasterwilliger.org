@@ -85,7 +85,8 @@ from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code's co
 study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible,
 a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use. The study was
 small, and it also found evidence for the larger earlier kit on some major errors. See
-[Evidence and limits](verification.html), including the evidence against.
+[Evidence and limits](verification.html), which goes through the main parts of Guided Coding and what the
+evidence says about each, including the evidence against.
 
 Guided Coding replaced a much larger earlier kit on 2026-10-23. The earlier kit had approval screens, evidence
 packets and an unattended auto mode. It is kept on the repository's branch

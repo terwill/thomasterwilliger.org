@@ -22,7 +22,8 @@ In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code
 from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code's code-review skill, the review the
 study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible,
 a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use.
-[Evidence and limits](verification.html) gives the details, including the evidence against.
+[Evidence and limits](verification.html) goes through the main parts of Guided Coding and what the evidence says about
+each, including the evidence against.
 
 ## And the most important part
 

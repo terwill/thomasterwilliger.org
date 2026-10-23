@@ -42,7 +42,7 @@ PAGES = [
     ("getting-started.html", "Install", "Installing Guided Coding",
      "Install, update, move from the earlier kit, or go back.", "repo:README.md"),
     ("verification.html", "Evidence", "Evidence and limits",
-     "What the study showed, what it did not, and the behaviour checks of this revision.", "repo:EVIDENCE.md"),
+     "What the evidence says about the main parts of /gc, the study behind it, and the behaviour checks.", "repo:EVIDENCE.md"),
     ("why-not-claude-code.html", None, "Why Guided Coding and not just Claude Code?",
      "What Guided Coding adds to Claude Code.", "pages/why-not-claude-code.md"),
     ("why-not-vibe-coding.html", None, "Why Guided Coding and not Vibe Coding?",

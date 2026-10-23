@@ -573,7 +573,7 @@ main {
 <h2 id="help">Help</h2>
 <p>Type <code>/gc</code> on its own for a short introduction. <code>/gc setup</code> saves your project&#x27;s build and test commands in a short notes file, so later jobs can use them. If a report or a choice is hard to understand, ask Claude to explain it more simply. You can also give the text to a <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a>.</p>
 <h2 id="evidence-and-limits">Evidence and limits</h2>
-<p>In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code&#x27;s code-review skill, the review the study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible, a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use. The study was small, and it also found evidence for the larger earlier kit on some major errors. See <a href="verification.html">Evidence and limits</a>, including the evidence against.</p>
+<p>In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code&#x27;s code-review skill, the review the study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible, a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use. The study was small, and it also found evidence for the larger earlier kit on some major errors. See <a href="verification.html">Evidence and limits</a>, which goes through the main parts of Guided Coding and what the evidence says about each, including the evidence against.</p>
 <p>Guided Coding replaced a much larger earlier kit on 2026-10-23. The earlier kit had approval screens, evidence packets and an unattended auto mode. It is kept on the repository&#x27;s branch <a href="https://github.com/cctbx/guided_coding/tree/full-kit-rev21">full-kit-rev21</a>.</p>
   <section id="install"><h2>Install</h2>
     <p>Guided Coding is five instruction files for Claude Code, kept in the repository <a href="https://github.com/cctbx/guided_coding">cctbx/guided_coding</a>. <a href="getting-started.html">Installing Guided Coding</a> gives the commands, which check before they change anything. To let Claude Code do the setup with you, see <a href="quick-start.html">Quick Start</a>.</p>
@@ -583,9 +583,9 @@ main {
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/b8345f607fb62f703d84b9f30095e4a11301d86e">b8345f6</a> · 2026-10-23 · ZIP: 54 KB</p>
+      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/14b8371ed07b458fe61d3ac78985a74c5920ef63">14b8371</a> · 2026-10-23 · ZIP: 58 KB</p>
       <p>To check the ZIP, download it into Downloads, then run this command in Terminal. The result should end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' 'c47c3f1e902cf12b24f9ef63061840b4dc0988ea435a3f7ae1ab68c91a667d29' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '085865d0c31c5e255ef870cd6908947a485738c26749dcf87fa16bb074b384c2' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
   </div>

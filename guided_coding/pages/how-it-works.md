@@ -65,6 +65,22 @@ the irreversible step:
 3. an outside review of the plan and the prepared change is completed, and its important findings are resolved;
 4. nothing touches a shared installation without your explicit go.
 
+## Other rules
+
+- **Large jobs.** If a task bundles changes that can be separated, Claude proposes splitting it, and running the
+  parts with `/gc batch`.
+- **A second reader, if useful.** When a change is subtle, touches shared code or many callers, or Claude is not
+  confident the tests would catch a wrong fix, the report recommends an independent reviewer: a separate Claude
+  reviewer that reads the change and its evidence. It runs only if you agree. It takes about three times as long as
+  a review pass, and in the study it was not clearly better than simply running a second ordinary review.
+- **Before a push.** Claude pushes only when you ask it to. It first names anything important still open (a
+  pending step, a failing essential check, an unresolved important correctness finding), and goes ahead only if you
+  explicitly accept it. It updates the branch first if needed and reruns the checks the
+  update affects. If your notes name a full test suite to run before a push, it offers to prepare it. A release also
+  gets a short checklist: where it goes, the test results, your approval, and how to undo it.
+- **A job log, if you want one.** If your notes turn it on, each job adds one line to a log file, so that you can
+  check later how the jobs turned out.
+
 ## Several tasks: `/gc batch`
 
 You give a list of tasks, a stopping time and a time limit per job. Claude runs the tasks one at a time, each with
@@ -84,7 +100,8 @@ Your team's own instructions (`CLAUDE.md`, `AGENTS.md`) take precedence over the
 
 ## Limits
 
-Guided Coding as now written has not itself been measured; see [Evidence and limits](verification.html). Its review
+Guided Coding as now written has not itself been measured; [Evidence and limits](verification.html) goes through
+its main parts and what the evidence says about each. Its review
 pass is done by the same kind of model as the one doing the work. An outside review can use a different
 AI assistant, which you choose. The report is only as reliable as
 the checks behind it, which is why it says what was not checked, and why asking until you understand matters.
