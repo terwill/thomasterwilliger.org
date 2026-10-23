@@ -55,7 +55,7 @@ PAGES = [
 RETIRED = [
     ("overview.html", "Guided Coding overview (retired)"),
     ("architecture.html", "Guided Coding implementation details (retired)"),
-    ("user-guide.html", "Guided Coding command reference (retired)"),
+    ("user-guide.html", "Guided Coding User Guide and command reference (retired)"),
 ]
 OUTPUTS = (["index.html", ZIP_NAME, ZIP_NAME + ".sha256", "package.json"]
            + [p[0] for p in PAGES] + [r[0] for r in RETIRED])
