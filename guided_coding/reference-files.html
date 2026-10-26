@@ -724,8 +724,8 @@ possible, and that the result can be trusted.
   triggers.
 - **When a step cannot be finished now,** finish everything else and mark the step as pending in the report.
 - **Finish before you report.** If you start a long test or build, wait for it to finish (or stop it) before writing
-  any outside-review file and the final report. Leave nothing this job started running in the background. The final report is your
-  last message.
+  any outside-review file and the final report. Leave nothing this job started running in the background. The final
+  report is your last message.
 - **When the output or the outside review comes back,** treat each problem or finding as in §2, and update the
   report. If the developer skips a step, the report says &quot;&lt;step&gt;: skipped by the developer&quot;. Skipping counts as
   accepting the uncertainty.
@@ -738,7 +738,11 @@ different and rarer thing: it also needs a plan, a recovery step and an outside 
 - **Commit** only when the developer asks, after showing the complete diff. Approving the content is not a request to
   commit. Follow the commit rules in the notes and team instructions.
 - **Push** only when the developer asks, and only where the notes and team instructions allow an agent to push.
-  Where they do not, give the developer the exact push command.
+- **Steps the developer runs.** Where the notes or team instructions leave a commit or a push to the developer, give
+  the exact commands, each in its own block, in the order to run them: `git add` naming exactly this job&#x27;s files,
+  `git commit -m` with the proposed message, then `git pull --rebase` and `git push`. Say which folder to run them
+  in. Ask the developer to say when they are done, then check that the commit is on the remote; if the push was
+  refused (for example because others pushed first), give the commands to update and push again.
 - **Name what is open first.** Do not proceed while any of the following holds, unless the developer explicitly
   accepts the limitation:
   - a live call, platform check or outside review is pending;
@@ -902,7 +906,8 @@ minutes, once per project.
 
 - **The project** is the folder this session was started in, unless the developer names another.
 - **Notes that already exist.** If `.claude/GC_NOTES.md` (or the older `.claude/LEAN_NOTES.md`) exists there or in a
-  parent folder, show it and ask what to change, and update that file where it is. Do not start again from scratch, and do not make a second copy.
+  parent folder, show it and ask what to change, and update that file where it is. Do not start again from scratch,
+  and do not make a second copy.
 
 ## 2. Look before asking
 
@@ -1079,7 +1084,7 @@ end of its header line; earlier rows keep 14 fields.
 15. `outside_review`: none, offered, done, pending or skipped; if done, add the developer&#x27;s minutes on it and whether
     it was worth it (yes, no or `?`)
 </code></pre>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/7b51d554a9856cecc17c9b0b0a0ef7c5e66a7993">cctbx/guided_coding 7b51d55</a> (2026-10-26).</p>
+  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/bb72cce7f5598a89f0b16f9aae3986f273e96a85">cctbx/guided_coding bb72cce</a> (2026-10-26).</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>

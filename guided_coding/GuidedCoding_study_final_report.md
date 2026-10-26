@@ -1393,7 +1393,7 @@ The detailed limits are in Part B §10, in Part C ("The main caveat", "Other lim
   publication folder and a run of the old kit's check with `--fetch`. GC does not contain this code. Both copies were
   fixed on 2026-10-26: `check`, `confirm` and `carry-over` now refuse a record whose remote name or URL could be read
   as a git option, or whose URL names a remote helper (`ext::` and the like, which run programs), before any git
-  call, as `prepare` and `vet` already did for the name, with regression tests that fail on the
+  call, as `outgoing` and `vet` already did for the name, with regression tests that fail on the
   old code and pass on the new.
 
 # Source index
@@ -1440,7 +1440,7 @@ Paths are relative to `<rec>` = `phenix/.claude/records/2026-10-15-gc-replay-pro
 | Src35 | `walkthrough/lean/rename/p22_reviews/REVIEW_1.md` | Outside review 1 of the retirement plan (packet-22) | `ccfc189813f039d4b84162d6bd53d0b4173bbce36cbd90b3963b8408b6cb1382` |
 | Src36 | `walkthrough/lean/rename/p22_reviews/REVIEW_2.md` | Outside review 2 of the retirement plan (packet-22) | `36438c1b2f0208c91ab394381e6e52a13731935bced6355c579a8ed63243c5a4` |
 | Src37 | `walkthrough/lean/rename/p22_reviews/REVIEW_3.md` | Outside review 3 of the retirement plan (packet-22) | `97d6774ea769cea8b79412ac89857443512c6decdb8854dd336c203a6f7dd634` |
-| Src38 | `modules/cctbx_project/libtbx/guided_coding/payload/tools/publication_precheck.py` | The retired kit's publication precheck, as distributed in cctbx_project (identical on full-kit-rev21) | `b1b9a20e537b7464719fe901a4d60fd6e6dfa2f35a1ce43c618e113a22da6c34` |
+| Src38 | `modules/cctbx_project/libtbx/guided_coding/payload/tools/publication_precheck.py` | The retired kit's publication precheck, as distributed in cctbx_project (identical on full-kit-rev21) | `f7d2c0381c7abd06748b1d5907a606f927389dbe782fe6fbfb89d524412767cc` |
 | Src39 | `walkthrough/round6/REPORT_R6_RESULTS.md` | Round-6 report: GC replayed on the 18 caught-any jobs | `ce7deb1e2a7386e2da44c68f40ddf8d23efdbbc8833c222b9ed6591a747fc59c` |
 | Src40 | `walkthrough/round6/R6_SUMMARY.md` | Round-6 figures, from r6_summarize.py | `0152614b9ec0c780b8f37b3893a5d8f4f44b841ff14de38fa2bd4be548210a0a` |
 | Src41 | `walkthrough/round6/decision_count/DECISION_COUNT.md` | Round 6: decisions GC put to the stand-in Developer (decision N) | `c726d9585a3aae838ee4f419f6e5040b610548e09bb64119bfcd4490cf28190e` |
@@ -1457,7 +1457,7 @@ Paths are relative to `<rec>` = `phenix/.claude/records/2026-10-15-gc-replay-pro
 | Src52 | `walkthrough/gc_rev23/TRIAL_1.4.md` | Trial of the GC 1.4 draft (implementation check) | `c8d4c99de923a5ffe21420ff936d4c5ecb0c4b0388326bfa56232520f2d4e6af` |
 | Src53 | `walkthrough/gc_rev23/GC_1.3_to_1.4.diff` | What changed from GC 1.3 to the GC 1.4 draft | `134f5a9441cc7fb89c3a2df130daf67c10a81ce6ceb669cfbebe16365242a9ce` |
 | Src54 | `walkthrough/gc_rev23/WEBSITE_SUMMARY_DRAFT.md` | Draft summary for the website: what helped, what did not, what hurt, what is kept untested (not published) | `6ec00ed061176d8fd881bfd7ce0dcb4144e7aa1d01b367eb65322d6e22cb1632` |
-| Src55 | `RECORD.md` | The study's step-by-step record, a living file, as at 2026-10-26 (the Developer's decisions after round 6b) | `b5c6c6513a922bc787a61215439f48a2157ba25ae7cec479c452b999491ea54d` |
+| Src55 | `RECORD.md` | The study's step-by-step record, a living file, as at 2026-10-26 (the Developer's decisions after round 6b) | `7738f6aa2a2d4423deb504e0d2a3964debfed296e0e9fd05cc0a8fe9a88f806a` |
 
 # Appendix A. Every tagged error and its severity
 

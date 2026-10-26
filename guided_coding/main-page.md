@@ -83,7 +83,7 @@ simply. You can also give the text to a [Guided Workflow Helper](https://www.tho
 
 In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job
 from 0.81 to 0.47. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when
-added to Guided Coding, narrowly (the net gain came from 4 of the 18 jobs, and the reviews also brought in a few).
+added to Guided Coding, narrowly (the net gain came from 4 of the 18 jobs, and the reviews also brought in a few new errors).
 Guided Coding 1.4 keeps one review pass and an outside review (for hard or consequential changes), which were found
 to help, and a test that proves the fix. It drops or makes optional what showed no clear benefit, and narrows a strict scope
 rule that probably cost errors. Guided Coding 1.4 as a whole has not itself been measured; it was checked in a small

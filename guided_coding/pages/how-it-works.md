@@ -39,7 +39,9 @@ anything is pushed or installed. You can redirect or stop it at any time.
    not checked; any changes you did not ask for; your decisions, each with a recommendation; and the recommended next
    action. It is Claude's last message: long tests or builds are finished or stopped first, and nothing it started
    is left running.
-8. **Committing and pushing,** only when you ask, following your project's rules.
+8. **Committing and pushing,** only when you ask, following your project's rules. Where your project leaves the
+   commit or push to you, Claude gives the exact commands to run, in order, and checks the result when you say they
+   are done.
 
 ## The triggers
 
