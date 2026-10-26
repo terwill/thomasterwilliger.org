@@ -575,22 +575,27 @@ main {
 <p><strong>Most people: in your home folder, with Git.</strong> This puts GuidedCoding in <code>~/guided_coding</code> and registers it. If <code>~/guided_coding</code> is already a clone of cctbx/guided_coding on <code>master</code>, it updates it with <code>git pull</code> instead:</p>
 <pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
+VERSION=1.4
 DIR=&quot;$HOME/guided_coding&quot;
 for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SKILLS/$L&quot; ]; then echo &quot;$SKILLS/$L already exists; nothing changed:&quot;; ls -l &quot;$SKILLS/$L&quot;; echo &quot;To update or move an existing installation, see Update and If you used the earlier GuidedCoding kit.&quot;; exit 1; fi; done
 if [ -e &quot;$DIR&quot; ]; then
-  case &quot;$(git -C &quot;$DIR&quot; remote get-url origin 2&gt;/dev/null)&quot; in *cctbx/guided_coding|*cctbx/guided_coding.git) ;; *) echo &quot;$DIR exists but is not a clone of cctbx/guided_coding; nothing changed.&quot;; exit 1;; esac
+  case &quot;$(git -C &quot;$DIR&quot; remote get-url origin 2&gt;/dev/null)&quot; in https://github.com/cctbx/guided_coding|https://github.com/cctbx/guided_coding.git|git@github.com:cctbx/guided_coding|git@github.com:cctbx/guided_coding.git|ssh://git@github.com/cctbx/guided_coding|ssh://git@github.com/cctbx/guided_coding.git) ;; *) echo &quot;$DIR exists but is not a clone of https://github.com/cctbx/guided_coding; nothing changed.&quot;; exit 1;; esac
   [ &quot;$(git -C &quot;$DIR&quot; rev-parse --abbrev-ref HEAD)&quot; = master ] || { echo &quot;$DIR is not on the master branch; nothing changed.&quot;; exit 1; }
   git -C &quot;$DIR&quot; pull --ff-only || { echo &quot;Could not update $DIR; nothing registered.&quot;; exit 1; }
 else
   git clone https://github.com/cctbx/guided_coding.git &quot;$DIR&quot; || exit 1
 fi
-grep -q &#x27;^# GuidedCoding (version&#x27; &quot;$DIR/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$DIR/guided_coding/SKILL.md is not the current GuidedCoding (it may be the earlier kit); nothing registered.&quot;; exit 1; }
+grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$DIR/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$DIR/guided_coding/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; exit 1; }
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$DIR/guided_coding/SKILL.md&quot;
 END
 </code></pre>
-<p><strong>Without Git: from the ZIP download.</strong> Download <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip"><code>guided_coding.zip</code></a> into your Downloads folder. To check it, compare the output of <code>shasum -a 256 ~/Downloads/guided_coding.zip</code> with the published <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256"><code>guided_coding.zip.sha256</code></a>. Then run this. It unpacks the ZIP into <code>~/guided_coding</code> and registers it:</p>
+<p><strong>Without Git: from the ZIP download.</strong> Download <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip"><code>guided_coding.zip</code></a> into your Downloads folder. To check it against the published <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256"><code>guided_coding.zip.sha256</code></a>, run this; it should print <code>guided_coding.zip: OK</code>:</p>
+<pre><code>(cd ~/Downloads &amp;&amp; curl -fsS https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256 | shasum -a 256 -c)
+</code></pre>
+<p>Then run this. It unpacks the ZIP into <code>~/guided_coding</code> and registers it:</p>
 <pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
+VERSION=1.4
 DIR=&quot;$HOME/guided_coding&quot;
 ZIP=&quot;$HOME/Downloads/guided_coding.zip&quot;
 for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SKILLS/$L&quot; ]; then echo &quot;$SKILLS/$L already exists; nothing changed:&quot;; ls -l &quot;$SKILLS/$L&quot;; echo &quot;To update or move an existing installation, see Update and If you used the earlier GuidedCoding kit.&quot;; exit 1; fi; done
@@ -598,8 +603,8 @@ for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SK
 [ -f &quot;$ZIP&quot; ] || { echo &quot;Not found: $ZIP. Download it first. If it was saved under another name, such as &#x27;guided_coding (1).zip&#x27;, rename it to guided_coding.zip. If Safari unpacked it, turn off Settings &gt; General &gt; Open safe files after downloading, and download it again.&quot;; exit 1; }
 TMP=&quot;$(mktemp -d)&quot; &amp;&amp; unzip -q &quot;$ZIP&quot; -d &quot;$TMP&quot; || exit 1
 set -- &quot;$TMP&quot;/guided_coding-*
-[ $# -eq 1 ] &amp;&amp; [ -f &quot;$1/guided_coding/SKILL.md&quot; ] || { echo &quot;Unexpected ZIP contents in $TMP; nothing changed.&quot;; exit 1; }
-grep -q &#x27;^# GuidedCoding (version&#x27; &quot;$1/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;the ZIP&#x27;s guided_coding/SKILL.md is not the current GuidedCoding (it may be the earlier kit); nothing registered.&quot;; exit 1; }
+[ $# -eq 1 ] &amp;&amp; [ -f &quot;$1/guided_coding/SKILL.md&quot; ] || { echo &quot;Unexpected ZIP contents; nothing changed.&quot;; rm -rf &quot;$TMP&quot;; exit 1; }
+grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$1/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;the ZIP&#x27;s guided_coding/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; rm -rf &quot;$TMP&quot;; exit 1; }
 mv &quot;$1&quot; &quot;$DIR&quot; &amp;&amp; rmdir &quot;$TMP&quot; &amp;&amp; mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$DIR/guided_coding/SKILL.md&quot;
 END
 </code></pre>
@@ -607,17 +612,20 @@ END
 <pre><code>git clone https://github.com/cctbx/guided_coding.git modules/guided_coding
 sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
+VERSION=1.4
 NEW=&quot;$PWD/modules/guided_coding/guided_coding&quot;
 [ -f &quot;$NEW/SKILL.md&quot; ] || { echo &quot;Not found: $NEW/SKILL.md. Run this from the folder that contains modules.&quot;; exit 1; }
 for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SKILLS/$L&quot; ]; then echo &quot;$SKILLS/$L already exists; nothing changed:&quot;; ls -l &quot;$SKILLS/$L&quot;; echo &quot;To update or move an existing installation, see Update and If you used the earlier GuidedCoding kit.&quot;; exit 1; fi; done
-grep -q &#x27;^# GuidedCoding (version&#x27; &quot;$NEW/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$NEW/SKILL.md is not the current GuidedCoding (it may be the earlier kit); nothing registered.&quot;; exit 1; }
+grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$NEW/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$NEW/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; exit 1; }
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$NEW/SKILL.md&quot;
 END
 </code></pre>
-<p>Each block ends by showing the link and the version line of the skill it registered, such as <code># GuidedCoding (version 1.4)</code>.</p>
-<p><strong>Update.</strong> For an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
+<p>Each block ends by showing the link and the version line of the skill it registered, <code># GuidedCoding (version 1.4)</code>. The blocks register only that version (<code>VERSION=1.4</code> in each block).</p>
+<h3 id="update">Update</h3>
+<p>For an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
 <ol><li>remove the link <code>gc</code> in your Claude Code skills folder (<code>$CLAUDE_CONFIG_DIR/skills</code> if you set  <code>CLAUDE_CONFIG_DIR</code>, otherwise <code>~/.claude/skills</code>); it is only a link, and removing it deletes nothing else;</li><li>rename <code>~/guided_coding</code> to keep it as a backup, outside the skills folder, so that only one registration remains  (two skills named <code>gc</code> conflict);</li><li>download the new ZIP and run the ZIP block again.</li></ol>
-<p><strong>Uninstall.</strong> Remove the link <code>gc</code> from your Claude Code skills folder (as in Update, step 1). You may then delete the <code>~/guided_coding</code> folder (or <code>modules/guided_coding</code> in PHENIX). Notes that <code>/gc setup</code> saved in a project (<code>.claude/GC_NOTES.md</code>) are ordinary files; delete them if you no longer want them.</p>
+<h3 id="uninstall">Uninstall</h3>
+<p>Remove the link <code>gc</code> from your Claude Code skills folder (as in Update, step 1). You may then delete the <code>~/guided_coding</code> folder (or <code>modules/guided_coding</code> in PHENIX). Notes that <code>/gc setup</code> saved in a project (<code>.claude/GC_NOTES.md</code>) are ordinary files; delete them if you no longer want them.</p>
 <p><strong>Then</strong> start a new Claude Code conversation in the folder of the project you want to change, and type <code>/gc</code>. It should introduce itself. After that, type <code>/gc</code> followed by what you want done. Installing is once per computer; optionally, run <code>/gc setup</code> once per project to save its build and test commands in <code>.claude/GC_NOTES.md</code>.</p>
 <h2 id="what-the-evidence-says">What the evidence says</h2>
 <p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="verification.html">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
@@ -628,16 +636,18 @@ END
 <p><strong>To move:</strong></p>
 <ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first run only the <code>git clone</code> line from &quot;In a PHENIX installation&quot; under &quot;Install and register it (once)&quot; (not its register block, which stops while the old link exists), then run this from the folder that contains <code>modules</code> (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
+VERSION=1.4
 OLD=&quot;$SKILLS/guided_coding&quot;
 NEW=&quot;$PWD/modules/guided_coding/guided_coding&quot;
 [ -f &quot;$NEW/SKILL.md&quot; ] || { echo &quot;Not found: $NEW/SKILL.md. Clone first, and run this from the folder that contains modules.&quot;; exit 1; }
+grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$NEW/SKILL.md&quot; || { echo &quot;$NEW/SKILL.md is not GuidedCoding $VERSION; update the clone (git pull) first; nothing changed.&quot;; exit 1; }
 [ -L &quot;$OLD&quot; ] || { echo &quot;$OLD is not a link (or does not exist); nothing changed.&quot;; exit 1; }
 case &quot;$(readlink &quot;$OLD&quot;)&quot; in
   */cctbx_project/libtbx/guided_coding|*/cctbx_project/libtbx/guided_coding/) ;;
   *) echo &quot;$OLD points to $(readlink &quot;$OLD&quot;), not the cctbx_project copy; nothing changed.&quot;; exit 1;;
 esac
 if [ -e &quot;$SKILLS/gc&quot; ] || [ -L &quot;$SKILLS/gc&quot; ]; then echo &quot;$SKILLS/gc already exists; nothing changed.&quot;; exit 1; fi
-ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; rm &quot;$OLD&quot; &amp;&amp; ls -l &quot;$SKILLS&quot;
+ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; rm &quot;$OLD&quot; &amp;&amp; ls -l &quot;$SKILLS&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$NEW/SKILL.md&quot;
 END
 </code></pre></li><li><strong>Two links.</strong> Keep only one link to GuidedCoding. Two skills both named <code>gc</code> conflict.</li><li><strong>Your instructions.</strong> If your <code>CLAUDE.local.md</code> adopts the earlier kit&#x27;s &quot;Developer–Guide Contract&quot;, that line can go. Your project method file is not used by the new <code>/gc</code>; <code>/gc setup</code> writes short notes instead.</li><li><strong>Then</strong> start a new Claude Code conversation.</li></ul>
 <p><strong>To go back to the earlier kit:</strong></p>
@@ -650,7 +660,7 @@ git checkout full-kit-rev21
 <pre><code>python3 tst_guided_coding.py
 </code></pre>
 <p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="verification.html">EVIDENCE.md</a>.</p>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/bb72cce7f5598a89f0b16f9aae3986f273e96a85">cctbx/guided_coding bb72cce</a> (2026-10-26).</p>
+  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/e6e9e5580fd58dc826c1269cbdbc2b6bfedfd999">cctbx/guided_coding e6e9e55</a> (2026-10-26).</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>

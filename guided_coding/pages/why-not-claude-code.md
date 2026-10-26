@@ -38,9 +38,10 @@ harder jobs** (lower is better), unless stated otherwise.
 |---|---|
 | **A strict scope rule** (undo every fix beyond the literal task, and ask first) | Probably cost errors: fixes the review found were undone and left as questions, and the procedure that used it left more major errors than plain Claude Code with one review (0.97 against 0.79). The size was estimated from those cases, not measured directly |
 
-**Two scorings of the same arms.** Plain Claude Code with one review appears as 0.79 (round 6) and as 0.85 (before the
-outside review, round 6b); Guided Coding 1.3 appears as 0.97 and 1.00. Round 6b's instruments found further errors
-that the earlier versions also had, which raised those figures. Each comparison uses figures from one scoring.
+**Why some starting figures differ.** Plain Claude Code with one review appears above as 0.79 and as 0.85, and
+Guided Coding 1.3 as 0.97 and 1.00. The outside-review figures come from a later, deeper scoring of the same runs,
+which found a few more errors; that is why their starting values are slightly higher. Each comparison uses figures
+from one scoring.
 
 ## What Guided Coding does
 
