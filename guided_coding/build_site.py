@@ -324,8 +324,9 @@ def fill(template, values, markers):
 
 
 def doc_page(template, page, title, description, body, toc, note=""):
-    nav = "".join('<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
-                  for name, label, _, _, _ in PAGES if label)
+    nav = '<a href="index.html">Guided Coding</a>' + "".join(
+        '<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
+        for name, label, _, _, _ in PAGES if label)
     toc_block = PAGE_BANNERS.get(page, "")
     if len(toc) > 1:
         links = [item.replace("<li>", "").replace("</li>", "") for item in toc]
