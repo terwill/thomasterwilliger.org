@@ -1,11 +1,15 @@
 # Why Guided Coding and not just Claude Code?
 
-Claude Code can already fix bugs well. In a replay study, one review pass after the change reduced the errors it
-left, and an outside review by a different AI model, added to Guided Coding on 18 harder jobs, reduced them further,
-narrowly. Guided Coding includes a
-review on every coding job and prepares an outside review when the change needs one. It also asks for a test that
-proves the fix, ends with a short report, and asks before changing what other code relies on. You could run each
-step yourself with plain Claude Code; Guided Coding does them in order and tells you what is still open.
+Claude Code can already fix bugs well. In a replay study of 37 past bug fixes, Claude Code followed by one review
+pass left clearly fewer errors than Claude Code alone. Guided Coding is built around that review: it runs it on every
+coding job. It also asks for a test that proves the fix, prepares an outside review by a different AI model for hard
+changes, asks before changing what other code relies on, and ends with a short report.
+
+So Guided Coding should leave fewer errors than plain Claude Code, because it includes the step that made the
+difference. That has not been measured for the current version. The study did not find Guided Coding better than
+Claude Code with one review, and we do not claim it is. If you already review every change, Guided Coding mainly adds
+the proving test, the outside review for hard changes and the report, and it does these in order and tells you what is
+still open.
 
 ## What we tested
 
@@ -76,7 +80,10 @@ A second review pass is not part of it. The independent reviewer step is availab
 
 ## Limits
 
-The effects are small (about 0.1 to 0.2 major errors per run) next to the variation between runs, and they come from
+The one replay of Guided Coding itself, version 1.3 on the 18 harder jobs, left as many major errors as plain Claude
+Code (0.90 per run each, counting the outside reviews it asked for in 4 of its 38 runs; 0.97 before them), and more
+than Claude Code with one review (0.79). The likely cause, estimated rather than measured, was the strict scope rule,
+which undid fixes the review had made; version 1.4 narrows that rule. The effects are small (about 0.1 to 0.2 major errors per run) next to the variation between runs, and they come from
 18 harder jobs and one AI model family doing the work. We did not measure the developer's own time, or whether
 Guided Coding as a whole beats plain Claude Code with one review and an outside review. Guided Coding 1.4 has not
 itself been replayed; it was checked in a small trial and is being evaluated in real use. The narrower scope rule was

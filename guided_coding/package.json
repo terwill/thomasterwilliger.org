@@ -1,30 +1,30 @@
 {
   "archive": {
-    "bytes": 71762,
+    "bytes": 71953,
     "file": "guided_coding.zip",
-    "sha256": "75287f1d537d179b4a260e52efa4fc96b81bc11233f02f11f4eca7c69788031e"
+    "sha256": "8a42a85637eeef3072a57f2bb31620b0b3b023f7c9b5a0f24a8aff31a74a350d"
   },
   "pages": {
     "architecture.html": "dac7dfe4680c309ef1ed6a27b49d3f75502f077108f2e4bb9c676fbac9dd166e",
-    "documentation.html": "928bfe50c127579adfbf1e1d29b90732a36115d23b72ed8ef8d1bc0505419111",
-    "getting-started.html": "487f041a70b251d22550bfbc4b642ecf49423e7a433de603feb708b3861259ac",
+    "documentation.html": "710da4700d65292573a6ddf27c1bad061dd7eaa92cd1cc41a9af2ee4552f477c",
+    "getting-started.html": "fe54684af4819e8f1c44f7cc799469759781474130e71a26f4e9e1a2092a47b7",
     "how-it-works.html": "821a9a20d4189bb7883d80f69ab4615ba08f4b3d83758488088f4325e11889f1",
-    "index.html": "dddbc904dfca3fe4851e825d9e247162be5cb6c628216dcabf3f212c646bd085",
+    "index.html": "d0c268d4c9d1709212897ec1a8a9f615a42b76a69106632dbe74b8860f04f217",
     "overview.html": "96db4ea599e4726b6af9b96f0f1b8e8ca75b00bc43c6c9a22f21fb6556c3cea4",
     "quick-start.html": "c87049fd97a81d5084b882546f2d2ed270a062b2ea3c3a6c8584fc38ff81822a",
-    "reference-files.html": "2940ddbcb342e83e4139700b626f5680c09f8b7ed3b73f65ffdfb4d1ed1a560c",
+    "reference-files.html": "c24132389c2b16857f71122ff4fa3d12a4b2119230499a5fe624ff2a92df4f73",
     "user-guide.html": "215b9fe65936cb29cca46206906b272492724416dbe1f97dfdbec60f3d776384",
-    "verification.html": "5f65405a724e6b9ad79b581c853d48c8422ab69f7c5101c68dfcd639e2ad53a9",
-    "why-not-claude-code.html": "dcf2d0aa92a903551f422825793fc7862130bf491da625a67924b3996066653f",
+    "verification.html": "6c0a9f9ace5569d44f21d81fc3923a1c98b789ad29195a54f7739343d821b791",
+    "why-not-claude-code.html": "df30a77149d845a9aab3577d51e0d8d66377223b4138320a40f7d2be6944197a",
     "why-not-vibe-coding.html": "bf1ffb9c44a28babcd8dbb3393e892ceddd219056321cc6283001de8762551b0"
   },
   "source": {
-    "commit": "e6e9e5580fd58dc826c1269cbdbc2b6bfedfd999",
+    "commit": "17e6bb8953bba5f5ffd41e9fb907281a51cf3e85",
     "date": "2026-10-26",
     "files": {
       "EVIDENCE.md": "7c8670a3230b3f1c4deef7a24f36c8cd87f539dbfaa9f5b0f3e6472de0b4730d",
       "LICENSE.txt": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
-      "README.md": "ca9224141d2e4520ef3f3cb621a7cc7557ebb81b20d35c667bb78a3f8895325b",
+      "README.md": "b2cec2d72d6afb64684264a70f12fd1a49e3bf2b2e61e516d21397d531de573e",
       "guided_coding/BATCH.md": "fe13d46aaaae9fe088b1db0fe492050029db7bfd1169b3115f1c15daaced5295",
       "guided_coding/LOG.md": "e24e2ffb59432754e0e97e7130ef7b9ed95583973d093691a9ebefc24508e22c",
       "guided_coding/REVIEWER.md": "aff39d2c68d82c859f73f9bacc26256cb7c3bfa7f53560d36ba34f66750c5c8e",
