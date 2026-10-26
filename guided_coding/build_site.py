@@ -328,8 +328,9 @@ def doc_page(template, page, title, description, body, toc, note=""):
                   for name, label, _, _, _ in PAGES if label)
     toc_block = PAGE_BANNERS.get(page, "")
     if len(toc) > 1:
-        toc_block += ('<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul>'
-                      + "".join(toc) + "</ul></div></details>")
+        links = [item.replace("<li>", "").replace("</li>", "") for item in toc]
+        toc_block += ('<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> '
+                      + ' <span aria-hidden="true">·</span> '.join(links) + "</nav>")
     return fill(template, {"TITLE": html.escape(title), "DESCRIPTION": html.escape(description), "PAGE": page},
                 {"DOCUMENT_NAV": nav, "DOCUMENT_TOC": toc_block, "DOCUMENT_CONTENT": body, "DOCUMENT_NOTE": note})
 
