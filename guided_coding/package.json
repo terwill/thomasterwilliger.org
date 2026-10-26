@@ -1,36 +1,36 @@
 {
   "archive": {
-    "bytes": 58956,
+    "bytes": 66794,
     "file": "guided_coding.zip",
-    "sha256": "085865d0c31c5e255ef870cd6908947a485738c26749dcf87fa16bb074b384c2"
+    "sha256": "f83954526ba6f1c5ca8e34aa445886544fe1a278e33d456f2d7ffc1e15ba8ea5"
   },
   "pages": {
-    "architecture.html": "c8b65506b6fceb71779ea75d01e3fccdb2b94a88c821c6efa48533db0e07333c",
-    "documentation.html": "a65a4e11407a3a89193347e49ed5889d9eb4823756ee540f9dbfba9327f6511d",
-    "getting-started.html": "7186d971d1fd80f1c6956784bf105b7b9621911dfbb11619fac7d303109e2e7e",
-    "how-it-works.html": "c4859f0f1e733aa7123a4e2650d57a38cab2a719f67d58ba09171b6d4e46cda2",
-    "index.html": "625418c4d9feec3771d98a009edf2763fb039fd0a024079c1f2ed4d7440a886b",
-    "overview.html": "892c74afc20c2de2e81c349545c2303a164efc5d5d368f14e918c4b3a380c37a",
-    "quick-start.html": "3c4dd6b8d958097ae88672796639f7d8c8e88ac8959e3aee4fd91da07f5b3dba",
-    "reference-files.html": "cbecbf1ea46a3d22eeb6eb82db91e3dd7d893db2018345d0c6196acfd0c773eb",
-    "user-guide.html": "c50384ff38724562338540efe75fbbd660075f4fdd480a94f94850715e5349bf",
-    "verification.html": "03c8f44adfc33601bc93894084485ed8bfcdad9fea0eca8897c2b255742ca0c0",
-    "why-not-claude-code.html": "b94fbcd955152760820340b10730aceccfffc28a6f98d438420edd79ae620744",
-    "why-not-vibe-coding.html": "37aae5d051b19abfe5f11eac4fa56ff3e68e98efdad1490184529b0428ba714a"
+    "architecture.html": "ac3b1e2b34ee3b64a08371f24dec75d088e511669330060070b19d75d5dfa662",
+    "documentation.html": "deddef191d7955cb21352ff1e775c3bbec87fe32e444c22acd3b4ac251a51a34",
+    "getting-started.html": "7b1fee9b09917ecfcac1896eb80458c58065b0815026396d52c83566ca006ef6",
+    "how-it-works.html": "8630e03f0df490cc50224a09f23786420ec4f419a7e9fc06141bcedec45d0790",
+    "index.html": "ac8f3a16b960e44c9612501fbf1924d633fb6ad490fac2046c75e355bb387e1f",
+    "overview.html": "f7ab02ea3a5dd4cec986157e4200c7df864a554a42db45beeb8be455ae3cddc6",
+    "quick-start.html": "323c6243fdfaffb5fc4a2268ce73c046b5dc073c554c0491440ab7f06c3f593b",
+    "reference-files.html": "47f8d676ba28a81d18f2868d20ec1464f9b968dd0b72312175894de22edc7610",
+    "user-guide.html": "9db21b699fbffe7dc90641d7b5dbfb0f231479e5e42603b1e284b77967005a9f",
+    "verification.html": "f4e11ebb5f0ea0590dafa9b6374b5ef90fdc13a030b4dd3bc1bf19e6e7085cfa",
+    "why-not-claude-code.html": "f4c96d718f49d7b0cfd90c7e7d9d5ca6154c44ff4a5a4f77c9be62270cbb04ce",
+    "why-not-vibe-coding.html": "94fa3256da0b642de550f6d94d4400c6552c574b8c3d990deab0c0cc4cc24973"
   },
   "source": {
-    "commit": "14b8371ed07b458fe61d3ac78985a74c5920ef63",
-    "date": "2026-10-23",
+    "commit": "7b51d554a9856cecc17c9b0b0a0ef7c5e66a7993",
+    "date": "2026-10-26",
     "files": {
-      "EVIDENCE.md": "0dd1ecadb53df4efd314bbfa15646bfea4323339156a792f51a87962aa039b33",
+      "EVIDENCE.md": "f07479ed8ad469b5996969b60f29aa5a08cd10ba4b425ed1059ebe4595c832b7",
       "LICENSE.txt": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
-      "README.md": "71d6830988a6708ec87af8a18394a46bec6dffba6b3c774b0883d255510a3ba9",
-      "guided_coding/BATCH.md": "743e6b721041da72c1d68f197bf51df604bf059f6e3e1cae86c9c52cae6f2377",
-      "guided_coding/LOG.md": "63cee401b582a421ea7505004c658356be1561334bc7c86d0328642ed63a7ce7",
-      "guided_coding/REVIEWER.md": "b04227b23723d1b074e75150d38132606832106888eceb2967a5796212d29485",
-      "guided_coding/SETUP.md": "71888ecb281c294c2839669e1208cadbe5f43e40858e2b4b8a775a0200fbc268",
-      "guided_coding/SKILL.md": "d858eb609455e6757320bc41d0ea71c7e42b820d6967f68e18a3b8d7f767d3e1",
-      "tst_guided_coding.py": "4c6a2004d8eec6b0b28edfd948c154dde879c67de6e4a90bbb6248a9565fad11"
+      "README.md": "e1adf14c5d2ad4407768c923a870b724a239945b48f6dacd162fe30a24870c45",
+      "guided_coding/BATCH.md": "fe13d46aaaae9fe088b1db0fe492050029db7bfd1169b3115f1c15daaced5295",
+      "guided_coding/LOG.md": "e24e2ffb59432754e0e97e7130ef7b9ed95583973d093691a9ebefc24508e22c",
+      "guided_coding/REVIEWER.md": "aff39d2c68d82c859f73f9bacc26256cb7c3bfa7f53560d36ba34f66750c5c8e",
+      "guided_coding/SETUP.md": "7f8623c9c9e29678ef575971daf792dda09f80dc59df955564dfc37d94c35639",
+      "guided_coding/SKILL.md": "fce7c017e7b73d9cbf4d880b249551ede6ead9b0fc9c72055a2e80746e3e72bc",
+      "tst_guided_coding.py": "6eeddcfa87f5c6bb5b145c4980eeb35d922d8cf791fabcafe74c0024933b51b0"
     },
     "repository": "https://github.com/cctbx/guided_coding"
   }

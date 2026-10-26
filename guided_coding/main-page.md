@@ -6,7 +6,8 @@ it tested? What remains uncertain?
 Guided Coding is a short set of instructions for Claude Code that is built to answer those questions for every change. You give
 Claude a bug or a bounded change. Claude makes the fix and, where feasible, writes a test that fails on the old code
 and passes on the new code; where it is not, the report says why and what evidence was used instead. Claude runs one
-review pass over the change, adds further checks only when the change needs them, and ends with a short report. You decide what to keep, and whether and when anything is pushed.
+review pass over the change, prepares an outside review by another AI assistant for hard or consequential changes,
+adds further checks only when the change needs them, and ends with a short report. You decide what to keep, and whether and when anything is pushed.
 
 This is the procedure I use in my own software work. You can use it in any project managed with Git.
 
@@ -34,8 +35,8 @@ has been tested on macOS; it should work on Linux, and has not been tested on Wi
 **Ask until you understand.** Before you accept a change, you should be able to say what was wrong, what changed,
 and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but
 it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you
-still do not understand it, do not accept it. If you are unsure about a change, or it matters a lot, ask Claude
-for an outside review file. Give it to another AI assistant for a second opinion, then paste the reply back to
+still do not understand it, do not accept it. For hard or consequential changes Claude prepares an outside review
+file itself; for any other change, ask for one if you are unsure or it matters a lot. Give it to another AI assistant for a second opinion, then paste the reply back to
 Claude to address. A second reader, especially a different model, may catch problems that the first one missed.
 
 **You are in control, not the AI.** Claude proposes; you decide. You decide what the task is, how far the change may
@@ -81,12 +82,16 @@ simply. You can also give the text to a [Guided Workflow Helper](https://www.tho
 ## Evidence and limits
 
 In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job
-from 0.81 to 0.47. Guided Coding always includes a review pass (Claude Code's code-review skill, the review the
-study measured, when it is available; otherwise Claude reviews the change itself and says so) and, where feasible,
-a test that proves the fix, with further checks when needed. Guided Coding as now written has not itself been measured; it is being evaluated in real use. The study was
-small, and it also found evidence for the larger earlier kit on some major errors. See
-[Evidence and limits](verification.html), which goes through the main parts of Guided Coding and what the
-evidence says about each, including the evidence against.
+from 0.81 to 0.47. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when
+added to Guided Coding, narrowly (the net gain came from 4 of the 18 jobs, and the reviews also brought in a few).
+Guided Coding 1.4 keeps one review pass and an outside review (for hard or consequential changes), which were found
+to help, and a test that proves the fix. It drops or makes optional what showed no clear benefit, and narrows a strict scope
+rule that probably cost errors. Guided Coding 1.4 as a whole has not itself been measured; it was checked in a small
+trial and is being evaluated in real use. The effects are small next to the variation between runs, and the study
+also found evidence for the larger earlier kit on some major errors. See [Why Guided Coding](why-not-claude-code.html) for
+the findings in one page, and [Evidence and limits](verification.html) for each part of Guided Coding. The
+[full report](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md) and the
+[methods](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md) of the study can be downloaded.
 
 Guided Coding replaced a much larger earlier kit on 2026-10-23. The earlier kit had approval screens, evidence
 packets and an unattended auto mode. It is kept on the repository's branch

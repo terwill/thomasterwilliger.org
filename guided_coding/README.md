@@ -12,10 +12,13 @@ on that repository's branch `full-kit-rev21`.
   - `pages/quick-start.md`, `pages/how-it-works.md`, `pages/why-not-claude-code.md` and
     `pages/why-not-vibe-coding.md`.
 
-  Their claims must match the revision the site ships. The evidence wording is fixed: one review pass after plain
-  Claude Code cut missed program errors per job from 0.81 to 0.47; GuidedCoding always includes a review pass
-  (the code-review skill the study measured when available, else Claude's own review, reported as such) and, where
-  feasible, a proving test, with further checks when needed; GuidedCoding as now written has not itself been measured.
+  Their claims must match the revision the site ships. The evidence wording is fixed (version 1.4): one review pass after
+  plain Claude Code cut missed program errors per job from 0.81 to 0.47; on 18 harder jobs (selected, not a random
+  sample) an outside review removed further major errors when added to GuidedCoding, narrowly; a second review pass
+  showed no clear additional benefit; the strict scope rule probably cost errors (estimated, not tested); GuidedCoding
+  1.4 as a whole has not itself been measured. `pages/why-not-claude-code.md` holds the study summary.
+- **Website-owned downloads:** `GuidedCoding_study_final_report.md` and `GuidedCoding_study_methods.md`, copies of the
+  study's final report and methods description (home paths shortened); they are committed with the site.
 - **Generated from the repository:**
   - `getting-started.html`, from its `README.md`;
   - `verification.html`, from its `EVIDENCE.md`;

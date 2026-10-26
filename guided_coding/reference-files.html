@@ -559,7 +559,7 @@ main {
       </div>
     </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="verification.html">Evidence</a><a href="documentation.html">Documentation</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="verification.html">Evidence</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="documentation.html">Documentation</a></nav>
   <h1 class="gc-document-title">Guided Coding skill files</h1>
   <p class="gc-lead">The five instruction files Claude Code reads, exactly as published.</p>
 <details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul><li><a href="#skill-md">SKILL.md</a></li><li><a href="#batch-md">BATCH.md</a></li><li><a href="#setup-md">SETUP.md</a></li><li><a href="#reviewer-md">REVIEWER.md</a></li><li><a href="#log-md">LOG.md</a></li></ul></div></details>
@@ -569,7 +569,7 @@ description: GuidedCoding for one bounded bug fix or change, or a supervised bat
 disable-model-invocation: true
 ---
 
-# GuidedCoding (version 1.3)
+# GuidedCoding (version 1.4)
 
 The developer&#x27;s request is: $ARGUMENTS
 
@@ -580,7 +580,8 @@ possible, and that the result can be trusted.
 
 - **What was asked.**
   - **`/gc` with nothing after it:** in a few lines, say what GuidedCoding does: one bounded change, a proving test,
-    one review pass, extra checks only when triggered, and a short report. Mention `/gc setup` and `/gc batch`, then
+    one review pass, an outside review for hard or consequential changes, extra checks only when triggered, and a
+    short report. Mention `/gc setup` and `/gc batch`, then
     ask for the task.
   - **`/gc setup`:** read `${CLAUDE_SKILL_DIR}/SETUP.md` and follow it. Do nothing else.
   - **`/gc batch ...`:** read `${CLAUDE_SKILL_DIR}/BATCH.md` and follow it.
@@ -627,7 +628,7 @@ possible, and that the result can be trusted.
     4. touch a shared installation only on the developer&#x27;s explicit go.
 - **Large jobs.** If the task bundles separable changes, propose splitting it, and running the parts with
   `/gc batch`.
-- **The five triggers.** L, P, R and D are checked at the start; Q is checked after the review in §2. Each adds a
+- **The six triggers.** L, P, R, D and H are checked at the start; Q is checked after the review in §2. Each adds a
   step in §3.
   - **L. Live service.** Whether the fix works can only be confirmed against a live outside service or product: an
     LLM or provider API, a model name or default, a network service, or a host application.
@@ -637,14 +638,24 @@ possible, and that the result can be trusted.
     shared installation. An ordinary push is handled in §4.
   - **D. Data or credentials.** The change writes, moves or deletes existing user files, or handles credentials.
     Writing new output files is not enough.
+  - **H. Hard change.** Whether the change is correct turns on conditions the tests may not reach. Any of:
+    - the code decides whether something is safe, valid, consistent, complete or failed (a check, guard, validator,
+      or the detection of an error or a finished job);
+    - processes, threads, polling, timeouts, cleanup, or what happens when a step fails part-way;
+    - defaults or compatibility across versions, models, providers or platforms;
+    - shared code with several callers or modes, where the change alters behaviour beyond the reported path.
+
+    A routine bounded fix (a clear defect on one path, with a convincing proving test) is not H.
   - **Q. Open correctness question.** After §2, an important question about whether the change is correct remains
     unresolved, or there is no convincing test of its essential behaviour. For P, the platform commands are the
     pending proof; Q applies only if the mechanism itself is still in doubt.
-- **When unsure.** If you are unsure whether L or P applies, treat it as applying. R, D and Q apply only as worded.
+- **When unsure.** If you are unsure whether L, P or H applies, treat it as applying. R, D and Q apply only as worded.
 - **Scope rule.**
-  - Proceed with the routine implementation, tests and documentation needed to accomplish the requested task.
-  - Ask before changing intended behaviour, public interfaces, defaults, file formats, or the agreed project scope
-    (including work in another repository). Changes the task explicitly requests need no question.
+  - Proceed with the implementation, tests and documentation needed to accomplish the requested task.
+  - Fix real defects you or a review find in the code this job changes, and in the paths it calls, when the fix stays
+    within that code: crashes, wrong results, unhandled failures, missing edge cases. These need no question.
+  - Ask before changing public interfaces, defaults, file formats, intended behaviour that callers rely on, or the
+    agreed project scope (including work in another repository). Changes the task explicitly requests need no question.
   - Ask the same way if the task leaves the intended behaviour open.
   - To ask, give the options, a recommendation and one question the developer can answer in a word.
 
@@ -681,10 +692,9 @@ possible, and that the result can be trusted.
   - **If the code-review skill is not available,** review the diff yourself once: correctness, unintended behaviour
     changes, and whether the tests prove the fix. The report says that this fallback was used. It is not the review
     the method was built on.
-  - Check each fix the review applied. Revert at once any fix that is wrong, or that changes behaviour beyond the
-    task (the scope rule), even a small one or one you think is an improvement. A fix changes behaviour beyond the task
-    if it changes what the code does in any case the task did not mention: error handling, exit status, failure
-    modes, defaults, outputs. Raise it as a decision instead of keeping it, and say what you reverted.
+  - Check each fix the review applied. Keep a fix that corrects a real defect within the scope rule (§1). Revert a fix
+    that is wrong, or that changes a public interface, a default, a file format or behaviour callers rely on (§1);
+    raise it as a decision instead, and say what you reverted.
   - For each finding it did not fix: fix it; or, if it is not a real problem, drop it with a one-line reason; or, if
     it needs the developer&#x27;s decision, keep it for the report.
   - Rerun the tests after any change.
@@ -698,20 +708,24 @@ possible, and that the result can be trusted.
   - A live failure outranks every offline test.
   - If you cannot make the calls, give the exact commands.
 - **P (other platform): give the exact commands** to run on that platform.
-- **R, D or Q, and consequential work: an outside review.** Write one file, `OUTSIDE_REVIEW.md`, in the scratch folder,
-  containing:
+- **H, R, D or Q, and consequential work: an outside review.** Write one file, `OUTSIDE_REVIEW.md`, in the scratch
+  folder, containing:
   - the task text;
   - the full diff;
   - the new tests and their output on the old and new code;
-  - the open question, for Q;
+  - for H, one line naming the conditions that make the change hard; for Q, the open question;
   - this request: &quot;Review this change for correctness, unintended behaviour changes, and whether the tests prove the
     fix. List findings, most serious first.&quot;
 
   Leave out keys, tokens and user data, and name anything you removed. The developer pastes the file into the
   outside reviewer the notes name (or another AI assistant) and pastes the reply back.
-- **An outside review on request.** The developer may ask for an outside review on any job, even when no trigger
-  applies. Write the same file; the review is then handled as for the triggers.
+- **An outside review on request.** For any other job, the outside review is optional: the report offers it in one
+  line, and the developer may ask for it at any time. Write the same file; the review is then handled as for the
+  triggers.
 - **When a step cannot be finished now,** finish everything else and mark the step as pending in the report.
+- **Finish before you report.** If you start a long test or build, wait for it to finish (or stop it) before writing
+  any outside-review file and the final report. Leave nothing this job started running in the background. The final report is your
+  last message.
 - **When the output or the outside review comes back,** treat each problem or finding as in §2, and update the
   report. If the developer skips a step, the report says &quot;&lt;step&gt;: skipped by the developer&quot;. Skipping counts as
   accepting the uncertainty.
@@ -766,11 +780,12 @@ different and rarer thing: it also needs a plan, a recovery step and an outside 
   - the existing tests;
   - the review: findings reported, fixed automatically, fixed by you, dropped (with reasons), and kept for the
     developer, and whether the fallback was used;
-  - live calls, or outside review (done, pending, or skipped), if any.
+  - live calls, if any;
+  - the outside review: done, pending, or skipped; or, where no trigger asked for it, &quot;available on request&quot;.
 - **Not checked:** anything that was not, or could not be, run or confirmed: platforms, live behaviour, the GUI, long
   runs.
 - **Changes to behaviour, interfaces, defaults, formats or scope that the task did not request:** each one, with the
-  developer&#x27;s answer. Or &quot;none&quot;.
+  developer&#x27;s answer; or, for a defect fixed under the scope rule, one line on what it changes and why. Or &quot;none&quot;.
 - **Conflicts between instructions:** any conflict between the notes and team instructions, and which rule you
   followed. Or &quot;none&quot;.
 - **Decisions for you:** at most a few. Each gets a line of background, the options, your recommendation, and the
@@ -790,9 +805,9 @@ If it is not, list it under Not checked.
 When the job ends, follow `${CLAUDE_SKILL_DIR}/LOG.md` to add one line to the log file the notes name.
 
 ---
-Version 1.3, 2026-10-23.
+Version 1.4, 2026-10-26.
 </code></pre>
-<h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.3)
+<h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.4)
 
 A batch is a **supervised sequence of ordinary `/gc` jobs**, run one at a time while the developer stays reachable.
 Say these limits in one line when the batch starts:
@@ -877,7 +892,7 @@ Say these limits in one line when the batch starts:
   commit or push only on request (SKILL.md §4).
 - **Job log.** If the notes turn it on, add one line per job, as `LOG.md` says.
 </code></pre>
-<h2 id="setup-md">SETUP.md</h2><pre><code># GuidedCoding setup (`/gc setup`, version 1.3)
+<h2 id="setup-md">SETUP.md</h2><pre><code># GuidedCoding setup (`/gc setup`, version 1.4)
 
 Setup saves a short notes file, `.claude/GC_NOTES.md`, that `/gc` reads at the start of every job. It changes
 nothing else, runs no build or test, connects to nothing, and does not start a coding task. Expect it to take a few
@@ -961,7 +976,7 @@ GC setup for &lt;project folder&gt;
 
 Use this step only when the developer has agreed to it. It takes about three times as long as an ordinary review
 pass, and in the study it was not clearly better than a second ordinary review; use it when a second reader would
-help (SKILL.md §5). Version 1.3.
+help (SKILL.md §5). Version 1.4.
 
 1. **Criteria.** From the task text alone, not from your change, write the acceptance criteria in
    `&lt;scratch folder&gt;/review/CRITERIA.txt`.
@@ -1006,7 +1021,8 @@ only the diff: &lt;named functions/files and callers&gt;.
 Look for, and report each as a finding with evidence:
 1. Correctness: does the change implement the criterion, and only that? Include the cases the
    tests do not cover: &lt;domain cases the change must handle, named for this code&gt;.
-2. Any change of behaviour outside the approved scope (must be none). Name it for this code:
+2. Any change of behaviour beyond the approved scope, other than defect fixes the scope rule allows (SKILL.md §1),
+   which the report must name. Name it for this code:
    &lt;paths and callers that must keep the old behaviour&gt;. Is any caller relying on the old
    behaviour?
 3. Does each new test test the RIGHT claim? Would it fail on the base for the stated reason?
@@ -1038,12 +1054,13 @@ or
   Reviewer: BLOCKING FINDINGS (R..)
 Return the same text. Give no overall verdict; that is not your role.
 </code></pre>
-<h2 id="log-md">LOG.md</h2><pre><code># GuidedCoding job log (version 1.3)
+<h2 id="log-md">LOG.md</h2><pre><code># GuidedCoding job log (version 1.4)
 
 When the job ends (the developer has answered the open decisions, or says the job is done), append one line to the
 log file the notes name. Log stopped and abandoned jobs too. Separate the fields with tabs, use no tabs inside a
 field, write `?` for anything you do not know, and do not change earlier lines. If the file does not exist yet,
-start it with a header line of the field names below.
+start it with a header line of the field names below. If an older log has 14 fields, add `outside_review` at the
+end of its header line; earlier rows keep 14 fields.
 
 1. `date` (YYYY-MM-DD)
 2. `job` (a few words)
@@ -1059,8 +1076,10 @@ start it with a header line of the field names below.
 12. `later_check_date`: about four weeks after the job (YYYY-MM-DD)
 13. `later_defects`: write `?`; the developer fills this in at the later check, with date, severity and who found it
 14. `notes`
+15. `outside_review`: none, offered, done, pending or skipped; if done, add the developer&#x27;s minutes on it and whether
+    it was worth it (yes, no or `?`)
 </code></pre>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/14b8371ed07b458fe61d3ac78985a74c5920ef63">cctbx/guided_coding 14b8371</a> (2026-10-23).</p>
+  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/7b51d554a9856cecc17c9b0b0a0ef7c5e66a7993">cctbx/guided_coding 7b51d55</a> (2026-10-26).</p>
   <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>

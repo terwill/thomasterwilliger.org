@@ -22,20 +22,23 @@ anything is pushed or installed. You can redirect or stop it at any time.
 
 1. **Start.** Claude restates the task, notes the starting state of each repository it will touch, and checks
    whether the job needs any added steps (the triggers below).
-2. **Scope.** Claude does the routine implementation, tests and documentation the task needs. It asks you before
-   changing intended behaviour, an interface, a default, a file format, or another repository that you did not ask
-   about. Each question comes with the options and a recommendation.
+2. **Scope.** Claude does the implementation, tests and documentation the task needs, and fixes without asking any
+   real defect it or a review finds in the code the job changes and the paths that code calls. It asks you before
+   changing a public interface, a default, a file format, intended behaviour that callers rely on, or the agreed scope
+   (such as another repository). Each question comes with the options and a recommendation.
 3. **A proving test.** Claude writes a test that fails on the old code for the reason in the task and passes on the
    new code, and runs it both ways. If no such test is possible, it says why and gives the best other evidence.
 4. **The existing tests** for the code it touched.
 5. **One review pass** over the change, with Claude Code's code-review skill. Claude checks each fix the review
-   makes, and reverts at once any fix that changes behaviour beyond the task, raising it with you instead. If the
+   makes. It keeps a fix that corrects a real defect in the changed code, and reverts a fix that is wrong or that
+   changes an interface, a default, a format or behaviour callers rely on, raising it with you instead. If the
    code-review skill is not available, Claude reviews the change itself, and the report says that this fallback was
    used; it is not the review the study measured.
 6. **Added steps,** only for the triggers that apply.
 7. **A short report.** It says whether the change is ready to use; what changed; the proof; the checks run; what was
    not checked; any changes you did not ask for; your decisions, each with a recommendation; and the recommended next
-   action.
+   action. It is Claude's last message: long tests or builds are finished or stopped first, and nothing it started
+   is left running.
 8. **Committing and pushing,** only when you ask, following your project's rules.
 
 ## The triggers
@@ -46,11 +49,15 @@ anything is pushed or installed. You can redirect or stop it at any time.
 | Other platform | The defect is reported for a platform other than your computer | The exact commands to run there; the fix is "not confirmed" until they have been run |
 | Install for others | The change goes straight to a place others install from | An outside review |
 | Data or credentials | The change writes, moves or deletes existing user files, or handles credentials | An outside review |
+| Hard change | Whether the change is correct turns on conditions the tests may not reach: a check, guard or validator, or detecting failure; processes, polling, timeouts, cleanup, or a step failing part-way; defaults or compatibility across versions, models, providers or platforms; shared code with several callers, where behaviour changes beyond the reported path. A routine fix on one path with a convincing test is not a hard change | An outside review |
 | Open question | After the review, an important correctness question is still open, or there is no convincing test | An outside review |
+
+If Claude is unsure whether Live service, Other platform or Hard change applies, it treats it as applying.
 
 An outside review means: Claude writes one file with the task, the full change, the tests and their output, and the
 question. You paste it into another AI assistant and paste the reply back. Claude answers each finding.
-You can ask for an outside review on any job, even when no trigger applies; it is then handled in the same way. The
+On any other job the outside review is optional: the report offers it in one line, and you can ask for it at any
+time; it is then handled in the same way. The
 file leaves out keys and private data, but it contains your code: share it only with an assistant your project
 allows.
 
