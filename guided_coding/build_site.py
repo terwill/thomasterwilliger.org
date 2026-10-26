@@ -53,6 +53,13 @@ PAGES = [
     ("reference-files.html", None, "Guided Coding skill files",
      "The five instruction files Claude Code reads, exactly as published.", "generated:reference"),
 ]
+# A highlighted box at the top of a page (under its title), for pages that need to send some readers elsewhere first.
+PAGE_BANNERS = {
+    "getting-started.html": (
+        '<div class="gc-download"><p><strong>Easiest: let Claude Code install Guided Coding with you.</strong> '
+        'Open <a href="quick-start.html">Quick Start</a>, copy its one message into Claude Code, and follow '
+        "Claude's directions. The commands on this page are for installing it yourself.</p></div>"),
+}
 RETIRED = [
     ("overview.html", "Guided Coding overview (retired)"),
     ("architecture.html", "Guided Coding implementation details (retired)"),
@@ -319,10 +326,10 @@ def fill(template, values, markers):
 def doc_page(template, page, title, description, body, toc, note=""):
     nav = "".join('<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
                   for name, label, _, _, _ in PAGES if label)
-    toc_block = ""
+    toc_block = PAGE_BANNERS.get(page, "")
     if len(toc) > 1:
-        toc_block = ('<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul>'
-                     + "".join(toc) + "</ul></div></details>")
+        toc_block += ('<details class="gc-panel gc-toc" open><summary>On this page</summary><div><ul>'
+                      + "".join(toc) + "</ul></div></details>")
     return fill(template, {"TITLE": html.escape(title), "DESCRIPTION": html.escape(description), "PAGE": page},
                 {"DOCUMENT_NAV": nav, "DOCUMENT_TOC": toc_block, "DOCUMENT_CONTENT": body, "DOCUMENT_NOTE": note})
 
