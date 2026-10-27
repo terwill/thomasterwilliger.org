@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How Guided Coding works — Thomas C. Terwilliger</title><meta name="description" content="What happens in a Guided Coding job, and what you decide."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/how-it-works.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How Guided Coding works — Thomas C. Terwilliger</title><meta name="description" content="An ordinary job, extra checks, and the decisions you keep."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/how-it-works.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -525,84 +525,98 @@ main {
 
 .gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
 .gc-document h2,.gc-document h3{scroll-margin-top:20px}
-.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-local-nav a[aria-current]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-toc-panel{padding:14px 20px 16px;background:#f8fafb}
+.gc-toc-panel .gc-toc-heading{margin:0 0 8px;color:var(--navy);font-weight:700}
+.gc-toc-panel ul{margin:0;padding-left:22px;columns:2;column-gap:28px}
+.gc-toc-panel li{break-inside:avoid;margin:0 0 5px}
+@media(max-width:600px){.gc-toc-panel ul{columns:1}}
 .gc-toc-row{margin:12px 0 24px;font-size:15px;line-height:1.9}.gc-toc-row span:first-child{font-weight:600;margin-right:4px}.gc-toc-row a{white-space:nowrap}
 .gc-reference-list{overflow-wrap:anywhere}
 .gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
-</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body id="top"><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html" aria-current="page">How it works</a><a href="getting-started.html">Install</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html" aria-current="page">How it works</a><a href="documentation.html">Documentation</a></nav>
   <h1 class="gc-document-title">How Guided Coding works</h1>
-  <p class="gc-lead">What happens in a Guided Coding job, and what you decide.</p>
-<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#you-start-with-claude-code">You start with Claude Code</a> <span aria-hidden="true">·</span> <a href="#two-things-matter-more-than-any-procedure">Two things matter more than any procedure</a> <span aria-hidden="true">·</span> <a href="#the-steps-of-one-job">The steps of one job</a> <span aria-hidden="true">·</span> <a href="#the-triggers">The triggers</a> <span aria-hidden="true">·</span> <a href="#consequential-work">Consequential work</a> <span aria-hidden="true">·</span> <a href="#other-rules">Other rules</a> <span aria-hidden="true">·</span> <a href="#several-tasks-gc-batch">Several tasks: <code>/gc batch</code></a> <span aria-hidden="true">·</span> <a href="#setup-and-notes">Setup and notes</a> <span aria-hidden="true">·</span> <a href="#limits">Limits</a> <span aria-hidden="true">·</span> <a href="#more-information">More information</a></nav>
-<h2 id="you-start-with-claude-code">You start with Claude Code</h2>
-<p>Guided Coding runs inside Claude Code, in the Claude app or in Terminal. Claude still reads your code, makes the changes and runs the tests. Guided Coding is a short set of instructions that tells Claude how to do that work and how to report it. It is used only when you type <code>/gc</code>; other conversations are not affected.</p>
-<p>All of it is instructions. No tool enforces them. That keeps it short and easy to change, and it means the report is your main check that the instructions were followed.</p>
-<h2 id="two-things-matter-more-than-any-procedure">Two things matter more than any procedure</h2>
-<p><strong>Ask until you understand.</strong> If you cannot say what was wrong, what changed and how the test shows it is fixed, ask until you can. If you still do not understand a change, do not accept it. If a second opinion would help, ask for an outside review (below).</p>
-<p><strong>You are in control, not the AI.</strong> Claude proposes; you decide the task, its reach, what to keep, and whether anything is pushed or installed. You can redirect or stop it at any time.</p>
-<h2 id="the-steps-of-one-job">The steps of one job</h2>
-<ol><li><strong>Start.</strong> Claude restates the task, notes the starting state of each repository it will touch, and checks  whether the job needs any added steps (the triggers below).</li><li><strong>Scope.</strong> Claude does the implementation, tests and documentation the task needs, and fixes without asking any  real defect it or a review finds in the code the job changes and the paths that code calls. It asks you before  changing a public interface, a default, a file format, intended behaviour that callers rely on, or the agreed scope  (such as another repository). Each question comes with the options and a recommendation.</li><li><strong>A proving test.</strong> Claude writes a test that fails on the old code for the reason in the task and passes on the  new code, and runs it both ways. If no such test is possible, it says why and gives the best other evidence.</li><li><strong>The existing tests</strong> for the code it touched.</li><li><strong>One review pass</strong> over the change, with Claude Code&#x27;s code-review skill. Claude checks each fix the review  makes. It keeps a fix that corrects a real defect in the changed code, and reverts a fix that is wrong or that  changes an interface, a default, a format or behaviour callers rely on, raising it with you instead. If the  code-review skill is not available, Claude reviews the change itself, and the report says that this fallback was  used; it is not the review the study measured.</li><li><strong>Added steps,</strong> only for the triggers that apply.</li><li><strong>A short report.</strong> It says whether the change is ready to use; what changed; the proof; the checks run; what was  not checked; any changes you did not ask for; your decisions, each with a recommendation; and the recommended next  action. It is Claude&#x27;s last message: long tests or builds are finished or stopped first, and nothing it started  is left running.</li><li><strong>Committing and pushing,</strong> only when you ask, following your project&#x27;s rules. Claude reads those rules from your  team&#x27;s instructions in the repository (<code>CLAUDE.md</code> or <code>AGENTS.md</code>) and from the notes <code>/gc setup</code> saves (see  <a href="#setup-and-notes">Setup and notes</a>); where they say nothing, it still commits and pushes only when you ask. Where  your project leaves the commit or push to you, Claude gives the exact commands to run, in order, and checks the  result when you say they are done.</li></ol>
-<h2 id="the-triggers">The triggers</h2>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Trigger</th><th scope="col">When it applies</th><th scope="col">What it adds</th></tr></thead><tbody><tr><td>Live service</td><td>Whether the fix works can only be confirmed against a live service, such as an LLM provider or a model default</td><td>A real call for each changed path, with safe test inputs</td></tr><tr><td>Other platform</td><td>The defect is reported for a platform other than your computer</td><td>The exact commands to run there; the fix is &quot;not confirmed&quot; until they have been run</td></tr><tr><td>Install for others</td><td>The change goes straight to a place others install from</td><td>An outside review</td></tr><tr><td>Data or credentials</td><td>The change writes, moves or deletes existing user files, or handles credentials</td><td>An outside review</td></tr><tr><td>Hard change</td><td>Whether the change is correct turns on conditions the tests may not reach: a check, guard or validator, or detecting failure; processes, polling, timeouts, cleanup, or a step failing part-way; defaults or compatibility across versions, models, providers or platforms; shared code with several callers, where behaviour changes beyond the reported path. A routine fix on one path with a convincing test is not a hard change</td><td>An outside review</td></tr><tr><td>Open question</td><td>After the review, an important correctness question is still open, or there is no convincing test</td><td>An outside review</td></tr></tbody></table></div>
-<p>If Claude is unsure whether Live service, Other platform or Hard change applies, it treats it as applying.</p>
-<p>An outside review means: Claude writes one file with the task, the full change, the tests and their output, and the question. You paste it into another AI assistant and paste the reply back. Claude answers each finding. On any other job the outside review is optional: the report offers it in one line, and you can ask for it at any time; it is then handled in the same way. The file leaves out keys and private data, but it contains your code: share it only with an assistant your project allows.</p>
-<h2 id="consequential-work">Consequential work</h2>
-<p>Installations, migrations, changes to shared tooling or safety mechanisms, and operations that could cause damage that is hard to undo get more care. Claude first prepares the change as something that can be undone, and tests it. Before the irreversible step:</p>
-<ol><li>you approve a short plan;</li><li>Claude makes a backup and checks it;</li><li>an outside review of the plan and the prepared change is completed, and its important findings are resolved;</li><li>nothing touches a shared installation without your explicit go.</li></ol>
-<h2 id="other-rules">Other rules</h2>
-<ul><li><strong>Large jobs.</strong> If a task bundles changes that can be separated, Claude proposes splitting it, and running the parts with <code>/gc batch</code>.</li><li><strong>A second reader, if useful.</strong> When a change is subtle, touches shared code or many callers, or Claude is not confident the tests would catch a wrong fix, the report recommends an independent reviewer: a separate Claude reviewer that reads the change and its evidence. It runs only if you agree. It takes about three times as long as a review pass, and in the study it was not clearly better than simply running a second ordinary review.</li><li><strong>Before a push.</strong> Claude pushes only when you ask it to. It first names anything important still open (a pending step, a failing essential check, an unresolved important correctness finding), and goes ahead only if you explicitly accept it. It updates the branch first if needed and reruns the checks the update affects. If your notes name a full test suite to run before a push, it offers to prepare it. A release also gets a short checklist: where it goes, the test results, your approval, and how to undo it.</li><li><strong>A job log, if you want one.</strong> If your notes turn it on, each job adds one line to a log file, so that you can check later how the jobs turned out.</li></ul>
-<h2 id="several-tasks-gc-batch">Several tasks: <code>/gc batch</code></h2>
-<p>You give a list of tasks, a stopping time and a time limit per job. Claude runs the tasks one at a time, each with fresh context. After each job it saves the job&#x27;s changes as a patch, checks the patch is complete, and restores your checkout. A job that needs a decision stops and is listed. Tasks that depend on each other are left for afterwards, and paid live calls and outside reviews are left pending. Nothing is pushed, installed or done irreversibly inside a batch. At the end you get one summary of all the jobs, and decide which patches to keep. You stay reachable throughout: a batch cannot notice other sessions working in the same checkout, and only you can interrupt a job that hangs.</p>
+  <p class="gc-lead">An ordinary job, extra checks, and the decisions you keep.</p>
+<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#an-ordinary-job">An ordinary job</a> <span aria-hidden="true">·</span> <a href="#when-extra-checks-are-needed">When extra checks are needed</a> <span aria-hidden="true">·</span> <a href="#changes-that-are-hard-to-undo">Changes that are hard to undo</a> <span aria-hidden="true">·</span> <a href="#more-control-and-safety">More control and safety</a> <span aria-hidden="true">·</span> <a href="#several-tasks-in-a-row">Several tasks in a row</a> <span aria-hidden="true">·</span> <a href="#setup-and-notes">Setup and notes</a> <span aria-hidden="true">·</span> <a href="#what-this-cannot-guarantee">What this cannot guarantee</a></nav>
+<p>Guided Coding is a short set of instructions for Claude Code. Claude still writes the code and runs the tests. Guided Coding tells it how to check and report the change. Other Claude Code conversations are unaffected.</p>
+<h2 id="an-ordinary-job">An ordinary job</h2>
+<ol><li><strong>You describe one task.</strong> For example, ask Claude to fix a crash when a program reads an empty file.</li><li><strong>Claude checks the starting point.</strong> It records the starting state of the code and checks whether the job  needs any of the extra checks below.</li><li><strong>Claude makes the change and tests it.</strong> Where feasible, it writes a test that fails for the original bug and  passes after the fix. It also runs relevant existing tests. If a before-and-after test is not feasible, it says  why and gives the best other evidence.</li><li><strong>Claude reviews its work.</strong> It runs one review pass, checks any corrections made during review, and runs the  affected tests again.</li><li><strong>Claude reports back.</strong> The report starts by saying whether the change is ready to use. It tells you what  changed, what passed, what was not checked, any decisions still needed, and the recommended next action.</li><li><strong>You decide what happens next.</strong> Ask questions, request another review, accept or reject the change, or ask  Claude to commit or push it according to your project&#x27;s rules.</li></ol>
+<p>Claude normally fixes genuine defects it finds in the code it changes. It asks before changing a public interface, default, file format, intended behaviour relied on by other code or users, or the agreed reach of the task. Each question comes with options and a recommendation.</p>
+<p>The review uses Claude Code&#x27;s code-review skill when available. Otherwise Claude reviews the change itself and says that it used this fallback. The study measured the code-review skill, not the fallback.</p>
+<h2 id="when-extra-checks-are-needed">When extra checks are needed</h2>
+<p>Most jobs need only the steps above. Some changes need more evidence.</p>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Situation</th><th scope="col">Added check</th></tr></thead><tbody><tr><td>Correctness depends on a live service, such as an API or model provider</td><td>Make a real call with safe test inputs</td></tr><tr><td>The problem occurs on a different platform</td><td>Give exact commands to test there and leave the fix unconfirmed until they are run</td></tr><tr><td>The result will be installed by other people</td><td>Prepare an outside review</td></tr><tr><td>Existing user files or credentials could be affected</td><td>Prepare an outside review</td></tr><tr><td>The change is hard to test fully</td><td>Prepare an outside review</td></tr><tr><td>An important correctness question remains open</td><td>Prepare an outside review</td></tr></tbody></table></div>
+<p>A hard change includes failure handling, processes and timeouts, defaults and compatibility, checks and validators, or shared code with several callers when the tests may miss important cases. A routine one-path fix with a convincing test is not automatically hard. If Claude is unsure whether a live-service, other-platform, or hard-change check is needed, it treats it as needed.</p>
+<p><strong>What an outside review means.</strong> Claude prepares a file containing the task, full change, tests, results, and questions. You give that file to another AI assistant and return its comments to Claude. Claude addresses each finding. The file should exclude credentials and private data, but it contains code: share it only with a service your project permits. You can ask for an outside review even on a routine job.</p>
+<h2 id="changes-that-are-hard-to-undo">Changes that are hard to undo</h2>
+<p>An installation, migration, change to shared tooling, or other hard-to-undo action needs these steps before anything irreversible happens:</p>
+<ol><li>Claude prepares and tests a reversible change.</li><li>You approve a short plan.</li><li>Claude makes a backup and checks that recovery is possible.</li><li>An outside review of the plan and prepared change is completed, with important findings resolved.</li><li>You explicitly authorize the step that changes the shared installation or other important state.</li></ol>
+<p>The purpose is to let you inspect what will happen before it happens.</p>
+<h2 id="more-control-and-safety">More control and safety</h2>
+<ul><li><strong>Approval and publication.</strong> Claude is instructed not to commit, push, or install without your request, and to follow project rules in <code>CLAUDE.md</code>, <code>AGENTS.md</code>, and any saved notes. Before pushing, it reports unresolved checks and asks you to accept anything important that remains open.</li><li><strong>Optional independent reader.</strong> For subtle work, Claude may recommend a separate in-session reviewer. It runs only if you agree. In the study, this was slower than an ordinary review and did not show a clear extra benefit.</li><li><strong>No unfinished background work.</strong> A job is meant to finish or stop its tests and builds before its final report.</li><li><strong>Optional job log.</strong> You can keep a one-line history of jobs and check later whether any defects emerged.</li></ul>
+<h2 id="several-tasks-in-a-row">Several tasks in a row</h2>
+<p><code>/gc batch</code> is for a supervised list of separate tasks. Claude runs them one after another, saves each result as a patch (a file containing the changes), and restores the project&#x27;s working files between jobs. Tasks that depend on earlier tasks are left for later. Decisions, paid live calls, and outside reviews are left pending. Nothing is pushed or installed during a batch.</p>
+<p>At the end, you get one summary and decide which patches to keep. This is <strong>not</strong> an unattended overnight mode. Stay reachable: a batch does not detect other sessions using the same project folder, and only you can interrupt a job that hangs.</p>
 <h2 id="setup-and-notes">Setup and notes</h2>
-<p><code>/gc setup</code> looks at your project and shows one card of settings: the build and test commands, a full test suite to run before a push (if you have one), your commit and push rules, which AI assistant you use for outside reviews, and a few others. After you confirm it, it saves them in a short notes file, <code>.claude/GC_NOTES.md</code>, that later jobs read. Your team&#x27;s own instructions (<code>CLAUDE.md</code>, <code>AGENTS.md</code>) take precedence over these personal notes.</p>
-<h2 id="limits">Limits</h2>
-<p>Guided Coding as now written has not itself been measured; <a href="verification.html">Evidence and limits</a> goes through its main parts and what the evidence says about each. Its review pass is done by the same kind of model as the one doing the work. An outside review can use a different AI assistant, which you choose. The report is only as reliable as the checks behind it, which is why it says what was not checked, and why asking until you understand matters.</p>
-<h2 id="more-information">More information</h2>
-<ul><li><a href="quick-start.html">Quick Start</a>: let Claude Code install Guided Coding with you.</li><li><a href="getting-started.html">Installing Guided Coding</a>: the commands.</li><li><a href="documentation.html">Documentation</a>: every document, including the skill files themselves.</li></ul>
+<p><code>/gc setup</code> is optional, once per project. Claude reads the project&#x27;s existing files and fills in what it can find about build and test commands, the full test suite, commit and push rules, and outside review preferences. It shows you one short card to confirm or correct, then saves a notes file at <code>.claude/GC_NOTES.md</code>. Your team&#x27;s instructions take precedence over these personal notes.</p>
+<h2 id="what-this-cannot-guarantee">What this cannot guarantee</h2>
+<p>These are instructions, not a technical sandbox that enforces each step. Claude may make mistakes or fail to follow them. A passing test checks the cases it covers, not every possible behaviour. The final report is useful because it tells you what was and was not checked; your judgment still matters.</p>
+<p>The <a href="verification.html">Evidence</a> page describes the study behind individual steps and the checks of the current procedure. For installation, use <a href="quick-start.html">Quick Start</a>. For every document and the exact instruction files, see <a href="documentation.html">Documentation</a>.</p>
   
-  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';

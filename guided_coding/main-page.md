@@ -1,99 +1,71 @@
-# Guided Coding Help and Information
+# Guided Coding
 
-When Claude Code makes a fix for you, you are left with some questions. Do I understand the change it made? How was
-it tested? What remains uncertain?
+## Why try it?
 
-Guided Coding is a short set of instructions for Claude Code that is built to answer those questions for every change. You give
-Claude a bug or a bounded change. Claude makes the fix and, where feasible, writes a test that fails on the old code
-and passes on the new code; where it is not, the report says why and what evidence was used instead. Claude runs one
-review pass over the change, prepares an outside review by another AI assistant for hard or consequential changes,
-adds further checks only when the change needs them, and ends with a short report. You decide what to keep, and whether and when anything is pushed.
+Claude Code can make a useful change very quickly. The harder question is whether the change is right. Did it fix
+the problem without breaking something else? What was actually tested? What still needs your attention?
 
-This is the procedure I use in my own software work. You can use it in any project managed with Git.
+Guided Coding gives Claude Code a short procedure for answering those questions. For each job, it asks Claude to:
 
-- [Why Guided Coding and not just Claude Code?](why-not-claude-code.html)
-- [Why Guided Coding and not Vibe Coding?](why-not-vibe-coding.html)
-- [How Guided Coding works](how-it-works.html)
-- [Quick Start with Guided Coding](quick-start.html)
+- **Check the fix.** Where feasible, run a test that fails for the original problem and passes after the change.
+- **Review the change.** Look for mistakes, check the fixes made during review, and prepare an outside review by
+  another AI assistant for hard or consequential work.
+- **Explain the result.** Give you a short report: what changed, what passed, what was not checked, and any decision
+  that remains yours.
 
-## Start here
+You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is
+five instruction files, not an additional program. I use it in my own software work.
 
-Guided Coding runs inside Claude Code, so you need Claude Code first. If you do not have it yet, follow
-[Anthropic's Claude Code quickstart](https://code.claude.com/docs/en/quickstart), then come back here. Guided Coding
-has been tested on macOS; it should work on Linux, and has not been tested on Windows.
+## When should you use it?
 
-1. **Recommended: let Claude install it with you.** Open [Quick Start](quick-start.html), copy its one message into
-   Claude Code, and follow Claude's directions.
-2. **Prefer to install it yourself?** [Download the ZIP](#download), or use the [install commands](getting-started.html)
-   for Git or the ZIP.
-3. **Then use it.** Open Claude Code in the folder of the project you want to change, and type `/gc` followed by
-   what you want done. Installing is once per computer; `/gc setup` is optional, once per project, and saves that
-   project's build and test commands.
+Use Guided Coding when you ask Claude to change software you expect to keep: fixing a bug, adding a feature, or
+changing code that other people use. It is particularly useful when you want the change checked, reviewed, and
+explained without having to request every step yourself.
+
+For a quick experiment that you might throw away, ordinary Claude Code may be enough. If you already have a
+dependable testing and review process, Guided Coding may add less.
+
+## How we developed Guided Coding
+
+Guided Coding grew out of a practical question: what extra steps actually reduce errors in the code Claude Code
+produces? We tested this by repeating earlier bug-fixing tasks with different checking steps and examining the
+finished code.
+
+The clearest improvement came from reviewing the code after a fix. On selected harder tasks, a second opinion
+from a different AI assistant helped when added to Guided Coding. The same step did not show a clear extra benefit
+when added to ordinary Claude Code with one review. Guided Coding combines the useful steps with a simple
+procedure that guides you from the task, through testing and review, to a report you can understand.
+
+You do not have to remember the steps yourself. Guided Coding asks Claude to follow them and to involve you when a
+decision is needed.
 
 ## Two things matter more than any procedure
 
-**Ask until you understand.** Before you accept a change, you should be able to say what was wrong, what changed,
-and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but
-it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you
-still do not understand it, do not accept it. For hard or consequential changes Claude prepares an outside review
-file itself; for any other change, ask for one if you are unsure or it matters a lot. Give it to another AI assistant for a second opinion, then paste the reply back to
-Claude to address. A second reader, especially a different model, may catch problems that the first one missed.
+**Ask until you understand.** You should be able to say what was wrong, what changed, and why the checks support the
+result. If a report is unclear, ask Claude to explain it more simply. You can also use the
+[Guided Workflow Helper](https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain).
+Do not accept a change you do not understand.
 
-**You are in control, not the AI.** Claude proposes; you decide. You decide what the task is, how far the change may
-reach, what to keep, and whether and when anything is pushed or installed. Guided Coding asks you before it changes
-behaviour you did not ask for and before any irreversible step, and it commits or pushes only when you ask. You can
-redirect or stop it at any time.
+**You are in control, not the AI.** You choose the task and decide which changes to keep. Guided Coding tells Claude
+to ask before changing interfaces, defaults, or other behaviour people rely on, and before committing, pushing, or
+installing. You can stop or redirect a job. Because these are instructions, not an enforced sandbox, you should still
+read the report and check important changes yourself.
 
-## A small example
+## What do you need?
 
-Suppose your program crashes when it reads an empty file. You want it to print "The file is empty" and stop. When
-the file contains data, the program should work as it did before.
+- Claude Code, in the Claude app or Terminal. If you do not have it, start with
+  [Anthropic's Claude Code quickstart](https://code.claude.com/docs/en/quickstart).
+- A software project you want to work on. Guided Coding is intended for projects managed with Git.
+- Guided Coding has been tested on macOS. Linux should work but has not been tested; Windows has not been tested.
 
-You type `/gc` followed by a description of the crash. Claude finds the cause and fixes it. It writes a test that
-reads an empty file: the test fails on the old code with the crash, and passes on the new code. It runs the existing
-tests and one review pass. Its report tells you what changed, how the test shows the fix, what it could not check,
-and what it recommends you do next. You read the report, ask about anything unclear, and decide whether to keep the
-fix.
-
-## What you decide
-
-- **The task and its reach.** Claude does the routine work the task needs, and asks you before it changes intended
-  behaviour, an interface, a default or a file format that you did not ask about.
-- **The decisions in the report.** Each comes with the background, the options and a recommendation.
-- **Committing and pushing.** Claude commits or pushes only when you ask. Your project's own rules apply, for
-  example whether an AI assistant may push at all.
-- **Consequential work.** For installations, migrations, or changes that could cause damage that is hard to undo,
-  Claude first prepares and tests the change. Before the irreversible step it asks for your approval of a short
-  plan, checks a backup, and has the change read by an outside reviewer.
-
-## Several tasks in a row
-
-`/gc batch` runs a list of tasks one after another, each as its own job, while you stay reachable. Each job's
-changes are kept as a separate patch, and your checkout is restored between jobs. Tasks that depend on each other
-are left for afterwards; paid live calls and outside reviews are left pending; nothing is pushed or installed. At the
-end you get one summary and decide which patches to keep. It is supervised, not an unattended overnight run.
-
-## Help
-
-Type `/gc` on its own for a short introduction. `/gc setup` saves your project's build and test commands in a short
-notes file, so later jobs can use them. If a report or a choice is hard to understand, ask Claude to explain it more
-simply. You can also give the text to a [Guided Workflow Helper](https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain).
+The [Quick Start](quick-start.html) lets Claude Code guide you through installation with one message. After that,
+open your project in a new Claude Code conversation and ask Guided Coding to carry out a small task.
 
 ## Evidence and limits
 
-In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job
-from 0.81 to 0.47. Guided Coding always includes that review pass, which is the main reason to expect it to do better
-than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when
-added to Guided Coding, narrowly (the net gain came from 4 of the 18 jobs, and the reviews also brought in a few new errors).
-Guided Coding 1.4 keeps one review pass and an outside review (for hard or consequential changes), which were found
-to help, and a test that proves the fix. It drops or makes optional what showed no clear benefit, and narrows a strict scope
-rule that probably cost errors. Guided Coding 1.4 as a whole has not itself been measured; it was checked in a small
-trial and is being evaluated in real use. The effects are small next to the variation between runs, and the study
-also found evidence for the larger earlier kit on some major errors. See [Why Guided Coding](why-not-claude-code.html) for
-the findings in one page, and [Evidence and limits](verification.html) for each part of Guided Coding. The
-[full report](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md) and the
-[methods](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md) of the study can be downloaded.
+The study of earlier bug fixes showed how much a review step helped, when an outside review added something,
+and where a direct replay of Guided Coding found problems.
+The results and their limitations are explained in plain language on the [Evidence](verification.html) page.
 
-Guided Coding replaced a much larger earlier kit on 2026-10-23. The earlier kit had approval screens, evidence
-packets and an unattended auto mode. It is kept on the repository's branch
-[full-kit-rev21](https://github.com/cctbx/guided_coding/tree/full-kit-rev21).
+If you want the details before trying it, see [How Guided Coding works](how-it-works.html). The
+[Documentation](documentation.html) page has installation, updating, evidence, and the exact instruction files.

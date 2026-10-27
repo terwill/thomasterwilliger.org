@@ -1,106 +1,53 @@
-# Why Guided Coding and not just Claude Code?
+# What difference does Guided Coding make?
 
-Claude Code can already fix bugs well. In a replay study of 37 past bug fixes, Claude Code followed by one review
-pass left clearly fewer errors than Claude Code alone. Guided Coding is built around that review: it runs it on every
-coding job. It also asks for a test that proves the fix, prepares an outside review by a different AI model for hard
-changes, asks before changing what other code relies on, and ends with a short report.
+Claude Code can write and fix code without Guided Coding. Guided Coding adds a consistent procedure for checking
+the result and explaining it to you.
 
-So Guided Coding should leave fewer errors than plain Claude Code, because it includes the step that made the
-difference. That has not been measured for the current version. The study did not find Guided Coding better than
-Claude Code with one review, and we do not claim it is. If you already review every change, Guided Coding mainly adds
-the proving test, the outside review for hard changes and the report, and it does these in order and tells you what is
-still open.
+## What changes when you use Guided Coding?
 
-## What we tested
+| With ordinary Claude Code | Guided Coding asks Claude to do this on each job |
+| --- | --- |
+| Tests and reviews depend on the request and the session | Try to reproduce the bug with a test that fails before the fix and passes afterward; run relevant existing tests |
+| You may need to request a code review | Review the change once, then check any corrections made during review |
+| Important uncertainties can be left in the conversation | End with a short report of what changed, what was checked, and what remains open |
+| You decide when to seek another opinion | Prepare an outside review for hard or consequential changes; offer one for other changes |
+| You decide how much authority to give the assistant | Ask before changing important existing behaviour, committing, pushing, or installing |
 
-We replayed 37 real bug fixes in PHENIX and cctbx with Claude Code under different procedures, and counted the errors
-left in the finished code. 18 of the jobs were harder ones: jobs where an earlier version of the procedure had caught
-errors of its own, not a random sample of difficult work. Most steps were tested on those, so the findings apply to
-work like it. The 18 jobs were not chosen with Guided Coding's "hard change" trigger, so the study does not show how
-well that trigger picks out the jobs where an outside review helps. Every result was checked by probes run against the code, by blind readings, and by severity ratings
-made without knowing which procedure produced the code. Figures below are **major errors left per run on the 18
-harder jobs** (lower is better), unless stated otherwise.
+These are instructions to Claude, not technical restrictions on what it can do. You should still read the result,
+especially when a mistake would matter.
 
-### 1. Tested and found to help
+## When is it useful?
 
-| Step | What we found |
-|---|---|
-| **One review pass** after the change | The clearest effect: 0.90 → 0.79 major errors per run; across all 37 jobs, program errors missed fell from 0.81 to 0.47 per job |
-| **An outside review by a different AI model** | Helped on the 18 harder jobs, narrowly: 1.00 → 0.83 in the full procedure. The net gain came from 4 of the 18 jobs, and the review also brought in a few new errors. Added to plain Claude Code with one review, it gave 0.85 → 0.76, not a clear difference |
-| **A test that proves the bug** (fails before the fix, passes after) | More runs produced a proving test: about 1 in 7 plain runs ended without one, against 1 of 37 jobs when it was required (all 37 jobs). Its effect on errors left was not measured separately |
+Guided Coding is a good fit for bug fixes, new features, and maintenance work in software you plan to keep.
+It helps when you want a repeatable check of the change and a clear account of what was tested and what remains open.
 
-### 2. Tested, with no clear benefit found
+For a throwaway prototype, plain Claude Code may be quicker; see
+[Guided Coding and vibe coding](why-not-vibe-coding.html). If you already require useful tests, run a review on
+every change, and record open questions, the extra benefit may be smaller. Guided Coding mainly puts these steps
+into a repeatable order.
 
-| Step | What we found |
-|---|---|
-| **A second review pass** | No clear additional benefit found over one review pass |
-| **An independent reviewer step** (a separate, structured review) | Not clearly better than a second ordinary review, at about three times the time |
+## What did the study find?
 
-### 3. Probably hurt (estimated, not tested)
+In a replay of 37 past bug-fixing jobs in the PHENIX and cctbx scientific software projects, one review pass reduced the program errors missed by
+plain Claude Code from 0.81 to 0.47 per job. That is the main measured reason for including a review on every job.
 
-| Step | What we found |
-|---|---|
-| **A strict scope rule** (undo every fix beyond the literal task, and ask first) | Probably cost errors: fixes the review found were undone and left as questions, and the procedure that used it left more major errors than plain Claude Code with one review (0.97 against 0.79). The size was estimated from those cases, not measured directly |
+On 18 selected harder jobs, an outside review by a different AI model removed some additional major errors when
+added to Guided Coding (1.00 to 0.83 per run). The gain was modest: the net improvement came from four jobs, and
+a few new errors were also introduced. The same review did not show a clear benefit when added to ordinary Claude
+Code with one review (0.85 to 0.76). Guided Coding therefore reserves this extra step for harder or consequential
+work, while letting you request it whenever you want.
 
-**Why some starting figures differ.** Plain Claude Code with one review appears above as 0.79 and as 0.85, and
-Guided Coding 1.3 as 0.97 and 1.00. The outside-review figures come from a later, deeper scoring of the same runs,
-which found a few more errors; that is why their starting values are slightly higher. Each comparison uses figures
-from one scoring.
+Requiring a test that fails before a fix and passes afterward made it more likely that a job ended with such a
+test. Its separate effect on remaining errors was not measured.
 
-## What Guided Coding does
+The [Evidence](verification.html) page explains these comparisons and the direct replay of an earlier Guided
+Coding procedure, including results that were inconclusive or unfavorable. It links to the complete report and
+methods.
 
-The procedure follows from those findings:
+Guided Coding does not replace your judgment, guarantee correctness, or make it safe to share confidential code with an
+unapproved outside service. It can take longer than a quick unreviewed edit.
 
-1. **Fix the problem** the task describes.
-2. **Write a test that proves the bug:** it fails on the old code and passes on the new. Where no such test is
-   feasible, the report says why and what evidence was used instead.
-3. **Review the change once** (Claude Code's code-review skill, the review the study measured, when it is available;
-   otherwise Claude reviews the change itself and says so), and fix what the review finds in the changed code.
-4. **For hard or consequential changes, prepare an outside review** for a different AI model, and handle its
-   findings when the reply comes back.
-   Hard means correctness turns on conditions the tests may not reach: checks and guards, processes and failures,
-   defaults and compatibility, shared code with several callers. For other changes it is offered, not required.
-5. **Fix real defects** found in the changed code without asking. **Ask first** before changing public interfaces,
-   defaults, file formats, behaviour that callers rely on, or the project's scope.
-6. **Report** what changed, what proves it, what was not checked, your decisions with recommendations, and the
-   recommended next action.
+## Try it
 
-A second review pass is not part of it. The independent reviewer step is available when you ask for it.
-
-## Useful, but not tested
-
-| Step | Why it is included |
-|---|---|
-| **The short final report** | Says plainly what was changed, what was checked and what is still open, so nothing is silently left |
-| **A real check against a live service** (APIs, model names) | Some fixes can only be confirmed against the real service |
-| **Exact commands for another platform** | Lets the fix be checked on Windows, Linux or CI |
-| **Care with user data and credentials** | Changes that touch existing files or keys get an outside review |
-| **Asking before commit, push or install** | Nothing goes out without your go |
-| **A plan and a backup for consequential work** | Installations and migrations are prepared reversibly and checked before the irreversible step |
-
-## Limits
-
-The one replay of Guided Coding itself, version 1.3 on the 18 harder jobs, left as many major errors as plain Claude
-Code (0.90 per run each, counting the outside reviews it asked for in 4 of its 38 runs; 0.97 before them), and more
-than Claude Code with one review (0.79). The likely cause, estimated rather than measured, was the strict scope rule,
-which undid fixes the review had made; version 1.4 narrows that rule. The effects are small (about 0.1 to 0.2 major errors per run) next to the variation between runs, and they come from
-18 harder jobs and one AI model family doing the work. We did not measure the developer's own time, or whether
-Guided Coding as a whole beats plain Claude Code with one review and an outside review. Guided Coding 1.4 has not
-itself been replayed; it was checked in a small trial and is being evaluated in real use. The narrower scope rule was
-adopted without a test, and the outside review was measured with a scripted review request, not Guided Coding's own
-review file. A larger earlier version of the procedure, with several review layers, left fewer major errors on the
-harder jobs (0.44 per run, one run per job, and much slower); which of its parts did that is not known.
-
-### The evidence in detail
-
-- **[Evidence and limits](verification.html):** each part of Guided Coding, what the study found about it, and the
-  behaviour checks.
-- [Full report of the study](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md),
-  with every figure traced to its source (download).
-- [Description of the methods](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md)
-  (download).
-
-## And the most important part
-
-Guided Coding does not replace your judgement. **Ask until you understand** each change, and **stay in control**:
-Claude proposes, you decide. [How Guided Coding works](how-it-works.html) explains each step.
+Read [How Guided Coding works](how-it-works.html) if you want to understand the procedure, or use the
+[Quick Start](quick-start.html) to install it with one message.

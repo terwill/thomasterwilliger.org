@@ -46,6 +46,14 @@ def fake_source(root, test_ok=True):
 
 
 class RenderTests(unittest.TestCase):
+    def test_manual_install_commands_get_copy_buttons(self):
+        original = "<p>Run this:</p><pre><code>echo one\necho two\n</code></pre>"
+        result = b.manual_code_buttons(original)
+        self.assertIn('<pre id="manual-command-1"><code>echo one\necho two\n</code></pre>', result)
+        self.assertIn('data-copy="manual-command-1"', result)
+        self.assertIn('role="status" aria-live="polite"', result)
+        self.assertEqual(b.manual_code_buttons("<p>No commands</p>"), "<p>No commands</p>")
+
     def test_lists_with_nested_code(self):
         md = "# T\n\n- **One.** first\n  second line\n\n  ```\n  code here\n  ```\n- Two\n\n1. a\n2. b\n"
         _, body, _ = b.render(md)
@@ -72,7 +80,10 @@ class RenderTests(unittest.TestCase):
         md = "# T\n\n```copy\ntext\n```\n"
         with self.assertRaises(b.BuildError):
             b.render(md)
-        self.assertIn('id="copy-text"', b.render(md, allow_copy=True)[1])
+        body = b.render(md, allow_copy=True)[1]
+        self.assertIn('id="copy-text"', body)
+        self.assertIn("Read the complete setup message", body)
+        self.assertLess(body.index('data-copy="copy-text"'), body.index('id="copy-text"'))
 
     def test_title_required_and_unsupported_blocks_refused(self):
         with self.assertRaises(b.BuildError):
@@ -120,6 +131,55 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(len(z.namelist()), len(b.ZIP_FILES))
         _, meta2 = self.build(source=source)
         self.assertEqual(meta["archive"]["sha256"], meta2["archive"]["sha256"])
+
+    def test_newcomer_navigation_and_document_groups(self):
+        staging, _ = self.build()
+        with open(os.path.join(staging, "index.html")) as f:
+            home = f.read()
+        with open(os.path.join(staging, "documentation.html")) as f:
+            docs = f.read()
+        with open(os.path.join(staging, "verification.html")) as f:
+            evidence = f.read()
+        self.assertIn("Get started with one message", home)
+        self.assertIn("Why try it?", home)
+        self.assertIn("How we developed Guided Coding", home)
+        self.assertIn('href="why-not-claude-code.html">What difference it makes</a>', home)
+        self.assertIn('href="quick-start.html"', home)
+        self.assertIn("Installation and updates", docs)
+        self.assertIn("Moving from an earlier GuidedCoding kit", docs)
+        self.assertIn("Evidence and technical reference", docs)
+        self.assertNotIn('aria-label="Guided Coding pages"><a href="why-not-vibe-coding.html"', docs)
+        self.assertIn("What we tested", evidence)
+        self.assertIn("How much can we conclude?", evidence)
+        self.assertIn("What happened when we replayed Guided Coding itself?", evidence)
+        self.assertIn("0.97 major", evidence)
+        self.assertIn("0.85 to 0.76", evidence)
+        self.assertNotIn("version 1.4", evidence)
+        self.assertNotIn("/gc", evidence)
+        self.assertNotIn('class="gc-toc-row"', evidence)
+        with open(os.path.join(staging, "how-it-works.html")) as f:
+            how_it_works = f.read()
+        self.assertIn('<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span>', how_it_works)
+        self.assertNotIn('<details class="gc-panel gc-toc-panel">', how_it_works)
+        with open(os.path.join(staging, "why-not-claude-code.html")) as f:
+            comparison = f.read()
+        self.assertIn("What difference does Guided Coding make?", comparison)
+        self.assertIn('href="index.html" aria-current="location"', comparison)
+        self.assertIn("0.85 to 0.76", comparison)
+        self.assertIn('href="documentation.html" aria-current="location"', evidence)
+
+    def test_full_record_and_retired_page_canonicals(self):
+        staging, _ = self.build()
+        with open(os.path.join(staging, "getting-started.html")) as f:
+            manual = f.read()
+        self.assertRegex(manual, r'href="https://github.com/cctbx/guided_coding/blob/[0-9a-f]{40}/EVIDENCE.md"')
+        for page, canonical in [("overview.html", "index.html"),
+                                ("architecture.html", "documentation.html"),
+                                ("user-guide.html", "documentation.html")]:
+            with open(os.path.join(staging, page)) as f:
+                contents = f.read()
+            self.assertIn('rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/%s"' %
+                          canonical, contents)
 
     def test_checksums_agree(self):
         staging, meta = self.build()

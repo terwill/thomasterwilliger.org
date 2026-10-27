@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Installing Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="Install, update, move from the earlier kit, or go back."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/getting-started.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manual installation and maintenance — Thomas C. Terwilliger</title><meta name="description" content="Commands for installing, updating, uninstalling, or moving from the earlier kit."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/getting-started.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -525,45 +525,57 @@ main {
 
 .gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
 .gc-document h2,.gc-document h3{scroll-margin-top:20px}
-.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-local-nav a[aria-current]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-toc-panel{padding:14px 20px 16px;background:#f8fafb}
+.gc-toc-panel .gc-toc-heading{margin:0 0 8px;color:var(--navy);font-weight:700}
+.gc-toc-panel ul{margin:0;padding-left:22px;columns:2;column-gap:28px}
+.gc-toc-panel li{break-inside:avoid;margin:0 0 5px}
+@media(max-width:600px){.gc-toc-panel ul{columns:1}}
 .gc-toc-row{margin:12px 0 24px;font-size:15px;line-height:1.9}.gc-toc-row span:first-child{font-weight:600;margin-right:4px}.gc-toc-row a{white-space:nowrap}
 .gc-reference-list{overflow-wrap:anywhere}
 .gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
-</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body id="top"><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html" aria-current="page">Install</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a></nav>
-  <h1 class="gc-document-title">Installing Guided Coding</h1>
-  <p class="gc-lead">Install, update, move from the earlier kit, or go back.</p>
-<div class="gc-download"><p><strong>Easiest: let Claude Code install Guided Coding with you.</strong> Open <a href="quick-start.html">Quick Start</a>, copy its one message into Claude Code, and follow Claude's directions. The commands on this page are for installing it yourself.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#requirements">Requirements</a> <span aria-hidden="true">·</span> <a href="#install-and-register-it-once">Install and register it (once)</a> <span aria-hidden="true">·</span> <a href="#what-the-evidence-says">What the evidence says</a> <span aria-hidden="true">·</span> <a href="#if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</a> <span aria-hidden="true">·</span> <a href="#tests">Tests</a></nav>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html" aria-current="location">Documentation</a></nav>
+  <h1 class="gc-document-title">Manual installation and maintenance</h1>
+  <p class="gc-lead">Commands for installing, updating, uninstalling, or moving from the earlier kit.</p>
+<div class="gc-download"><p><strong>New here?</strong> Most people should use <a href="quick-start.html">Get started</a>: copy one message into Claude Code and let it guide the installation. This page contains the longer manual commands and instructions for existing users.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#requirements">Requirements</a> <span aria-hidden="true">·</span> <a href="#install-and-register-it-once">Install and register it (once)</a> <span aria-hidden="true">·</span> <a href="#what-the-evidence-says">What the evidence says</a> <span aria-hidden="true">·</span> <a href="#if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</a> <span aria-hidden="true">·</span> <a href="#tests">Tests</a></nav>
 <p>GuidedCoding is a Claude Code skill, <code>/gc</code>, for making a bug fix or a bounded change you can trust, with little of your attention:</p>
 <ul><li>a test that proves the fix;</li><li>one review pass;</li><li>an outside review by another AI assistant for hard or consequential changes, and on request;</li><li>extra checks only when a change needs them (a live call, a run on another platform);</li><li>a short report.</li></ul>
 <p><code>/gc batch</code> runs a supervised list of such jobs one at a time.</p>
@@ -574,7 +586,7 @@ main {
 <h2 id="install-and-register-it-once">Install and register it (once)</h2>
 <p>Put the repository somewhere, then make a link from your Claude Code skills folder to its <code>guided_coding/</code> folder. Open Terminal (on a Mac) or a terminal window (on Linux), paste a whole block, and press Return. The blocks are complete: copy each one whole, with no editing. They are for bash or zsh, the usual shells. If your shell is csh or tcsh, type <code>bash</code> first, and <code>exit</code> afterwards. They check before they change anything, and they stop on anything unexpected. If you set <code>CLAUDE_CONFIG_DIR</code>, they use that folder instead of <code>~/.claude</code>.</p>
 <p><strong>Most people: in your home folder, with Git.</strong> This puts GuidedCoding in <code>~/guided_coding</code> and registers it. If <code>~/guided_coding</code> is already a clone of cctbx/guided_coding on <code>master</code>, it updates it with <code>git pull</code> instead:</p>
-<pre><code>sh &lt;&lt;&#x27;END&#x27;
+<pre id="manual-command-1"><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 VERSION=1.4
 DIR=&quot;$HOME/guided_coding&quot;
@@ -589,12 +601,12 @@ fi
 grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$DIR/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$DIR/guided_coding/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; exit 1; }
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$DIR/guided_coding/SKILL.md&quot;
 END
-</code></pre>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-1">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p><strong>Without Git: from the ZIP download.</strong> Download <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip"><code>guided_coding.zip</code></a> into your Downloads folder. To check it against the published <a href="https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256"><code>guided_coding.zip.sha256</code></a>, run this; it should print <code>guided_coding.zip: OK</code>:</p>
-<pre><code>(cd ~/Downloads &amp;&amp; curl -fsS https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256 | shasum -a 256 -c)
-</code></pre>
+<pre id="manual-command-2"><code>(cd ~/Downloads &amp;&amp; curl -fsS https://www.thomasterwilliger.org/guided_coding/guided_coding.zip.sha256 | shasum -a 256 -c)
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-2">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p>Then run this. It unpacks the ZIP into <code>~/guided_coding</code> and registers it:</p>
-<pre><code>sh &lt;&lt;&#x27;END&#x27;
+<pre id="manual-command-3"><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 VERSION=1.4
 DIR=&quot;$HOME/guided_coding&quot;
@@ -608,9 +620,9 @@ set -- &quot;$TMP&quot;/guided_coding-*
 grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$1/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;the ZIP&#x27;s guided_coding/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; rm -rf &quot;$TMP&quot;; exit 1; }
 mv &quot;$1&quot; &quot;$DIR&quot; &amp;&amp; rmdir &quot;$TMP&quot; &amp;&amp; mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$DIR/guided_coding/SKILL.md&quot;
 END
-</code></pre>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-3">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p><strong>In a PHENIX installation:</strong> from the folder that contains <code>modules</code> and <code>build</code>, clone the repository if it is not there yet, then register:</p>
-<pre><code>git clone https://github.com/cctbx/guided_coding.git modules/guided_coding
+<pre id="manual-command-4"><code>git clone https://github.com/cctbx/guided_coding.git modules/guided_coding
 sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 VERSION=1.4
@@ -620,7 +632,7 @@ for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SK
 grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$NEW/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$NEW/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version); nothing registered.&quot;; exit 1; }
 mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$NEW/SKILL.md&quot;
 END
-</code></pre>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-4">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p>Each block ends by showing the link and the version line of the skill it registered, <code># GuidedCoding (version 1.4)</code>. The blocks register only that version (<code>VERSION=1.4</code> in each block).</p>
 <h3 id="update">Update</h3>
 <p>For an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
@@ -629,13 +641,13 @@ END
 <p>Remove the link <code>gc</code> from your Claude Code skills folder (as in Update, step 1). You may then delete the <code>~/guided_coding</code> folder (or <code>modules/guided_coding</code> in PHENIX). Notes that <code>/gc setup</code> saved in a project (<code>.claude/GC_NOTES.md</code>) are ordinary files; delete them if you no longer want them.</p>
 <p><strong>Then</strong> start a new Claude Code conversation in the folder of the project you want to change, and type <code>/gc</code>. It should introduce itself. After that, type <code>/gc</code> followed by what you want done. Installing is once per computer; optionally, run <code>/gc setup</code> once per project to save its build and test commands in <code>.claude/GC_NOTES.md</code>.</p>
 <h2 id="what-the-evidence-says">What the evidence says</h2>
-<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="verification.html">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
+<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="https://github.com/cctbx/guided_coding/blob/17e6bb8953bba5f5ffd41e9fb907281a51cf3e85/EVIDENCE.md">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
 <h2 id="if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</h2>
 <p>Revision 22 replaces the earlier kit with this much shorter procedure. The earlier kit had approval screens, evidence packets checked by its own tools, and an unattended auto mode. They are retired, and kept on the branch <code>full-kit-rev21</code>.</p>
 <p>What you gain, and what you lose:</p>
 <ul><li><strong>Gained:</strong> a shorter, prompt-only procedure that asks for your attention only when a decision is needed.</li><li><strong>Lost:</strong> the screens, packets, checker tools and the unattended auto mode. <code>/gc batch</code> is supervised, not unattended.</li></ul>
 <p><strong>To move:</strong></p>
-<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first run only the <code>git clone</code> line from &quot;In a PHENIX installation&quot; under &quot;Install and register it (once)&quot; (not its register block, which stops while the old link exists), then run this from the folder that contains <code>modules</code> (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre><code>sh &lt;&lt;&#x27;END&#x27;
+<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first run only the <code>git clone</code> line from &quot;In a PHENIX installation&quot; under &quot;Install and register it (once)&quot; (not its register block, which stops while the old link exists), then run this from the folder that contains <code>modules</code> (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre id="manual-command-5"><code>sh &lt;&lt;&#x27;END&#x27;
 SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
 VERSION=1.4
 OLD=&quot;$SKILLS/guided_coding&quot;
@@ -650,31 +662,34 @@ esac
 if [ -e &quot;$SKILLS/gc&quot; ] || [ -L &quot;$SKILLS/gc&quot; ]; then echo &quot;$SKILLS/gc already exists; nothing changed.&quot;; exit 1; fi
 ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; rm &quot;$OLD&quot; &amp;&amp; ls -l &quot;$SKILLS&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$NEW/SKILL.md&quot;
 END
-</code></pre></li><li><strong>Two links.</strong> Keep only one link to GuidedCoding. Two skills both named <code>gc</code> conflict.</li><li><strong>Your instructions.</strong> If your <code>CLAUDE.local.md</code> adopts the earlier kit&#x27;s &quot;Developer–Guide Contract&quot;, that line can go. Your project method file is not used by the new <code>/gc</code>; <code>/gc setup</code> writes short notes instead.</li><li><strong>Then</strong> start a new Claude Code conversation.</li></ul>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-5">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p></li><li><strong>Two links.</strong> Keep only one link to GuidedCoding. Two skills both named <code>gc</code> conflict.</li><li><strong>Your instructions.</strong> If your <code>CLAUDE.local.md</code> adopts the earlier kit&#x27;s &quot;Developer–Guide Contract&quot;, that line can go. Your project method file is not used by the new <code>/gc</code>; <code>/gc setup</code> writes short notes instead.</li><li><strong>Then</strong> start a new Claude Code conversation.</li></ul>
 <p><strong>To go back to the earlier kit:</strong></p>
-<pre><code>cd modules/guided_coding
+<pre id="manual-command-6"><code>cd modules/guided_coding
 git fetch origin full-kit-rev21
 git checkout full-kit-rev21
-</code></pre>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-6">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p>Your link then gives the earlier kit again. Keep your single link, and do not run the earlier kit&#x27;s registration step (<code>register-skill</code>), which would add a second one. Restore your <code>CLAUDE.local.md</code> contract line if you removed it. To return to the new GuidedCoding, <code>git checkout master</code>.</p>
 <h2 id="tests">Tests</h2>
-<pre><code>python3 tst_guided_coding.py
-</code></pre>
-<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="verification.html">EVIDENCE.md</a>.</p>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/17e6bb8953bba5f5ffd41e9fb907281a51cf3e85">cctbx/guided_coding 17e6bb8</a> (2026-10-26).</p>
-  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+<pre id="manual-command-7"><code>python3 tst_guided_coding.py
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-7">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
+<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="https://github.com/cctbx/guided_coding/blob/17e6bb8953bba5f5ffd41e9fb907281a51cf3e85/EVIDENCE.md">EVIDENCE.md</a>.</p>
+  
+  <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';

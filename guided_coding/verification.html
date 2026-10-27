@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evidence and limits — Thomas C. Terwilliger</title><meta name="description" content="What the evidence says about the main parts of /gc, the study behind it, and the behaviour checks."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/verification.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Evidence for Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="What the tests found about reviews, before-and-after tests, and the limits of the evidence."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/verification.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -525,100 +525,93 @@ main {
 
 .gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
 .gc-document h2,.gc-document h3{scroll-margin-top:20px}
-.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-local-nav a[aria-current]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-toc-panel{padding:14px 20px 16px;background:#f8fafb}
+.gc-toc-panel .gc-toc-heading{margin:0 0 8px;color:var(--navy);font-weight:700}
+.gc-toc-panel ul{margin:0;padding-left:22px;columns:2;column-gap:28px}
+.gc-toc-panel li{break-inside:avoid;margin:0 0 5px}
+@media(max-width:600px){.gc-toc-panel ul{columns:1}}
 .gc-toc-row{margin:12px 0 24px;font-size:15px;line-height:1.9}.gc-toc-row span:first-child{font-weight:600;margin-right:4px}.gc-toc-row a{white-space:nowrap}
 .gc-reference-list{overflow-wrap:anywhere}
 .gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
-</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body id="top"><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a></nav>
-  <h1 class="gc-document-title">Evidence and limits</h1>
-  <p class="gc-lead">What the evidence says about the main parts of /gc, the study behind it, and the behaviour checks.</p>
-<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#what-the-evidence-says-about-gc-as-now-written">What the evidence says about <code>/gc</code> as now written</a> <span aria-hidden="true">·</span> <a href="#the-replay-study-october-2026">The replay study (October 2026)</a> <span aria-hidden="true">·</span> <a href="#the-replay-of-gc-itself-round-6-october-2026">The replay of <code>/gc</code> itself (round 6, October 2026)</a> <span aria-hidden="true">·</span> <a href="#what-an-outside-review-adds-round-6b-october-2026">What an outside review adds (round 6b, October 2026)</a> <span aria-hidden="true">·</span> <a href="#use-since">Use since</a> <span aria-hidden="true">·</span> <a href="#trial-of-version-14-2026-10-26">Trial of version 1.4 (2026-10-26)</a> <span aria-hidden="true">·</span> <a href="#behaviour-checks-of-revision-22">Behaviour checks of revision 22</a></nav>
-<p>The full report of the replay study, with every figure traced to its source, can be downloaded: <a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md">the final report</a> (Markdown, about 185 KB). In it the earlier kit is called GuidedCoding Plus (GC+); the cited source files are available on request.</p>
-<h2 id="what-the-evidence-says-about-gc-as-now-written">What the evidence says about <code>/gc</code> as now written</h2>
-<p><code>/gc</code> version 1.4 keeps the steps the replay study found to help, drops or makes optional those that showed no clear benefit, narrows the one that probably hurt (estimated, not tested), and keeps a few safety steps that were not measured. Figures are major errors left in the code per run on 18 harder jobs (jobs where the earlier kit&#x27;s own checks had caught errors, not a random sample), unless stated otherwise; the study is described below.</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Step</th><th scope="col">What the study found</th><th scope="col">In <code>/gc</code> 1.4</th></tr></thead><tbody><tr><td><strong>One review pass</strong> (Claude Code&#x27;s code-review skill)</td><td>Helps: 0.90 → 0.79 major errors per run; across all 37 jobs, missed program errors fell from 0.81 to 0.47 per job</td><td>Kept, on every job</td></tr><tr><td><strong>An outside review by another AI assistant</strong></td><td>Helps on the 18 harder jobs, narrowly: 1.00 → 0.83 under <code>/gc</code> (round 6b, below); for plain Claude Code with one review, 0.85 → 0.76, not a clear difference. The net gain came from 4 of the 18 jobs, and the reviews also brought in a few new errors</td><td>Standard for hard changes (new trigger H), for triggers R, D and Q, and for consequential work; offered on any other job</td></tr><tr><td><strong>A proving test</strong> (fails on the old code, passes on the new)</td><td>More runs produced a proving test: about 1 in 7 plain runs ended without one, against 1 of 37 jobs for the earlier kit, which required it. Its effect on errors left was not measured</td><td>Kept, required</td></tr><tr><td><strong>A second ordinary review pass</strong></td><td>No clear additional benefit found over one review pass</td><td>Not included</td></tr><tr><td><strong>The independent reviewer (<code>REVIEWER.md</code>)</strong></td><td>Not clearly better than a second ordinary review, at about three times the time</td><td>Optional, on request</td></tr><tr><td><strong>The strict scope rule</strong> (revert every review fix beyond the literal task, ask first)</td><td>Probably cost errors: in round 6, fixes the review found were undone and left as questions, and <code>/gc</code> left more major errors than plain + review (0.97 against 0.79). Estimated from those cases, not measured directly</td><td>Narrowed: real defects in the code the job changes are fixed without asking; <code>/gc</code> asks before changing public interfaces, defaults, file formats, behaviour callers rely on, or the project&#x27;s scope, and when the task leaves the intended behaviour open</td></tr></tbody></table></div>
-<p><strong>Two scorings of the same arms.</strong> Plain Claude Code with one review appears as 0.79 (round 6) and as 0.85 (before the outside review, round 6b); <code>/gc</code> 1.3 appears as 0.97 and 1.00. Round 6b&#x27;s instruments found further errors that the earlier versions also had, which raised those figures. Each comparison uses figures from one scoring.</p>
-<p><strong>Kept for safety and clarity, not measured:</strong> the short final report (what changed, what was checked, what is open); a real call to a live service where a fix depends on it; exact commands for another platform; an outside review for changes that touch existing user files or credentials; asking before any commit, push or installation; a plan, a checked recovery step and an outside review before an irreversible step in consequential work; <code>/gc batch</code>; the review fallback when the code-review skill is missing.</p>
-<p><strong>Not known:</strong> <code>/gc</code> 1.4 has not itself been replayed (it was checked in a small trial, below), and the narrower scope rule was adopted without a test. Also not known: whether <code>/gc</code> 1.4 as a whole leaves fewer errors than plain Claude Code with one review and an outside review; how much of the developer&#x27;s own time an outside review takes; and whether an outside review helps on routine fixes (it is optional there). The effects found are small (about 0.1 to 0.2 major errors per run) next to the variation between runs.</p>
-<h2 id="the-replay-study-october-2026">The replay study (October 2026)</h2>
-<p>37 past bug-fix jobs in PHENIX and cctbx, done with the earlier GuidedCoding kit, were replayed with plain Claude Code: alone (P), and with one review pass using Claude Code&#x27;s code-review skill (P+R). Every result was scored for program errors left, with errors tagged major or minor without knowing which method produced them.</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">per job, over all 37 jobs</th><th scope="col">earlier kit</th><th scope="col">P</th><th scope="col">P+R</th></tr></thead><tbody><tr><td>program errors left (missed)</td><td>0.51</td><td>0.81</td><td>0.47</td></tr><tr><td>major errors left (missed)</td><td>0.16</td><td>0.33</td><td>0.24</td></tr></tbody></table></div>
-<p><strong>What it shows:</strong></p>
-<ul><li>One review pass after plain Claude Code made a large difference, at about half the plain run&#x27;s time.</li><li>The earlier kit and P+R were level on all errors.</li><li>The earlier kit led on major errors (0.16 against 0.24). Over all 37 jobs that lead rests on one job; without it, the two are level (0.167 against 0.160).</li><li>A deeper search of the 18 jobs where the kit&#x27;s layers caught something told a different story. On major errors left in the code (missed plus disclosed), the kit&#x27;s lead there was 0.19 per run, leaving out the same job (0.35 against 0.54). Part of that increase is an artefact of the deeper search, which started from errors in the plain runs. On the round-4 measure (missed only) the lead in those jobs was 0.05. This is unresolved, and is the main evidence against the change to this procedure.</li><li>The earlier kit&#x27;s outside reviewers and live checks made some major catches that no in-session step recovered. This procedure keeps outside review and live checks, as steps triggered by the kind of change.</li><li>A GC-style second reviewer, run after the review pass on the 18 harder jobs, left fewer major errors than the review pass alone, but not clearly fewer than a second ordinary review, and took about three times as long. It is offered here as an optional step (<code>REVIEWER.md</code>).</li></ul>
-<p><strong>What it does not show:</strong></p>
-<ul><li>This study&#x27;s 37 jobs were not replayed with this procedure; round 6 (below) replayed it on 18 of them. Its added steps (live calls, platform commands, the optional reviewer) were not measured as built into it.</li><li>37 jobs is a small sample, from one developer&#x27;s work. Every worker, scorer and checker was a Claude model; some outside readers were not.</li><li>The study measured errors in code. It did not measure accidental damage to installations. For that kind of work this procedure requires a plan, a checked recovery step and a completed outside review.</li></ul>
-<h2 id="the-replay-of-gc-itself-round-6-october-2026">The replay of <code>/gc</code> itself (round 6, October 2026)</h2>
-<p><code>/gc</code> version 1.3 was replayed on the 18 harder jobs, those where the earlier kit&#x27;s layers had caught something: 38 fresh runs, with the same Claude Code versions, inputs and sandbox as the plain runs, and a fixed paragraph standing in for the developer (&quot;keep to the task&quot;). In 4 runs <code>/gc</code> wrote an outside review; it was sent to a model from another family and the session continued with the reply. Every run was scored at the same depth as the others, and the reading rule was fixed before any result was seen.</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">major errors left in the code, per run (missed or disclosed)</th><th scope="col">earlier kit</th><th scope="col">P</th><th scope="col">P+R</th><th scope="col"><code>/gc</code> with its outside reviews</th></tr></thead><tbody><tr><td>the 18 harder jobs</td><td>0.44</td><td>0.90</td><td>0.79</td><td>0.90</td></tr></tbody></table></div>
-<ul><li><strong>The result:</strong> no clear difference between <code>/gc</code> and plain Claude Code with one review pass. The estimate was slightly worse for <code>/gc</code> (+0.11 major errors per run; 90% interval −0.19 to +0.42). It does not show that the two are equal, and <code>/gc</code> did not recover the earlier kit&#x27;s lead on these jobs.</li><li><strong>Questions for the developer.</strong> <code>/gc</code> disclosed more of what it left, often as a question for the developer, which the replay&#x27;s fixed stand-in always answered &quot;keep to the task&quot;. Had those questions been answered as <code>/gc</code> recommended, the two would have been about level (an untested estimate).</li><li><strong>The outside review,</strong> which <code>/gc</code> wrote on its own trigger in 4 of 38 runs, removed 3 major errors.</li><li><strong>What followed.</strong> As decided before the results were seen, <code>/gc</code> was kept as a way of working with the developer, not as a claim that it produces more correct code than plain Claude Code with a review. Round 6b (below) then measured the outside review, and version 1.4 made it standard for hard changes and narrowed the scope rule.</li></ul>
-<p>The round-6 report is part of the final report above (Part F).</p>
-<h2 id="what-an-outside-review-adds-round-6b-october-2026">What an outside review adds (round 6b, October 2026)</h2>
-<p>Every counted run of round 6, both <code>/gc</code> and plain Claude Code with one review, was resumed once with an outside review of its final change by a model from another family (gpt-6.1-sol), built by one script for both, and scored again at the same depth. The reading rule was fixed before any run.</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">major errors left in the code, per run</th><th scope="col">before the outside review</th><th scope="col">after</th></tr></thead><tbody><tr><td>plain Claude Code + one review (38 runs)</td><td>0.85</td><td>0.76</td></tr><tr><td><code>/gc</code> 1.3 (38 runs)</td><td>1.00</td><td>0.83</td></tr></tbody></table></div>
-<ul><li><strong>For <code>/gc</code>:</strong> the outside review &quot;adds something&quot; by the rule fixed in advance: −0.17 (90% interval −0.31 to −0.06), also without either of the two jobs that most often drive results. The margin is thin: 9 run-level removals of a major error and 3 additions, a net of 6 removals, all of the net in 4 jobs (one more job had 2 of each), and a single changed ruling (for example one error&#x27;s severity) would turn it into &quot;no clear difference&quot;.</li><li><strong>For plain Claude Code with one review:</strong> no clear difference (−0.08), as a check made before the runs predicted: the reviews named few of the errors that runs had left.</li><li><strong>After the review,</strong> <code>/gc</code> was still not better than plain Claude Code with one review and the same outside review (+0.07 major errors per run, not a clear difference).</li><li><strong>What followed:</strong> the outside review became a standard step for hard and consequential changes in <code>/gc</code> 1.4, optional for other jobs. The study did not test the scope rule separately; it was narrowed on the evidence above rather than by a further experiment.</li></ul>
-<p>The round-6b report is part of the final report above (Part G).</p>
-<h2 id="use-since">Use since</h2>
-<p>The procedure, as an earlier version, was used on three real jobs on 2026-10-23, and the developer judged it worked well. Evaluation continues on 10 to 15 jobs, each checked for later defects about four weeks after the job.</p>
-<h2 id="trial-of-version-14-2026-10-26">Trial of version 1.4 (2026-10-26)</h2>
-<p>An implementation check, not a measurement. Fresh <code>/gc</code> 1.4 runs on replayed jobs:</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">run</th><th scope="col">result</th></tr></thead><tbody><tr><td>three hard jobs (a consistency check, process polling, a model-default update)</td><td>trigger H applied in each, with a one-line reason; each wrote an outside review file with the task, why the change is hard, the full diff, and the tests on the old and new code</td></tr><tr><td>a routine one-line fix</td><td>no trigger: &quot;one clear defect on one path&quot;; the outside review was offered, not required</td></tr><tr><td>the three hard jobs, after the outside review came back</td><td>every finding was handled (1, 3 and 2 findings), each fix with a test; each report opened with &quot;Ready to use: no&quot; and named the remaining platform or live check with its commands</td></tr></tbody></table></div>
-<p>One fix in the trial was narrower than it might have been: on the model-default job, the no-temperature handling was given to the two new default models only, and the report presented this as a design choice rather than an open point.</p>
-<p>What the first runs changed: a session must finish (or stop) any long test before writing the review file and the report, and leave nothing running; and the narrowed scope rule replaced the strict one before the second runs.</p>
-<h2 id="behaviour-checks-of-revision-22">Behaviour checks of revision 22</h2>
-<p>Before release, each of these was run in Claude Code (<code>claude -p</code>) against a scratch repository, and the output was kept: the final message, and for the runs that change things, the Git state, the diff and file hashes before and after.</p>
-<p><strong>First round</strong> (version 1.2, 2026-10-23):</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">run</th><th scope="col">result</th></tr></thead><tbody><tr><td><code>/gc</code></td><td>an introduction; no job started</td></tr><tr><td><code>/gc setup</code></td><td>looked first, showed the card, saved nothing</td></tr><tr><td><code>/gc stop</code>, <code>/gc help</code>, <code>/gc auto resume</code></td><td>no job started</td></tr><tr><td>bounded fix (<code>clamp</code> upper bound)</td><td>proving test failed on the old code and passed on the new; code-review skill ran; short report</td></tr><tr><td>installation task</td><td>edited the script but did not run it: asked for a plan, a checked backup and an outside review first. But it kept a review fix (<code>set -e</code>) that changed the script&#x27;s failure behaviour, and only reported it</td></tr><tr><td>two-task batch</td><td>separate patches; checkout restored after each job; reported that the patches conflict when combined</td></tr><tr><td>batch with a file already modified</td><td>stopped before either job; nothing changed</td></tr></tbody></table></div>
-<p><strong>Second round</strong> (version 1.3, after the outside reviews). The first runs below used an intermediate 1.3 text; the final rows (marked <em>final</em>) used the published text:</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">run</th><th scope="col">result</th></tr></thead><tbody><tr><td><code>/gc autosol GUI: ...</code></td><td>a normal job started; only <code>auto</code> as a word is an old-kit command</td></tr><tr><td><code>/gc stop</code> with no earlier kit installed</td><td>no job started, but it called <code>/gc batch</code> &quot;unattended&quot;. The wording was fixed</td></tr><tr><td><code>/gc stop</code> and <code>/gc auto resume</code> (<em>final</em>)</td><td>&quot;the earlier GuidedCoding kit ... has been retired&quot;; no job started; <code>/gc batch</code> described as supervised, not unattended</td></tr><tr><td>installation task, with an existing shared folder (<em>final</em> on the second try)</td><td>the folder stayed byte-identical (hashes before and after); a backup was made; it asked for a plan, an outside review and a go. On the first try it still kept <code>set -e</code>; after the rule was made concrete, it reverted <code>set -e</code> and a working-directory change as behaviour changes, raised them as a decision, and kept only a refactor with no behaviour change</td></tr><tr><td>batch, one job adding a new test file</td><td>the new file was in that job&#x27;s patch; each patch was re-applied in a fresh copy and compared byte for byte before reverting; out-of-scope review fixes were reverted; the checkout ended where it started; the two patches apply together</td></tr></tbody></table></div>
-<p><strong>What these runs changed:</strong></p>
-<ul><li>the <code>auto</code> guard became a whole-word match, and the retired-command answer says that <code>/gc batch</code> is supervised;</li><li>the review-fix scope rule named what counts as a behaviour change (in 1.3; 1.4 replaced it, see the table above);</li><li>batch patches now include new and staged files, and are checked before reverting;</li><li>the batch report checks whether accepted patches apply together.</li></ul>
-<p><strong>Later check</strong> (2026-10-23, after the on-request line was added to <code>SKILL.md</code> §3):</p>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">run</th><th scope="col">result</th></tr></thead><tbody><tr><td>bounded fix, with &quot;also prepare an outside review file for a second opinion&quot;</td><td>fixed the bug with a proving test run on the old and new code; ran the code-review skill; wrote <code>OUTSIDE_REVIEW.md</code> with the task, the diff, the tests and the standard request; reported &quot;Ready to use: no&quot; until the outside review comes back; committed nothing</td></tr></tbody></table></div>
-  <p class="gc-small">Built from <a href="https://github.com/cctbx/guided_coding/tree/17e6bb8953bba5f5ffd41e9fb907281a51cf3e85">cctbx/guided_coding 17e6bb8</a> (2026-10-26).</p>
-  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html" aria-current="location">Documentation</a></nav>
+  <h1 class="gc-document-title">Evidence for Guided Coding</h1>
+  <p class="gc-lead">What the tests found about reviews, before-and-after tests, and the limits of the evidence.</p>
+
+<p>Guided Coding is based on a simple idea: use the checking steps that actually help, and make them part of an easy procedure. We tested several ways of working with Claude Code to see which steps reduced errors in finished code.</p>
+<h2 id="what-we-tested">What we tested</h2>
+<p>We repeated 37 earlier bug-fixing tasks from the PHENIX and cctbx scientific software projects. We asked Claude Code to do them with different checking steps, then examined the resulting code for errors. Some follow-up tests used 18 selected harder tasks from that set.</p>
+<h2 id="what-helped">What helped</h2>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">Checking step</th><th scope="col">What we found</th></tr></thead><tbody><tr><td><strong>Review the code once after the fix</strong></td><td>Across all 37 tasks, missed program errors fell from 0.81 to 0.47 per job when one review was added to plain Claude Code. This was the clearest result.</td></tr><tr><td><strong>Ask a different AI assistant for a second opinion on hard work</strong></td><td>When added to Guided Coding on 18 harder tasks (38 runs), an outside review reduced major errors left per run from 1.00 to 0.83. The net gain came from four tasks, and some reviews introduced errors. When added to ordinary Claude Code with one review, the change from 0.85 to 0.76 was not a clear benefit.</td></tr><tr><td><strong>Test the problem before and after fixing it</strong></td><td>Requiring such a test made it more likely that a job ended with one. We did not measure how much this step alone reduced errors.</td></tr></tbody></table></div>
+<p>Additional review steps did not consistently improve the result. In particular, a second ordinary review showed no clear additional benefit over one review.</p>
+<h2 id="what-happened-when-we-replayed-guided-coding-itself">What happened when we replayed Guided Coding itself?</h2>
+<p>We also replayed an earlier version of Guided Coding (1.3) on the 18 harder tasks, in 38 runs. It left 0.97 major errors per run, compared with 0.79 for Claude Code with one review and 0.90 for plain Claude Code. Counting outside reviews that Guided Coding requested in four runs, its figure was 0.90. By the rule chosen before testing, the difference was not clear, although the result leaned against Guided Coding.</p>
+<p>Many of these errors had been identified but left as questions for the person using the software. A strict rule about staying within the exact request had reversed some fixes found during review. Of the 33 major errors left, 18 had been raised at least partly as questions, compared with 1 of 29 for Claude Code with one review. If the suggested fixes had been accepted and worked, the estimated rate would have been 0.74, about the same as Claude Code with one review. That estimate was not tested.</p>
+<p>The rule was then narrowed: Guided Coding now fixes real defects in code it changes, while still asking before changing interfaces, defaults, file formats, or behaviour other code relies on. The updated instructions were checked in a small trial and targeted behaviour tests. Those checks are not another comparative replay; details are in the technical evidence record linked below.</p>
+<h2 id="how-this-shaped-guided-coding">How this shaped Guided Coding</h2>
+<p>Guided Coding asks Claude to test a fix, review it once, and explain what remains uncertain. It asks for an outside review when a change is hard to check or could have important consequences. It leaves the final decision with you. That is the practical procedure built from the study.</p>
+<p>Some other steps, such as asking permission before publishing and writing a clear final report, are there for control and understanding. Their separate effect on errors was not measured.</p>
+<h2 id="how-much-can-we-conclude">How much can we conclude?</h2>
+<p>The study used a limited set of tasks from one developer&#x27;s projects. The harder tasks were selected because they had exposed problems before; they were not a random sample. Results can differ with other code, models, and developers. Even a good review can miss an error or introduce one.</p>
+<p>A more elaborate earlier procedure caught additional serious errors on some harder tasks, but required much more work. We do not know which of its many extra steps were responsible. These are useful limits on how to interpret the results.</p>
+<h2 id="full-results">Full results</h2>
+<p>You can read the <a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md">complete study report</a>, the <a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md">description of the methods</a>, and the <a href="https://github.com/cctbx/guided_coding/blob/17e6bb8953bba5f5ffd41e9fb907281a51cf3e85/EVIDENCE.md">technical evidence record</a>.</p>
+<p>For the practical steps, see <a href="how-it-works.html">How Guided Coding works</a>. To try it, see <a href="quick-start.html">Get started</a>.</p>
+  
+  <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';

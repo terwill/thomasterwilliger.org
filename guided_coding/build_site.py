@@ -35,36 +35,40 @@ ZIP_FILES = ["README.md", "EVIDENCE.md", "LICENSE.txt", "tst_guided_coding.py"] 
 # Website pages: (output, navigation label, title, description, source).
 # source: "pages/<file>" (website-owned), "repo:<file>" (from the repository), or a generator name.
 PAGES = [
-    ("quick-start.html", "Quick Start", "Quick Start with Guided Coding",
-     "Set up Guided Coding by giving Claude Code one message.", "pages/quick-start.md"),
+    ("quick-start.html", "Get started", "Get started with Guided Coding",
+     "Install with one message, then try your first coding job.", "pages/quick-start.md"),
     ("how-it-works.html", "How it works", "How Guided Coding works",
-     "What happens in a Guided Coding job, and what you decide.", "pages/how-it-works.md"),
-    ("getting-started.html", "Install", "Installing Guided Coding",
-     "Install, update, move from the earlier kit, or go back.", "repo:README.md"),
-    ("why-not-claude-code.html", "Why Guided Coding", "Why Guided Coding and not just Claude Code?",
-     "What the replay study found to help, and the procedure Guided Coding follows from it.",
+     "An ordinary job, extra checks, and the decisions you keep.", "pages/how-it-works.md"),
+    ("getting-started.html", None, "Manual installation and maintenance",
+     "Commands for installing, updating, uninstalling, or moving from the earlier kit.", "repo:README.md"),
+    ("why-not-claude-code.html", None, "What difference does Guided Coding make?",
+     "The additional checks, who they help, and a brief summary of the evidence.",
      "pages/why-not-claude-code.md"),
-    ("why-not-vibe-coding.html", "Why not Vibe Coding", "Why Guided Coding and not Vibe Coding?",
-     "Keeping you in control.", "pages/why-not-vibe-coding.md"),
+    ("why-not-vibe-coding.html", None, "Guided Coding and vibe coding",
+     "When a quick AI-written prototype needs more careful checking.", "pages/why-not-vibe-coding.md"),
     ("documentation.html", "Documentation", "Guided Coding documentation",
-     "Every Guided Coding document, in one place.", "generated:documentation"),
-    ("verification.html", None, "Evidence and limits",
-     "What the evidence says about the main parts of /gc, the study behind it, and the behaviour checks.", "repo:EVIDENCE.md"),
+     "Find the instructions, technical details, evidence, and source files.", "generated:documentation"),
+    ("verification.html", None, "Evidence for Guided Coding",
+     "What the tests found about reviews, before-and-after tests, and the limits of the evidence.", "pages/evidence.md"),
     ("reference-files.html", None, "Guided Coding skill files",
-     "The five instruction files Claude Code reads, exactly as published.", "generated:reference"),
+     "Technical reference: the five instruction files Claude Code reads.", "generated:reference"),
 ]
 PAGE_INFO = {p[0]: (p[2], p[3]) for p in PAGES}  # output -> (title, description)
 # A highlighted box at the top of a page (under its title), for pages that need to send some readers elsewhere first.
 PAGE_BANNERS = {
     "getting-started.html": (
-        '<div class="gc-download"><p><strong>Easiest: let Claude Code install Guided Coding with you.</strong> '
-        'Open <a href="quick-start.html">Quick Start</a>, copy its one message into Claude Code, and follow '
-        "Claude's directions. The commands on this page are for installing it yourself.</p></div>"),
+        '<div class="gc-download"><p><strong>New here?</strong> Most people should use '
+        '<a href="quick-start.html">Get started</a>: copy one message into Claude Code and let it guide the '
+        "installation. This page contains the longer manual commands and instructions for existing users.</p></div>"),
+    "reference-files.html": (
+        '<div class="gc-download"><p><strong>Looking for an introduction?</strong> Start with '
+        '<a href="how-it-works.html">How Guided Coding works</a>. The text below is the exact technical '
+        'reference used by Claude Code, intended for people who want to inspect the instructions.</p></div>'),
 }
 RETIRED = [
-    ("overview.html", "Guided Coding overview (retired)"),
-    ("architecture.html", "Guided Coding implementation details (retired)"),
-    ("user-guide.html", "Guided Coding User Guide and command reference (retired)"),
+    ("overview.html", "Guided Coding overview"),
+    ("architecture.html", "Guided Coding architecture"),
+    ("user-guide.html", "Guided Coding user guide"),
 ]
 OUTPUTS = (["index.html", ZIP_NAME, ZIP_NAME + ".sha256", "package.json"]
            + [p[0] for p in PAGES] + [r[0] for r in RETIRED])
@@ -257,10 +261,12 @@ def render(markdown, allow_copy=False):
             if fence == "```copy":
                 require(allow_copy and copies == 0, "only one copy block, and only on website pages")
                 copies += 1
-                blocks.append('<pre class="gc-copy-box" id="copy-text"><code>' + html.escape(code)
-                              + '</code></pre><button type="button" data-copy="copy-text">' + COPY_LABEL
-                              + '</button><p id="copy-status" class="gc-copy-status gc-small" role="status" '
-                              'aria-live="polite"></p>')
+                blocks.append('<div class="gc-copy-panel"><button type="button" data-copy="copy-text">'
+                              + COPY_LABEL + '</button><p id="copy-status" class="gc-copy-status gc-small" '
+                              'role="status" aria-live="polite"></p>'
+                              '<details class="gc-panel"><summary>Read the complete setup message</summary>'
+                              '<div><pre class="gc-copy-box" id="copy-text"><code>' + html.escape(code)
+                              + '</code></pre></div></details></div>')
             else:
                 blocks.append("<pre><code>" + html.escape(code + "\n") + "</code></pre>")
             continue
@@ -326,18 +332,51 @@ def fill(template, values, markers):
 
 def nav_row(page):
     """The navigation row shown on every page, the main page included."""
-    return "".join('<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
-                   for name, label in [("index.html", "Guided Coding")] + [p[:2] for p in PAGES if p[1]])
+    section = {
+        "why-not-claude-code.html": "index.html",
+        "why-not-vibe-coding.html": "index.html",
+        "getting-started.html": "documentation.html",
+        "verification.html": "documentation.html",
+        "reference-files.html": "documentation.html",
+        "overview.html": "index.html",
+        "architecture.html": "documentation.html",
+        "user-guide.html": "documentation.html",
+    }
+    links = []
+    for name, label in [("index.html", "Overview")] + [p[:2] for p in PAGES if p[1]]:
+        current = (' aria-current="page"' if name == page else
+                   ' aria-current="location"' if name == section.get(page) else "")
+        links.append('<a href="%s"%s>%s</a>' % (name, current, label))
+    return "".join(links)
 
 
-def doc_page(template, page, title, description, body, toc, note=""):
+def manual_code_buttons(body):
+    """Add a copy control to each complete command block without altering its text."""
+    count = 0
+
+    def replacement(match):
+        nonlocal count
+        count += 1
+        identifier = "manual-command-%d" % count
+        block = match.group(0).replace("<pre>", '<pre id="%s">' % identifier, 1)
+        return (block + '<button type="button" class="gc-copy-command" data-copy="%s">Copy command</button>' % identifier
+                + '<p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>')
+
+    body = re.sub(r"<pre><code>.*?</code></pre>", replacement, body, flags=re.DOTALL)
+    return body
+
+
+def doc_page(template, page, title, description, body, toc, note="", canonical_page=None):
     nav = nav_row(page)
+    if page == "getting-started.html":
+        body = manual_code_buttons(body)
     toc_block = PAGE_BANNERS.get(page, "")
-    if len(toc) > 1:
+    if len(toc) > 1 and page in {"how-it-works.html", "getting-started.html", "reference-files.html"}:
         links = [item.replace("<li>", "").replace("</li>", "") for item in toc]
         toc_block += ('<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> '
                       + ' <span aria-hidden="true">·</span> '.join(links) + "</nav>")
-    return fill(template, {"TITLE": html.escape(title), "DESCRIPTION": html.escape(description), "PAGE": page},
+    return fill(template, {"TITLE": html.escape(title), "DESCRIPTION": html.escape(description),
+                           "PAGE": canonical_page or page},
                 {"DOCUMENT_NAV": nav, "DOCUMENT_TOC": toc_block, "DOCUMENT_CONTENT": body, "DOCUMENT_NOTE": note})
 
 
@@ -347,8 +386,6 @@ def build(tree, ref, date, staging):
         doc_template = f.read()
     with open(os.path.join(HERE, "index.template.html")) as f:
         index_template = f.read()
-    source_note = ('<p class="gc-small">Built from <a href="%s/tree/%s">cctbx/guided_coding %s</a> (%s).</p>'
-                   % (REPO_URL, ref, ref[:7], date))
     files = {}
 
     # The download.
@@ -375,8 +412,12 @@ def build(tree, ref, date, staging):
         path = os.path.join(HERE, source) if source.startswith("pages/") else os.path.join(tree, source[5:])
         with open(path) as f:
             _, body, toc = render(f.read(), allow_copy=source.startswith("pages/"))
-        note = source_note if source.startswith("repo:") else ""
-        rendered[page] = doc_page(doc_template, page, title, description, body, toc, note)
+        if source == "repo:README.md":
+            # This name in the repository's README refers to the full technical record,
+            # including run-by-run checks. Our short Evidence page is a separate summary.
+            body = body.replace('<a href="verification.html">EVIDENCE.md</a>',
+                                '<a href="%s/blob/%s/EVIDENCE.md">EVIDENCE.md</a>' % (REPO_URL, ref))
+        rendered[page] = doc_page(doc_template, page, title, description, body, toc)
 
     ref_blocks, ref_toc = [], []
     for name in SKILL_FILES:
@@ -386,25 +427,45 @@ def build(tree, ref, date, staging):
         ref_toc.append('<li><a href="#%s">%s</a></li>' % (anchor, name))
         ref_blocks.append('<h2 id="%s">%s</h2><pre><code>%s</code></pre>' % (anchor, name, html.escape(text)))
     rendered["reference-files.html"] = doc_page(doc_template, "reference-files.html", *PAGE_INFO["reference-files.html"],
-                                                "\n".join(ref_blocks), ref_toc, source_note)
+                                                "\n".join(ref_blocks), ref_toc)
 
-    doc_items = "".join('<li><a href="%s">%s</a>: %s</li>' % (p[0], html.escape(p[2]), html.escape(p[3]))
-                        for p in PAGES if p[0] != "documentation.html")
-    doc_body = ("<ul>" + doc_items + "</ul><p>The source is the repository "
-                '<a href="%s">cctbx/guided_coding</a>. The earlier GuidedCoding kit is kept on its branch '
-                '<a href="%s/tree/full-kit-rev21">full-kit-rev21</a>.</p>' % (REPO_URL, REPO_URL))
+    migration_anchor = "if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older"
+    migration_url = "getting-started.html"
+    if ('id="%s"' % migration_anchor) in rendered["getting-started.html"]:
+        migration_url += "#" + migration_anchor
+    doc_body = (
+        '<div class="gc-doc-groups"><section><h2>Start here</h2><ul>'
+        '<li><a href="quick-start.html">Get started</a> — install with one message and try a first task.</li>'
+        '<li><a href="how-it-works.html">How it works</a> — follow a job from request to report.</li>'
+        '<li><a href="why-not-claude-code.html">What difference it makes</a> — decide whether it suits you.</li>'
+        '<li><a href="why-not-vibe-coding.html">Guided Coding and vibe coding</a> — a short comparison.</li>'
+        '</ul></section><section><h2>Installation and updates</h2><ul>'
+        '<li><a href="getting-started.html">Manual installation and maintenance</a> — Git, ZIP, updates, '
+        'and uninstalling.</li>'
+        '<li><a href="%s">'
+        'Moving from an earlier GuidedCoding kit</a> — instructions for existing users.</li>'
+        '</ul></section><section><h2>Evidence and technical reference</h2><ul>'
+        '<li><a href="verification.html">Evidence</a> — what the study found and what it does not establish.</li>'
+        '<li><a href="reference-files.html">Exact instructions</a> — the five files Claude Code reads.</li>'
+        '<li><a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md">'
+        'Full study report</a> and '
+        '<a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md">'
+        'methods</a> — detailed research documents.</li>'
+        '</ul></section></div>'
+        '<p>The current instruction files are published at <a href="%s">cctbx/guided_coding</a>.</p>'
+        % (migration_url, REPO_URL))
     rendered["documentation.html"] = doc_page(doc_template, "documentation.html", *PAGE_INFO["documentation.html"],
-                                              doc_body, [], source_note)
+                                              doc_body, [])
 
     for page, title in RETIRED:
-        body = ("<p>This page described the earlier GuidedCoding kit, which was retired on 2026-10-23 and replaced "
-                'by a much shorter procedure. See <a href="index.html">Guided Coding</a>, '
-                '<a href="how-it-works.html">How it works</a> and <a href="getting-started.html">Installing Guided '
-                'Coding</a>. The earlier kit is kept on the branch <a href="%s/tree/full-kit-rev21">'
-                "full-kit-rev21</a> of the repository.</p>" % REPO_URL)
+        body = ('<p>The information from this address has moved. Start with '
+                '<a href="index.html">Guided Coding</a>, or open '
+                '<a href="documentation.html">Documentation</a> to find the topic you need.</p>')
         if page == "user-guide.html":
             body = '<p id="one-time-registration"></p>' + body
-        rendered[page] = doc_page(doc_template, page, title, "This page has been retired.", body, [])
+        canonical = "index.html" if page == "overview.html" else "documentation.html"
+        rendered[page] = doc_page(doc_template, page, title, "This address has moved.", body, [],
+                                  canonical_page=canonical)
 
     # The main page.
     with open(os.path.join(HERE, "main-page.md")) as f:

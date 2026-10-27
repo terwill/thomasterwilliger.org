@@ -1,124 +1,99 @@
 # How Guided Coding works
 
-## You start with Claude Code
+Guided Coding is a short set of instructions for Claude Code. Claude still writes the code and runs the tests.
+Guided Coding tells it how to check and report the change. Other Claude Code conversations are unaffected.
 
-Guided Coding runs inside Claude Code, in the Claude app or in Terminal. Claude still reads your code, makes the
-changes and runs the tests. Guided Coding is a short set of instructions that tells Claude how to do that work and
-how to report it. It is used only when you type `/gc`; other conversations are not affected.
+## An ordinary job
 
-All of it is instructions. No tool enforces them. That keeps it short and easy to change, and it means the report is
-your main check that the instructions were followed.
+1. **You describe one task.** For example, ask Claude to fix a crash when a program reads an empty file.
+2. **Claude checks the starting point.** It records the starting state of the code and checks whether the job
+   needs any of the extra checks below.
+3. **Claude makes the change and tests it.** Where feasible, it writes a test that fails for the original bug and
+   passes after the fix. It also runs relevant existing tests. If a before-and-after test is not feasible, it says
+   why and gives the best other evidence.
+4. **Claude reviews its work.** It runs one review pass, checks any corrections made during review, and runs the
+   affected tests again.
+5. **Claude reports back.** The report starts by saying whether the change is ready to use. It tells you what
+   changed, what passed, what was not checked, any decisions still needed, and the recommended next action.
+6. **You decide what happens next.** Ask questions, request another review, accept or reject the change, or ask
+   Claude to commit or push it according to your project's rules.
 
-## Two things matter more than any procedure
+Claude normally fixes genuine defects it finds in the code it changes. It asks before changing a public interface,
+default, file format, intended behaviour relied on by other code or users, or the agreed reach of the task.
+Each question comes with options and a recommendation.
 
-**Ask until you understand.** If you cannot say what was wrong, what changed and how the test shows it is fixed, ask
-until you can. If you still do not understand a change, do not accept it. If a second opinion would help, ask for an outside review
-(below).
+The review uses Claude Code's code-review skill when available. Otherwise Claude reviews the change itself and
+says that it used this fallback. The study measured the code-review skill, not the fallback.
 
-**You are in control, not the AI.** Claude proposes; you decide the task, its reach, what to keep, and whether
-anything is pushed or installed. You can redirect or stop it at any time.
+## When extra checks are needed
 
-## The steps of one job
+Most jobs need only the steps above. Some changes need more evidence.
 
-1. **Start.** Claude restates the task, notes the starting state of each repository it will touch, and checks
-   whether the job needs any added steps (the triggers below).
-2. **Scope.** Claude does the implementation, tests and documentation the task needs, and fixes without asking any
-   real defect it or a review finds in the code the job changes and the paths that code calls. It asks you before
-   changing a public interface, a default, a file format, intended behaviour that callers rely on, or the agreed scope
-   (such as another repository). Each question comes with the options and a recommendation.
-3. **A proving test.** Claude writes a test that fails on the old code for the reason in the task and passes on the
-   new code, and runs it both ways. If no such test is possible, it says why and gives the best other evidence.
-4. **The existing tests** for the code it touched.
-5. **One review pass** over the change, with Claude Code's code-review skill. Claude checks each fix the review
-   makes. It keeps a fix that corrects a real defect in the changed code, and reverts a fix that is wrong or that
-   changes an interface, a default, a format or behaviour callers rely on, raising it with you instead. If the
-   code-review skill is not available, Claude reviews the change itself, and the report says that this fallback was
-   used; it is not the review the study measured.
-6. **Added steps,** only for the triggers that apply.
-7. **A short report.** It says whether the change is ready to use; what changed; the proof; the checks run; what was
-   not checked; any changes you did not ask for; your decisions, each with a recommendation; and the recommended next
-   action. It is Claude's last message: long tests or builds are finished or stopped first, and nothing it started
-   is left running.
-8. **Committing and pushing,** only when you ask, following your project's rules. Claude reads those rules from your
-   team's instructions in the repository (`CLAUDE.md` or `AGENTS.md`) and from the notes `/gc setup` saves (see
-   [Setup and notes](#setup-and-notes)); where they say nothing, it still commits and pushes only when you ask. Where
-   your project leaves the commit or push to you, Claude gives the exact commands to run, in order, and checks the
-   result when you say they are done.
+| Situation | Added check |
+| --- | --- |
+| Correctness depends on a live service, such as an API or model provider | Make a real call with safe test inputs |
+| The problem occurs on a different platform | Give exact commands to test there and leave the fix unconfirmed until they are run |
+| The result will be installed by other people | Prepare an outside review |
+| Existing user files or credentials could be affected | Prepare an outside review |
+| The change is hard to test fully | Prepare an outside review |
+| An important correctness question remains open | Prepare an outside review |
 
-## The triggers
+A hard change includes failure handling, processes and timeouts, defaults and compatibility, checks and validators,
+or shared code with several callers when the tests may miss important cases. A routine one-path fix with a convincing
+test is not automatically hard. If Claude is unsure whether a live-service, other-platform, or hard-change check
+is needed, it treats it as needed.
 
-| Trigger | When it applies | What it adds |
-| --- | --- | --- |
-| Live service | Whether the fix works can only be confirmed against a live service, such as an LLM provider or a model default | A real call for each changed path, with safe test inputs |
-| Other platform | The defect is reported for a platform other than your computer | The exact commands to run there; the fix is "not confirmed" until they have been run |
-| Install for others | The change goes straight to a place others install from | An outside review |
-| Data or credentials | The change writes, moves or deletes existing user files, or handles credentials | An outside review |
-| Hard change | Whether the change is correct turns on conditions the tests may not reach: a check, guard or validator, or detecting failure; processes, polling, timeouts, cleanup, or a step failing part-way; defaults or compatibility across versions, models, providers or platforms; shared code with several callers, where behaviour changes beyond the reported path. A routine fix on one path with a convincing test is not a hard change | An outside review |
-| Open question | After the review, an important correctness question is still open, or there is no convincing test | An outside review |
+**What an outside review means.** Claude prepares a file containing the task, full change, tests, results, and
+questions. You give that file to another AI assistant and return its comments to Claude. Claude addresses each
+finding. The file should exclude credentials and private data, but it contains code: share it only with a service
+your project permits. You can ask for an outside review even on a routine job.
 
-If Claude is unsure whether Live service, Other platform or Hard change applies, it treats it as applying.
+## Changes that are hard to undo
 
-An outside review means: Claude writes one file with the task, the full change, the tests and their output, and the
-question. You paste it into another AI assistant and paste the reply back. Claude answers each finding.
-On any other job the outside review is optional: the report offers it in one line, and you can ask for it at any
-time; it is then handled in the same way. The
-file leaves out keys and private data, but it contains your code: share it only with an assistant your project
-allows.
+An installation, migration, change to shared tooling, or other hard-to-undo action needs these steps before
+anything irreversible happens:
 
-## Consequential work
+1. Claude prepares and tests a reversible change.
+2. You approve a short plan.
+3. Claude makes a backup and checks that recovery is possible.
+4. An outside review of the plan and prepared change is completed, with important findings resolved.
+5. You explicitly authorize the step that changes the shared installation or other important state.
 
-Installations, migrations, changes to shared tooling or safety mechanisms, and operations that could cause damage that
-is hard to undo get more care. Claude first prepares the change as something that can be undone, and tests it. Before
-the irreversible step:
+The purpose is to let you inspect what will happen before it happens.
 
-1. you approve a short plan;
-2. Claude makes a backup and checks it;
-3. an outside review of the plan and the prepared change is completed, and its important findings are resolved;
-4. nothing touches a shared installation without your explicit go.
+## More control and safety
 
-## Other rules
+- **Approval and publication.** Claude is instructed not to commit, push, or install without your request, and to
+  follow project rules in `CLAUDE.md`, `AGENTS.md`, and any saved notes. Before pushing, it reports unresolved
+  checks and asks you to accept anything important that remains open.
+- **Optional independent reader.** For subtle work, Claude may recommend a separate in-session reviewer. It runs
+  only if you agree. In the study, this was slower than an ordinary review and did not show a clear extra benefit.
+- **No unfinished background work.** A job is meant to finish or stop its tests and builds before its final report.
+- **Optional job log.** You can keep a one-line history of jobs and check later whether any defects emerged.
 
-- **Large jobs.** If a task bundles changes that can be separated, Claude proposes splitting it, and running the
-  parts with `/gc batch`.
-- **A second reader, if useful.** When a change is subtle, touches shared code or many callers, or Claude is not
-  confident the tests would catch a wrong fix, the report recommends an independent reviewer: a separate Claude
-  reviewer that reads the change and its evidence. It runs only if you agree. It takes about three times as long as
-  a review pass, and in the study it was not clearly better than simply running a second ordinary review.
-- **Before a push.** Claude pushes only when you ask it to. It first names anything important still open (a
-  pending step, a failing essential check, an unresolved important correctness finding), and goes ahead only if you
-  explicitly accept it. It updates the branch first if needed and reruns the checks the
-  update affects. If your notes name a full test suite to run before a push, it offers to prepare it. A release also
-  gets a short checklist: where it goes, the test results, your approval, and how to undo it.
-- **A job log, if you want one.** If your notes turn it on, each job adds one line to a log file, so that you can
-  check later how the jobs turned out.
+## Several tasks in a row
 
-## Several tasks: `/gc batch`
+`/gc batch` is for a supervised list of separate tasks. Claude runs them one after another, saves each result as
+a patch (a file containing the changes), and restores the project's working files between jobs. Tasks that depend on earlier tasks are left for later. Decisions,
+paid live calls, and outside reviews are left pending. Nothing is pushed or installed during a batch.
 
-You give a list of tasks, a stopping time and a time limit per job. Claude runs the tasks one at a time, each with
-fresh context. After each job it saves the job's changes as a patch, checks the patch is complete, and restores your
-checkout. A job that needs a decision stops and is listed. Tasks that depend on each other are left for afterwards,
-and paid live calls and outside reviews are left pending. Nothing is pushed, installed or done irreversibly inside a
-batch. At the end you get one summary of all the jobs, and decide which patches to keep. You stay reachable
-throughout: a batch cannot notice other sessions working in the same checkout, and only you can interrupt a job that
-hangs.
+At the end, you get one summary and decide which patches to keep. This is **not** an unattended overnight mode.
+Stay reachable: a batch does not detect other sessions using the same project folder, and only you can interrupt
+a job that hangs.
 
 ## Setup and notes
 
-`/gc setup` looks at your project and shows one card of settings: the build and test commands, a full test suite to
-run before a push (if you have one), your commit and push rules, which AI assistant you use for outside reviews, and
-a few others. After you confirm it, it saves them in a short notes file, `.claude/GC_NOTES.md`, that later jobs read.
-Your team's own instructions (`CLAUDE.md`, `AGENTS.md`) take precedence over these personal notes.
+`/gc setup` is optional, once per project. Claude reads the project's existing files and fills in what it can
+find about build and test commands, the full test suite, commit and push rules, and outside review preferences.
+It shows you one short card to confirm or correct, then saves a notes file at `.claude/GC_NOTES.md`.
+Your team's instructions take precedence over these personal notes.
 
-## Limits
+## What this cannot guarantee
 
-Guided Coding as now written has not itself been measured; [Evidence and limits](verification.html) goes through
-its main parts and what the evidence says about each. Its review
-pass is done by the same kind of model as the one doing the work. An outside review can use a different
-AI assistant, which you choose. The report is only as reliable as
-the checks behind it, which is why it says what was not checked, and why asking until you understand matters.
+These are instructions, not a technical sandbox that enforces each step. Claude may make mistakes or fail to follow
+them. A passing test checks the cases it covers, not every possible behaviour. The final report is useful because
+it tells you what was and was not checked; your judgment still matters.
 
-## More information
-
-- [Quick Start](quick-start.html): let Claude Code install Guided Coding with you.
-- [Installing Guided Coding](getting-started.html): the commands.
-- [Documentation](documentation.html): every document, including the skill files themselves.
+The [Evidence](verification.html) page describes the study behind individual steps and the checks of
+the current procedure. For installation, use [Quick Start](quick-start.html). For every document and the exact
+instruction files, see [Documentation](documentation.html).

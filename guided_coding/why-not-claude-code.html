@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Why Guided Coding and not just Claude Code? — Thomas C. Terwilliger</title><meta name="description" content="What the replay study found to help, and the procedure Guided Coding follows from it."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/why-not-claude-code.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What difference does Guided Coding make? — Thomas C. Terwilliger</title><meta name="description" content="The additional checks, who they help, and a brief summary of the evidence."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/why-not-claude-code.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -525,82 +525,89 @@ main {
 
 .gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
 .gc-document h2,.gc-document h3{scroll-margin-top:20px}
-.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-local-nav a[aria-current]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-toc-panel{padding:14px 20px 16px;background:#f8fafb}
+.gc-toc-panel .gc-toc-heading{margin:0 0 8px;color:var(--navy);font-weight:700}
+.gc-toc-panel ul{margin:0;padding-left:22px;columns:2;column-gap:28px}
+.gc-toc-panel li{break-inside:avoid;margin:0 0 5px}
+@media(max-width:600px){.gc-toc-panel ul{columns:1}}
 .gc-toc-row{margin:12px 0 24px;font-size:15px;line-height:1.9}.gc-toc-row span:first-child{font-weight:600;margin-right:4px}.gc-toc-row a{white-space:nowrap}
 .gc-reference-list{overflow-wrap:anywhere}
 .gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
-</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body id="top"><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="why-not-claude-code.html" aria-current="page">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a></nav>
-  <h1 class="gc-document-title">Why Guided Coding and not just Claude Code?</h1>
-  <p class="gc-lead">What the replay study found to help, and the procedure Guided Coding follows from it.</p>
-<nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#what-we-tested">What we tested</a> <span aria-hidden="true">·</span> <a href="#what-guided-coding-does">What Guided Coding does</a> <span aria-hidden="true">·</span> <a href="#useful-but-not-tested">Useful, but not tested</a> <span aria-hidden="true">·</span> <a href="#limits">Limits</a> <span aria-hidden="true">·</span> <a href="#and-the-most-important-part">And the most important part</a></nav>
-<p>Claude Code can already fix bugs well. In a replay study of 37 past bug fixes, Claude Code followed by one review pass left clearly fewer errors than Claude Code alone. Guided Coding is built around that review: it runs it on every coding job. It also asks for a test that proves the fix, prepares an outside review by a different AI model for hard changes, asks before changing what other code relies on, and ends with a short report.</p>
-<p>So Guided Coding should leave fewer errors than plain Claude Code, because it includes the step that made the difference. That has not been measured for the current version. The study did not find Guided Coding better than Claude Code with one review, and we do not claim it is. If you already review every change, Guided Coding mainly adds the proving test, the outside review for hard changes and the report, and it does these in order and tells you what is still open.</p>
-<h2 id="what-we-tested">What we tested</h2>
-<p>We replayed 37 real bug fixes in PHENIX and cctbx with Claude Code under different procedures, and counted the errors left in the finished code. 18 of the jobs were harder ones: jobs where an earlier version of the procedure had caught errors of its own, not a random sample of difficult work. Most steps were tested on those, so the findings apply to work like it. The 18 jobs were not chosen with Guided Coding&#x27;s &quot;hard change&quot; trigger, so the study does not show how well that trigger picks out the jobs where an outside review helps. Every result was checked by probes run against the code, by blind readings, and by severity ratings made without knowing which procedure produced the code. Figures below are <strong>major errors left per run on the 18 harder jobs</strong> (lower is better), unless stated otherwise.</p>
-<h3 id="1-tested-and-found-to-help">1. Tested and found to help</h3>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Step</th><th scope="col">What we found</th></tr></thead><tbody><tr><td><strong>One review pass</strong> after the change</td><td>The clearest effect: 0.90 → 0.79 major errors per run; across all 37 jobs, program errors missed fell from 0.81 to 0.47 per job</td></tr><tr><td><strong>An outside review by a different AI model</strong></td><td>Helped on the 18 harder jobs, narrowly: 1.00 → 0.83 in the full procedure. The net gain came from 4 of the 18 jobs, and the review also brought in a few new errors. Added to plain Claude Code with one review, it gave 0.85 → 0.76, not a clear difference</td></tr><tr><td><strong>A test that proves the bug</strong> (fails before the fix, passes after)</td><td>More runs produced a proving test: about 1 in 7 plain runs ended without one, against 1 of 37 jobs when it was required (all 37 jobs). Its effect on errors left was not measured separately</td></tr></tbody></table></div>
-<h3 id="2-tested-with-no-clear-benefit-found">2. Tested, with no clear benefit found</h3>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Step</th><th scope="col">What we found</th></tr></thead><tbody><tr><td><strong>A second review pass</strong></td><td>No clear additional benefit found over one review pass</td></tr><tr><td><strong>An independent reviewer step</strong> (a separate, structured review)</td><td>Not clearly better than a second ordinary review, at about three times the time</td></tr></tbody></table></div>
-<h3 id="3-probably-hurt-estimated-not-tested">3. Probably hurt (estimated, not tested)</h3>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Step</th><th scope="col">What we found</th></tr></thead><tbody><tr><td><strong>A strict scope rule</strong> (undo every fix beyond the literal task, and ask first)</td><td>Probably cost errors: fixes the review found were undone and left as questions, and the procedure that used it left more major errors than plain Claude Code with one review (0.97 against 0.79). The size was estimated from those cases, not measured directly</td></tr></tbody></table></div>
-<p><strong>Why some starting figures differ.</strong> Plain Claude Code with one review appears above as 0.79 and as 0.85, and Guided Coding 1.3 as 0.97 and 1.00. The outside-review figures come from a later, deeper scoring of the same runs, which found a few more errors; that is why their starting values are slightly higher. Each comparison uses figures from one scoring.</p>
-<h2 id="what-guided-coding-does">What Guided Coding does</h2>
-<p>The procedure follows from those findings:</p>
-<ol><li><strong>Fix the problem</strong> the task describes.</li><li><strong>Write a test that proves the bug:</strong> it fails on the old code and passes on the new. Where no such test is  feasible, the report says why and what evidence was used instead.</li><li><strong>Review the change once</strong> (Claude Code&#x27;s code-review skill, the review the study measured, when it is available;  otherwise Claude reviews the change itself and says so), and fix what the review finds in the changed code.</li><li><strong>For hard or consequential changes, prepare an outside review</strong> for a different AI model, and handle its  findings when the reply comes back.  Hard means correctness turns on conditions the tests may not reach: checks and guards, processes and failures,  defaults and compatibility, shared code with several callers. For other changes it is offered, not required.</li><li><strong>Fix real defects</strong> found in the changed code without asking. <strong>Ask first</strong> before changing public interfaces,  defaults, file formats, behaviour that callers rely on, or the project&#x27;s scope.</li><li><strong>Report</strong> what changed, what proves it, what was not checked, your decisions with recommendations, and the  recommended next action.</li></ol>
-<p>A second review pass is not part of it. The independent reviewer step is available when you ask for it.</p>
-<h2 id="useful-but-not-tested">Useful, but not tested</h2>
-<div class="gc-table-wrap"><table><thead><tr><th scope="col">Step</th><th scope="col">Why it is included</th></tr></thead><tbody><tr><td><strong>The short final report</strong></td><td>Says plainly what was changed, what was checked and what is still open, so nothing is silently left</td></tr><tr><td><strong>A real check against a live service</strong> (APIs, model names)</td><td>Some fixes can only be confirmed against the real service</td></tr><tr><td><strong>Exact commands for another platform</strong></td><td>Lets the fix be checked on Windows, Linux or CI</td></tr><tr><td><strong>Care with user data and credentials</strong></td><td>Changes that touch existing files or keys get an outside review</td></tr><tr><td><strong>Asking before commit, push or install</strong></td><td>Nothing goes out without your go</td></tr><tr><td><strong>A plan and a backup for consequential work</strong></td><td>Installations and migrations are prepared reversibly and checked before the irreversible step</td></tr></tbody></table></div>
-<h2 id="limits">Limits</h2>
-<p>The one replay of Guided Coding itself, version 1.3 on the 18 harder jobs, left as many major errors as plain Claude Code (0.90 per run each, counting the outside reviews it asked for in 4 of its 38 runs; 0.97 before them), and more than Claude Code with one review (0.79). The likely cause, estimated rather than measured, was the strict scope rule, which undid fixes the review had made; version 1.4 narrows that rule. The effects are small (about 0.1 to 0.2 major errors per run) next to the variation between runs, and they come from 18 harder jobs and one AI model family doing the work. We did not measure the developer&#x27;s own time, or whether Guided Coding as a whole beats plain Claude Code with one review and an outside review. Guided Coding 1.4 has not itself been replayed; it was checked in a small trial and is being evaluated in real use. The narrower scope rule was adopted without a test, and the outside review was measured with a scripted review request, not Guided Coding&#x27;s own review file. A larger earlier version of the procedure, with several review layers, left fewer major errors on the harder jobs (0.44 per run, one run per job, and much slower); which of its parts did that is not known.</p>
-<h3 id="the-evidence-in-detail">The evidence in detail</h3>
-<ul><li><strong><a href="verification.html">Evidence and limits</a>:</strong> each part of Guided Coding, what the study found about it, and the behaviour checks.</li><li><a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md">Full report of the study</a>, with every figure traced to its source (download).</li><li><a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md">Description of the methods</a> (download).</li></ul>
-<h2 id="and-the-most-important-part">And the most important part</h2>
-<p>Guided Coding does not replace your judgement. <strong>Ask until you understand</strong> each change, and <strong>stay in control</strong>: Claude proposes, you decide. <a href="how-it-works.html">How Guided Coding works</a> explains each step.</p>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html" aria-current="location">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html">Documentation</a></nav>
+  <h1 class="gc-document-title">What difference does Guided Coding make?</h1>
+  <p class="gc-lead">The additional checks, who they help, and a brief summary of the evidence.</p>
+
+<p>Claude Code can write and fix code without Guided Coding. Guided Coding adds a consistent procedure for checking the result and explaining it to you.</p>
+<h2 id="what-changes-when-you-use-guided-coding">What changes when you use Guided Coding?</h2>
+<div class="gc-table-wrap"><table><thead><tr><th scope="col">With ordinary Claude Code</th><th scope="col">Guided Coding asks Claude to do this on each job</th></tr></thead><tbody><tr><td>Tests and reviews depend on the request and the session</td><td>Try to reproduce the bug with a test that fails before the fix and passes afterward; run relevant existing tests</td></tr><tr><td>You may need to request a code review</td><td>Review the change once, then check any corrections made during review</td></tr><tr><td>Important uncertainties can be left in the conversation</td><td>End with a short report of what changed, what was checked, and what remains open</td></tr><tr><td>You decide when to seek another opinion</td><td>Prepare an outside review for hard or consequential changes; offer one for other changes</td></tr><tr><td>You decide how much authority to give the assistant</td><td>Ask before changing important existing behaviour, committing, pushing, or installing</td></tr></tbody></table></div>
+<p>These are instructions to Claude, not technical restrictions on what it can do. You should still read the result, especially when a mistake would matter.</p>
+<h2 id="when-is-it-useful">When is it useful?</h2>
+<p>Guided Coding is a good fit for bug fixes, new features, and maintenance work in software you plan to keep. It helps when you want a repeatable check of the change and a clear account of what was tested and what remains open.</p>
+<p>For a throwaway prototype, plain Claude Code may be quicker; see <a href="why-not-vibe-coding.html">Guided Coding and vibe coding</a>. If you already require useful tests, run a review on every change, and record open questions, the extra benefit may be smaller. Guided Coding mainly puts these steps into a repeatable order.</p>
+<h2 id="what-did-the-study-find">What did the study find?</h2>
+<p>In a replay of 37 past bug-fixing jobs in the PHENIX and cctbx scientific software projects, one review pass reduced the program errors missed by plain Claude Code from 0.81 to 0.47 per job. That is the main measured reason for including a review on every job.</p>
+<p>On 18 selected harder jobs, an outside review by a different AI model removed some additional major errors when added to Guided Coding (1.00 to 0.83 per run). The gain was modest: the net improvement came from four jobs, and a few new errors were also introduced. The same review did not show a clear benefit when added to ordinary Claude Code with one review (0.85 to 0.76). Guided Coding therefore reserves this extra step for harder or consequential work, while letting you request it whenever you want.</p>
+<p>Requiring a test that fails before a fix and passes afterward made it more likely that a job ended with such a test. Its separate effect on remaining errors was not measured.</p>
+<p>The <a href="verification.html">Evidence</a> page explains these comparisons and the direct replay of an earlier Guided Coding procedure, including results that were inconclusive or unfavorable. It links to the complete report and methods.</p>
+<p>Guided Coding does not replace your judgment, guarantee correctness, or make it safe to share confidential code with an unapproved outside service. It can take longer than a quick unreviewed edit.</p>
+<h2 id="try-it">Try it</h2>
+<p>Read <a href="how-it-works.html">How Guided Coding works</a> if you want to understand the procedure, or use the <a href="quick-start.html">Quick Start</a> to install it with one message.</p>
   
-  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';

@@ -10,23 +10,37 @@ on that repository's branch `full-kit-rev21`.
   - `main-page.md`, the main page; it keeps the "Two things matter more than any procedure" section and the link to
     the Guided Workflow Helper;
   - `pages/quick-start.md`, `pages/how-it-works.md`, `pages/why-not-claude-code.md` and
-    `pages/why-not-vibe-coding.md`.
+    `pages/why-not-vibe-coding.md`;
+  - `pages/evidence.md`, a plain-language account of the replay results, with links to the full technical evidence.
 
-  Their claims must match the revision the site ships. The evidence wording is fixed (version 1.4): one review pass after
-  plain Claude Code cut missed program errors per job from 0.81 to 0.47; on 18 harder jobs (selected, not a random
-  sample) an outside review removed further major errors when added to GuidedCoding, narrowly; a second review pass
-  showed no clear additional benefit; the strict scope rule probably cost errors (estimated, not tested); GuidedCoding
-  1.4 as a whole has not itself been measured. `pages/why-not-claude-code.md` holds the study summary.
+  Their claims must match the revision the site ships. The summary reports the measured effect of individual
+  checking steps, without claiming a measured improvement for the complete current procedure. One review pass
+  reduced missed program errors from 0.81 to 0.47 per job in the 37-job replay; an outside review added a narrow
+  benefit on selected harder jobs. Keep the selection limits and mixed findings in `pages/evidence.md`, and keep
+  the full technical record linked. Introductory pages should not lead with revision numbers or internal command
+  names. `pages/why-not-claude-code.md` gives the shorter comparison with plain Claude Code.
 - **Website-owned downloads:** `GuidedCoding_study_final_report.md` and `GuidedCoding_study_methods.md`, copies of the
   study's final report and methods description (home paths shortened); they are committed with the site.
 - **Generated from the repository:**
   - `getting-started.html`, from its `README.md`;
-  - `verification.html`, from its `EVIDENCE.md`;
   - `reference-files.html`, which shows its five skill files as text;
-  - `documentation.html`, an index.
+  - `documentation.html`, a categorized index.
 - **Retired pages:** `overview.html`, `architecture.html` and `user-guide.html` are short stubs pointing to the new
   pages, so that old links keep working. `user-guide.html` keeps its `#one-time-registration` anchor.
 - **Layout:** `index.template.html` and `docs.template.html`.
+
+## Reading path
+
+The main navigation is intentionally short: Overview, Get started, How it works, and Documentation. The overview
+answers why someone might want Guided Coding and offers one clear first action. Quick Start provides the one-message
+installation; How it works gives the procedure; Documentation groups the manual installation, comparisons, evidence,
+and exact source instructions.
+
+The longer manual installation page still comes from the published repository README, without changing its commands.
+The website adds copy buttons for those command blocks. The evidence summary is website-owned prose with direct
+links to the full study and the published technical record. The five instruction files remain generated from the
+exact published revision. The comparison and older URLs remain available even though they are not in the main
+navigation.
 
 ## Rebuild
 

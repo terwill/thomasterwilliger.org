@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding Help and Information — Thomas C. Terwilliger</title><meta name="description" content="Guided Coding for Claude Code: a proving test, one review pass, extra checks when needed, and a short report, with you in control."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding — Make Claude Code changes easier to check</title><meta name="description" content="Guided Coding gives Claude Code a consistent way to test, review, and explain code changes. Learn why it may help and get started with one message."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -522,63 +522,79 @@ main {
 .gc-main table{border-collapse:collapse;width:100%;margin:15px 0;font-size:.95rem}.gc-main th,.gc-main td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}.gc-main th{background:var(--accent-light)}.gc-main caption{text-align:left;color:var(--text-light);margin-bottom:6px}.gc-small{font-size:.9rem;color:var(--text-light)}.gc-maintainer{margin-top:30px}.gc-copy-status{min-height:1.6em}
 .gc-main a:focus-visible,.gc-main button:focus-visible,.gc-main summary:focus-visible,.gc-main textarea:focus-visible,.site-nav a:focus-visible{outline:3px solid #c89e21;outline-offset:3px}
 @media(max-width:600px){.gc-main{padding:24px 18px}.gc-main h1{font-size:1.65rem}.gc-download{padding:16px}.gc-main table{font-size:.87rem}.gc-main th,.gc-main td{padding:8px}.gc-main textarea{font-size:16px}.gc-main pre{font-size:12px}}
-</style></head><body><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current="page"]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main">
-  <h1>Guided Coding Help and Information</h1>
   <nav class="gc-local-nav" aria-label="Guided Coding pages">
-    <a href="index.html" aria-current="page">Guided Coding</a><a href="quick-start.html">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a>
+    <a href="index.html" aria-current="page">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html">Documentation</a>
   </nav>
-  <p>When Claude Code makes a fix for you, you are left with some questions. Do I understand the change it made? How was it tested? What remains uncertain?</p>
-<p>Guided Coding is a short set of instructions for Claude Code that is built to answer those questions for every change. You give Claude a bug or a bounded change. Claude makes the fix and, where feasible, writes a test that fails on the old code and passes on the new code; where it is not, the report says why and what evidence was used instead. Claude runs one review pass over the change, prepares an outside review by another AI assistant for hard or consequential changes, adds further checks only when the change needs them, and ends with a short report. You decide what to keep, and whether and when anything is pushed.</p>
-<p>This is the procedure I use in my own software work. You can use it in any project managed with Git.</p>
-<ul><li><a href="why-not-claude-code.html">Why Guided Coding and not just Claude Code?</a></li><li><a href="why-not-vibe-coding.html">Why Guided Coding and not Vibe Coding?</a></li><li><a href="how-it-works.html">How Guided Coding works</a></li><li><a href="quick-start.html">Quick Start with Guided Coding</a></li></ul>
-<h2 id="start-here">Start here</h2>
-<p>Guided Coding runs inside Claude Code, so you need Claude Code first. If you do not have it yet, follow <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a>, then come back here. Guided Coding has been tested on macOS; it should work on Linux, and has not been tested on Windows.</p>
-<ol><li><strong>Recommended: let Claude install it with you.</strong> Open <a href="quick-start.html">Quick Start</a>, copy its one message into  Claude Code, and follow Claude&#x27;s directions.</li><li><strong>Prefer to install it yourself?</strong> <a href="#download">Download the ZIP</a>, or use the <a href="getting-started.html">install commands</a>  for Git or the ZIP.</li><li><strong>Then use it.</strong> Open Claude Code in the folder of the project you want to change, and type <code>/gc</code> followed by  what you want done. Installing is once per computer; <code>/gc setup</code> is optional, once per project, and saves that  project&#x27;s build and test commands.</li></ol>
-<h2 id="two-things-matter-more-than-any-procedure">Two things matter more than any procedure</h2>
-<p><strong>Ask until you understand.</strong> Before you accept a change, you should be able to say what was wrong, what changed, and how the test shows it is fixed. Guided Coding is built to give you short, clear answers to those questions, but it only works if you ask. If something in a report is unclear, ask again, or ask for it in plainer words. If you still do not understand it, do not accept it. For hard or consequential changes Claude prepares an outside review file itself; for any other change, ask for one if you are unsure or it matters a lot. Give it to another AI assistant for a second opinion, then paste the reply back to Claude to address. A second reader, especially a different model, may catch problems that the first one missed.</p>
-<p><strong>You are in control, not the AI.</strong> Claude proposes; you decide. You decide what the task is, how far the change may reach, what to keep, and whether and when anything is pushed or installed. Guided Coding asks you before it changes behaviour you did not ask for and before any irreversible step, and it commits or pushes only when you ask. You can redirect or stop it at any time.</p>
-<h2 id="a-small-example">A small example</h2>
-<p>Suppose your program crashes when it reads an empty file. You want it to print &quot;The file is empty&quot; and stop. When the file contains data, the program should work as it did before.</p>
-<p>You type <code>/gc</code> followed by a description of the crash. Claude finds the cause and fixes it. It writes a test that reads an empty file: the test fails on the old code with the crash, and passes on the new code. It runs the existing tests and one review pass. Its report tells you what changed, how the test shows the fix, what it could not check, and what it recommends you do next. You read the report, ask about anything unclear, and decide whether to keep the fix.</p>
-<h2 id="what-you-decide">What you decide</h2>
-<ul><li><strong>The task and its reach.</strong> Claude does the routine work the task needs, and asks you before it changes intended behaviour, an interface, a default or a file format that you did not ask about.</li><li><strong>The decisions in the report.</strong> Each comes with the background, the options and a recommendation.</li><li><strong>Committing and pushing.</strong> Claude commits or pushes only when you ask. Your project&#x27;s own rules apply, for example whether an AI assistant may push at all.</li><li><strong>Consequential work.</strong> For installations, migrations, or changes that could cause damage that is hard to undo, Claude first prepares and tests the change. Before the irreversible step it asks for your approval of a short plan, checks a backup, and has the change read by an outside reviewer.</li></ul>
-<h2 id="several-tasks-in-a-row">Several tasks in a row</h2>
-<p><code>/gc batch</code> runs a list of tasks one after another, each as its own job, while you stay reachable. Each job&#x27;s changes are kept as a separate patch, and your checkout is restored between jobs. Tasks that depend on each other are left for afterwards; paid live calls and outside reviews are left pending; nothing is pushed or installed. At the end you get one summary and decide which patches to keep. It is supervised, not an unattended overnight run.</p>
-<h2 id="help">Help</h2>
-<p>Type <code>/gc</code> on its own for a short introduction. <code>/gc setup</code> saves your project&#x27;s build and test commands in a short notes file, so later jobs can use them. If a report or a choice is hard to understand, ask Claude to explain it more simply. You can also give the text to a <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a>.</p>
-<h2 id="evidence-and-limits">Evidence and limits</h2>
-<p>In a replay of 37 past bug-fix jobs, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. Guided Coding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to Guided Coding, narrowly (the net gain came from 4 of the 18 jobs, and the reviews also brought in a few new errors). Guided Coding 1.4 keeps one review pass and an outside review (for hard or consequential changes), which were found to help, and a test that proves the fix. It drops or makes optional what showed no clear benefit, and narrows a strict scope rule that probably cost errors. Guided Coding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. The effects are small next to the variation between runs, and the study also found evidence for the larger earlier kit on some major errors. See <a href="why-not-claude-code.html">Why Guided Coding</a> for the findings in one page, and <a href="verification.html">Evidence and limits</a> for each part of Guided Coding. The <a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md">full report</a> and the <a href="https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md">methods</a> of the study can be downloaded.</p>
-<p>Guided Coding replaced a much larger earlier kit on 2026-10-23. The earlier kit had approval screens, evidence packets and an unattended auto mode. It is kept on the repository&#x27;s branch <a href="https://github.com/cctbx/guided_coding/tree/full-kit-rev21">full-kit-rev21</a>.</p>
-  <section id="install"><h2>Install</h2>
-    <p>Guided Coding is five instruction files for Claude Code, kept in the repository <a href="https://github.com/cctbx/guided_coding">cctbx/guided_coding</a>. <a href="getting-started.html">Installing Guided Coding</a> gives the commands, which check before they change anything. To let Claude Code do the setup with you, see <a href="quick-start.html">Quick Start</a>.</p>
+  <section class="gc-hero">
+    <p class="gc-kicker">A way of working with Claude Code</p>
+    <h1>Guided Coding</h1>
+    <p class="gc-hero-lead">Make AI-written code changes easier to check, understand, and control.</p>
+    <div class="gc-hero-actions">
+      <a class="gc-button" href="quick-start.html">Get started with one message</a>
+      <a class="gc-secondary-button" href="how-it-works.html">See how it works</a>
+      <a class="gc-secondary-button" href="why-not-claude-code.html">What difference it makes</a>
+    </div>
   </section>
-  <div class="gc-download" id="download">
+  <h2 id="why-try-it">Why try it?</h2>
+<p>Claude Code can make a useful change very quickly. The harder question is whether the change is right. Did it fix the problem without breaking something else? What was actually tested? What still needs your attention?</p>
+<p>Guided Coding gives Claude Code a short procedure for answering those questions. For each job, it asks Claude to:</p>
+<ul><li><strong>Check the fix.</strong> Where feasible, run a test that fails for the original problem and passes after the change.</li><li><strong>Review the change.</strong> Look for mistakes, check the fixes made during review, and prepare an outside review by another AI assistant for hard or consequential work.</li><li><strong>Explain the result.</strong> Give you a short report: what changed, what passed, what was not checked, and any decision that remains yours.</li></ul>
+<p>You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is five instruction files, not an additional program. I use it in my own software work.</p>
+<h2 id="when-should-you-use-it">When should you use it?</h2>
+<p>Use Guided Coding when you ask Claude to change software you expect to keep: fixing a bug, adding a feature, or changing code that other people use. It is particularly useful when you want the change checked, reviewed, and explained without having to request every step yourself.</p>
+<p>For a quick experiment that you might throw away, ordinary Claude Code may be enough. If you already have a dependable testing and review process, Guided Coding may add less.</p>
+<h2 id="how-we-developed-guided-coding">How we developed Guided Coding</h2>
+<p>Guided Coding grew out of a practical question: what extra steps actually reduce errors in the code Claude Code produces? We tested this by repeating earlier bug-fixing tasks with different checking steps and examining the finished code.</p>
+<p>The clearest improvement came from reviewing the code after a fix. On selected harder tasks, a second opinion from a different AI assistant helped when added to Guided Coding. The same step did not show a clear extra benefit when added to ordinary Claude Code with one review. Guided Coding combines the useful steps with a simple procedure that guides you from the task, through testing and review, to a report you can understand.</p>
+<p>You do not have to remember the steps yourself. Guided Coding asks Claude to follow them and to involve you when a decision is needed.</p>
+<h2 id="two-things-matter-more-than-any-procedure">Two things matter more than any procedure</h2>
+<p><strong>Ask until you understand.</strong> You should be able to say what was wrong, what changed, and why the checks support the result. If a report is unclear, ask Claude to explain it more simply. You can also use the <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a>. Do not accept a change you do not understand.</p>
+<p><strong>You are in control, not the AI.</strong> You choose the task and decide which changes to keep. Guided Coding tells Claude to ask before changing interfaces, defaults, or other behaviour people rely on, and before committing, pushing, or installing. You can stop or redirect a job. Because these are instructions, not an enforced sandbox, you should still read the report and check important changes yourself.</p>
+<h2 id="what-do-you-need">What do you need?</h2>
+<ul><li>Claude Code, in the Claude app or Terminal. If you do not have it, start with <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a>.</li><li>A software project you want to work on. Guided Coding is intended for projects managed with Git.</li><li>Guided Coding has been tested on macOS. Linux should work but has not been tested; Windows has not been tested.</li></ul>
+<p>The <a href="quick-start.html">Quick Start</a> lets Claude Code guide you through installation with one message. After that, open your project in a new Claude Code conversation and ask Guided Coding to carry out a small task.</p>
+<h2 id="evidence-and-limits">Evidence and limits</h2>
+<p>The study of earlier bug fixes showed how much a review step helped, when an outside review added something, and where a direct replay of Guided Coding found problems. The results and their limitations are explained in plain language on the <a href="verification.html">Evidence</a> page.</p>
+<p>If you want the details before trying it, see <a href="how-it-works.html">How Guided Coding works</a>. The <a href="documentation.html">Documentation</a> page has installation, updating, evidence, and the exact instruction files.</p>
+  <section class="gc-technical-download" id="download"><span id="install"></span><h2>Prefer to install it yourself?</h2>
+    <p>Most people should use the <a href="quick-start.html">one-message setup</a>. These downloads are for manual
+    installation. Downloading or cloning alone does not register the skill in Claude Code; follow the
+    <a href="getting-started.html">manual installation instructions</a>.</p>
+  <div class="gc-download">
     <a class="gc-button" href="guided_coding.zip" download>Download Guided Coding (ZIP)</a>
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
@@ -588,20 +604,23 @@ main {
       <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '8a42a85637eeef3072a57f2bb31620b0b3b023f7c9b5a0f24a8aff31a74a350d' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
-  </div>
+  </div></section>
   <p id="copy-status" class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';

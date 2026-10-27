@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quick Start with Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="Set up Guided Coding by giving Claude Code one message."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/quick-start.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Get started with Guided Coding — Thomas C. Terwilliger</title><meta name="description" content="Install with one message, then try your first coding job."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/quick-start.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -525,63 +525,85 @@ main {
 
 .gc-document h3{font-family:var(--serif);color:var(--navy);font-size:1.15rem;line-height:1.4;margin-top:24px}
 .gc-document h2,.gc-document h3{scroll-margin-top:20px}
-.gc-local-nav a[aria-current="page"]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
+.gc-local-nav a[aria-current]{font-weight:600;color:var(--navy);text-decoration-thickness:2px}
 .gc-table-wrap{max-width:100%;overflow-x:auto}.gc-table-wrap table{min-width:500px}
 .gc-doc-note p{margin:0 0 8px}.gc-doc-note p:last-child{margin-bottom:0}
 .gc-toc ul{margin:0;padding-left:22px}.gc-toc li+li{margin-top:5px}
+.gc-toc-panel{padding:14px 20px 16px;background:#f8fafb}
+.gc-toc-panel .gc-toc-heading{margin:0 0 8px;color:var(--navy);font-weight:700}
+.gc-toc-panel ul{margin:0;padding-left:22px;columns:2;column-gap:28px}
+.gc-toc-panel li{break-inside:avoid;margin:0 0 5px}
+@media(max-width:600px){.gc-toc-panel ul{columns:1}}
 .gc-toc-row{margin:12px 0 24px;font-size:15px;line-height:1.9}.gc-toc-row span:first-child{font-weight:600;margin-right:4px}.gc-toc-row a{white-space:nowrap}
 .gc-reference-list{overflow-wrap:anywhere}
 .gc-doc-pages h2[id^="file-"]{overflow-wrap:anywhere}
 .gc-doc-pages .card h2{font-size:1.15rem;margin:0 0 8px}
-</style></head><body id="top"><div class="page-wrapper"><header class="site-header">
-    <div class="container">
-      <div class="header-content">
-        <img src="../images/Terwilliger_Thomas_Portrait.jpg" alt="Thomas C. Terwilliger" class="photo">
-        <div class="header-text">
-          <h1>Thomas C. Terwilliger</h1>
-          <p class="tagline">Structural Biology &middot; Crystallography &middot; Cryo-EM &middot; Computational Methods</p>
-          <p class="affiliation">
-            <a href="https://www.phenix-online.org/">Phenix</a> Software Team &middot; <a href="https://newmexicoconsortium.org/">New Mexico Consortium (Retired)</a><br>
-            Los Alamos National Laboratory Fellow (Retired)
-          </p>
-        </div>
-      </div>
+.gc-masthead{background:var(--navy);color:#fff}
+.gc-masthead-inner{display:flex;align-items:center;gap:18px;min-height:62px;flex-wrap:wrap}
+.gc-masthead a{color:#fff;text-decoration:none}.gc-masthead a:hover{text-decoration:underline}
+.gc-masthead .gc-brand{font-family:var(--serif);font-size:1.1rem;font-weight:700}
+.gc-masthead .gc-masthead-note{font-size:.87rem;color:rgba(255,255,255,.67)}
+.gc-masthead .gc-back-link{margin-left:auto;font-size:.87rem;color:rgba(255,255,255,.8)}
+.gc-hero{padding:30px 0 18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.gc-hero .gc-kicker{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--accent);margin:0 0 10px}
+.gc-hero h1{font-size:2.6rem;margin:0 0 12px}
+.gc-hero .gc-hero-lead{font-size:1.3rem;line-height:1.5;color:var(--slate);max-width:650px;margin:0 0 20px}
+.gc-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gc-secondary-button{display:inline-block;border:1px solid var(--accent);border-radius:4px;padding:9px 15px;font-weight:600;text-decoration:none}
+.gc-local-nav{margin-bottom:4px}.gc-local-nav a{text-decoration:none}
+.gc-local-nav a:hover,.gc-local-nav a[aria-current]{text-decoration:underline}
+.gc-technical-download{border-top:1px solid var(--rule);padding-top:8px;margin-top:32px}
+.gc-technical-download .gc-download{background:#f5f7f9;border-left:3px solid var(--rule)}
+.gc-doc-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:18px 0}
+.gc-doc-groups section{padding:8px 18px;border:1px solid var(--border);border-radius:5px}
+.gc-doc-groups h2{font-size:1.15rem;margin:12px 0}
+.gc-doc-groups ul{padding-left:20px}
+.gc-copy-command{margin:-3px 0 12px}
+.gc-copy-panel{border:1px solid var(--border);background:#f5f7f9;border-radius:5px;padding:18px;margin:18px 0}
+.gc-copy-panel .gc-panel{background:#fff;margin:8px 0 0}
+.gc-copy-panel .gc-panel pre{margin:0}
+@media(max-width:600px){.gc-masthead-inner{padding-top:12px;padding-bottom:12px;gap:4px 14px}
+.gc-masthead .gc-back-link{margin-left:0}.gc-masthead .gc-masthead-note{display:none}
+.gc-hero{padding-top:20px}.gc-hero h1{font-size:2.1rem}.gc-hero .gc-hero-lead{font-size:1.1rem}}
+</style></head><body id="top"><div class="page-wrapper"><header class="gc-masthead">
+    <div class="container gc-masthead-inner">
+      <a class="gc-brand" href="../index.html">Thomas C. Terwilliger</a>
+      <span class="gc-masthead-note">Software and documentation</span>
+      <a class="gc-back-link" href="../software.html">Other software</a>
     </div>
-    <nav class="site-nav">
-      <div class="container">
-        <a href="../index.html">Home</a>
-        <a href="../publications.html">Publications</a>
-        <a href="../software.html" class="active">Software</a>
-        <a href="../bio.html">Biography</a>
-        <a href="../group.html">Group</a>
-        <a href="../news.html">News</a>
-        <a href="../presentations.html">Presentations</a>
-        <a href="../links.html">Links</a>
-      </div>
-    </nav>
   </header><main class="container gc-main gc-doc-pages">
-  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Guided Coding</a><a href="quick-start.html" aria-current="page">Quick Start</a><a href="how-it-works.html">How it works</a><a href="getting-started.html">Install</a><a href="why-not-claude-code.html">Why Guided Coding</a><a href="why-not-vibe-coding.html">Why not Vibe Coding</a><a href="documentation.html">Documentation</a></nav>
-  <h1 class="gc-document-title">Quick Start with Guided Coding</h1>
-  <p class="gc-lead">Set up Guided Coding by giving Claude Code one message.</p>
+  <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html" aria-current="page">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html">Documentation</a></nav>
+  <h1 class="gc-document-title">Get started with Guided Coding</h1>
+  <p class="gc-lead">Install with one message, then try your first coding job.</p>
 
-<p><strong>New to Claude Code?</strong> Guided Coding runs inside it, so install Claude Code first: follow <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a>, which also explains the account you need, then come back here.</p>
-<p><strong>Already have Claude Code?</strong> Then this is the easiest way to install Guided Coding. Open a new session in Claude Code, in the folder where you keep your software, and give it these instructions. Claude will explain Guided Coding, install it with you, and start you on a small task.</p>
-<pre class="gc-copy-box" id="copy-text"><code>Instructions to Claude Code for setting up Guided Coding. Read https://www.thomasterwilliger.org/guided_coding/ and the installation page https://www.thomasterwilliger.org/guided_coding/getting-started.html. Briefly summarize how Guided Coding works, including its two main rules (ask until you understand each change; I stay in control), and tell me whether it can help with my work. If it can, offer to install it. Suggest where to clone the repository, then use the installation commands exactly as written, copied from the raw README at https://raw.githubusercontent.com/cctbx/guided_coding/master/README.md (the same commands as the installation page; do not reword or shorten them), which check before they change anything and show the version they register. Before changing anything on my computer, show me all the installation steps, say what each does, and ask for my approval once; then run them, and ask again only if something unexpected comes up. Then tell me when I must open a new conversation, which folder to open it in, and what to type there (`/gc`, then optionally `/gc setup`). Give click-by-click directions for the Claude app&#x27;s Code tab: the Environment choice (Local, then My computer) and the separate folder selector at the bottom of the page; on a Mac mention Cmd+Shift+G, and mention the Terminal alternative (cd to the folder, then claude). If the app looks different from this, say so and describe what to look for. When installation is complete, suggest a small first task. Use plain sentences, and put every step I must take next in your final message.</code></pre><button type="button" data-copy="copy-text">Copy these instructions</button><p id="copy-status" class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
-<p>Installing is once per computer. Afterwards, open Claude Code in the folder of the project you want to change and type <code>/gc</code> followed by what you want done. <code>/gc setup</code> is optional, once per project, and saves that project&#x27;s build and test commands. Guided Coding has been tested on macOS; it should work on Linux, and has not been tested on Windows. To install it yourself instead, see <a href="getting-started.html">Installing Guided Coding</a>.</p>
+<p>You can install Guided Coding by giving Claude Code one message. Claude explains the steps, asks your permission before making changes, and helps you try a small task.</p>
+<h2 id="step-1-open-claude-code">Step 1. Open Claude Code</h2>
+<p>If you do not have Claude Code yet, follow <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s setup guide</a>. Guided Coding runs inside Claude Code; it is not a separate app.</p>
+<p>Open a new Claude Code conversation on your computer. You can use the Claude app&#x27;s Code tab or run <code>claude</code> in Terminal. If you are not sure where to open it, the message below asks Claude to help.</p>
+<h2 id="step-2-copy-this-message">Step 2. Copy this message</h2>
+<p>Use the button below, paste the message into Claude Code, and send it. You can read the message first. It asks Claude to explain the installation and request your approval before changing anything.</p>
+<div class="gc-copy-panel"><button type="button" data-copy="copy-text">Copy these instructions</button><p id="copy-status" class="gc-copy-status gc-small" role="status" aria-live="polite"></p><details class="gc-panel"><summary>Read the complete setup message</summary><div><pre class="gc-copy-box" id="copy-text"><code>Instructions to Claude Code for setting up Guided Coding. Read https://www.thomasterwilliger.org/guided_coding/ and the installation page https://www.thomasterwilliger.org/guided_coding/getting-started.html. Briefly summarize how Guided Coding works, including its two main rules (ask until you understand each change; I stay in control), and tell me whether it can help with my work. If it can, offer to install it. Suggest where to clone the repository, then use the installation commands exactly as written, copied from the raw README at https://raw.githubusercontent.com/cctbx/guided_coding/master/README.md (the same commands as the installation page; do not reword or shorten them), which check before they change anything and show the version they register. Before changing anything on my computer, show me all the installation steps, say what each does, and ask for my approval once; then run them, and ask again only if something unexpected comes up. Then tell me when I must open a new conversation, which folder to open it in, and what to type there (`/gc`, then optionally `/gc setup`). Give click-by-click directions for the Claude app&#x27;s Code tab: the Environment choice (Local, then My computer) and the separate folder selector at the bottom of the page; on a Mac mention Cmd+Shift+G, and mention the Terminal alternative (cd to the folder, then claude). If the app looks different from this, say so and describe what to look for. When installation is complete, suggest a small first task. Use plain sentences, and put every step I must take next in your final message.</code></pre></div></details></div>
+<h2 id="step-3-try-a-small-change">Step 3. Try a small change</h2>
+<p>After installation, start a <strong>new conversation</strong> in Claude Code in the folder of the software project you want to change. Type <code>/gc</code> followed by a specific small task, such as fixing a bug you can reproduce.</p>
+<p>When the job finishes, read the report. Ask about anything unclear before you accept the change. You can type <code>/gc</code> by itself to get an introduction. <code>/gc setup</code> is optional: it saves your project&#x27;s build and test commands for later jobs.</p>
+<p>Installing Guided Coding is normally done once per computer. It has been tested on macOS; Linux should work but has not been tested, and Windows has not been tested. If you prefer to install it yourself, see <a href="getting-started.html">Manual installation and maintenance</a>.</p>
   
-  <p class="gc-small gc-maintainer"><a href="index.html">Back to installation and use</a> · <a href="documentation.html">All documentation</a> · <a href="#top">Back to top</a></p>
+  <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>
 <footer class="site-footer"><div class="container">Guided Coding · <a href="../software.html">Software</a> · <a href="../guided_workflow/index.html">Guided Workflow</a><br>Thomas C. Terwilliger · <a href="documentation.html">Documentation</a></div></footer></div><script>
 async function copyText(button, label) {
   const target = document.getElementById(button.dataset.copy);
   const value = target.tagName === 'TEXTAREA' ? target.value : target.textContent;
-  const status = document.getElementById('copy-status');
+  const next = button.nextElementSibling;
+  const status = next && next.classList.contains('gc-copy-status') ? next : document.getElementById('copy-status');
   try {
     if (!navigator.clipboard) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(value);
     status.textContent = 'Copied. Paste it into the appropriate window.';
     button.textContent = 'Copied';
   } catch (error) {
+    const collapsed = target.closest('details');
+    if (collapsed) collapsed.open = true;
     if (target.tagName === 'TEXTAREA') { target.focus(); target.select(); }
     else { const range = document.createRange(); range.selectNodeContents(target); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); }
     status.textContent = 'Text selected. Press Command–C on a Mac or Ctrl–C on Linux to copy.';
