@@ -48,11 +48,12 @@ PAGES = [
      "Keeping you in control.", "pages/why-not-vibe-coding.md"),
     ("documentation.html", "Documentation", "Guided Coding documentation",
      "Every Guided Coding document, in one place.", "generated:documentation"),
-    ("verification.html", "Evidence", "Evidence and limits",
+    ("verification.html", None, "Evidence and limits",
      "What the evidence says about the main parts of /gc, the study behind it, and the behaviour checks.", "repo:EVIDENCE.md"),
     ("reference-files.html", None, "Guided Coding skill files",
      "The five instruction files Claude Code reads, exactly as published.", "generated:reference"),
 ]
+PAGE_INFO = {p[0]: (p[2], p[3]) for p in PAGES}  # output -> (title, description)
 # A highlighted box at the top of a page (under its title), for pages that need to send some readers elsewhere first.
 PAGE_BANNERS = {
     "getting-started.html": (
@@ -323,10 +324,14 @@ def fill(template, values, markers):
     return template
 
 
+def nav_row(page):
+    """The navigation row shown on every page, the main page included."""
+    return "".join('<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
+                   for name, label in [("index.html", "Guided Coding")] + [p[:2] for p in PAGES if p[1]])
+
+
 def doc_page(template, page, title, description, body, toc, note=""):
-    nav = '<a href="index.html">Guided Coding</a>' + "".join(
-        '<a href="%s"%s>%s</a>' % (name, ' aria-current="page"' if name == page else "", label)
-        for name, label, _, _, _ in PAGES if label)
+    nav = nav_row(page)
     toc_block = PAGE_BANNERS.get(page, "")
     if len(toc) > 1:
         links = [item.replace("<li>", "").replace("</li>", "") for item in toc]
@@ -380,7 +385,7 @@ def build(tree, ref, date, staging):
         anchor = name.lower().replace(".", "-")
         ref_toc.append('<li><a href="#%s">%s</a></li>' % (anchor, name))
         ref_blocks.append('<h2 id="%s">%s</h2><pre><code>%s</code></pre>' % (anchor, name, html.escape(text)))
-    rendered["reference-files.html"] = doc_page(doc_template, "reference-files.html", PAGES[7][2], PAGES[7][3],
+    rendered["reference-files.html"] = doc_page(doc_template, "reference-files.html", *PAGE_INFO["reference-files.html"],
                                                 "\n".join(ref_blocks), ref_toc, source_note)
 
     doc_items = "".join('<li><a href="%s">%s</a>: %s</li>' % (p[0], html.escape(p[2]), html.escape(p[3]))
@@ -388,7 +393,7 @@ def build(tree, ref, date, staging):
     doc_body = ("<ul>" + doc_items + "</ul><p>The source is the repository "
                 '<a href="%s">cctbx/guided_coding</a>. The earlier GuidedCoding kit is kept on its branch '
                 '<a href="%s/tree/full-kit-rev21">full-kit-rev21</a>.</p>' % (REPO_URL, REPO_URL))
-    rendered["documentation.html"] = doc_page(doc_template, "documentation.html", PAGES[6][2], PAGES[6][3],
+    rendered["documentation.html"] = doc_page(doc_template, "documentation.html", *PAGE_INFO["documentation.html"],
                                               doc_body, [], source_note)
 
     for page, title in RETIRED:
@@ -408,7 +413,7 @@ def build(tree, ref, date, staging):
         "DOWNLOAD_URL": ZIP_NAME, "DOWNLOAD_LABEL": "Download Guided Coding (ZIP)",
         "COMMIT_URL": REPO_URL + "/tree/" + ref, "COMMIT_SHORT": ref[:7], "COMMIT_DATE": date,
         "ZIP_KB": str(max(1, round(len(zip_data) / 1024))), "ZIP_SHA": zip_sha,
-        "REPO_URL": REPO_URL}, {"MAIN_COPY": main_body})
+        "REPO_URL": REPO_URL}, {"MAIN_NAV": nav_row("index.html"), "MAIN_COPY": main_body})
 
     pages = {}
     for page, text in rendered.items():

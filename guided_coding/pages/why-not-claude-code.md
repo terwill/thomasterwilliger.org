@@ -91,11 +91,14 @@ adopted without a test, and the outside review was measured with a scripted revi
 review file. A larger earlier version of the procedure, with several review layers, left fewer major errors on the
 harder jobs (0.44 per run, one run per job, and much slower); which of its parts did that is not known.
 
-[Evidence and limits](verification.html) goes through each part of Guided Coding in detail. The
-[full report](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md) of the study, with
-every figure traced to its source, and the
-[description of the methods](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md) can be
-downloaded.
+### The evidence in detail
+
+- **[Evidence and limits](verification.html):** each part of Guided Coding, what the study found about it, and the
+  behaviour checks.
+- [Full report of the study](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_final_report.md),
+  with every figure traced to its source (download).
+- [Description of the methods](https://www.thomasterwilliger.org/guided_coding/GuidedCoding_study_methods.md)
+  (download).
 
 ## And the most important part
 
