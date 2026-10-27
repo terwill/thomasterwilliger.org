@@ -5,18 +5,18 @@
     "sha256": "8a42a85637eeef3072a57f2bb31620b0b3b023f7c9b5a0f24a8aff31a74a350d"
   },
   "pages": {
-    "architecture.html": "f6639c25a954b373759d429138dcf1d228f1bc39ec23d8ddceff62acf1cd2476",
-    "documentation.html": "86ff29e941fba5ea4326c96d49bd0e6b6dd663d32df1ce51f84badf105921be8",
-    "getting-started.html": "49c8b1aeb0d06fb0bdee9f892f136d36cab58a4d25ba3a0817179062a26fb700",
-    "how-it-works.html": "efce3036e6895798f19eb13e5b2fb0b52ccdb58c22f73a43a4212df43a6d389e",
-    "index.html": "cd87c863b51faabc61cb106962736391849019fbaec53b0c03c50e9999747952",
-    "overview.html": "c9e853bdc61928edc25ae1e39e6b813dd8175875077e39046534dcc647f28d0b",
-    "quick-start.html": "9472f724f3b4d3963ad1f207b77db19ca84c592b5e26397dcef18c7663cb926e",
-    "reference-files.html": "b82372d44a0c8c2a9e8de00492b1bb83defd565e8064ebe07ce0032f355a1ee3",
-    "user-guide.html": "21892c4ad6d8a74c23bc32e8c39b5ca424534d83b56488d530849ada74da7de9",
-    "verification.html": "533c901bb0d14aaecde404b2b3a5fabdab930ed2742114b41456eba9c1e132ee",
-    "why-not-claude-code.html": "27e71ebff71c8d49e69d6f7d2ff077cb306f4e860b7a3898fcb3a5a45d619541",
-    "why-not-vibe-coding.html": "1e11ee7388599a84abb982c6eace23ab3133894a75b0a8e7ddc1e2c44dce7f17"
+    "architecture.html": "aefffdad19723f14229bec7c87c5732a208b7d0d93d93cd56aefb792674ff7a6",
+    "documentation.html": "f2df9bd43931b9f12df7d7eafd6c582ca1bcdd7b2eaba2c4831e2e421da75401",
+    "getting-started.html": "62243ed7799366e3e5ace3fffbb963f2ae12afc335baf9bfc662cee019f790f3",
+    "how-it-works.html": "71af6529b964e7c321ccfcc1c02bdeba4912818ce364887be960b9b4119832df",
+    "index.html": "cd0f40aa1db65c8f20eec3a0faa6623b216004b0059073931450d4af822939a5",
+    "overview.html": "97bee29c0f4782a1692bacbc81b96d606866ce39c5589f9c073364a5d19d2f84",
+    "quick-start.html": "37376bcd16b9335a2d57e6d411ef624a68249c92a58e9eed0c5cfce6a7be11ac",
+    "reference-files.html": "29589866ea25d936fbf272c9189948c398a62f29c172605221cfbcef0e847f94",
+    "user-guide.html": "f39124838bed2802f77aab64ed04205da1a6780b6294009c3f20a4905d2d6174",
+    "verification.html": "98980a28dcb58f62a88af965c6f2a4696a37113ab6825c7c470f8599243a6265",
+    "why-not-claude-code.html": "65ff6ef8ff5fda2441a6c58dc3b60fe55457e37cbbe5abd20a9801ed0f589b2a",
+    "why-not-vibe-coding.html": "4e36f8b59caf8c09b985178a01882bef2dba8e8ea2543dd1bc7f63f2332853bf"
   },
   "source": {
     "commit": "17e6bb8953bba5f5ffd41e9fb907281a51cf3e85",
