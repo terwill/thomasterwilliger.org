@@ -704,7 +704,7 @@ END
 <p>Type <code>/gc update</code> in Claude Code: it says whether a newer version exists, and updates after asking once. By hand: for an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
 <ol><li>remove the link <code>gc</code> in your Claude Code skills folder (<code>$CLAUDE_CONFIG_DIR/skills</code> if you set  <code>CLAUDE_CONFIG_DIR</code>, otherwise <code>~/.claude/skills</code>); it is only a link, and removing it deletes nothing else;</li><li>rename <code>~/guided_coding</code> to keep it as a backup, outside the skills folder, so that only one registration remains  (two skills named <code>gc</code> conflict);</li><li>download the new ZIP and run the ZIP block again.</li></ol>
 <h3 id="uninstall">Uninstall</h3>
-<p>Type <code>/gc uninstall</code> in Claude Code, or paste this block. It removes GuidedCoding from Claude Code and deletes its files, except a copy under a <code>modules</code> folder (<code>modules/guided_coding</code>), which may belong to a larger installation such as PHENIX and stays. It keeps the files, and says why, unless they are demonstrably unchanged: a clean clone with nothing of your own (no changes, ignored files, commits that are not on GitHub, other branches or stashes), or a ZIP copy whose files match its <code>RELEASE.sha256</code> exactly. Project notes that <code>/gc setup</code> saved (<code>.claude/GC_NOTES.md</code> in your projects) are kept.</p>
+<p>Type <code>/gc uninstall</code> in Claude Code, or paste this block. It removes GuidedCoding from Claude Code: it removes only the <code>gc</code> link, so <code>/gc</code> stops working, and deletes nothing. It then tells you where GuidedCoding&#x27;s files are and whether they hold anything of yours (changes, other files, commits that are not on GitHub, other branches or stashes). A copy under a <code>modules</code> folder (<code>modules/guided_coding</code>) may belong to a larger installation such as PHENIX, and stays. Project notes that <code>/gc setup</code> saved (<code>.claude/GC_NOTES.md</code> in your projects) are kept.</p>
 <pre id="manual-command-7"><code>sh &lt;&lt;&#x27;END&#x27;
 L=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/gc&quot;
 [ -L &quot;$L&quot; ] || { echo &quot;GuidedCoding is not registered at $L; nothing changed.&quot;; exit 1; }
@@ -712,7 +712,7 @@ T=&quot;$(readlink &quot;$L&quot;)&quot;; case &quot;$T&quot; in /*) ;; *) T=&qu
 COPY=&quot;$(dirname &quot;$T&quot;)&quot;
 [ &quot;$(basename &quot;$T&quot;)&quot; = guided_coding ] || { echo &quot;$L points to $T, not GuidedCoding; nothing changed.&quot;; exit 1; }
 if [ -e &quot;$T&quot; ]; then grep -q &#x27;^# GuidedCoding&#x27; &quot;$T/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$L points to $T, which is not GuidedCoding; nothing changed.&quot;; exit 1; }; fi
-rm &quot;$L&quot; || { echo &quot;Could not remove $L; nothing changed.&quot;; exit 1; }
+unlink &quot;$L&quot; || { echo &quot;Could not remove $L; nothing changed.&quot;; exit 1; }
 echo &quot;Removed GuidedCoding from Claude Code; /gc stops working in new conversations.&quot;
 KEEP=&quot;&quot;
 if [ ! -e &quot;$T&quot; ]; then KEEP=&quot;-&quot;
@@ -741,14 +741,15 @@ else
     (cd &quot;$COPY&quot; &amp;&amp; $SUM -c RELEASE.sha256 &gt;/dev/null 2&gt;&amp;1) || KEEP=&quot;some of its files were changed&quot;
   fi
 fi
-if [ -z &quot;$KEEP&quot; ]; then rm -rf &quot;$COPY&quot; &amp;&amp; echo &quot;Deleted its files in $COPY.&quot;
-elif [ &quot;$KEEP&quot; = phenix ]; then echo &quot;Kept $COPY: it is under a modules folder, so it may belong to a larger installation such as PHENIX.&quot;
-elif [ &quot;$KEEP&quot; != &quot;-&quot; ]; then echo &quot;Kept $COPY because $KEEP. Delete it yourself if you no longer need it.&quot;; fi
+if [ &quot;$KEEP&quot; = phenix ]; then echo &quot;Its files stay in $COPY, which is part of a larger installation such as PHENIX.&quot;
+elif [ -z &quot;$KEEP&quot; ]; then echo &quot;Its files are still in $COPY. They hold nothing of yours; delete that folder if you no longer need it.&quot;
+elif [ &quot;$KEEP&quot; != &quot;-&quot; ]; then echo &quot;Its files are still in $COPY. Before deleting that folder, note that $KEEP.&quot;; fi
 echo &quot;Project notes (.claude/GC_NOTES.md in your projects) are kept.&quot;
 END
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-7">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
+<p>To delete GuidedCoding&#x27;s files too, delete the folder it names: <code>rm -rf &lt;that folder&gt;</code>. Check it first if the block says it holds something of yours.</p>
 <h2 id="what-the-evidence-says">What the evidence says</h2>
-<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="https://github.com/cctbx/guided_coding/blob/19925afd3bfbdd7a747a67247deeef941a7ae0be/EVIDENCE.md">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
+<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="https://github.com/cctbx/guided_coding/blob/8d4d8754d55d06064f66799a3a445ee1d9167d78/EVIDENCE.md">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
 <h2 id="if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</h2>
 <p>Revision 22 replaces the earlier kit with this much shorter procedure. The earlier kit had approval screens, evidence packets checked by its own tools, and an unattended auto mode. They are retired, and kept on the branch <code>full-kit-rev21</code>.</p>
 <p>What you gain, and what you lose:</p>
@@ -764,7 +765,7 @@ git checkout full-kit-rev21
 <h2 id="tests">Tests</h2>
 <pre id="manual-command-9"><code>python3 tst_guided_coding.py
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-9">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
-<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="https://github.com/cctbx/guided_coding/blob/19925afd3bfbdd7a747a67247deeef941a7ae0be/EVIDENCE.md">EVIDENCE.md</a>.</p>
+<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="https://github.com/cctbx/guided_coding/blob/8d4d8754d55d06064f66799a3a445ee1d9167d78/EVIDENCE.md">EVIDENCE.md</a>.</p>
   
   <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>

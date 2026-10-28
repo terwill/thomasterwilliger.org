@@ -1004,17 +1004,19 @@ Be conservative: undo only what can be undone without losing anyone&#x27;s work,
 
 ## 5. uninstall
 
-Ask one plain question, naming the full path of the copy, in these words: &quot;Uninstall GuidedCoding? This removes /gc
-and deletes &lt;full path of the copy&gt;. If you have changed or added anything in that folder, it is kept instead, and
-I&#x27;ll tell you why. Your project notes are kept.&quot; If the copy is under a `modules` folder (`modules/guided_coding`),
-it may belong to a larger installation such as PHENIX and is not deleted; ask instead: &quot;Uninstall GuidedCoding? This
-removes /gc. Its folder &lt;full path of the copy&gt; is part of a larger installation (such as PHENIX) and stays. Your
-project notes are kept.&quot; Offer exactly two
-answers: &quot;Yes, uninstall&quot; and &quot;No, keep it&quot;, with no other description. In the question and answers, say only what
-will happen to the developer&#x27;s files; do not mention the README, the block, links or &quot;unchanged&quot;.
+Ask one plain question, naming the full path of the copy, in these words: &quot;Uninstall GuidedCoding? This removes /gc.
+Its files stay in &lt;full path of the copy&gt;; I&#x27;ll give you the command to delete them if you want. Your project notes
+are kept.&quot; If the copy is under a `modules` folder (`modules/guided_coding`), ask instead: &quot;Uninstall GuidedCoding?
+This removes /gc. Its folder &lt;full path of the copy&gt; is part of a larger installation (such as PHENIX) and stays.
+Your project notes are kept.&quot; Offer exactly two answers: &quot;Yes, uninstall&quot; and &quot;No, keep it&quot;, with no other
+description. In the question and answers, say only what will happen; do not mention the README, the block or links.
 
-If the developer says yes, run the Uninstall block from the README exactly as written, and report its output in
-plain words, including any folder it kept and why.
+If the developer says yes:
+1. Run the Uninstall block from the README exactly as written. It removes /gc and deletes nothing.
+2. Report in plain words: /gc is removed, where the files are, and what the block said about them.
+3. Unless the copy is under a `modules` folder, give the command that deletes the folder, for the developer to run
+   if they want: `rm -rf &#x27;&lt;full path of the copy&gt;&#x27;`, in its own block, with a `cd` line first (SKILL.md §0). If the
+   block said the folder holds something of theirs, say so next to the command. Do not run it yourself.
 </code></pre>
 <h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.4)
 
