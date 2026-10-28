@@ -1,36 +1,36 @@
 {
   "archive": {
-    "bytes": 94186,
+    "bytes": 95207,
     "file": "guided_coding.zip",
-    "sha256": "2ceff69b881cf8a0da8b1b8d42cf72828a17af188f06e23e8251d8bdd6cc44cb"
+    "sha256": "a0a44ac4e4f92be91375b6cb17b41af7c97dd15d9c4e33faa2dd3ab571db18a0"
   },
   "pages": {
     "architecture.html": "aefffdad19723f14229bec7c87c5732a208b7d0d93d93cd56aefb792674ff7a6",
     "documentation.html": "f2df9bd43931b9f12df7d7eafd6c582ca1bcdd7b2eaba2c4831e2e421da75401",
-    "getting-started.html": "c1f42ed49b0562cf8413dbb3941d8500a12205af8fe61d807e47dd87a3775a8d",
+    "getting-started.html": "183c347613af5783e88d720cc3dc31db1f63e05c28220d8904888c8909d3c1cf",
     "how-it-works.html": "71af6529b964e7c321ccfcc1c02bdeba4912818ce364887be960b9b4119832df",
-    "index.html": "dd0a8652303b7ea3a360097092b4c069ccd0268b69645b7604726a25ce7618c6",
+    "index.html": "3fe1abde4101ebcf1e2ae4c848aef5e0af93b909a7b96360ab6bf446d8766c56",
     "overview.html": "97bee29c0f4782a1692bacbc81b96d606866ce39c5589f9c073364a5d19d2f84",
     "quick-start.html": "ecfd7e7cad8cd80b4027aceb7f3c4c8f752d0b666c1f782519ff9eaa1c9dc751",
-    "reference-files.html": "6f475b4ed46bb460676a6142e26360c23a2789698527de9bcc473a9056002cc4",
+    "reference-files.html": "57802d52b683ea76b4f8b94baa20561b27812ecc2fc78db601107d7ed3539a41",
     "user-guide.html": "f39124838bed2802f77aab64ed04205da1a6780b6294009c3f20a4905d2d6174",
     "verification.html": "98980a28dcb58f62a88af965c6f2a4696a37113ab6825c7c470f8599243a6265",
     "why-not-claude-code.html": "65ff6ef8ff5fda2441a6c58dc3b60fe55457e37cbbe5abd20a9801ed0f589b2a",
     "why-not-vibe-coding.html": "4e36f8b59caf8c09b985178a01882bef2dba8e8ea2543dd1bc7f63f2332853bf"
   },
   "source": {
-    "commit": "85ac52a4fea29551876d8d9041403a741fc70991",
+    "commit": "d4393f5184d0bf114060f379d7e05cce43b65aa4",
     "date": "2026-10-28",
     "files": {
       "EVIDENCE.md": "7c8670a3230b3f1c4deef7a24f36c8cd87f539dbfaa9f5b0f3e6472de0b4730d",
       "LICENSE.txt": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
-      "README.md": "0203eaf2958cb48bc37de2e8fb9fb8a3ac3b087ecb5a3c149e953dd9d100b6c3",
+      "README.md": "4c25b9ba95b7da8372c10458db3832087457249f098367f215863151f9654be7",
       "guided_coding/BATCH.md": "ca10d4e343f747b4779502f375221bacb79196471f3aa0fc1bebe87b34492426",
-      "guided_coding/COMMANDS.md": "62dc9d86dfd2b3d4aa584f87ea3fb448edd0014b23a7f26f2aaa72303915e698",
+      "guided_coding/COMMANDS.md": "9aef26f9da78878ffdb6ddea7a1172a8513fc28f288c4c372c310aaea5bbc4b8",
       "guided_coding/LOG.md": "ce0f1b506cc01bbf57830ea3396731818c1f2323c62c70b3a73d9bb7835c1d38",
       "guided_coding/REVIEWER.md": "aff39d2c68d82c859f73f9bacc26256cb7c3bfa7f53560d36ba34f66750c5c8e",
-      "guided_coding/SETUP.md": "403391d8832b1b9bd67a928cb7560eb2d430c762a95d72b07bb21d95264a6a0b",
-      "guided_coding/SKILL.md": "0dad98ed322a6d5743e722e513f688e419c2aeea06bba35807b69780133f9274",
+      "guided_coding/SETUP.md": "ae7f77846d049ee01392387174c4435700ac62ec7ab19b710a2ab19ac5a90efb",
+      "guided_coding/SKILL.md": "d91ab743270fbb58ba93f342ade024fb3786f9722be923c90bad0b33f94f1126",
       "tst_guided_coding.py": "12e74d417ac1eddca1111b8f9784bb4ea175c3d17c2742e57d2a68b82fa03129"
     },
     "repository": "https://github.com/cctbx/guided_coding"

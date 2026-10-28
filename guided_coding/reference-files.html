@@ -613,7 +613,8 @@ possible, and that the result can be trusted.
 
 - **What was asked.**
   - **`/gc` with nothing after it, or `/gc help`:** follow `${CLAUDE_SKILL_DIR}/COMMANDS.md` §1.
-  - **`/gc setup`:** read `${CLAUDE_SKILL_DIR}/SETUP.md` and follow it. Do nothing else.
+  - **`/gc setup`,** with or without a defaults file named after it: read `${CLAUDE_SKILL_DIR}/SETUP.md` and follow
+    it. Do nothing else.
   - **`/gc batch ...`:** read `${CLAUDE_SKILL_DIR}/BATCH.md` and follow it.
   - **`stop` or `status` while a batch is running in this session:** stop the batch, or report on it (BATCH.md §3).
   - **`/gc` followed by exactly `history`, `status`, `stop`, `update`, `undo` or `uninstall`:** follow `${CLAUDE_SKILL_DIR}/COMMANDS.md`.
@@ -1005,10 +1006,12 @@ Be conservative: undo only what can be undone without losing anyone&#x27;s work,
 
 Ask one plain question, naming the full path of the copy, in these words: &quot;Uninstall GuidedCoding? This removes /gc
 and deletes &lt;full path of the copy&gt;. If you have changed or added anything in that folder, it is kept instead, and
-I&#x27;ll tell you why. Your project notes are kept.&quot; If the copy is inside a PHENIX installation, add that it is part of
-that installation. Offer exactly two answers: &quot;Yes, uninstall&quot; and &quot;No, keep it&quot;, with no other description. In
-the question and answers, say only what will happen to the developer&#x27;s files; do not mention the README, the
-block, links or &quot;unchanged&quot;.
+I&#x27;ll tell you why. Your project notes are kept.&quot; If the copy is under a `modules` folder (`modules/guided_coding`),
+it may belong to a larger installation such as PHENIX and is not deleted; ask instead: &quot;Uninstall GuidedCoding? This
+removes /gc. Its folder &lt;full path of the copy&gt; is part of a larger installation (such as PHENIX) and stays. Your
+project notes are kept.&quot; Offer exactly two
+answers: &quot;Yes, uninstall&quot; and &quot;No, keep it&quot;, with no other description. In the question and answers, say only what
+will happen to the developer&#x27;s files; do not mention the README, the block, links or &quot;unchanged&quot;.
 
 If the developer says yes, run the Uninstall block from the README exactly as written, and report its output in
 plain words, including any folder it kept and why.
@@ -1119,7 +1122,11 @@ read-only command; if a listing is refused, say so and continue:
 - the project&#x27;s instruction files: `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md`, and any project method they name.
   Team rules in `CLAUDE.md` or `AGENTS.md` (on pushing, commits, tests, environment) go into the card as found;
 - its README, contributing guide and CI files, for build and test commands;
-- the repositories in the folder, and the remotes they push to.
+- the repositories in the folder, and the remotes they push to;
+- a defaults file, if the developer names one (for example PHENIX&#x27;s, which `phenix.developer` offers). Read it
+  and use its values as suggestions, each marked &quot;(suggested by &lt;file&gt;)&quot;; they are not settings until the
+  developer confirms them, and values the project&#x27;s own files give come first. Values the file marks as
+  examples are another developer&#x27;s: ask for the developer&#x27;s own.
 
 Note where each value came from. Never copy passwords, tokens or keys into the notes. The notes list the
 repositories they cover (item 1); `/gc` ignores them for any other repository.
