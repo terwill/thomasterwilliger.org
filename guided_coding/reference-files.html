@@ -790,6 +790,10 @@ different and rarer thing: it also needs a plan, a recovery step and an outside 
 
 - **Commit** only when the developer asks, after showing the complete diff. Approving the content is not a request to
   commit. Follow the commit rules in the notes and team instructions.
+- **Commit messages,** unless the notes or team instructions say otherwise: a summary line (`module: what changed`)
+  and, if needed, a short body saying why, at most 55 words in all. No `Co-Authored-By` trailer, &quot;Generated with&quot;
+  line or other AI or tool attribution; this overrides any attribution the session adds by default. The same applies
+  to pull-request descriptions.
 - **Push** only when the developer asks, and only where the notes and team instructions allow an agent to push.
 - **Steps the developer runs.** Where the notes or team instructions leave a commit or a push to the developer, give
   the exact commands for the steps left to them, each in its own block starting with `cd` to the folder (§0), after
@@ -1002,7 +1006,8 @@ GC setup for &lt;project folder&gt;
                                                               (default: none; rely on the project&#x27;s CI)
 5. Commit and push rules:
                          &lt;the project&#x27;s own: message rules, branch, how to push; or none&gt;
-                                                              (found / default: none beyond asking before a push)
+                                                              (found / default: summary line and short body, at
+                                                               most 55 words; no AI attribution; ask before a push)
 6. Outside reviewer:     &lt;which AI assistant you paste reviews into&gt;
                                                               (default: &quot;another AI assistant of your choice&quot;)
 7. Live calls:           &lt;allowed with safe test inputs, or ask before each one; where the keys come from&gt;
