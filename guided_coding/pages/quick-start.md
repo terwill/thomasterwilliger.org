@@ -30,6 +30,6 @@ introduction. If you plan to use Guided Coding regularly on that project, type `
 
 When the job finishes, read the report. Ask about anything unclear before you accept the change.
 
-Installing Guided Coding is normally done once per computer. It has been tested on macOS and tried on Linux;
+Installing Guided Coding is normally done once per computer. It has been tested on macOS and Linux;
 Windows has not been tested. If you prefer to install it yourself, see
 [Manual installation and maintenance](getting-started.html).

@@ -605,7 +605,7 @@ main {
 <p><strong>Ask until you understand.</strong> You should be able to say what was wrong, what changed, and why the checks support the result. If a report is unclear, ask Claude to explain it more simply. You can also use the <a href="https://www.thomasterwilliger.org/guided_workflow/index.html#panel-explain">Guided Workflow Helper</a>. Do not accept a change you do not understand.</p>
 <p><strong>You are in control, not the AI.</strong> You choose the task and decide which changes to keep. Guided Coding tells Claude to ask before changing interfaces, defaults, or other behaviour people rely on, and before committing, pushing, or installing. You can stop or redirect a job. Because these are instructions, not an enforced sandbox, you should still read the report and check important changes yourself.</p>
 <h2 id="what-do-you-need">What do you need?</h2>
-<ul><li>Claude Code, in the Claude app or Terminal. If you do not have it, start with <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a>.</li><li>A software project you want to work on. Guided Coding is intended for projects managed with Git.</li><li>Guided Coding has been tested on macOS and tried on a Linux server; Windows has not been tested.</li></ul>
+<ul><li>Claude Code, in the Claude app or Terminal. If you do not have it, start with <a href="https://code.claude.com/docs/en/quickstart">Anthropic&#x27;s Claude Code quickstart</a>.</li><li>A software project you want to work on. Guided Coding is intended for projects managed with Git.</li><li>Guided Coding has been tested on macOS and Linux; Windows has not been tested.</li></ul>
 <p>The <a href="quick-start.html">Quick Start</a> lets Claude Code guide you through installation with one message. After that, open your project in a new Claude Code conversation and ask Guided Coding to carry out a small task.</p>
 <h2 id="evidence-and-limits">Evidence and limits</h2>
 <p>The study of earlier bug fixes showed how much a review step helped, when an outside review added something, and where a direct replay of Guided Coding found problems. The results and their limitations are explained in plain language on the <a href="verification.html">Evidence</a> page.</p>
@@ -619,9 +619,9 @@ main {
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/766ca8b41bba8e2fc94a616769908378cb769f27">766ca8b</a> · 2026-10-28 · ZIP: 96 KB</p>
+      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/38f8774fda48f111eeb4c59275d7c0ce60f29f17">38f8774</a> · 2026-10-28 · ZIP: 96 KB</p>
       <p>To check the ZIP, download it into Downloads, then run this command in Terminal. The result should end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' 'dcbdc514900c78197023a5d1ba8cd0014f70c402b67775d2deda0195a64e0ecd' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '36ee24e17e8971a2ed30bb5700985b43c952092e40fa3342db81760d735fa2bf' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
   </div></section>
