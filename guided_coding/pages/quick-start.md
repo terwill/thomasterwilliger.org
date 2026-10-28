@@ -17,18 +17,18 @@ Use the button below, paste the message into Claude Code, and send it. You can r
 Claude to explain the installation and request your approval before changing anything.
 
 ```copy
-Instructions to Claude Code for setting up Guided Coding. Read https://www.thomasterwilliger.org/guided_coding/ and the installation page https://www.thomasterwilliger.org/guided_coding/getting-started.html. Briefly summarize how Guided Coding works, including its two main rules (ask until you understand each change; I stay in control), and tell me whether it can help with my work. If it can, offer to install it. Suggest where to clone the repository, then use the installation commands exactly as written, copied from the raw README at https://raw.githubusercontent.com/cctbx/guided_coding/master/README.md (the same commands as the installation page; do not reword or shorten them), which check before they change anything and show the version they register. Before changing anything on my computer, show me all the installation steps, say what each does, and ask for my approval once; then run them, and ask again only if something unexpected comes up. Then tell me when I must open a new conversation, which folder to open it in, and what to type there (`/gc`, then optionally `/gc setup`). Give click-by-click directions for the Claude app's Code tab: the Environment choice (Local, then My computer) and the separate folder selector at the bottom of the page; on a Mac mention Cmd+Shift+G, and mention the Terminal alternative (cd to the folder, then claude). If the app looks different from this, say so and describe what to look for. When installation is complete, suggest a small first task. Use plain sentences, and put every step I must take next in your final message.
+Instructions to Claude Code for setting up Guided Coding. Read https://www.thomasterwilliger.org/guided_coding/ and the installation page https://www.thomasterwilliger.org/guided_coding/getting-started.html. Briefly summarize how Guided Coding works, including its two main rules (ask until you understand each change; I stay in control), and tell me whether it can help with my work. If it can, offer to install it. By default, use the README's home-folder installation; if I develop PHENIX, also offer its PHENIX installation block as an option. Use the installation commands exactly as written, copied from the raw README at https://raw.githubusercontent.com/cctbx/guided_coding/master/README.md (the same commands as the installation page; do not reword or shorten them), which check before they change anything and show the version they register. Before changing anything on my computer, show me all the installation steps, say what each does, and ask for my approval once; then run them, and ask again only if something unexpected comes up. Then tell me when I must open a new conversation and which folder to open it in. Give click-by-click directions for the Claude app's Code tab: the Environment choice (Local, then My computer) and the separate folder selector at the bottom of the page; on a Mac mention Cmd+Shift+G, and mention the Terminal alternative (cd to the folder, then claude). If the app looks different from this, say so and describe what to look for. When installation is complete, suggest a small first task. Use plain sentences, and put every step I must take next in your final message. End that message with a note: start a new conversation in a project folder and try `/gc` with a small task; for a project I will use regularly, type `/gc setup` there once (recommended) to save its local defaults.
 ```
 
 ## Step 3. Try a small change
 
 After installation, start a **new conversation** in Claude Code in the folder of the software project you want to
-change. Type `/gc` followed by a specific small task, such as fixing a bug you can reproduce.
+change. Type `/gc` followed by a specific small task, such as fixing a bug you can reproduce. `/gc` by itself gives an
+introduction. If you plan to use Guided Coding regularly on that project, type `/gc setup` there once
+(recommended): it saves the project's build and test commands, commit rules and other local defaults.
 
-When the job finishes, read the report. Ask about anything unclear before you accept the change. You can type
-`/gc` by itself to get an introduction. `/gc setup` is optional: it saves your project's build and test commands
-for later jobs.
+When the job finishes, read the report. Ask about anything unclear before you accept the change.
 
-Installing Guided Coding is normally done once per computer. It has been tested on macOS; Linux should work but
-has not been tested, and Windows has not been tested. If you prefer to install it yourself, see
+Installing Guided Coding is normally done once per computer. It has been tested on macOS and tried on Linux;
+Windows has not been tested. If you prefer to install it yourself, see
 [Manual installation and maintenance](getting-started.html).

@@ -56,7 +56,7 @@ read the report and check important changes yourself.
 - Claude Code, in the Claude app or Terminal. If you do not have it, start with
   [Anthropic's Claude Code quickstart](https://code.claude.com/docs/en/quickstart).
 - A software project you want to work on. Guided Coding is intended for projects managed with Git.
-- Guided Coding has been tested on macOS. Linux should work but has not been tested; Windows has not been tested.
+- Guided Coding has been tested on macOS and tried on a Linux server; Windows has not been tested.
 
 The [Quick Start](quick-start.html) lets Claude Code guide you through installation with one message. After that,
 open your project in a new Claude Code conversation and ask Guided Coding to carry out a small task.
