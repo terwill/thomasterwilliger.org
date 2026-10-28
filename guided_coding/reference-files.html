@@ -595,7 +595,7 @@ main {
   <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html" aria-current="location">Documentation</a></nav>
   <h1 class="gc-document-title">Guided Coding skill files</h1>
   <p class="gc-lead">Technical reference: the five instruction files Claude Code reads.</p>
-<div class="gc-download"><p><strong>Looking for an introduction?</strong> Start with <a href="how-it-works.html">How Guided Coding works</a>. The text below is the exact technical reference used by Claude Code, intended for people who want to inspect the instructions.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#skill-md">SKILL.md</a> <span aria-hidden="true">·</span> <a href="#batch-md">BATCH.md</a> <span aria-hidden="true">·</span> <a href="#setup-md">SETUP.md</a> <span aria-hidden="true">·</span> <a href="#reviewer-md">REVIEWER.md</a> <span aria-hidden="true">·</span> <a href="#log-md">LOG.md</a></nav>
+<div class="gc-download"><p><strong>Looking for an introduction?</strong> Start with <a href="how-it-works.html">How Guided Coding works</a>. The text below is the exact technical reference used by Claude Code, intended for people who want to inspect the instructions.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#skill-md">SKILL.md</a> <span aria-hidden="true">·</span> <a href="#commands-md">COMMANDS.md</a> <span aria-hidden="true">·</span> <a href="#batch-md">BATCH.md</a> <span aria-hidden="true">·</span> <a href="#setup-md">SETUP.md</a> <span aria-hidden="true">·</span> <a href="#reviewer-md">REVIEWER.md</a> <span aria-hidden="true">·</span> <a href="#log-md">LOG.md</a></nav>
 <h2 id="skill-md">SKILL.md</h2><pre><code>---
 name: gc
 description: GuidedCoding for one bounded bug fix or change, or a supervised batch of them, by explicit request only.
@@ -612,24 +612,16 @@ possible, and that the result can be trusted.
 ## 0. Starting up
 
 - **What was asked.**
-  - **`/gc` with nothing after it:** in a few lines, say what GuidedCoding does: one bounded change, a proving test,
-    one review pass, an outside review for hard or consequential changes, extra checks only when triggered, and a
-    short report. Mention `/gc setup` and `/gc batch`, then
-    ask for the task.
+  - **`/gc` with nothing after it, or `/gc help`:** follow `${CLAUDE_SKILL_DIR}/COMMANDS.md` §1.
   - **`/gc setup`:** read `${CLAUDE_SKILL_DIR}/SETUP.md` and follow it. Do nothing else.
-  - **`/gc uninstall`:** start no coding job. Find the `gc` link in the skills folder (`$CLAUDE_CONFIG_DIR/skills`,
-    or else `~/.claude/skills`) and the installation it points to. Explain that uninstalling removes only this
-    registration, so `/gc` stops working in new conversations; that the GuidedCoding files stay where they are (name
-    the folder) for the developer to delete if they wish; and that project notes (`.claude/GC_NOTES.md`) are kept.
-    Ask once. If the developer agrees, run the Uninstall block from the README exactly as written, and report its
-    output.
   - **`/gc batch ...`:** read `${CLAUDE_SKILL_DIR}/BATCH.md` and follow it.
   - **`stop` or `status` while a batch is running in this session:** stop the batch, or report on it (BATCH.md §3).
-  - **An old-kit command:** exactly `help`, `status`, `history` or `stop`, or the word `auto` on its own
-    or followed by a space (`auto`, `auto resume`, `auto &lt;tasks&gt;`). Start no coding job. Words that merely begin with
-    &quot;auto&quot; (AutoSol, autobuild, auto_sharpen) are ordinary tasks. Say that these belonged to the earlier GuidedCoding
-    kit, which has been retired. For `auto`, point to `/gc batch`, which runs several tasks as a supervised sequence;
-    it is not unattended.
+  - **`/gc` followed by exactly `history`, `status`, `stop`, `update`, `undo` or `uninstall`:** follow `${CLAUDE_SKILL_DIR}/COMMANDS.md`.
+    Start no coding job.
+  - **The word `auto`** on its own or followed by a space (`auto`, `auto resume`, `auto &lt;tasks&gt;`): start no coding
+    job. Words that merely begin with &quot;auto&quot; (AutoSol, autobuild, auto_sharpen) are ordinary tasks. Say that
+    unattended auto mode belonged to the earlier GuidedCoding kit, which has been retired, and point to `/gc batch`,
+    which runs several tasks as a supervised sequence; it is not unattended.
   - **Anything else** is the task.
 - **Read the project notes.** Look for `.claude/GC_NOTES.md`, or else `.claude/LEAN_NOTES.md`, in the session&#x27;s folder
   and its parent folders, and use the first one found.
@@ -672,7 +664,10 @@ possible, and that the result can be trusted.
 
 - **Restate the task** in one or two sentences. Name the triggers that apply, or say &quot;no triggers&quot;.
 - **Record the starting point.** For each repository you will touch, note the starting commit
-  (`git rev-parse HEAD`) and `git status --short`.
+  (`git rev-parse HEAD`) and `git status --short`. The job log keeps them for `/gc undo`.
+- **No Git?** If the project is not in a Git repository, say so once before starting. GuidedCoding works without
+  Git, using the copies it saves (§2), but Git makes changes easier to review and undo: offer to set it up
+  (`git init` and a first commit), and go on either way.
 - **Consequential work.** This covers:
   - installations and migrations;
   - changes to shared tooling or safety mechanisms (including GuidedCoding itself);
@@ -737,6 +732,17 @@ possible, and that the result can be trusted.
     `/tmp/gc-&lt;short task name&gt;-&lt;YYYYMMDD-HHMM&gt;/`. Save test outputs there.
   - **The old code.** Before you first edit a source file, save a copy of it in the scratch folder. That copy is the
     old code, including any uncommitted changes that were already there.
+  - **Copies for `/gc undo`.** Unless the job log is off (§6), keep the job&#x27;s files in a new job folder,
+    `${CLAUDE_CONFIG_DIR:-~/.claude}/gc/jobs/&lt;YYYY-MM-DD-HHMMSS&gt;-&lt;short task&gt;/` (add a number if it exists), readable
+    only by the developer (`mkdir -m 700`). It holds:
+    - `JOB.txt`: one line per repository, `repo-&lt;n&gt;: &lt;full path&gt; @ &lt;starting commit&gt;` (for a folder not in Git,
+      `@ none`, with paths from that folder), and one line per file,
+      `changed repo-&lt;n&gt;/&lt;path&gt;` or `created repo-&lt;n&gt;/&lt;path&gt;`, with paths from the repository root;
+    - `before/repo-&lt;n&gt;/&lt;path&gt;`: each changed file as it was before the job first changed it (the old code);
+    - `after/repo-&lt;n&gt;/&lt;path&gt;`: at the end of the job, each changed or created file as the job left it. Then add the
+      line `after: complete` to `JOB.txt`. A job stopped before that has no complete `after/`.
+
+    Never put keys or other credentials there.
   - **Use an isolated copy when practical,** and confirm that the tests import that copy: print the module&#x27;s
     `__file__`. The notes may say how to isolate it, or whether swapping files in place is allowed; follow them.
   - **If you swap files in place** (only where the notes allow it):
@@ -904,12 +910,103 @@ different and rarer thing: it also needs a plan, a recovery step and an outside 
 Every claim that something works, was fixed or was checked must be backed by a test, a command output or the diff.
 If it is not, list it under Not checked.
 
-## 6. Job log (only if the notes turn it on)
+End the report with one line: &quot;To examine how to undo this job, type `/gc undo`.&quot; Save a copy of the report in the
+hand-over folder (§0) as `GC_REPORT_&lt;short task&gt;_&lt;YYYY-MM-DD-HHMM&gt;.md` (never overwriting one already there), and
+give its full path.
 
-When the job ends, follow `${CLAUDE_SKILL_DIR}/LOG.md` to add one line to the log file the notes name.
+## 6. Job log
+
+When the job ends, follow `${CLAUDE_SKILL_DIR}/LOG.md` to add one line to the job log: the file the notes name, or
+else `${CLAUDE_CONFIG_DIR:-~/.claude}/gc/history.tsv` (create the folder if needed). The notes can turn it off.
+`/gc history` and `/gc undo` read it.
 
 ---
 Version 1.4, 2026-10-26.
+</code></pre>
+<h2 id="commands-md">COMMANDS.md</h2><pre><code># GuidedCoding commands (version 1.4)
+
+These commands start no coding job. Each one first finds the installation:
+
+- **The registration** is the `gc` link in the skills folder (`$CLAUDE_CONFIG_DIR/skills`, or else
+  `~/.claude/skills`).
+- **The copy** is the folder above the `guided_coding/` folder that link points to. It is a Git clone (in the home
+  folder, or `modules/guided_coding` in a PHENIX installation) or a ZIP copy without Git history.
+- **The version** is the first heading of `SKILL.md` in the copy.
+
+Follow SKILL.md §0 for files and steps you give the developer.
+
+## 1. help (also `/gc` alone)
+
+In a few lines, say what GuidedCoding does: one bounded change, a proving test, one review pass, an outside review
+for hard or consequential changes, extra checks only when triggered, and a short report. Give the version and where
+the copy is. List the commands in one line each:
+
+- `/gc &lt;task&gt;`: do one bug fix or bounded change;
+- `/gc setup`: save this project&#x27;s local defaults (recommended for a project you use regularly);
+- `/gc batch &lt;tasks&gt;`: run several tasks one at a time, supervised;
+- `/gc history`: list recent jobs; `/gc undo`: undo the last job;
+- `/gc update`: get the latest version; `/gc uninstall`: remove GuidedCoding.
+
+Then ask for the task.
+
+## 2. history and status
+
+- **`/gc history`:** read the job log (SKILL.md §6). Show the last ten jobs, newest first: date, project, job,
+  status, ready to use, and the saved report. If the developer names a project or a date, show those instead.
+- **`/gc status`** when no batch is running: the last job only, with anything its report left open.
+- **`stop`** when no batch is running: say that nothing is running.
+- If the log is turned off or empty, say so, and that `/gc setup` (SETUP.md, item 8) turns it on.
+- **Job folders** (SKILL.md §2) keep private copies of source code. `/gc history` says how much space they use, and
+  offers to delete those older than 30 days; ask once. Turning the job log off also stops new job folders.
+
+## 3. update
+
+1. Show the installed version and the copy&#x27;s folder.
+2. **A Git clone:** check that it is a clone of cctbx/guided_coding, on `master` tracking `origin/master`, with no
+   changes of its own (`git -C &lt;copy&gt; status --porcelain`). If any of these does not hold, change nothing: explain
+   why, and give the commands with their consequences.
+3. Run `git -C &lt;copy&gt; fetch`. Say how many commits the copy is behind `origin/master`, and the latest version line
+   (`git -C &lt;copy&gt; show origin/master:guided_coding/SKILL.md`). If it is up to date, say so and stop.
+4. Ask once. If the developer agrees, run `git -C &lt;copy&gt; pull --ff-only`, and show the new version line.
+5. **A ZIP copy:** there is no Git history; give the README&#x27;s ZIP update steps as commands.
+6. Afterwards, say to start a new Claude Code conversation: this one still uses the old instructions.
+
+## 4. undo
+
+Be conservative: undo only what can be undone without losing anyone&#x27;s work, and say plainly what cannot.
+
+1. **Find the job.** Use the most recent job for this project in the job log, and its job folder (SKILL.md §2). If
+   there is none, a job from this conversation; otherwise ask which job.
+2. **Say what it changed,** from `JOB.txt` and the current state: repositories, files, new files, commits, and
+   whether they were pushed.
+3. **Automatic restoring needs complete evidence:** a job folder whose `JOB.txt` says `after: complete`. Without it,
+   do not restore anything automatically: explain, and offer a manual plan (show the job&#x27;s changes, for example with
+   `git diff`, so the developer can remove them by hand). Never assume the starting commit holds the developer&#x27;s
+   original files.
+4. **Changes not yet committed:** a changed file can be restored from `before/repo-&lt;n&gt;/&lt;path&gt;` only if it is still
+   exactly `after/repo-&lt;n&gt;/&lt;path&gt;` (compare the contents) and has no staged changes
+   (`git diff --cached --quiet -- &lt;path&gt;`). The `before/` copy includes changes the developer had before the job, so
+   restoring it loses nothing of theirs. A file that changed since the job, or has staged changes, is not restored:
+   say so, and include it in the manual plan.
+5. **Files the job created:** if a file is still exactly as the job left it and has no staged changes, offer to
+   delete it.
+6. **A commit:** offer `git revert &lt;commit&gt;`, which adds a commit that undoes it. First check that the commit is in
+   the current branch&#x27;s history (`git merge-base --is-ancestor &lt;commit&gt; HEAD`), that no merge, rebase or cherry-pick
+   is in progress, and that the files it touches have no uncommitted changes; if any check fails, offer a manual
+   plan instead. Then check for later commits that touch the same files (`git log &lt;commit&gt;..HEAD -- &lt;files&gt;`); if
+   there are any, explain and ask. If the commit was
+   pushed, push the revert only when the developer asks (SKILL.md §4).
+7. Show exactly what you will do, ask once, and do only what the developer agrees to. Never touch other work, and
+   never use `git stash` or `git reset --hard`.
+8. Run the project&#x27;s tests for the restored code. Report what was undone and what was not; never call a job undone
+   when part of it remains.
+
+## 5. uninstall
+
+Ask one plain question, naming the full path of the copy: &quot;Uninstall GuidedCoding? This removes /gc from Claude Code
+and deletes its files in &lt;full path of the copy&gt;. Your project notes are kept.&quot; If the copy is inside a PHENIX
+installation, say so. If the developer agrees, run the Uninstall block from the README exactly as
+written, and report its output in plain words, including any folder it kept and why.
 </code></pre>
 <h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.4)
 
@@ -995,7 +1092,7 @@ Say these limits in one line when the batch starts:
 - **Applying patches.** Check whether the accepted patches apply together, in a throwaway copy, and say where they
   conflict. Then offer to apply them one at a time. Each one then gets the usual checks, and
   commit or push only on request (SKILL.md §4).
-- **Job log.** If the notes turn it on, add one line per job, as `LOG.md` says.
+- **Job log.** Unless the notes turn it off, add one line per job, as `LOG.md` says.
 </code></pre>
 <h2 id="setup-md">SETUP.md</h2><pre><code># GuidedCoding setup (`/gc setup`, version 1.4)
 
@@ -1050,7 +1147,9 @@ GC setup for &lt;project folder&gt;
                                                               (default: allowed with safe test inputs; ask first
                                                                for costly calls or calls with side effects;
                                                                keys never stored here)
-8. Job log:              &lt;off, or a file path&gt;                (default: off)
+8. Job log:              &lt;on, a file path, or off&gt;            (default: on, in ~/.claude/gc/history.tsv,
+                                                               with private copies of changed files in
+                                                               ~/.claude/gc/jobs/ for /gc undo; off stops both)
 9. Scratch folder:       &lt;path&gt;                               (default: the session&#x27;s scratchpad, or /tmp/gc-&lt;task&gt;-&lt;time&gt;)
 10. Exclusive use:       &lt;is this installation used by one session at a time?&gt;
                                                               (default: ask at each in-place swap)
@@ -1180,10 +1279,10 @@ Return the same text. Give no overall verdict; that is not your role.
 <h2 id="log-md">LOG.md</h2><pre><code># GuidedCoding job log (version 1.4)
 
 When the job ends (the developer has answered the open decisions, or says the job is done), append one line to the
-log file the notes name. Log stopped and abandoned jobs too. Separate the fields with tabs, use no tabs inside a
+job log (SKILL.md §6). Log stopped and abandoned jobs too. Separate the fields with tabs, use no tabs inside a
 field, write `?` for anything you do not know, and do not change earlier lines. If the file does not exist yet,
-start it with a header line of the field names below. If an older log has 14 fields, add `outside_review` at the
-end of its header line; earlier rows keep 14 fields.
+start it with a header line of the field names below. If an older log has fewer fields, add the missing names at
+the end of its header line; earlier rows keep their fields.
 
 1. `date` (YYYY-MM-DD)
 2. `job` (a few words)
@@ -1201,6 +1300,17 @@ end of its header line; earlier rows keep 14 fields.
 14. `notes`
 15. `outside_review`: none, offered, done, pending or skipped; if done, add the developer&#x27;s minutes on it and whether
     it was worth it (yes, no or `?`)
+16. `project`: the folder the session was started in (full path)
+17. `start_commits`: for each repository, `&lt;path&gt;@&lt;starting commit&gt;` (`&lt;path&gt;@none` for a folder not in Git),
+    separated by ` ; `
+18. `files_changed`: the files the job changed or added, with paths from the repository root, separated by ` ; `
+    (for reading only; `/gc undo` works from the job folder and the current state, not from this field)
+19. `commits`: the commits the job made (`&lt;path&gt;@&lt;commit&gt;`), or `none`
+20. `pushed`: yes, no, or `none`
+21. `report`: the full path of the saved report
+22. `job_folder`: the full path of the job&#x27;s folder of copies (SKILL.md §2), or `none`
+
+Never write keys, passwords, tokens or other secrets in the log.
 </code></pre>
   
   <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>

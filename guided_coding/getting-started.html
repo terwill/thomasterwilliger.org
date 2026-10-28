@@ -631,16 +631,28 @@ ROOT=&quot;${PHENIX:-$PWD}&quot;
 DIR=&quot;$ROOT/modules/guided_coding&quot;
 echo &quot;PHENIX installation: $ROOT&quot;
 [ -d &quot;$ROOT/modules&quot; ] || { echo &quot;No modules folder in $ROOT. Set up PHENIX in this shell, or cd to the installation folder that contains modules; nothing changed.&quot;; exit 1; }
-for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SKILLS/$L&quot; ]; then echo &quot;$SKILLS/$L already exists; nothing changed:&quot;; ls -l &quot;$SKILLS/$L&quot;; echo &quot;To move a home-folder installation here, see the line after this block. To update, see Update.&quot;; exit 1; fi; done
+OLD=&quot;&quot;
+for L in gc guided_coding; do if [ -e &quot;$SKILLS/$L&quot; ] || [ -L &quot;$SKILLS/$L&quot; ]; then
+  case &quot;$(readlink &quot;$SKILLS/$L&quot;)&quot; in */cctbx_project/libtbx/guided_coding|*/cctbx_project/libtbx/guided_coding/) [ -z &quot;$OLD&quot; ] &amp;&amp; OLD=&quot;$SKILLS/$L&quot; &amp;&amp; continue;; esac
+  echo &quot;$SKILLS/$L already exists; nothing changed:&quot;; ls -l &quot;$SKILLS/$L&quot;; echo &quot;To move a home-folder installation here, see the line after this block. To update, see Update.&quot;; exit 1
+fi; done
 if [ -e &quot;$DIR&quot; ]; then
   case &quot;$(git -C &quot;$DIR&quot; remote get-url origin 2&gt;/dev/null)&quot; in https://github.com/cctbx/guided_coding|https://github.com/cctbx/guided_coding.git|git@github.com:cctbx/guided_coding|git@github.com:cctbx/guided_coding.git|ssh://git@github.com/cctbx/guided_coding|ssh://git@github.com/cctbx/guided_coding.git) echo &quot;Using the existing $DIR&quot;;; *) echo &quot;$DIR exists but is not a clone of https://github.com/cctbx/guided_coding; nothing changed.&quot;; exit 1;; esac
 else
   git clone https://github.com/cctbx/guided_coding.git &quot;$DIR&quot; || exit 1
 fi
 grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$DIR/guided_coding/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$DIR/guided_coding/SKILL.md is not GuidedCoding $VERSION (it may be the earlier kit or an older version; run git pull there); nothing registered.&quot;; exit 1; }
-mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$DIR/guided_coding/SKILL.md&quot; &amp;&amp; echo &quot;Done. Next: start a new Claude Code conversation in a project folder and type /gc followed by a small task. For a project you will use regularly, type /gc setup there once (recommended) to save its local defaults.&quot;
+if [ -n &quot;$OLD&quot; ]; then OLDT=&quot;$(readlink &quot;$OLD&quot;)&quot;; rm &quot;$OLD&quot; || { echo &quot;Could not remove the earlier kit&#x27;s registration $OLD; nothing changed.&quot;; exit 1; }; echo &quot;Removed the earlier kit&#x27;s registration $OLD (it pointed to $OLDT).&quot;; fi
+CREATED=&quot;&quot;; mkdir -p &quot;$SKILLS&quot; &amp;&amp; ln -s &quot;$DIR/guided_coding&quot; &quot;$SKILLS/gc&quot; &amp;&amp; CREATED=1
+if [ -z &quot;$CREATED&quot; ] || ! grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$SKILLS/gc/SKILL.md&quot; 2&gt;/dev/null; then
+  if [ -n &quot;$CREATED&quot; ] &amp;&amp; [ &quot;$(readlink &quot;$SKILLS/gc&quot;)&quot; = &quot;$DIR/guided_coding&quot; ]; then rm &quot;$SKILLS/gc&quot;; fi
+  if [ -n &quot;$OLD&quot; ]; then ln -s &quot;$OLDT&quot; &quot;$OLD&quot; &amp;&amp; echo &quot;Restored $OLD.&quot;; fi
+  echo &quot;Could not register GuidedCoding; nothing changed.&quot;; exit 1
+fi
+ls -l &quot;$SKILLS/gc&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$SKILLS/gc/SKILL.md&quot; &amp;&amp; echo &quot;Done. Next: start a new Claude Code conversation in a project folder and type /gc followed by a small task. For a project you will use regularly, type /gc setup there once (recommended) to save its local defaults.&quot;
 END
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-2">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
+<p>Still using the earlier kit from <code>cctbx_project/libtbx/guided_coding</code>? This block also moves you: it replaces only that registration with the new one.</p>
 <p>Already installed in your home folder? Remove that registration first. This removes only a link that points to <code>~/guided_coding</code>, and prints the command to put it back; <code>~/guided_coding</code> stays until you delete it:</p>
 <pre id="manual-command-3"><code>L=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/gc&quot;; T=&quot;$(readlink &quot;$L&quot;)&quot;; if [ &quot;$T&quot; = &quot;$HOME/guided_coding/guided_coding&quot; ]; then rm &quot;$L&quot; &amp;&amp; echo &quot;Removed $L. To put it back: ln -s $T $L&quot;; else echo &quot;$L points to ${T:-nothing}, not $HOME/guided_coding/guided_coding; nothing removed.&quot;; fi
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-3">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
@@ -664,57 +676,70 @@ mv &quot;$1&quot; &quot;$DIR&quot; &amp;&amp; rmdir &quot;$TMP&quot; &amp;&amp; 
 END
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-5">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p>Each block ends by showing the link and the version line of the skill it registered, <code># GuidedCoding (version 1.4)</code>, and what to do next. The blocks register only that version (<code>VERSION=1.4</code> in each block).</p>
-<p><strong>Then</strong> start a new Claude Code conversation in the folder of a software project, and type <code>/gc</code> followed by a small task (or <code>/gc</code> alone for an introduction). If you plan to use GuidedCoding regularly on that project, run <code>/gc setup</code> there once (recommended): it saves the project&#x27;s build and test commands, commit rules and other local defaults in <code>.claude/GC_NOTES.md</code>. Without it, <code>/gc</code> finds these from the project each time. Installing is once per computer.</p>
+<p><strong>Then</strong> start a new Claude Code conversation in the folder of a software project, and type <code>/gc</code> followed by a small task (or <code>/gc help</code> for an introduction and the list of commands: <code>setup</code>, <code>batch</code>, <code>history</code>, <code>undo</code>, <code>update</code>, <code>uninstall</code>). If you plan to use GuidedCoding regularly on that project, run <code>/gc setup</code> there once (recommended): it saves the project&#x27;s build and test commands, commit rules and other local defaults in <code>.claude/GC_NOTES.md</code>. Without it, <code>/gc</code> finds these from the project each time. Installing is once per computer.</p>
 <h3 id="update">Update</h3>
-<p>For an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
+<p>Type <code>/gc update</code> in Claude Code: it says whether a newer version exists, and updates after asking once. By hand: for an installation made with Git, run <code>git pull</code> in its folder (<code>~/guided_coding</code>, or <code>modules/guided_coding</code> in PHENIX). A ZIP installation has no Git history. To update it:</p>
 <ol><li>remove the link <code>gc</code> in your Claude Code skills folder (<code>$CLAUDE_CONFIG_DIR/skills</code> if you set  <code>CLAUDE_CONFIG_DIR</code>, otherwise <code>~/.claude/skills</code>); it is only a link, and removing it deletes nothing else;</li><li>rename <code>~/guided_coding</code> to keep it as a backup, outside the skills folder, so that only one registration remains  (two skills named <code>gc</code> conflict);</li><li>download the new ZIP and run the ZIP block again.</li></ol>
 <h3 id="uninstall">Uninstall</h3>
-<p>Type <code>/gc uninstall</code> in Claude Code: it shows which installation is registered and asks once. Or paste this block. Either way, it removes only the registration, so <code>/gc</code> stops working in new conversations. It deletes no files: it tells you where the GuidedCoding files are, and you can delete that folder yourself if you no longer want it. Project notes that <code>/gc setup</code> saved (<code>.claude/GC_NOTES.md</code> in your projects) are kept.</p>
+<p>Type <code>/gc uninstall</code> in Claude Code, or paste this block. It removes GuidedCoding from Claude Code and deletes its files. It keeps the files, and says why, unless they are demonstrably unchanged: a clean clone with nothing of your own (no changes, ignored files, commits that are not on GitHub, other branches or stashes), or a ZIP copy whose files match its <code>RELEASE.sha256</code> exactly. Project notes that <code>/gc setup</code> saved (<code>.claude/GC_NOTES.md</code> in your projects) are kept.</p>
 <pre id="manual-command-6"><code>sh &lt;&lt;&#x27;END&#x27;
 L=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills/gc&quot;
-[ -L &quot;$L&quot; ] || { echo &quot;$L is not a link (or does not exist); nothing changed.&quot;; exit 1; }
+[ -L &quot;$L&quot; ] || { echo &quot;GuidedCoding is not registered at $L; nothing changed.&quot;; exit 1; }
 T=&quot;$(readlink &quot;$L&quot;)&quot;; case &quot;$T&quot; in /*) ;; *) T=&quot;$(dirname &quot;$L&quot;)/$T&quot;;; esac
-[ &quot;$(basename &quot;$T&quot;)&quot; = guided_coding ] || { echo &quot;$L points to $T, not a GuidedCoding folder; nothing changed.&quot;; exit 1; }
+COPY=&quot;$(dirname &quot;$T&quot;)&quot;
+[ &quot;$(basename &quot;$T&quot;)&quot; = guided_coding ] || { echo &quot;$L points to $T, not GuidedCoding; nothing changed.&quot;; exit 1; }
 if [ -e &quot;$T&quot; ]; then grep -q &#x27;^# GuidedCoding&#x27; &quot;$T/SKILL.md&quot; 2&gt;/dev/null || { echo &quot;$L points to $T, which is not GuidedCoding; nothing changed.&quot;; exit 1; }; fi
 rm &quot;$L&quot; || { echo &quot;Could not remove $L; nothing changed.&quot;; exit 1; }
-echo &quot;GuidedCoding is no longer registered; /gc stops working in new Claude Code conversations.&quot;
-if [ -e &quot;$T&quot; ]; then echo &quot;Its files are still in $(dirname &quot;$T&quot;). Delete that folder yourself if you no longer want it. To register it again: ln -s &#x27;$T&#x27; &#x27;$L&#x27;&quot;; fi
+echo &quot;Removed GuidedCoding from Claude Code; /gc stops working in new conversations.&quot;
+KEEP=&quot;&quot;
+if [ ! -e &quot;$T&quot; ]; then KEEP=&quot;-&quot;
+elif [ -e &quot;$COPY/.git&quot; ]; then
+  [ -d &quot;$COPY/.git&quot; ] || KEEP=&quot;it is a linked Git working folder&quot;
+  [ -n &quot;$KEEP&quot; ] || case &quot;$(git -C &quot;$COPY&quot; remote get-url origin 2&gt;/dev/null)&quot; in https://github.com/cctbx/guided_coding|https://github.com/cctbx/guided_coding.git|git@github.com:cctbx/guided_coding|git@github.com:cctbx/guided_coding.git|ssh://git@github.com/cctbx/guided_coding|ssh://git@github.com/cctbx/guided_coding.git) ;; *) KEEP=&quot;it is not a clone of cctbx/guided_coding&quot;;; esac
+  NC=&quot;Git could not check it&quot;
+  [ -n &quot;$KEEP&quot; ] || { ST=&quot;$(git -C &quot;$COPY&quot; status --porcelain --ignored)&quot; || KEEP=&quot;$NC&quot;; }
+  [ -n &quot;$KEEP&quot; ] || [ -z &quot;$ST&quot; ] || KEEP=&quot;it has changes or files of its own&quot;
+  [ -n &quot;$KEEP&quot; ] || { BR=&quot;$(git -C &quot;$COPY&quot; for-each-ref --format=x refs/heads)&quot; || KEEP=&quot;$NC&quot;; }
+  [ -n &quot;$KEEP&quot; ] || [ &quot;$BR&quot; = x ] || KEEP=&quot;it has more than one branch&quot;
+  [ -n &quot;$KEEP&quot; ] || { UP=&quot;$(git -C &quot;$COPY&quot; log --oneline --branches --not --remotes)&quot; || KEEP=&quot;$NC&quot;; }
+  [ -n &quot;$KEEP&quot; ] || [ -z &quot;$UP&quot; ] || KEEP=&quot;it has commits that are not on GitHub&quot;
+  [ -n &quot;$KEEP&quot; ] || { SL=&quot;$(git -C &quot;$COPY&quot; stash list)&quot; || KEEP=&quot;$NC&quot;; }
+  [ -n &quot;$KEEP&quot; ] || [ -z &quot;$SL&quot; ] || KEEP=&quot;it has stashed changes&quot;
+else
+  LIST=&quot;$(cd &quot;$COPY&quot; &amp;&amp; find . ! -type d)&quot; || KEEP=&quot;its files could not be listed&quot;
+  if [ -z &quot;$KEEP&quot; ] &amp;&amp; [ ! -f &quot;$COPY/RELEASE.sha256&quot; ]; then KEEP=&quot;it has no RELEASE.sha256 to show it is unchanged&quot;; fi
+  if [ -z &quot;$KEEP&quot; ]; then
+    WANT=&quot;$( (sed &#x27;s/^[0-9a-f]*  /.\//&#x27; &quot;$COPY/RELEASE.sha256&quot;; echo ./RELEASE.sha256) | sort)&quot;
+    [ &quot;$(printf &#x27;%s\n&#x27; &quot;$LIST&quot; | sort)&quot; = &quot;$WANT&quot; ] || KEEP=&quot;its files do not match the release list&quot;
+  fi
+  if [ -z &quot;$KEEP&quot; ]; then
+    if command -v shasum &gt;/dev/null 2&gt;&amp;1; then SUM=&quot;shasum -a 256&quot;; else SUM=&quot;sha256sum&quot;; fi
+    (cd &quot;$COPY&quot; &amp;&amp; $SUM -c RELEASE.sha256 &gt;/dev/null 2&gt;&amp;1) || KEEP=&quot;some of its files were changed&quot;
+  fi
+fi
+if [ -z &quot;$KEEP&quot; ]; then rm -rf &quot;$COPY&quot; &amp;&amp; echo &quot;Deleted its files in $COPY.&quot;
+elif [ &quot;$KEEP&quot; != &quot;-&quot; ]; then echo &quot;Kept $COPY because $KEEP. Delete it yourself if you no longer need it.&quot;; fi
 echo &quot;Project notes (.claude/GC_NOTES.md in your projects) are kept.&quot;
 END
 </code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-6">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <h2 id="what-the-evidence-says">What the evidence says</h2>
-<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="https://github.com/cctbx/guided_coding/blob/471992b3a86d4c83b355a3581e3b6b69c02e21d4/EVIDENCE.md">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
+<p>In a replay of 37 past bug-fix jobs in PHENIX and cctbx, adding one review pass to plain Claude Code cut missed program errors per job from 0.81 to 0.47. GuidedCoding always includes that review pass, which is the main reason to expect it to do better than plain Claude Code; it has not been shown to do better than Claude Code with one review. On 18 harder jobs (selected, not a random sample), an outside review by another AI assistant removed further major errors when added to GuidedCoding, narrowly. Version 1.4 keeps those two steps (the outside review for hard or consequential changes) and a test that proves the fix; it does not include a second review pass, keeps the independent reviewer optional, and narrows a strict scope rule that probably cost errors. GuidedCoding 1.4 as a whole has not itself been measured; it was checked in a small trial and is being evaluated in real use. <a href="https://github.com/cctbx/guided_coding/blob/22dcdc035feefe0f4330e2905aaf40d5a2a3a430/EVIDENCE.md">EVIDENCE.md</a> goes through each part of <code>/gc</code> and what the evidence says about it.</p>
 <h2 id="if-you-used-the-earlier-guidedcoding-kit-revision-21-or-older">If you used the earlier GuidedCoding kit (revision 21 or older)</h2>
 <p>Revision 22 replaces the earlier kit with this much shorter procedure. The earlier kit had approval screens, evidence packets checked by its own tools, and an unattended auto mode. They are retired, and kept on the branch <code>full-kit-rev21</code>.</p>
 <p>What you gain, and what you lose:</p>
-<ul><li><strong>Gained:</strong> a shorter, prompt-only procedure that asks for your attention only when a decision is needed.</li><li><strong>Lost:</strong> the screens, packets, checker tools and the unattended auto mode. <code>/gc batch</code> is supervised, not unattended.</li></ul>
+<ul><li><strong>Gained:</strong> a shorter, prompt-only procedure that asks for your attention only when a decision is needed.</li><li><strong>Lost:</strong> the screens, packets, checker tools and the unattended auto mode. <code>/gc batch</code> is supervised, not unattended. The earlier <code>help</code>, <code>status</code> and <code>history</code> commands have new versions (<code>/gc help</code>, <code>/gc status</code>, <code>/gc history</code>), and the job history is kept by default.</li></ul>
 <p><strong>To move:</strong></p>
-<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), first clone it from the folder that contains <code>modules</code>, with <code>git clone https://github.com/cctbx/guided_coding.git modules/guided_coding</code> (not the PHENIX block, which stops while the old link exists), then run this from the same folder (in bash or zsh). It replaces only a link that points to the cctbx_project copy, creates the new link before removing the old one, and stops on anything else:<pre id="manual-command-7"><code>sh &lt;&lt;&#x27;END&#x27;
-SKILLS=&quot;${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills&quot;
-VERSION=1.4
-OLD=&quot;$SKILLS/guided_coding&quot;
-NEW=&quot;$PWD/modules/guided_coding/guided_coding&quot;
-[ -f &quot;$NEW/SKILL.md&quot; ] || { echo &quot;Not found: $NEW/SKILL.md. Clone first, and run this from the folder that contains modules.&quot;; exit 1; }
-grep -qx &quot;# GuidedCoding (version $VERSION)&quot; &quot;$NEW/SKILL.md&quot; || { echo &quot;$NEW/SKILL.md is not GuidedCoding $VERSION; update the clone (git pull) first; nothing changed.&quot;; exit 1; }
-[ -L &quot;$OLD&quot; ] || { echo &quot;$OLD is not a link (or does not exist); nothing changed.&quot;; exit 1; }
-case &quot;$(readlink &quot;$OLD&quot;)&quot; in
-  */cctbx_project/libtbx/guided_coding|*/cctbx_project/libtbx/guided_coding/) ;;
-  *) echo &quot;$OLD points to $(readlink &quot;$OLD&quot;), not the cctbx_project copy; nothing changed.&quot;; exit 1;;
-esac
-if [ -e &quot;$SKILLS/gc&quot; ] || [ -L &quot;$SKILLS/gc&quot; ]; then echo &quot;$SKILLS/gc already exists; nothing changed.&quot;; exit 1; fi
-ln -s &quot;$NEW&quot; &quot;$SKILLS/gc&quot; &amp;&amp; rm &quot;$OLD&quot; &amp;&amp; ls -l &quot;$SKILLS&quot; &amp;&amp; grep -m1 &#x27;^# GuidedCoding&#x27; &quot;$NEW/SKILL.md&quot; &amp;&amp; echo &quot;Done. Next: start a new Claude Code conversation in a project folder and type /gc followed by a small task. For a project you will use regularly, type /gc setup there once (recommended) to save its local defaults.&quot;
-END
-</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-7">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p></li><li><strong>Two links.</strong> Keep only one link to GuidedCoding. Two skills both named <code>gc</code> conflict.</li><li><strong>Your instructions.</strong> If your <code>CLAUDE.local.md</code> adopts the earlier kit&#x27;s &quot;Developer–Guide Contract&quot;, that line can go. Your project method file is not used by the new <code>/gc</code>; <code>/gc setup</code> writes short notes instead.</li><li><strong>Then</strong> start a new Claude Code conversation.</li></ul>
+<ul><li><strong>Finish first.</strong> Finish or stop any job or auto queue of the earlier kit before updating.</li><li><strong>Your link.</strong> If your link is <code>~/.claude/skills/guided_coding</code> and points to <code>modules/guided_coding/guided_coding</code>, updating the repository (<code>git pull</code>) is enough. The link keeps working and now gives the new <code>/gc</code>.</li><li><strong>A link into cctbx_project.</strong> If your link points to <code>cctbx_project/libtbx/guided_coding</code> (revision 20 or older), run the PHENIX block under &quot;Install and register it (once)&quot; (in bash, with <code>$PHENIX</code> set or from the folder that contains <code>modules</code>). It clones the new GuidedCoding into <code>modules/guided_coding</code> and replaces that old registration with the new one. Or type <code>/gc</code> with the earlier kit: it offers to do this for you.</li><li><strong>Two links.</strong> Keep only one link to GuidedCoding. Two skills both named <code>gc</code> conflict.</li><li><strong>Your instructions.</strong> If your <code>CLAUDE.local.md</code> adopts the earlier kit&#x27;s &quot;Developer–Guide Contract&quot;, that line can go. Your project method file is not used by the new <code>/gc</code>; <code>/gc setup</code> writes short notes instead.</li><li><strong>Then</strong> start a new Claude Code conversation.</li></ul>
 <p><strong>To go back to the earlier kit:</strong></p>
-<pre id="manual-command-8"><code>cd modules/guided_coding
+<pre id="manual-command-7"><code>cd modules/guided_coding
 git fetch origin full-kit-rev21
 git checkout full-kit-rev21
-</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-8">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-7">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
 <p>Your link then gives the earlier kit again. Keep your single link, and do not run the earlier kit&#x27;s registration step (<code>register-skill</code>), which would add a second one. Restore your <code>CLAUDE.local.md</code> contract line if you removed it. To return to the new GuidedCoding, <code>git checkout master</code>.</p>
 <h2 id="tests">Tests</h2>
-<pre id="manual-command-9"><code>python3 tst_guided_coding.py
-</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-9">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
-<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="https://github.com/cctbx/guided_coding/blob/471992b3a86d4c83b355a3581e3b6b69c02e21d4/EVIDENCE.md">EVIDENCE.md</a>.</p>
+<pre id="manual-command-8"><code>python3 tst_guided_coding.py
+</code></pre><button type="button" class="gc-copy-command" data-copy="manual-command-8">Copy command</button><p class="gc-copy-status gc-small" role="status" aria-live="polite"></p>
+<p>It checks that the skill&#x27;s files are present and consistent: the frontmatter, the cross-references between files (including section references into other files), and the version lines. It includes a check of its own that a broken cross-file reference is caught. It does not check whether Claude follows the procedure; that is checked by running it in Claude Code, and the recorded runs are listed in <a href="https://github.com/cctbx/guided_coding/blob/22dcdc035feefe0f4330e2905aaf40d5a2a3a430/EVIDENCE.md">EVIDENCE.md</a>.</p>
   
   <p class="gc-small gc-maintainer"><a href="index.html">Guided Coding overview</a> · <a href="documentation.html">Documentation</a> · <a href="#top">Back to top</a></p>
 </main>

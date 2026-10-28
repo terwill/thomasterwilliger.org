@@ -128,7 +128,14 @@ class BuildTests(unittest.TestCase):
         for name in b.OUTPUTS:
             self.assertTrue(os.path.isfile(os.path.join(staging, name)), name)
         with zipfile.ZipFile(os.path.join(staging, b.ZIP_NAME)) as z:
-            self.assertEqual(len(z.namelist()), len(b.ZIP_FILES))
+            names = z.namelist()
+            self.assertEqual(len(names), len(b.ZIP_FILES) + 1)
+            top = names[0].split("/")[0] + "/"
+            manifest = z.read(top + b.RELEASE_MANIFEST).decode().splitlines()
+            self.assertEqual([line.split("  ", 1)[1] for line in manifest], b.ZIP_FILES)
+            for line in manifest:
+                digest, name = line.split("  ", 1)
+                self.assertEqual(b.sha256(z.read(top + name)), digest)
         _, meta2 = self.build(source=source)
         self.assertEqual(meta["archive"]["sha256"], meta2["archive"]["sha256"])
 

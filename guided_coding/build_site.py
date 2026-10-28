@@ -27,8 +27,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_URL = "https://github.com/cctbx/guided_coding"
 ZIP_NAME = "guided_coding.zip"
 ZIP_TIME = (2026, 1, 1, 0, 0, 0)
+# Checksums of the ZIP's files, inside the ZIP, so an unpacked copy can be checked (README, Uninstall).
+RELEASE_MANIFEST = "RELEASE.sha256"
 COPY_LABEL = "Copy these instructions"
-SKILL_FILES = ["SKILL.md", "BATCH.md", "SETUP.md", "REVIEWER.md", "LOG.md"]
+SKILL_FILES = ["SKILL.md", "COMMANDS.md", "BATCH.md", "SETUP.md", "REVIEWER.md", "LOG.md"]
 ZIP_FILES = ["README.md", "EVIDENCE.md", "LICENSE.txt", "tst_guided_coding.py"] + [
     "guided_coding/" + name for name in SKILL_FILES]
 
@@ -398,6 +400,10 @@ def build(tree, ref, date, staging):
             info.external_attr = 0o644 << 16
             z.writestr(info, data)
             files[name] = sha256(data)
+        manifest = "".join("%s  %s\n" % (files[name], name) for name in ZIP_FILES).encode()
+        info = zipfile.ZipInfo("guided_coding-" + ref[:7] + "/" + RELEASE_MANIFEST, ZIP_TIME)
+        info.external_attr = 0o644 << 16
+        z.writestr(info, manifest)
     with open(zip_path, "rb") as f:
         zip_data = f.read()
     zip_sha = sha256(zip_data)
