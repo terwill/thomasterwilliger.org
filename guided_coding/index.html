@@ -592,7 +592,7 @@ main {
 <p>Claude Code can make a useful change very quickly. The harder question is whether the change is right. Did it fix the problem without breaking something else? What was actually tested? What still needs your attention?</p>
 <p>Guided Coding gives Claude Code a short procedure for answering those questions. For each job, it asks Claude to:</p>
 <ul><li><strong>Check the fix.</strong> Where feasible, run a test that fails for the original problem and passes after the change.</li><li><strong>Review the change.</strong> Look for mistakes, check the fixes made during review, and prepare an outside review by another AI assistant for hard or consequential work.</li><li><strong>Explain the result.</strong> Give you a short report: what changed, what passed, what was not checked, and any decision that remains yours.</li></ul>
-<p>You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is five instruction files, not an additional program. I use it in my own software work.</p>
+<p>You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is six instruction files, not an additional program. I use it in my own software work.</p>
 <h2 id="when-should-you-use-it">When should you use it?</h2>
 <p>Use Guided Coding when you ask Claude to change software you expect to keep: fixing a bug, adding a feature, or changing code that other people use. It is particularly useful when you want the change checked, reviewed, and explained without having to request every step yourself.</p>
 <p>For a quick experiment that you might throw away, ordinary Claude Code may be enough. These are familiar practices, not new techniques: Claude Code can already write tests and review code. Guided Coding puts them in a fixed order and ends with a plain report. If you already have a dependable testing and review process, Guided Coding may add less.</p>
@@ -618,9 +618,9 @@ main {
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/38f8774fda48f111eeb4c59275d7c0ce60f29f17">38f8774</a> · 2026-10-28 · ZIP: 96 KB</p>
+      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/5222f79f48864e374a724442642e8edf5320a0f4">5222f79</a> · 2026-10-29 · ZIP: 98 KB</p>
       <p>To check the ZIP, download it into Downloads, then run this command in Terminal. The result should end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '36ee24e17e8971a2ed30bb5700985b43c952092e40fa3342db81760d735fa2bf' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' '591671df96ee3c566588d3b76ffb7319b71a094f6afadfaddc210f9b168a1c16' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
   </div></section>

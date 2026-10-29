@@ -14,7 +14,7 @@ Guided Coding gives Claude Code a short procedure for answering those questions.
   that remains yours.
 
 You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is
-five instruction files, not an additional program. I use it in my own software work.
+six instruction files, not an additional program. I use it in my own software work.
 
 ## When should you use it?
 
