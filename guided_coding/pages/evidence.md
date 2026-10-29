@@ -3,6 +3,21 @@
 Guided Coding is based on a simple idea: use the checking steps that actually help, and make them part of an easy
 procedure. We tested several ways of working with Claude Code to see which steps reduced errors in finished code.
 
+## What our tests suggest
+
+We replayed 37 earlier bug-fixing jobs to see which checks made a difference. We used Claude Code's own
+`/code-review` command with its `--fix` option, which asks Claude to apply the fixes it finds. Adding one review
+pass reduced the errors left in the code. A second review of the same kind did not clearly help. A much larger
+earlier procedure caught some additional serious errors on harder jobs, but took much more work. The direct replay
+of Guided Coding version 1.3 did no better than Claude Code with one review.
+
+For changes you intend to keep, the results suggest a useful first step: review each change before accepting it,
+for example with `/code-review`.
+
+The study is small and comes from one developer's software. It does not show that the current Guided Coding
+procedure produces better fixes than Claude Code with one review, or that it is better than other workflows. The
+detailed results, including the unfavorable ones, are below.
+
 ## What we tested
 
 We repeated 37 earlier bug-fixing tasks from the PHENIX and cctbx scientific software projects. We asked Claude Code to do

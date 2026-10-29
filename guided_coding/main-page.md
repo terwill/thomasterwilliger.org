@@ -22,8 +22,10 @@ Use Guided Coding when you ask Claude to change software you expect to keep: fix
 changing code that other people use. It is particularly useful when you want the change checked, reviewed, and
 explained without having to request every step yourself.
 
-For a quick experiment that you might throw away, ordinary Claude Code may be enough. If you already have a
-dependable testing and review process, Guided Coding may add less.
+For a quick experiment that you might throw away, ordinary Claude Code may be enough. These are familiar
+practices, not new techniques: Claude Code can already write tests and review code. Guided Coding puts them in a
+fixed order and ends with a plain report. If you already have a dependable testing and review process, Guided
+Coding may add less.
 
 ## How we developed Guided Coding
 

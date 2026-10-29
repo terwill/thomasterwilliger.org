@@ -47,6 +47,23 @@ methods.
 Guided Coding does not replace your judgment, guarantee correctness, or make it safe to share confidential code with an
 unapproved outside service. It can take longer than a quick unreviewed edit.
 
+## Related approaches
+
+Guided Coding is one of several ways to make AI-assisted coding easier to check and control.
+
+- **[Claude Code best practices](https://code.claude.com/docs/en/best-practices)** recommends specific requests,
+  giving Claude a check it can run, and asking for evidence before accepting that a task is done. Claude Code also
+  has a built-in [`/code-review`](https://code.claude.com/docs/en/code-review-local) command, which reviews changes
+  in a separate context.
+- **[Superpowers](https://github.com/obra/superpowers)** provides a fuller development workflow, including
+  planning, test-first development, systematic debugging and review.
+- **[GitHub Spec Kit](https://github.com/github/spec-kit)** and **[OpenSpec](https://github.com/Fission-AI/OpenSpec)**
+  help developers describe and agree on changes before code is written. Spec Kit also includes a structured
+  bug-fixing process.
+
+Guided Coding uses many of the same ideas in a small procedure for changes to existing software. We have not
+compared its accuracy, speed or ease of use directly with these alternatives.
+
 ## Try it
 
 Read [How Guided Coding works](how-it-works.html) if you want to understand the procedure, or use the

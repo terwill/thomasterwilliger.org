@@ -609,6 +609,10 @@ main {
 <p>Requiring a test that fails before a fix and passes afterward made it more likely that a job ended with such a test. Its separate effect on remaining errors was not measured.</p>
 <p>The <a href="verification.html">Evidence</a> page explains these comparisons and the direct replay of an earlier Guided Coding procedure, including results that were inconclusive or unfavorable. It links to the complete report and methods.</p>
 <p>Guided Coding does not replace your judgment, guarantee correctness, or make it safe to share confidential code with an unapproved outside service. It can take longer than a quick unreviewed edit.</p>
+<h2 id="related-approaches">Related approaches</h2>
+<p>Guided Coding is one of several ways to make AI-assisted coding easier to check and control.</p>
+<ul><li><strong><a href="https://code.claude.com/docs/en/best-practices">Claude Code best practices</a></strong> recommends specific requests, giving Claude a check it can run, and asking for evidence before accepting that a task is done. Claude Code also has a built-in <a href="https://code.claude.com/docs/en/code-review-local"><code>/code-review</code></a> command, which reviews changes in a separate context.</li><li><strong><a href="https://github.com/obra/superpowers">Superpowers</a></strong> provides a fuller development workflow, including planning, test-first development, systematic debugging and review.</li><li><strong><a href="https://github.com/github/spec-kit">GitHub Spec Kit</a></strong> and <strong><a href="https://github.com/Fission-AI/OpenSpec">OpenSpec</a></strong> help developers describe and agree on changes before code is written. Spec Kit also includes a structured bug-fixing process.</li></ul>
+<p>Guided Coding uses many of the same ideas in a small procedure for changes to existing software. We have not compared its accuracy, speed or ease of use directly with these alternatives.</p>
 <h2 id="try-it">Try it</h2>
 <p>Read <a href="how-it-works.html">How Guided Coding works</a> if you want to understand the procedure, or use the <a href="quick-start.html">Quick Start</a> to install it with one message.</p>
   
