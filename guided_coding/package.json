@@ -1,31 +1,31 @@
 {
   "archive": {
-    "bytes": 99975,
+    "bytes": 102649,
     "file": "guided_coding.zip",
-    "sha256": "591671df96ee3c566588d3b76ffb7319b71a094f6afadfaddc210f9b168a1c16"
+    "sha256": "7e7cc987b53e8fec6140be1185bc8261869301e02591bc7b1767a1c9b47d17e4"
   },
   "pages": {
     "architecture.html": "7fde7db9eb9bf09a7f238d9cfe9eed68e4b40e26bba3d0b035c2a20d22bd23a2",
     "documentation.html": "ab8bf1b664018162821331ef3c2102288d524f3e8c0bfbcebb1d04c716585bd2",
-    "getting-started.html": "9388dc424d7cdc2db0c1d296b195e2278d9269e9a6706b10cf8dbcf6d80b6c03",
+    "getting-started.html": "bfcfdbd3fd3bc58a0609238cdee3dd293719bebb5088d608e6e8ef36f2ca8998",
     "how-it-works.html": "e38a76112224bb364106492a3f9024587fa2cb9daac07b845545b51333e44b00",
-    "index.html": "15237647b7b927138e7b812a50ddb4226629fc7eef4d61953826e2b84d1e6280",
+    "index.html": "01559f00aee307e501f5d2d045985ab8006449c52eeb434c03572ee83ad47172",
     "overview.html": "cad7c1754b6a8ae7f36fd64552feec2a5a56fbfb151dfc9d462fda96ded21ea0",
     "quick-start.html": "8a65edbe337b2d1771bd601d29b5a248b9fb09f0e248a0f4471a8f7858c84e0e",
-    "reference-files.html": "554e45df616d964bf739984009fde82d5aaf35e19b1a63343943cbb4625e7c32",
+    "reference-files.html": "45ca7f4e23581901e9a17bf7b8f9b88573e5cc075447d0ef58bb47ac78d43c14",
     "user-guide.html": "3e3ff668e2845d4088f63f77c72872d8cbff4cb15b0366c6d93ab6126ce6ca75",
     "verification.html": "dafbe1cfd6e69d1756a9896b83598c9d2e4107712337fc03c880abbd7105731b",
     "why-not-claude-code.html": "556738bf7f324c2b34702735c00bd6d37243d2f49fe168f39b1930c26723098a",
     "why-not-vibe-coding.html": "9b7ae95c64295a4bbe1fe0cf1a7c07fd3559e76f97979b6fd79ccd924d97f3f6"
   },
   "source": {
-    "commit": "5222f79f48864e374a724442642e8edf5320a0f4",
-    "date": "2026-10-29",
+    "commit": "2ae57f39a21a2e53c192619ef7404fbfcdbc92c2",
+    "date": "2026-10-30",
     "files": {
       "EVIDENCE.md": "7c8670a3230b3f1c4deef7a24f36c8cd87f539dbfaa9f5b0f3e6472de0b4730d",
       "LICENSE.txt": "36f40d43cbb5b0ab47f066fb4623f5f8eface03947803766097b6780e35f83fd",
       "README.md": "205b1b253ad4bfc0b02b2e6b36378e68bc6f4a30e4603f76e0c2d40bf33bda93",
-      "guided_coding/BATCH.md": "ca10d4e343f747b4779502f375221bacb79196471f3aa0fc1bebe87b34492426",
+      "guided_coding/BATCH.md": "3318a48148c26ece6841c2d3fc5ae935dd11d41e6e64676e0a9f8a5c81eb9507",
       "guided_coding/COMMANDS.md": "750db9a8bfeaa751f131414db2dfa07ff307562955255cebdee8b3e27b42e63c",
       "guided_coding/LOG.md": "ce0f1b506cc01bbf57830ea3396731818c1f2323c62c70b3a73d9bb7835c1d38",
       "guided_coding/REVIEWER.md": "aff39d2c68d82c859f73f9bacc26256cb7c3bfa7f53560d36ba34f66750c5c8e",
