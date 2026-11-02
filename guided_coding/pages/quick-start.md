@@ -28,7 +28,8 @@ change. Type `/gc` followed by a specific small task, such as fixing a bug you c
 introduction. If you plan to use Guided Coding regularly on that project, type `/gc setup` there once
 (recommended): it saves the project's build and test commands, commit rules and other local defaults.
 
-When the job finishes, open the page whose link ends Claude's last message. Ask about anything unclear before you
+When the job finishes, open the page whose link ends Claude's last message; it looks like
+[this example results page](example-results.html). Ask about anything unclear before you
 accept the change. The page needs Python-Markdown and a change whose tests the review tool can run; otherwise
 Claude gives you a written report instead, and nothing else changes.
 

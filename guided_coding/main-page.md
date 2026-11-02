@@ -11,7 +11,8 @@ Guided Coding gives Claude Code a short procedure for answering those questions.
 - **Review the change.** Look for mistakes, check the fixes made during review, and prepare an outside review by
   another AI assistant for hard or consequential work.
 - **Explain the result.** Give you one page: what was wrong and what is true now, the change and its code, what
-  passed on the old and the new code, what was not checked, and any decision that remains yours.
+  passed on the old and the new code, what was not checked, and any decision that remains yours
+  ([see an example](example-results.html)).
 
 You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is
 a set of instruction files and one small Python script that builds the review packet and your page, not an
