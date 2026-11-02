@@ -1,0 +1,321 @@
+<title>Example Results Page</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  --bg: #fbfcfd; --fg: #1b2430; --muted: #5b6676; --line: #d5dbe3;
+  --panel: #eef2f6; --accent: #1f5fa8; --add: #e6f3ea; --del: #f9e8e8;
+  --font-body: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --bar-h: 3.4rem; /* replaced by the bar's measured height */
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #14181d; --fg: #e3e8ee; --muted: #9aa5b3; --line: #2e3742;
+  --panel: #1d232b; --accent: #8bb8f2; --add: #17301f; --del: #3a1d1f;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #14181d; --fg: #e3e8ee; --muted: #9aa5b3; --line: #2e3742;
+  --panel: #1d232b; --accent: #8bb8f2; --add: #17301f; --del: #3a1d1f;
+  color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); margin: 0;
+  font: 15px/1.55 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+body::before { content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+main { max-width: 880px; margin: 0 auto; padding-block: 28px 72px; min-width: 0; }
+h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 0.6rem; text-wrap: balance; }
+h2 { font-size: 1.25rem; line-height: 1.3; margin: 2.2rem 0 0.6rem;
+  padding-top: 0.9rem; border-top: 1px solid var(--line); text-wrap: balance; }
+h3 { font-size: 1.02rem; margin: 1.5rem 0 0.4rem; }
+[id] { scroll-margin-top: calc(var(--bar-h) + 10px); }
+p, li { max-width: 72ch; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+table { border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem;
+  display: block; overflow-x: auto; max-width: 100%; }
+th, td { border: 1px solid var(--line); padding: 6px 9px; text-align: left;
+  vertical-align: top; }
+th { background: var(--panel); font-weight: 600; }
+code { background: var(--panel); padding: 1px 4px; border-radius: 3px;
+  font: 0.86em/1.4 var(--font-mono); }
+pre { background: var(--panel); padding: 10px 12px; border-radius: 6px;
+  overflow-x: auto; max-width: 100%; font-size: 0.9rem; line-height: 1.45; }
+pre code { padding: 0; background: none; font-size: inherit; }
+pre .add { background: var(--add); display: inline-block; min-width: 100%; }
+pre .del { background: var(--del); display: inline-block; min-width: 100%; }
+hr { border: 0; border-top: 2px solid var(--line); margin: 2.4rem 0 0; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
+.bar-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: nowrap;
+  align-items: center; gap: 6px 10px; min-height: 2.6rem; padding-block: 6px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar .where { font-weight: 600; margin-right: auto; min-width: 0; flex: 1 1 auto;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar button, .bar select { flex: none; font: 0.9rem/1.2 var(--font-body);
+  color: var(--fg); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 5px 9px; cursor: pointer; }
+.bar button:disabled { opacity: 0.45; cursor: default; }
+.bar button[aria-current="true"] { background: var(--accent); color: var(--bg);
+  border-color: var(--accent); }
+.bar button:focus-visible, .bar select:focus-visible,
+summary:focus-visible, .close-evidence:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar .changes { display: flex; flex-wrap: wrap; gap: 6px; }
+.bar select { display: none; }
+@media (max-width: 700px) {
+  .bar .changes { display: none; }
+  .bar select { display: inline-block; max-width: 9.5rem; } }
+details.evidence { margin: 1.2rem 0 0.4rem; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--bg); }
+details.evidence > summary { cursor: pointer; padding: 10px 14px;
+  font-weight: 600; color: var(--accent); list-style-position: inside; }
+details.evidence[open] > summary { border-bottom: 1px solid var(--line); }
+.evidence-body { padding: 4px 14px 14px; min-width: 0; }
+.close-evidence { font: 0.9rem/1.2 var(--font-body); color: var(--fg);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 5px 10px; cursor: pointer; margin-top: 10px; }
+@media (max-width: 700px) {
+  table.stack, table.stack tbody, table.stack tr, table.stack td {
+    display: block; width: 100%; box-sizing: border-box; }
+  table.stack { overflow: visible; border: 0; }
+  table.stack thead { display: none; }
+  table.stack tr { border: 1px solid var(--line); border-radius: 6px;
+    margin: 0 0 10px; padding: 6px 10px; }
+  table.stack td { border: 0; padding: 3px 0; }
+  table.stack td::before { content: attr(data-label); display: block;
+    font-size: 0.8rem; color: var(--muted); } }
+main p, main li, main td, main strong { overflow-wrap: anywhere; }
+</style>
+<nav class="bar" aria-label="Page navigation"><div class="bar-inner"><span class="where" id="nav-where" data-overview="Overview">Overview</span><button type="button" id="nav-back" disabled>Back</button><button type="button" id="nav-top">Top</button><span class="changes"><button type="button" data-target="change-1" data-name="One plane" aria-current="false">1 One plane</button></span><select id="nav-select" aria-label="Go to a change"><option value="">Changes</option><option value="change-1">1 One plane</option></select></div></nav>
+<main><h1 id="top">Example results page: a box that overlaps a map by one plane</h1><p><strong>Ready.</strong> The one-plane box now keeps its plane; the proving test fails on the old code and passes on the new.</p>
+<p><strong>Still to do:</strong> commit the change (not committed yet); then, after the full test suite passes, push. The commits a push would publish are listed <a href="#commits-to-push">at the end of this page</a>.</p>
+<h2>The changes</h2><table class="stack changes"><thead><tr><th>Change</th><th>Problem</th><th>Now</th><th>Status</th></tr></thead><tbody><tr><td data-label="Change"><a href="#change-1">1. A box that overlaps the map by one plane keeps that plane</a></td><td data-label="Problem">A box that shared only one grid plane with a non-wrapping map came out all zeros.</td><td data-label="Now">Such a box keeps the values of that one plane and is zero elsewhere.</td><td data-label="Status">not committed</td></tr></tbody></table><section class="change" id="change-1"><h2>1. A box that overlaps the map by one plane keeps that plane</h2><h3>Problem</h3>
+<p>Boxing a non-wrapping map with bounds that overlap it by exactly one grid plane gave a box of zeros.</p><h3>Cause</h3>
+<p><code>get_bounds_of_valid_region</code> marks the region empty with <code>last_valid &lt;= first_valid</code>. With a one-plane
+overlap the first and last valid planes are the same, so a region of one plane counted as empty, and the
+whole box was zeroed.</p><h3>Fix: how it solves the problem</h3>
+<p>The test is now <code>last_valid &lt; first_valid</code>: a region is empty only when its last plane is before its first.</p><h3>Essential code</h3>
+<pre><code class="language-python">    if last_valid &lt;  first_valid:
+      some_valid_points = False
+</code></pre><h3>What the tests show</h3>
+<ul>
+<li><strong>Test:</strong> <code>exercise_box_overlapping_map_by_one_plane</code> in <code>tst_maptbx_box.py</code>: one-plane overlaps at the
+  top and bottom x edges keep 16 points; a box just past the edge keeps none.</li>
+<li><strong>Old code:</strong> fails at the first case, <code>((9, 2, 2), (14, 5, 5))</code>, with 0 points kept.</li>
+<li><strong>New code:</strong> passes.</li>
+<li><strong>Remains uncertain:</strong> a one-plane box now gets the warning "goes outside original map" instead of
+  "entirely outside map".</li>
+</ul><details class="evidence" id="change-1-evidence"><summary>Show the full change, tests and results</summary><div class="evidence-body"><h3>The full change</h3>
+<p><strong>cctbx/maptbx/box.py</strong> (not committed)</p>
+<pre><code class="language-diff">@@ -1251,7 +1251,7 @@
+     upper_allowed_bounds.append(last_valid)
+     if f &lt; o or l &gt;=  a+o:
+       inside_allowed_bounds = False
+<span class="del">-    if last_valid &lt;=  first_valid:</span>
+<span class="add">+    if last_valid &lt;  first_valid:</span>
+       some_valid_points = False
+
+   return group_args(
+</code></pre>
+<h3>The new and changed tests</h3>
+<p><strong>cctbx/regression/tst_maptbx_box.py</strong> (not committed)</p>
+<pre><code class="language-diff">@@ -300,7 +300,33 @@
+
+   print (&quot;OK&quot;)
+
+<span class="add">+def exercise_box_overlapping_map_by_one_plane():</span>
+<span class="add">+  # A box that shares only one grid plane with the map keeps that plane</span>
+<span class="add">+  from cctbx import crystal</span>
+<span class="add">+  map_data = flex.double(flex.grid(10, 10, 10), 1.)</span>
+<span class="add">+  mm = map_manager(</span>
+<span class="add">+    unit_cell_grid             = map_data.all(),</span>
+<span class="add">+    unit_cell_crystal_symmetry = crystal.symmetry(</span>
+<span class="add">+      unit_cell = (10, 10, 10, 90, 90, 90), space_group_symbol = &quot;P1&quot;),</span>
+<span class="add">+    origin_shift_grid_units    = (0, 0, 0),</span>
+<span class="add">+    map_data                   = map_data,</span>
+<span class="add">+    wrapping                   = False)</span>
+<span class="add">+  # 1 x 4 x 4 points of the first two boxes are inside the map</span>
+<span class="add">+  for lower_bounds, upper_bounds, n_inside in (</span>
+<span class="add">+      ((9, 2, 2), (14, 5, 5), 16),   # last plane in x</span>
+<span class="add">+      ((-5, 2, 2), (0, 5, 5), 16),   # first plane in x</span>
+<span class="add">+      ((10, 2, 2), (14, 5, 5), 0)):  # just past the last plane</span>
+<span class="add">+    box = cctbx.maptbx.box.with_bounds(</span>
+<span class="add">+      map_manager  = mm.deep_copy(),</span>
+<span class="add">+      lower_bounds = lower_bounds,</span>
+<span class="add">+      upper_bounds = upper_bounds,</span>
+<span class="add">+      wrapping     = False)</span>
+<span class="add">+    assert box.map_manager().map_data().as_1d().count(1) == n_inside, \</span>
+<span class="add">+      (lower_bounds, upper_bounds)</span>
+<span class="add">+  print (&quot;OK&quot;)</span>
+<span class="add">+</span>
+ if (__name__  ==  &quot;__main__&quot;):
+<span class="add">+  exercise_box_overlapping_map_by_one_plane()</span>
+   if libtbx.env.has_module('phenix'):
+     exercise_around_model()
+   else:
+
+</code></pre>
+<h3>What the tests printed (last lines)</h3>
+<p><strong>tst_maptbx_box</strong>, old code (current minus the change): failed</p>
+<pre><code>AssertionError: ((9, 2, 2), (14, 5, 5))
+</code></pre>
+<p><strong>tst_maptbx_box</strong>, new code (current): passed</p>
+<pre><code>New end:  [34, 39, 35]
+lowest, highest out of box: -6 4
+Reboxing cubic map to stay inside current map
+lowest, highest out of box: 0 0
+Final start:  [1, 6, 2]
+Final end:  [30, 35, 31]
+Final box:  [30, 30, 30]
+OK
+</code></pre>
+<h3>Commits and files</h3>
+<ul>
+<li>Repository: cctbx_project</li>
+<li>Commits: none</li>
+<li>Status: local</li>
+<li>Files: cctbx/maptbx/box.py, cctbx/regression/tst_maptbx_box.py</li>
+</ul><button type="button" class="close-evidence">Close the evidence</button></div></details></section>
+<hr /><h2 id="review">The outside review</h2><p>No outside review was run for this job; the report offers one.</p><h3>How the changes were tested</h3>
+<p>Old-code runs load the job's saved copy of cctbx/maptbx/box.py from before the job.</p><hr /><h2 id="commits-to-push">Commits to push</h2><p>Pushing these repositories publishes all of the commits below.</p><p>Found with <code>git log origin/master..HEAD</code> in each repository when this page was made.</p></main>
+<script>
+(function () {
+  // Back works from the page's own list of places (the browser's history
+  //  is not used: the viewer's frame may not give it to the page); the
+  //  address only follows along (replaceState), for reloads and copying
+  var stack = [];
+  var root = document.documentElement;
+  var bar = document.querySelector(".bar");
+  var back = document.getElementById("nav-back");
+  var where = document.getElementById("nav-where");
+  var select = document.getElementById("nav-select");
+  var changes = Array.prototype.slice.call(
+    document.querySelectorAll("section.change"));
+  var buttons = Array.prototype.slice.call(
+    document.querySelectorAll(".bar .changes button"));
+  function measureBar() {  // headings land just below the bar
+    root.style.setProperty("--bar-h", bar.getBoundingClientRect().height + "px");
+  }
+  function openIds() {
+    return Array.prototype.slice.call(
+      document.querySelectorAll("details.evidence[open]")).map(
+      function (d) { return d.id; });
+  }
+  function setHash(hash) {
+    try { history.replaceState(null, "", hash || location.pathname +
+      location.search); } catch (e) {}
+  }
+  function remember(opened) {
+    stack.push({y: window.scrollY, open: openIds(), hash: location.hash,
+      opened: opened || null});
+    back.disabled = false;
+  }
+  function restore(s) {
+    document.querySelectorAll("details.evidence").forEach(function (d) {
+      d.open = s.open.indexOf(d.id) >= 0;
+    });
+    window.scrollTo(0, s.y);
+    setHash(s.hash);
+    track();
+  }
+  function goBack() {
+    var s = stack.pop();
+    back.disabled = stack.length === 0;
+    if (s) restore(s);
+  }
+  function openAncestors(el) {
+    var d = el.closest("details");
+    while (d) { d.open = true; d = d.parentElement.closest("details"); }
+  }
+  function go(id, remembering) {
+    var target = document.getElementById(id);
+    if (!target) return;
+    if (remembering !== false) remember();
+    openAncestors(target);
+    measureBar();
+    if (id === "top") {
+      window.scrollTo(0, 0);
+    } else {
+      target.scrollIntoView({block: "start"});
+    }
+    setHash("#" + id);
+    track();
+  }
+  // Fold evidence; if opening it was the last step, take that step back
+  function closeEvidence(d) {
+    var top = stack[stack.length - 1];
+    if (top && top.opened === d.id) {
+      goBack();
+      d.open = false;
+    } else {
+      d.open = false;
+      d.querySelector("summary").scrollIntoView({block: "nearest"});
+    }
+    track();
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (a) {
+      var href = a.getAttribute("href") || "";
+      if (href.charAt(0) === "#" && href.length > 1) {
+        e.preventDefault();
+        go(href.slice(1));
+      }
+      return;
+    }
+    var s = e.target.closest("details.evidence > summary");
+    if (s) {
+      var d = s.parentElement;
+      if (d.open) { e.preventDefault(); closeEvidence(d); }
+      else { remember(d.id); }
+      return;
+    }
+    var c = e.target.closest(".close-evidence");
+    if (c) closeEvidence(c.closest("details"));
+  });
+  back.addEventListener("click", goBack);
+  document.getElementById("nav-top").addEventListener("click",
+    function () { go("top"); });
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { go(b.dataset.target); });
+  });
+  select.addEventListener("change", function () {
+    if (select.value) go(select.value);
+  });
+  var ticking = false;
+  function track() {  // which change is on screen
+    var bottom = bar.getBoundingClientRect().bottom;
+    var current = null;
+    changes.forEach(function (sec, i) {
+      if (sec.getBoundingClientRect().top <= bottom + 12) current = i;
+    });
+    var narrow = window.matchMedia("(max-width: 700px)").matches;
+    where.textContent = current === null ? where.dataset.overview :
+      narrow ? (current + 1) + " of " + changes.length :
+      "Change " + (current + 1) + " of " + changes.length + ": " +
+      buttons[current].dataset.name;
+    buttons.forEach(function (b, i) {
+      b.setAttribute("aria-current", i === current ? "true" : "false");
+    });
+    select.value = current === null ? "" : changes[current].id;
+  }
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { ticking = false; track(); });
+  });
+  window.addEventListener("resize", function () { measureBar(); track(); });
+  window.addEventListener("load", function () {  // #change-3 opens there
+    measureBar();
+    var id = (location.hash || "").slice(1);
+    if (id) go(id, false);
+    track();
+  });
+  measureBar();
+  back.disabled = true;
+  track();
+})();
+</script>

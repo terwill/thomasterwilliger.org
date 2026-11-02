@@ -75,8 +75,13 @@ RETIRED = [
     ("architecture.html", "Guided Coding architecture"),
     ("user-guide.html", "Guided Coding user guide"),
 ]
+# An example results page, made with GuidedCoding's own page tool from a real job, and a screenshot of its
+# summary: website-owned files in examples/, copied as they are.
+EXAMPLES = ["example-results.html", "example-results.png"]
 OUTPUTS = (["index.html", ZIP_NAME, ZIP_NAME + ".sha256", "package.json"]
-           + [p[0] for p in PAGES] + [r[0] for r in RETIRED])
+           + [p[0] for p in PAGES] + [r[0] for r in RETIRED] + EXAMPLES)
+# A paragraph that is only a screenshot linking to a page: [![text](picture.png)](page.html)
+PICTURE_LINK = re.compile(r"\[!\[([^\]]+)\]\(([\w.-]+\.png)\)\]\(([\w.-]+\.html)\)")
 
 
 class BuildError(Exception):
@@ -317,6 +322,13 @@ def render(markdown, allow_copy=False):
             block, i = list_block(i)
             blocks.append(block)
             continue
+        picture = PICTURE_LINK.fullmatch(line.strip())
+        if picture:
+            alt, src, href = picture.groups()
+            blocks.append('<p class="gc-picture"><a href="%s"><img src="%s" alt="%s"></a></p>'
+                          % (html.escape(href, quote=True), html.escape(src, quote=True), html.escape(alt, quote=True)))
+            i += 1
+            continue
         paragraph = []
         while i < len(lines) and lines[i].strip() and not lines[i].startswith(("#", "```", "|", ">")) \
                 and not (paragraph and item_re.match(lines[i])):
@@ -491,6 +503,14 @@ def build(tree, ref, date, staging):
         "ZIP_KB": str(max(1, round(len(zip_data) / 1024))), "ZIP_SHA": zip_sha,
         "REPO_URL": REPO_URL}, {"MAIN_NAV": nav_row("index.html"), "MAIN_COPY": main_body})
 
+    for name in EXAMPLES:
+        source = os.path.join(HERE, "examples", name)
+        require(os.path.isfile(source), "missing website file examples/" + name)
+        shutil.copy2(source, os.path.join(staging, name))
+        if name.endswith(".html"):
+            with open(source) as f:
+                require(not re.search(r"(src|href)=[\"']?(https?:|//)", f.read()),
+                        "examples/%s loads or links to something outside the page" % name)
     pages = {}
     for page, text in rendered.items():
         data = text.encode("utf-8")
@@ -515,6 +535,9 @@ def check_links(staging):
             continue
         with open(os.path.join(staging, page)) as f:
             text = f.read()
+        for target in re.findall(r'<img src="([^"]+)"', text):
+            if not re.match(r"(https?:|\.\./)", target) and target not in known:
+                problems.append("%s: picture %s missing" % (page, target))
         for target in re.findall(r'href="([^"]+)"', text):
             if re.match(r"(https?:|mailto:)", target) or target.startswith("../"):
                 continue

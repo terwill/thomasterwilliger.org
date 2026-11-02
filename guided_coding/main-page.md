@@ -17,6 +17,19 @@ You get a more consistent way of working with Claude Code without learning a new
 a set of instruction files and one small Python script that builds the review packet and your page, not an
 additional program to learn. I use it in my own software work.
 
+## See what changed—and the evidence behind it
+
+At the end of a supported coding job, Guided Coding gives you a clear results page in your browser. Start with the
+summary, jump to each change and its code, and expand the full test results when you want the details. See what
+was checked, what remains uncertain, and what needs your decision.
+
+[![The summary at the top of an example results page](example-results.png)](example-results.html)
+
+[See an example results page →](example-results.html)
+
+The results page requires Python-Markdown and a task supported by the review tool. Other jobs receive a written
+report.
+
 ## When should you use it?
 
 Use Guided Coding when you ask Claude to change software you expect to keep: fixing a bug, adding a feature, or
@@ -25,7 +38,7 @@ explained without having to request every step yourself.
 
 For a quick experiment that you might throw away, ordinary Claude Code may be enough. These are familiar
 practices, not new techniques: Claude Code can already write tests and review code. Guided Coding puts them in a
-fixed order and ends with a plain report. If you already have a dependable testing and review process, Guided
+fixed order and ends with a results page or written report. If you already have a dependable testing and review process, Guided
 Coding may add less.
 
 ## How we developed Guided Coding

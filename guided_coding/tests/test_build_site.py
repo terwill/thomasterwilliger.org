@@ -2,6 +2,7 @@
 Run from the website checkout: python3 -B -m unittest discover -s guided_coding/tests -v
 """
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -230,6 +231,7 @@ class BuildTests(unittest.TestCase):
         for name in os.listdir(os.path.join(b.HERE, "pages")):
             with open(os.path.join(b.HERE, "pages", name)) as f, open(os.path.join(site, "pages", name), "w") as g:
                 g.write(f.read())
+        shutil.copytree(os.path.join(b.HERE, "examples"), os.path.join(site, "examples"))
         old_here = b.HERE
         try:
             b.HERE = site
@@ -237,6 +239,27 @@ class BuildTests(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(site, "index.html")))
         finally:
             b.HERE = old_here
+
+    def test_example_with_outside_resource_refused(self):
+        site = tempfile.mkdtemp()
+        for name in ("docs.template.html", "index.template.html", "main-page.md"):
+            shutil.copy(os.path.join(b.HERE, name), site)
+        for name in ("pages", "examples"):
+            shutil.copytree(os.path.join(b.HERE, name), os.path.join(site, name))
+        with open(os.path.join(site, "examples", "example-results.html"), "a") as f:
+            f.write('<link rel="stylesheet" href="https://fonts.example.org/x.css">')
+        old_here = b.HERE
+        try:
+            b.HERE = site
+            with self.assertRaises(b.BuildError):
+                self.build()
+        finally:
+            b.HERE = old_here
+
+    def test_picture_link(self):
+        _, body, _ = b.render("# T\n\n[![Summary](example-results.png)](example-results.html)\n")
+        self.assertIn('<p class="gc-picture"><a href="example-results.html"><img src="example-results.png" '
+                      'alt="Summary"></a></p>', body)
 
     def test_failing_source_test_refuses(self):
         with self.assertRaises(b.BuildError):

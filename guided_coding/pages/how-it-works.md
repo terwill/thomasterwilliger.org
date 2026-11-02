@@ -19,6 +19,7 @@ Guided Coding tells it how to check and report the change. Other Claude Code con
    Claude's final message. A short written report, with any decisions still needed and the recommended next action,
    is saved as well. The page needs Python-Markdown and a change whose tests the review tool can run (Python code
    tested in the test's own process); otherwise the written report takes its place.
+   [See an example results page](example-results.html).
 6. **You decide what happens next.** Ask questions, request another review, accept or reject the change, or ask
    Claude to commit or push it according to your project's rules.
 
