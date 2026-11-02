@@ -9,7 +9,7 @@ the result and explaining it to you.
 | --- | --- |
 | Tests and reviews depend on the request and the session | Try to reproduce the bug with a test that fails before the fix and passes afterward; run relevant existing tests |
 | You may need to request a code review | Review the change once, then check any corrections made during review |
-| Important uncertainties can be left in the conversation | End with a short report of what changed, what was checked, and what remains open |
+| Important uncertainties can be left in the conversation | End with one page showing what changed, its code, what was checked, and what remains open |
 | You decide when to seek another opinion | Prepare an outside review for hard or consequential changes; offer one for other changes |
 | You decide how much authority to give the assistant | Ask before changing important existing behaviour, committing, pushing, or installing |
 

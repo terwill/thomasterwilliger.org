@@ -595,8 +595,8 @@ main {
   <h2 id="why-try-it">Why try it?</h2>
 <p>Claude Code can make a useful change very quickly. The harder question is whether the change is right. Did it fix the problem without breaking something else? What was actually tested? What still needs your attention?</p>
 <p>Guided Coding gives Claude Code a short procedure for answering those questions. For each job, it asks Claude to:</p>
-<ul><li><strong>Check the fix.</strong> Where feasible, run a test that fails for the original problem and passes after the change.</li><li><strong>Review the change.</strong> Look for mistakes, check the fixes made during review, and prepare an outside review by another AI assistant for hard or consequential work.</li><li><strong>Explain the result.</strong> Give you a short report: what changed, what passed, what was not checked, and any decision that remains yours.</li></ul>
-<p>You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is six instruction files, not an additional program. I use it in my own software work.</p>
+<ul><li><strong>Check the fix.</strong> Where feasible, run a test that fails for the original problem and passes after the change.</li><li><strong>Review the change.</strong> Look for mistakes, check the fixes made during review, and prepare an outside review by another AI assistant for hard or consequential work.</li><li><strong>Explain the result.</strong> Give you one page: what was wrong and what is true now, the change and its code, what passed on the old and the new code, what was not checked, and any decision that remains yours.</li></ul>
+<p>You get a more consistent way of working with Claude Code without learning a new programming system. Guided Coding is a set of instruction files and one small Python script that builds the review packet and your page, not an additional program to learn. I use it in my own software work.</p>
 <h2 id="when-should-you-use-it">When should you use it?</h2>
 <p>Use Guided Coding when you ask Claude to change software you expect to keep: fixing a bug, adding a feature, or changing code that other people use. It is particularly useful when you want the change checked, reviewed, and explained without having to request every step yourself.</p>
 <p>For a quick experiment that you might throw away, ordinary Claude Code may be enough. These are familiar practices, not new techniques: Claude Code can already write tests and review code. Guided Coding puts them in a fixed order and ends with a plain report. If you already have a dependable testing and review process, Guided Coding may add less.</p>
@@ -622,9 +622,9 @@ main {
     <p>Or clone the repository: <code>git clone https://github.com/cctbx/guided_coding.git</code></p>
     <p><a href="getting-started.html">Installing Guided Coding</a> has complete commands for the ZIP and for a clone.</p>
     <details class="gc-panel"><summary>Download details and checksum</summary><div>
-      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/2d95b770027d54dd52b9e9722541d22c5625affa">2d95b77</a> · 2026-10-30 · ZIP: 102 KB</p>
+      <p class="gc-small">Revision <a href="https://github.com/cctbx/guided_coding/tree/e11a3cd4a1f8b538c6c9bdc2f90464964039d129">e11a3cd</a> · 2026-11-02 · ZIP: 216 KB</p>
       <p>To check the ZIP, download it into Downloads, then run this command in Terminal. The result should end with <strong>guided_coding.zip: OK</strong>.</p>
-      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' 'eec7fb84faa3af6c5ea8b48603952f68bd5dc057ad0e621dc6c8a9bcb228d202' | shasum -a 256 -c -</code></pre>
+      <pre id="check-download"><code>cd ~/Downloads &amp;&amp; printf '%s  guided_coding.zip\n' 'ddad07502d9babfb9f6af9fda46840695238d4618480830fe900ba6c19dac6b7' | shasum -a 256 -c -</code></pre>
       <button type="button" data-copy="check-download">Copy checksum command</button>
     </div></details>
   </div></section>

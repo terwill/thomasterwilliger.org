@@ -13,8 +13,11 @@ Guided Coding tells it how to check and report the change. Other Claude Code con
    why and gives the best other evidence.
 4. **Claude reviews its work.** It runs one review pass, checks any corrections made during review, and runs the
    affected tests again.
-5. **Claude reports back.** The report starts by saying whether the change is ready to use. It tells you what
-   changed, what passed, what was not checked, any decisions still needed, and the recommended next action.
+5. **Claude shows you the result on one page.** It opens with whether the change is ready and what remains to do,
+   then what was wrong and what is true now, the change and its code, the tests on the old and the new code, the
+   outside review if there was one, and the commits a push would publish. The page link is the last line of
+   Claude's final message. A short written report, with any decisions still needed and the recommended next action,
+   is saved as well.
 6. **You decide what happens next.** Ask questions, request another review, accept or reject the change, or ask
    Claude to commit or push it according to your project's rules.
 
@@ -43,10 +46,13 @@ or shared code with several callers when the tests may miss important cases. A r
 test is not automatically hard. If Claude is unsure whether a live-service, other-platform, or hard-change check
 is needed, it treats it as needed.
 
-**What an outside review means.** Claude prepares a file containing the task, full change, tests, results, and
-questions. You give that file to another AI assistant and return its comments to Claude. Claude addresses each
-finding. The file should exclude credentials and private data, but it contains code: share it only with a service
-your project permits. You can ask for an outside review even on a routine job.
+**What an outside review means.** Claude prepares one review packet containing the task, the full change, the
+tests and their results on the old and the new code, and questions, and puts it on your clipboard. You paste it into
+another AI assistant and paste its answer back to Claude. Claude addresses each finding; if the code or its proving
+test changes, a second, shorter packet follows. A tool checks the packet before it reaches you: it refuses a test
+that does not fail on the old code for the expected reason, a changed file left out, and anything that looks like a
+key or password. The packet should exclude credentials and private data, but it contains code: share it only with a
+service your project permits. You can ask for an outside review even on a routine job.
 
 ## Changes that are hard to undo
 
@@ -91,7 +97,7 @@ Your team's instructions take precedence over these personal notes.
 ## What this cannot guarantee
 
 These are instructions, not a technical sandbox that enforces each step. Claude may make mistakes or fail to follow
-them. A passing test checks the cases it covers, not every possible behaviour. The final report is useful because
+them. A passing test checks the cases it covers, not every possible behaviour. The final page is useful because
 it tells you what was and was not checked; your judgment still matters.
 
 The [Evidence](verification.html) page describes the study behind individual steps and the checks of

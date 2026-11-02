@@ -7,7 +7,7 @@ For software you intend to keep using, the questions become harder. Did the AI u
 break anything else? Can another person understand and maintain the code?
 
 Guided Coding uses the same coding assistant, Claude Code, but gives it a repeatable checking procedure. It asks for
-a before-and-after test when feasible, one review pass, an outside review for hard work, and a short report. You
+a before-and-after test when feasible, one review pass, an outside review for hard work, and one page that shows you the change and its evidence. You
 remain responsible for deciding what to keep.
 
 The point is not to make AI coding difficult. It is to make the result easier to check.

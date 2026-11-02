@@ -28,7 +28,8 @@ change. Type `/gc` followed by a specific small task, such as fixing a bug you c
 introduction. If you plan to use Guided Coding regularly on that project, type `/gc setup` there once
 (recommended): it saves the project's build and test commands, commit rules and other local defaults.
 
-When the job finishes, read the report. Ask about anything unclear before you accept the change.
+When the job finishes, open the page whose link ends Claude's last message. Ask about anything unclear before you
+accept the change.
 
 Installing Guided Coding is normally done once per computer. It has been tested on macOS and Linux;
 Windows has not been tested. If you prefer to install it yourself, see

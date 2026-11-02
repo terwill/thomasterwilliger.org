@@ -30,9 +30,12 @@ ZIP_TIME = (2026, 1, 1, 0, 0, 0)
 # Checksums of the ZIP's files, inside the ZIP, so an unpacked copy can be checked (README, Uninstall).
 RELEASE_MANIFEST = "RELEASE.sha256"
 COPY_LABEL = "Copy these instructions"
-SKILL_FILES = ["SKILL.md", "COMMANDS.md", "BATCH.md", "SETUP.md", "REVIEWER.md", "LOG.md"]
+SKILL_FILES = ["SKILL.md", "REVIEW.md", "COMMANDS.md", "BATCH.md", "SETUP.md", "REVIEWER.md", "LOG.md"]
+# The review tool (version 1.5): in the download, not shown on the reference page.
+TOOL_FILES = ["tools/REVIEW_SPEC.md", "tools/review_pages.py", "tools/tst_review_pages.py",
+              "tools/nav_test_script.html"]
 ZIP_FILES = ["README.md", "EVIDENCE.md", "LICENSE.txt", "tst_guided_coding.py"] + [
-    "guided_coding/" + name for name in SKILL_FILES]
+    "guided_coding/" + name for name in SKILL_FILES + TOOL_FILES]
 
 # Website pages: (output, navigation label, title, description, source).
 # source: "pages/<file>" (website-owned), "repo:<file>" (from the repository), or a generator name.
@@ -53,7 +56,7 @@ PAGES = [
     ("verification.html", None, "Evidence for Guided Coding",
      "What the tests found about reviews, before-and-after tests, and the limits of the evidence.", "pages/evidence.md"),
     ("reference-files.html", None, "Guided Coding skill files",
-     "Technical reference: the five instruction files Claude Code reads.", "generated:reference"),
+     "Technical reference: the instruction files Claude Code reads.", "generated:reference"),
 ]
 PAGE_INFO = {p[0]: (p[2], p[3]) for p in PAGES}  # output -> (title, description)
 # A highlighted box at the top of a page (under its title), for pages that need to send some readers elsewhere first.
@@ -121,6 +124,12 @@ def fetch_source(ref, source_dir, scratch):
 def check_source(tree):
     for name in ZIP_FILES:
         require(os.path.isfile(os.path.join(tree, name)), "the published commit lacks " + name)
+    # Every file of the skill goes into the download; a new one must be added to the lists above
+    for folder, _, names in os.walk(os.path.join(tree, "guided_coding")):
+        for name in names:
+            path = os.path.relpath(os.path.join(folder, name), tree).replace(os.sep, "/")
+            require(path in ZIP_FILES, "the published commit has %s, which the download would leave out "
+                    "(add it to SKILL_FILES or TOOL_FILES)" % path)
     result = subprocess.run([sys.executable, "-I", "tst_guided_coding.py"], cwd=tree, capture_output=True, text=True)
     require(result.returncode == 0 and result.stdout.strip().endswith("OK"),
             "the repository's tst_guided_coding.py failed:\n" + result.stdout + result.stderr)

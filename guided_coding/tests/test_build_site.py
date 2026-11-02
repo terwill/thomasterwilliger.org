@@ -23,7 +23,7 @@ See BATCH.md section.
 """
 
 
-def fake_source(root, test_ok=True):
+def fake_source(root, test_ok=True, extra=None):
     """A Git repository shaped like cctbx/guided_coding, with one commit. Returns (path, commit)."""
     os.makedirs(os.path.join(root, "guided_coding"))
     files = {"README.md": "# GuidedCoding\n\nSee [EVIDENCE.md](EVIDENCE.md) and [the skill](guided_coding/SKILL.md).\n",
@@ -32,6 +32,10 @@ def fake_source(root, test_ok=True):
              "tst_guided_coding.py": "print('OK')\n" if test_ok else "import sys\nprint('FAIL: x')\nsys.exit(1)\n"}
     for name in b.SKILL_FILES:
         files["guided_coding/" + name] = SKILL if name == "SKILL.md" else "# %s\n\nVersion 1.3.\n" % name
+    os.makedirs(os.path.join(root, "guided_coding", "tools"))
+    for name in b.TOOL_FILES:
+        files["guided_coding/" + name] = "tool\n"
+    files.update(extra or {})
     for name, text in files.items():
         with open(os.path.join(root, name), "w") as f:
             f.write(text)
@@ -200,6 +204,13 @@ class BuildTests(unittest.TestCase):
         for page, digest in meta["pages"].items():
             with open(os.path.join(staging, page), "rb") as f:
                 self.assertEqual(b.sha256(f.read()), digest, page)
+
+    def test_skill_file_left_out_of_download_refused(self):
+        scratch = tempfile.mkdtemp()
+        source, commit = fake_source(os.path.join(scratch, "src"), extra={"guided_coding/NEW.md": "new\n"})
+        tree, _ = b.fetch_source(commit, source, scratch)
+        with self.assertRaises(b.BuildError):
+            b.check_source(tree)
 
     def test_unpublished_commit_refused(self):
         scratch = tempfile.mkdtemp()

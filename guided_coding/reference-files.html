@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding skill files — Thomas C. Terwilliger</title><meta name="description" content="Technical reference: the five instruction files Claude Code reads."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/reference-files.html"><style>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guided Coding skill files — Thomas C. Terwilliger</title><meta name="description" content="Technical reference: the instruction files Claude Code reads."><link rel="canonical" href="https://www.thomasterwilliger.org/guided_coding/reference-files.html"><style>
 /* ===== BASE ===== */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
@@ -597,15 +597,15 @@ main {
   </header><main class="container gc-main gc-doc-pages">
   <nav class="gc-local-nav" aria-label="Guided Coding pages"><a href="index.html">Overview</a><a href="quick-start.html">Get started</a><a href="how-it-works.html">How it works</a><a href="documentation.html" aria-current="location">Documentation</a></nav>
   <h1 class="gc-document-title">Guided Coding skill files</h1>
-  <p class="gc-lead">Technical reference: the five instruction files Claude Code reads.</p>
-<div class="gc-download"><p><strong>Looking for an introduction?</strong> Start with <a href="how-it-works.html">How Guided Coding works</a>. The text below is the exact technical reference used by Claude Code, intended for people who want to inspect the instructions.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#skill-md">SKILL.md</a> <span aria-hidden="true">·</span> <a href="#commands-md">COMMANDS.md</a> <span aria-hidden="true">·</span> <a href="#batch-md">BATCH.md</a> <span aria-hidden="true">·</span> <a href="#setup-md">SETUP.md</a> <span aria-hidden="true">·</span> <a href="#reviewer-md">REVIEWER.md</a> <span aria-hidden="true">·</span> <a href="#log-md">LOG.md</a></nav>
+  <p class="gc-lead">Technical reference: the instruction files Claude Code reads.</p>
+<div class="gc-download"><p><strong>Looking for an introduction?</strong> Start with <a href="how-it-works.html">How Guided Coding works</a>. The text below is the exact technical reference used by Claude Code, intended for people who want to inspect the instructions.</p></div><nav class="gc-toc-row" aria-label="On this page"><span>On this page:</span> <a href="#skill-md">SKILL.md</a> <span aria-hidden="true">·</span> <a href="#review-md">REVIEW.md</a> <span aria-hidden="true">·</span> <a href="#commands-md">COMMANDS.md</a> <span aria-hidden="true">·</span> <a href="#batch-md">BATCH.md</a> <span aria-hidden="true">·</span> <a href="#setup-md">SETUP.md</a> <span aria-hidden="true">·</span> <a href="#reviewer-md">REVIEWER.md</a> <span aria-hidden="true">·</span> <a href="#log-md">LOG.md</a></nav>
 <h2 id="skill-md">SKILL.md</h2><pre><code>---
 name: gc
 description: GuidedCoding for one bounded bug fix or change, or a supervised batch of them, by explicit request only.
 disable-model-invocation: true
 ---
 
-# GuidedCoding (version 1.4)
+# GuidedCoding (version 1.5)
 
 The developer&#x27;s request is: $ARGUMENTS
 
@@ -666,7 +666,9 @@ possible, and that the result can be trusted.
 
 ## 1. Start
 
-- **Restate the task** in one or two sentences. Name the triggers that apply, or say &quot;no triggers&quot;.
+- **Restate the task** in one or two sentences, in your first message, before any other work. Name the triggers
+  that apply, or say &quot;no triggers&quot;; if some cannot be judged before reading the code, say so. Name a trigger as
+  soon as you see that it applies.
 - **Record the starting point.** For each repository you will touch, note the starting commit
   (`git rev-parse HEAD`) and `git status --short`. The job log keeps them for `/gc undo`.
 - **No Git?** If the project is not in a Git repository, say so once before starting. GuidedCoding works without
@@ -791,26 +793,25 @@ possible, and that the result can be trusted.
   - A live failure outranks every offline test.
   - If you cannot make the calls, give the exact commands.
 - **P (other platform): give the exact commands** to run on that platform.
-- **H, R, D or Q, and consequential work: an outside review.** Write one file, `OUTSIDE_REVIEW.md`, in the scratch
-  folder, and copy it to the hand-over folder (§0). It contains:
-  - the task text;
-  - the full diff;
-  - the new tests and their output on the old and new code;
-  - for H, one line naming the conditions that make the change hard; for Q, the open question;
-  - this request: &quot;Review this change for correctness, unintended behaviour changes, and whether the tests prove the
-    fix. List findings, most serious first.&quot;
-
-  Leave out keys, tokens and user data, and name anything you removed. The developer pastes the file into the
-  outside reviewer the notes name (or another AI assistant) and pastes the reply back.
+- **H, R, D or Q, and consequential work: an outside review.** Follow `${CLAUDE_SKILL_DIR}/REVIEW.md`: the change&#x27;s
+  description and generated evidence, and a packet for the outside reviewer the notes name, put on the clipboard.
+  For H, the description names the conditions that make the change hard; for Q, the open question. Leave out keys,
+  tokens and user data, and name anything you removed.
 - **An outside review on request.** For any other job, the outside review is optional: the report offers it in one
-  line, and the developer may ask for it at any time. Write the same file; the review is then handled as for the
-  triggers.
+  line, and the developer may ask for it at any time. It then follows REVIEW.md as for the triggers.
+- **Every job: the developer&#x27;s page.** With or without an outside review, the job ends with the page of REVIEW.md §3,
+  which shows the change, its code and its evidence. Without a review, prepare it as REVIEW.md §1 says but make no
+  packet for a reviewer (REVIEW.md §1, &quot;No outside review&quot;).
 - **When a step cannot be finished now,** finish everything else and mark the step as pending in the report.
 - **Finish before you report.** If you start a long test or build, wait for it to finish (or stop it) before writing
   any outside-review file and the final report. Leave nothing this job started running in the background. The final
-  report is your last message.
-- **When the output or the outside review comes back,** treat each problem or finding as in §2, and update the
-  report. If the developer skips a step, the report says &quot;&lt;step&gt;: skipped by the developer&quot;. Skipping counts as
+  report is your last message (followed only by the page link, §5).
+- **Whenever you stop before the job is done,** say in one or two lines what is going on and what you are waiting
+  for. For a long run, say about how long it may take (from earlier runs of the same tests), or that you do not
+  know; for the developer, say what answer you need. A waiting message is not a report: give no summary of the
+  work yet. This does not limit what a question to the developer, or the hand-over of REVIEW.md §1, must say.
+- **When the output or the outside review comes back,** treat each problem or finding as in §2 (for the outside
+  review, as REVIEW.md §2 says), and update the report. If the developer skips a step, the report says &quot;&lt;step&gt;: skipped by the developer&quot;. Skipping counts as
   accepting the uncertainty.
 
 ## 4. Before a commit, a push, or another outward step
@@ -882,6 +883,10 @@ different and rarer thing: it also needs a plan, a recovery step and an outside 
 
 ## 5. Final report (this form, nothing longer)
 
+Every job ends with the developer&#x27;s page (§3, REVIEW.md §3). With an outside review, the developer first sees only
+the short message of REVIEW.md §1, and the page after the review. The report below is still written and saved, and
+the page&#x27;s message gives its path.
+
 - **Ready to use:** yes, or no. Say no while a step is pending, an essential check fails, or an important correctness
   finding is unresolved. List what is open and explain the consequence. Name exactly what the developer accepted or
   skipped.
@@ -916,7 +921,14 @@ If it is not, list it under Not checked.
 
 End the report with one line: &quot;To examine how to undo this job, type `/gc undo`.&quot; Save a copy of the report in the
 hand-over folder (§0) as `GC_REPORT_&lt;short task&gt;_&lt;YYYY-MM-DD-HHMM&gt;.md` (never overwriting one already there), and
-give its full path.
+give its full path. The job&#x27;s last message then ends with its hand-over, so that the developer finds it at the
+very end:
+- **With a page,** the page&#x27;s link (or full path) once more, as the very last line, after that undo line.
+- **Without a page** (REVIEW.md §4), the report in a form the developer can open from where they read your messages,
+  as the last thing in the message. In an app that opens only files in the session&#x27;s own folders (as the Claude
+  desktop app does), copy it to the session&#x27;s scratchpad and send that copy with the app&#x27;s file tool; where there
+  is no such tool, give the path of a copy the developer can open. A link to a path the app cannot open is not a
+  hand-over.
 
 ## 6. Job log
 
@@ -925,9 +937,116 @@ else `${CLAUDE_CONFIG_DIR:-~/.claude}/gc/history.tsv` (create the folder if need
 `/gc history` and `/gc undo` read it.
 
 ---
-Version 1.4, 2026-10-26.
+Version 1.5, 2026-11-01.
 </code></pre>
-<h2 id="commands-md">COMMANDS.md</h2><pre><code># GuidedCoding commands (version 1.4)
+<h2 id="review-md">REVIEW.md</h2><pre><code># GuidedCoding review (version 1.5)
+
+The outside review and the developer&#x27;s page (SKILL.md §3 and SKILL.md §5). Every job ends with the page; with an
+outside review, the developer first pastes one packet into the outside reviewer and its answer back here. Keep the work proportionate: one or two
+focused tests per change, the essential code only, a description as long as the change needs (a simple fix:
+150 to 250 words), and no step the developer does not need.
+
+## 1. Prepare the review (after SKILL.md §2, before the report)
+
+- **Do the tools fit?** They need Git, a Python with the `markdown` package (PHENIX&#x27;s `libtbx.python` has it), and
+  proving tests that run the changed Python code in the test&#x27;s own process. If not, use §4 instead.
+- **The review folder.** In the scratch folder (SKILL.md §2), `review/`. It holds `review.json`, one description per
+  change, and what the tools write (`evidence/`, `out/`). Format: `${CLAUDE_SKILL_DIR}/tools/REVIEW_SPEC.md`.
+- **The triggers** go into `triggers`: every reason for an outside review, including `&quot;consequential&quot;` for
+  consequential work and `&quot;requested&quot;` when the developer asked for one; `[]` for none.
+- **The settings** in `review.json` come from the project notes: the folder holding the repositories, the
+  Python that runs the tests, a folder to add to PATH for git if any, the repositories, the upstream branch,
+  the name of the full test. Without notes, find them from the project and say once that `/gc setup` would
+  save them.
+- **The developer&#x27;s request** goes into `task` as they gave it, word for word.
+- **One description per change,** in the format of REVIEW_SPEC.md: &quot;In short&quot; (a `Problem:` and a `Now:`
+  line), Problem, Cause, Fix and how it solves the problem, Essential code, What the tests show, Proof,
+  Other checks and remaining risks. Write every summary from the full description, and read each
+  `Problem:` and `Now:` line once more against its label: the problem line says what was wrong, the now
+  line what is true after the change.
+- **The changes are not committed yet** (SKILL.md §4): each part is `&quot;uncommitted&quot;: true`, with `before` the
+  folder of the job&#x27;s saved copies of the files from before the job (SKILL.md §2: the job folder&#x27;s `before/repo-&lt;n&gt;`,
+  whose `JOB.txt` gives the complete list of the job&#x27;s files).
+  The old code is then exactly the code before the job, the developer&#x27;s own earlier changes included. A change
+  made of commits lists the commits.
+- **The tests.** For each change, the proving test and at most one more focused test, as `runs`. The proving test
+  gives `old_fails_with`: the text of the failure it must show on the old code, distinctive enough to tell
+  it from another failure (the assertion message, not only `AssertionError`). A test that starts a child process is `new_only` (the old-code replacement cannot reach it). A
+  changed file that is not Python (compiled code, data) goes under `not_reversed` with the reason; if the proof
+  needs its old version, use §4.
+- **Run the tools** (`${CLAUDE_SKILL_DIR}/tools/review_pages.py`, with that Python): `scope`, `packet`,
+  `request`, then `check --before-review`. Fix every problem `check` reports before going on. It refuses a
+  run that proves nothing: an old-code run that passes, fails while loading the old code or for an import or
+  syntax error, does not show its expected failure, or did not use the old modules; a current-code run that does
+  not import the changed modules from the checkout; a changed module left out; files changed since `packet`;
+  anything that looks like a key or password (remove it and say so; list a test&#x27;s dummy value under `not_secret`).
+  The scan is not a guarantee: read what goes out for keys and user data as well.
+- **Give the packet to the developer.** Copy `out/request.md` to the hand-over folder (SKILL.md §0) and put it on
+  the clipboard (`pbcopy` on macOS, `xclip -selection clipboard` or `wl-copy` on Linux; otherwise give its full
+  path there). Say in two or three lines: the change is ready for review, its proving test fails on the old code
+  and passes on the new, nothing is committed, and the packet is on the clipboard to paste into the outside
+  reviewer the notes name (ChatGPT by default), with its answer pasted back here. Show nothing else yet.
+  `request` warns when a packet is over 200 KB; then review fewer changes at a time.
+- **No outside review** (no trigger asks for one, the work is not consequential, and the developer has not
+  asked): run `scope`, `packet` (it makes the evidence for the page; nothing goes to a reviewer) and
+  `check --before-review`, but not `request`, and go straight to §3. Give `&quot;triggers&quot;: []` and leave out
+  `review_summary` and `findings`; the page then says that no outside review was run and that the report offers
+  one. `check` refuses a page without a review for a job with triggers. `result` says the change is ready and
+  what remains.
+
+## 2. When the answer comes back
+
+- **Each finding,** as in SKILL.md §2: confirm it is real, then act. What it asks for decides what follows:
+
+  | The reviewer asks for | Done | A second review |
+  |---|---|---|
+  | a description correction | correct the description | no |
+  | a minor test change (a message, a name, an extra case) | change the test, run `packet` again | offered |
+  | a code change, or a proving test that did not prove the fix | change it; rerun the tests, suites and code review; `packet` again | required |
+
+  A second review is `request &lt;change id&gt;`, which makes a packet for that change alone, pasted as before.
+  Nothing whose code or proving test changed is committed before its second review. Record each change made
+  because of the review under &quot;Changes after the review&quot; in its description (a bullet starting &quot;(record only)&quot;
+  appears only in the evidence).
+- **Decisions for the developer** are only genuine choices about scientific intent or expected behaviour
+  that the reviewer could not settle and whose answer changes what is done. Investigate each first; ask
+  it with the decision, why it cannot be settled, a recommended answer, and what will be done for each
+  answer. Ask nothing that has no action attached.
+- **Fill in `review.json`:** `result` (one or two sentences: accepted or not, and whether any decision
+  remains), `review_summary`, and `findings` (what was found, the changes it concerns, what was done).
+
+## 3. The developer&#x27;s page
+
+- **Make it:** `page`, then `check` (now including the page). Fix every problem it reports. `navtest` (Google
+  Chrome) is needed only after a change to the page tools.
+- **Deliver it** as a private claude.ai page with the Artifact tool, titled with `page_title`, and give the link;
+  give it again as the very last line of the job&#x27;s last message (SKILL.md §5).
+  Where the session has no Artifact tool, copy `out/page.html` to the hand-over folder and give its full path,
+  to open in a browser; that is an equally good route.
+- **The page** opens with a very brief summary (the result, what remains to do, with every commit a push
+  would publish), then the changes, each explained with its evidence folded underneath, then the outside
+  review and how the tests were run, then the commits. It shows no summary of a change except its
+  `Problem:` and `Now:` lines. Design for a desktop screen.
+- **The process report** (SKILL.md §5) is still written and saved; the page&#x27;s message gives its path. Without
+  an outside review, the page&#x27;s message also offers one in a line.
+
+## 4. When the tools do not fit
+
+No Git, a proof that needs compiled code or other non-Python files in their old version, a test that needs its
+own command or working directory, or no `markdown` package: write `OUTSIDE_REVIEW.md` in the scratch folder and
+copy it to the hand-over folder. It holds the task as given, the full diff, the new tests and their output on the
+old and new code (the old code as SKILL.md §2 makes it: an isolated copy, or a swap where the notes allow it),
+for H the conditions that make the change hard, for Q the open question, and this request: &quot;Review this change
+for correctness, unintended behaviour changes, and whether the tests prove the fix. List findings, most serious
+first.&quot; Leave out keys, tokens and user data, and name anything you removed. Say in it and in the report which
+evidence was made by hand. If the old code could not be run reliably, say so; never present it as checked.
+The developer pastes the file into the outside reviewer and the reply back; §2 applies, and the report replaces
+the page.
+
+---
+Version 1.5, 2026-11-01.
+</code></pre>
+<h2 id="commands-md">COMMANDS.md</h2><pre><code># GuidedCoding commands (version 1.5)
 
 These commands start no coding job. Each one first finds the installation:
 
@@ -942,7 +1061,8 @@ Follow SKILL.md §0 for files and steps you give the developer.
 ## 1. help (also `/gc` alone)
 
 In a few lines, say what GuidedCoding does: one bounded change, a proving test, one review pass, an outside review
-for hard or consequential changes, extra checks only when triggered, and a short report. Give the version and where
+for hard or consequential changes, extra checks only when triggered, and one page at the end showing the change and
+its evidence. Give the version and where
 the copy is. List the commands in one line each:
 
 - `/gc &lt;task&gt;`: do one bug fix or bounded change;
@@ -1021,7 +1141,7 @@ If the developer says yes:
    if they want: `rm -rf &#x27;&lt;full path of the copy&gt;&#x27;`, in its own block, with a `cd` line first (SKILL.md §0). If the
    block said the folder holds something of theirs, say so next to the command. Do not run it yourself.
 </code></pre>
-<h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.4)
+<h2 id="batch-md">BATCH.md</h2><pre><code># GuidedCoding batch (`/gc batch`, version 1.5)
 
 A batch is a **supervised sequence of ordinary `/gc` jobs**, run one at a time while the developer stays reachable.
 Say these limits in one line when the batch starts:
@@ -1045,6 +1165,8 @@ Say these limits in one line when the batch starts:
 - **Record the starting state** of every repository the batch may touch: `git rev-parse HEAD` and
   `git status --short`. A job may not change a file that was already modified at the start; such a job stops instead.
 - **Make a scratch folder for the batch,** with one subfolder per job (`job-1/`, `job-2/`, and so on).
+- **Make the batch&#x27;s review folder** in the batch&#x27;s scratch folder (`review/`, REVIEW.md §1), for the jobs&#x27;
+  descriptions and evidence.
 
 ## 2. Run each job
 
@@ -1057,6 +1179,9 @@ Say these limits in one line when the batch starts:
   - these limits:
     - no commit, no push, no installation, nothing irreversible;
     - no paid live call and no outside review: mark them pending;
+    - before returning, write the change&#x27;s description and run the review tools&#x27; `packet` for it in the batch&#x27;s
+      review folder (`${CLAUDE_SKILL_DIR}/REVIEW.md` §1, change id `job-&lt;n&gt;`, with `&quot;state&quot;: &quot;saved&quot;`), while its
+      changes are still in place; give no packet to the developer;
     - stop and return at the first decision the developer must make;
     - stop at the time cap.
 - **The subagent returns:**
@@ -1072,7 +1197,8 @@ Say these limits in one line when the batch starts:
   1. Check that its processes have ended.
   2. Check that any files it swapped in place were restored (hashes).
   3. Check the candidate is complete before removing anything: in a disposable copy of the starting state, apply its
-     patches, and compare every changed and new file with the saved copies (`cmp`). If they differ, stop the batch.
+     patches, and compare every changed and new file with the saved copies and with the job folder&#x27;s `after/` copies
+     (`cmp`), which the review evidence was made from. If they differ, stop the batch.
   4. Revert its changes: restore the changed files to the starting state (unstaging them too), and remove only the
      new files it created.
   5. If it rebuilt compiled code, rebuild again from the restored sources, and say so in its entry.
@@ -1093,6 +1219,14 @@ Say these limits in one line when the batch starts:
 
 ## 4. Report
 
+- **The review.** One review folder for the batch, made in §1, with one description and one evidence packet per
+  completed job (§2). At the end run `scope`, `request` and `check --before-review` (REVIEW.md §1), with a packet
+  of at most five jobs at a time; the request also asks the reviewer to look for interactions between the jobs.
+  When the answers are back, follow REVIEW.md §2 and §3: one page for the batch, which the developer reads
+  instead of the summary below. Changes made because of the review are made one job at a time, in that job&#x27;s
+  candidate: apply that job&#x27;s patches alone, make the change, run `packet` for it, save its candidate again (§2,
+  including the completeness check), and take it out again; then check again that the accepted patches apply
+  together. The page says that the fixes are saved, not applied.
 - **One summary.** First copy each patch meant for the developer into the hand-over folder (SKILL.md §0),
   keeping the original in the scratch folder. Then, for each job, give:
   - its status (completed, stopped or skipped);
@@ -1151,13 +1285,14 @@ Say these limits in one line when the batch starts:
     that commit; I&#x27;ll keep a copy.&quot;;
   - when the developer is done: which jobs&#x27; changes are still in their files, and that they are not committed.
 - **Applying patches.** Check whether the accepted patches apply together, in a throwaway copy, and say where they
-  conflict. Then offer to apply them one at a time. Each one then gets the usual checks, and
-  commit or push only on request (SKILL.md §4). A shown job that the developer keeps stays applied (do not apply it
+  conflict. Then offer to apply them one at a time. Each one then gets the usual checks; when all the accepted ones
+  are in, rerun each job&#x27;s proving test and the suites on the combined code. Commit or push only on request
+  (SKILL.md §4). A shown job that the developer keeps stays applied (do not apply it
   again) and gets the same checks. Its shown state becomes the expected state of its files, and jobs shown after
   it are applied on top of it.
 - **Job log.** Unless the notes turn it off, add one line per job, as `LOG.md` says.
 </code></pre>
-<h2 id="setup-md">SETUP.md</h2><pre><code># GuidedCoding setup (`/gc setup`, version 1.4)
+<h2 id="setup-md">SETUP.md</h2><pre><code># GuidedCoding setup (`/gc setup`, version 1.5)
 
 Setup saves a short notes file, `.claude/GC_NOTES.md`, that `/gc` reads at the start of every job. It changes
 nothing else, runs no build or test, connects to nothing, and does not start a coding task. Expect it to take a few
@@ -1229,6 +1364,10 @@ GC setup for &lt;project folder&gt;
                                                                xdg-user-dir DOWNLOAD)
 13. Code owned by others: &lt;paths someone else owns or is actively developing, and who&gt;
                                                               (found / default: none known)
+14. Review tools:        &lt;the Python that runs the tests and has the markdown package; the folder holding the
+                          repositories; a folder to add to PATH for git, if any; the upstream branch&gt;
+                                                              (found / default: python3, this folder, none,
+                                                               origin/master; see REVIEW.md)
 ```
 
 **Domain defaults.** Offer these only when the project is that kind of project.
@@ -1242,6 +1381,7 @@ GC setup for &lt;project folder&gt;
     cctbx&#x27;s AGENTS.md says never to source `build/setpaths.sh`.
   - Import note: `libtbx.python` puts the installation&#x27;s main checkout first on the import path, so a second working
     copy is not isolated.
+  - Review tools: `&lt;root&gt;/build/bin/libtbx.python` (it has the markdown package), the folder `&lt;root&gt;/modules`.
   - Full suite before a push: often run on a server as `phenix_regression.test_all_parallel nproc=&lt;N&gt; sort`, with the
     installation&#x27;s `setpaths` sourced. Some developers call it &quot;t96&quot;. Ask which server, installation, process count,
     log name and baseline rule apply, and who launches it.
@@ -1269,7 +1409,7 @@ GC setup for &lt;project folder&gt;
 
 Use this step only when the developer has agreed to it. It takes about three times as long as an ordinary review
 pass, and in the study it was not clearly better than a second ordinary review; use it when a second reader would
-help (SKILL.md §5). Version 1.4.
+help (SKILL.md §5). Version 1.5.
 
 1. **Criteria.** From the task text alone, not from your change, write the acceptance criteria in
    `&lt;scratch folder&gt;/review/CRITERIA.txt`.
@@ -1347,7 +1487,7 @@ or
   Reviewer: BLOCKING FINDINGS (R..)
 Return the same text. Give no overall verdict; that is not your role.
 </code></pre>
-<h2 id="log-md">LOG.md</h2><pre><code># GuidedCoding job log (version 1.4)
+<h2 id="log-md">LOG.md</h2><pre><code># GuidedCoding job log (version 1.5)
 
 When the job ends (the developer has answered the open decisions, or says the job is done), append one line to the
 job log (SKILL.md §6). Log stopped and abandoned jobs too. Separate the fields with tabs, use no tabs inside a
