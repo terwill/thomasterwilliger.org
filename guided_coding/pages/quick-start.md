@@ -25,8 +25,10 @@ Instructions to Claude Code for setting up Guided Coding. Read https://www.thoma
 
 After installation, start a **new conversation** in Claude Code in the folder of the software project you want to
 change. Type `/gc` followed by a specific small task, such as fixing a bug you can reproduce. `/gc` by itself gives an
-introduction. If you plan to use Guided Coding regularly on that project, type `/gc setup` there once
-(recommended): it saves the project's build and test commands, commit rules and other local defaults.
+introduction. Type `/gc` at the very start of the message, with nothing before it, not even a space; otherwise
+Claude Code takes it as ordinary text: Guided Coding does not run, and Claude may then make the change without it.
+If you plan to use Guided Coding regularly on that project, type `/gc setup` there once (recommended): it saves the
+project's build and test commands, commit rules and other local defaults.
 
 When the job finishes, open the page whose link ends Claude's last message; it looks like
 [this example results page](example-results.html). Ask about anything unclear before you
