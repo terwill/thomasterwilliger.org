@@ -33,6 +33,6 @@ When the job finishes, open the page whose link ends Claude's last message; it l
 accept the change. The page needs Python-Markdown and a change whose tests the review tool can run; otherwise
 Claude gives you a written report instead, and nothing else changes.
 
-Installing Guided Coding is normally done once per computer. It has been tested on macOS and Linux;
-the Windows installation is newer and has had less testing. If you prefer to install it yourself, see
+Installing Guided Coding is normally done once per computer. It has been tested on macOS, Linux and Windows.
+If you prefer to install it yourself, see
 [Manual installation and maintenance](getting-started.html).

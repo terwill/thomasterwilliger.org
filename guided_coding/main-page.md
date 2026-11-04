@@ -73,7 +73,7 @@ read the report and check important changes yourself.
 - Claude Code, in the Claude app or Terminal. If you do not have it, start with
   [Anthropic's Claude Code quickstart](https://code.claude.com/docs/en/quickstart).
 - A software project you want to work on. Guided Coding is intended for projects managed with Git.
-- Guided Coding has been tested on macOS and Linux; Windows has not been tested.
+- Guided Coding has been tested on macOS, Linux and Windows.
 - For the one page at the end of each job: Python 3 with the Python-Markdown package (PHENIX's `libtbx.python` has
   it). Without it, or for a change its review tool cannot test (compiled code, for example), Guided Coding gives a
   written report instead; everything else works the same.
